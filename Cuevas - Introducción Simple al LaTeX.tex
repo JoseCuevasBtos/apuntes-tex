@@ -1,0 +1,635 @@
+\documentclass[11pt,oneside,letterpaper]{book}
+
+% ========= Paquetes utilizados ==============
+\usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathrsfs,cancel}
+\usepackage{xcolor}
+\usepackage{enumerate}
+\usepackage{tikz,pgf}
+\usetikzlibrary{arrows,calc}
+\tikzset{
+every picture/.append style={
+  execute at begin picture={\deactivatequoting},
+  execute at end picture={\activatequoting}
+  }
+} % Para que no tenga problemas con el babel en español
+\usepackage{longtable}
+\usepackage{listings} % Para escribir código
+\lstset{inputencoding=latin1,
+	extendedchars=true,
+	language={[LaTeX]TeX},
+	breaklines=true,
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color[HTML]{006699},
+	stringstyle=\ttfamily\color[HTML]{006699},
+	backgroundcolor=\color{gray!10}
+}
+\lstset{
+     literate=%
+         {á}{{\'a}}1
+         {í}{{\'i}}1
+         {é}{{\'e}}1
+         {ý}{{\'y}}1
+         {ú}{{\'u}}1
+         {ó}{{\'o}}1
+         {ě}{{\v{e}}}1
+         {š}{{\v{s}}}1
+         {č}{{\v{c}}}1
+         {ř}{{\v{r}}}1
+         {ž}{{\v{z}}}1
+         {ď}{{\v{d}}}1
+         {ť}{{\v{t}}}1
+         {ň}{{\v{n}}}1                
+         {ů}{{\r{u}}}1
+         {Á}{{\'A}}1
+         {Í}{{\'I}}1
+         {É}{{\'E}}1
+         {Ý}{{\'Y}}1
+         {Ú}{{\'U}}1
+         {Ó}{{\'O}}1
+         {Ě}{{\v{E}}}1
+         {Š}{{\v{S}}}1
+         {Č}{{\v{C}}}1
+         {Ř}{{\v{R}}}1
+         {Ž}{{\v{Z}}}1
+         {Ď}{{\v{D}}}1
+         {Ť}{{\v{T}}}1
+         {Ň}{{\v{N}}}1                
+         {Ů}{{\r{U}}}1    
+}
+
+% ======== Ejemplo de aplicación =============
+\usepackage[most]{tcolorbox}
+\usepackage{mdframed}
+\definecolor{thm}{HTML}{3399FF}
+\newtheoremstyle{custom}
+	{0cm}
+	{0cm}
+	{\normalfont}
+	{0.5cm}
+	{\sffamily\bfseries}
+	{:}
+	{4pt}
+	{\color{thm}{\thmname{#1}\thmnumber{ #2}\thmnote{ -- \textit{#3}}}}
+\theoremstyle{custom}
+\newmdtheoremenv[linewidth=2pt,
+linecolor=thm,
+backgroundcolor=thm!15,
+rightline=false,topline=false,bottomline=false]{ex}{Ejemplo de aplicación}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{mythm}{Teorema}[chapter]
+
+% ========= Comandos propios =================
+\newcommand{\cbox}[1]{
+\begin{center}
+	\fboxsep 12pt \fcolorbox{thm}{gray!5}{
+	\begin{minipage}[t]{11cm}
+	#1
+	\end{minipage}}
+\end{center}
+}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\title{Introducción Corta al \LaTeX}
+\author{José Cuevas Btos.}
+\date\today
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter*{Introducción}
+Richard Feynman, también conocido como el Gran Profesor, fue un famoso físico principalmente en la década de los 60's, entre una de sus frases célebres y lecciones esta su método de aprendizaje el cual consiste en aprender a través de la enseñanza. Ahora, puede ser difícil para los estudiantes de física y matemática encontrar a alguien a quien enseñarles todo lo que van entendiendo a lo largo de sus cursos, por lo que la escritura entra de forma natural en sus vidas.
+
+En la actualidad, creo que es un hecho que Microsoft Word se ha convertido en el software de escritura predeterminado, si bien es útil para escribir una reseña o incluso un artículo científico tiene dos grandes problemas:
+\begin{enumerate}
+\item Se ve \textbf{horriblemente mal}.
+\item Es difícil de configurar una vez que has escrito mucho, de compilar o hasta corres riesgo de que alguien distribuya tu documento a su nombre.
+\end{enumerate}
+Es ahí donde \LaTeX{} entra naturalmente y con mucha razón. \LaTeX{} es un distribuidor del lenguaje \TeX{} y sus extensiones con el cual se hacen los artículos, libros e incluso presentaciones científicas por excelencia, esto se debe a que:
+\begin{enumerate}
+\item Es gratis y de libre acceso.
+\item Compila directamente en formato PDF y lo hace sin tener un tamaño elevado.
+\item Se ve elegante y es fácil de alterar.
+\end{enumerate}
+Es por eso que, debido a mi largo tiempo estudiando este lenguaje, he decidido hacer una introducción corta acerca de las herramientas más comunes a la hora de escribir textos científicos.
+
+Como advertencia final debo indicar que obviaré los capítulos de instalación de \LaTeX{}, debido a que esto me fue difícil y no conozco todos los tecnicismos para poder guiar a alguien, sin embargo, aun así recomendaré los software necesarios. La edición de este texto fue hecha con \textbf{\TeX{}Maker} \url{http://www.xm1math.net/texmaker/download.html} y la distribución con \textbf{Mik\TeX{} 2.9} \url{https://miktex.org/howto/install-miktex}. Mik\TeX{} solo funciona en Windows, sin embargo, puede descargar \TeX{}Live de tener Mac OS o Linux.
+
+\chapter{``Hola mundo''}
+Todos o casí todos los comandos en \LaTeX{} siguen la estructura de \lstinline|\command[opcional]{necesario}|. De forma que como puede ver, un comando se caracteriza por llamarse con un símbolo \lstinline|/| y tener uno o más campos obligatorios dentro de \lstinline|{}|. El primer comando que conoceremos es \lstinline|\documentclass[opciones]{tipo}| en donde el campo obligatorio se rellena con:
+\begin{longtable}{p{3cm}p{9cm}}
+\texttt{article} & Sirve para escribir artículos cortos, reportes cortos, presentaciones, invitaciones, etc.\\
+\texttt{report} & Sirve para escribir reportes largos, con capítulos, libros cortos, tesis, etc.\\
+\texttt{book} & Sirve para escribir libros reales.\\
+\texttt{letter} & Sirve para escribir cartas.\\
+\texttt{memoir} & Sirve para escribir cualquier clase de documento. Es versátil, aun que no por eso recomendable.\\
+\texttt{proc} & Similar a un artículo, pero para cosas más cortas.\\
+\texttt{beamer} & Sirve para hacer presentaciones (revisar con cuidado).
+\end{longtable}
+
+Las opciones para poner en el comando son, el tamaño de la página:
+\begin{longtable}{ll}
+\hline Opciones & Tamaño (en mm)\\
+\hline \texttt{a0paper} & 841 x 1189\\
+\texttt{a1paper} & 594 x 841\\
+\texttt{a2paper} & 420 x 594\\
+\texttt{a3paper} & 297 x 420\\
+\texttt{a4paper} & 210 x 297\\
+\texttt{a5paper} & 148 x 210\\
+\texttt{a6paper} & 105 x 148\\
+\texttt{b0paper} & 1000 x 1414\\
+\texttt{b1paper} & 707 x 1000\\
+\texttt{b2paper} & 500 x 707\\
+\texttt{b3paper} & 353 x 500\\
+\texttt{b4paper} & 250 x 353\\
+\texttt{b5paper} & 176 x 250\\
+\texttt{b6paper} & 125 x 176\\
+\texttt{c0paper} & 917 x 1297\\
+\texttt{c1paper} & 648 x 917\\
+\texttt{c2paper} & 458 x 648\\
+\texttt{c3paper} & 324 x 458\\
+\texttt{c4paper} & 250 x 353\\
+\texttt{c5paper} & 229 x 324\\
+\texttt{c6paper} & 114 x 162\\
+\texttt{letterpaper} & 216 x 279\\
+\texttt{legalpaper} & 216 x 356\\
+\texttt{ansiapaper} & 216 x 279\\
+\texttt{ansibpaper} & 279 x 432\\
+\texttt{ansicpaper} & 432 x 559\\
+\texttt{ansidpaper} & 559 x 864\\ \hline
+\end{longtable}
+El tamaño de letra, que se escribe en \texttt{pt} (abreviación de \textit{punto}, que en tipografía equivale a 1/72 de pulgada). Por defecto los documentos de \LaTeX{} vienen con \texttt{10pt} de tamaño normal, los documentos no suelen tener más de \texttt{12pt} de tamaño.
+
+También en las opciones se puede utilizar \texttt{fleqn} para alinear las ecuaciones a la izquierda en vez de centrado (por defecto) y \texttt{leqno} para poner las etiquetas (números de las ecuaciones) a la izquierda en vez de a la derecha (por defecto).
+
+\texttt{titlepage} y \texttt{notitlepage} sirve para indicar si desea crear o no una página específica para el título (no por defecto en \texttt{article} y si por defecto en \texttt{book} y \texttt{report}).
+
+\texttt{oneside} y \texttt{twoside} indican si el documento debe ser a una o dos caras (una en \texttt{article} y \texttt{report}, dos en \texttt{book}). Nótese que esta configuración es solamente visual, no le dice a su impresora como debería imprimir el documento.
+
+\texttt{onecolumn} y \texttt{twocolumn} determinan el numero de columnas de un documento (uno por defecto).
+
+\texttt{openany} determina que los capítulos partan en cualquier página, mientras que \texttt{openright} determina que los capítulos comienzan desde la página de la derecha\footnote{Solo funciona en documentos con \texttt{twoside} y no en \texttt{article} porque no posee capítulos.}.
+
+\section{Paquetes fundamentales y preámbulo básico}
+De por si, \TeX{} es un lenguaje bastante completo, pero para poder complementarlo y adaptarlo a nuestras necesidades necesitaremos ampliarlo un poco, esto se hace incorporando \textbf{paquetes} que son archivos llenos de código para expandir nuestras opciones de manera sencilla.
+
+En general, todo documento en español debería comenzar con las líneas
+\begin{lstlisting}
+\usepackage[spanish]{babel} % Sirve para traducir ciertos comandos
+\usepackage[utf8x]{inputenc} % Sirve para decodificar caracteres especiales
+\usepackage[T1]{fontenc} % Sirve para adecuar las fuentes de letras
+\end{lstlisting}
+En donde, como vera, los comentarios se escriben como \lstinline|% Comentario|. Además, se puede incluir unos paquetes extra para poder complementar tu documento como por ejemplo, el paquete \texttt{geometry}, que nos permite editar la geometría de la página.
+\begin{figure}[!ht]
+\centering
+\begin{tikzpicture}
+\draw (0,0) rectangle (6,8);
+\fill[black!20] (1,1) rectangle (5,7);
+\begin{scope}[|<->|]
+\draw (2,1) -- node[above right]{altura} ++(0,6);
+\draw (1,2) -- node[below]{largo} ++(4,0);
+\draw (0,1) -- node[below right]{margen izquierdo} ++(1,0);
+\draw (2,7) -- node[right]{margen superior} ++(0,1);
+\end{scope}
+\end{tikzpicture}
+\caption{Diagrama sencillo de una página}
+\end{figure}
+
+Por ejemplo, si quisiéramos hacer un documento de largo 17 cm, alto 24 cm y margenes izquierdo y derecho de 2 cm escribiríamos en el preámbulo
+\begin{lstlisting}
+\usepackage[total={17cm,24cm},top=2cm,left=2cm]{geometry}
+\end{lstlisting}
+A esto le podemos sumar el uso de ciertos paquetes para incrementar nuestros símbolos:
+\begin{lstlisting}
+\usepackage{latexsym,amsmath,amssymb,amsfonts}
+\end{lstlisting}
+También, por estar en español se recomienda traducir ciertos comandos desde el ya para poder utilizarlos a futuro sin problemas:
+\begin{lstlisting}
+\renewcommand{\contentsname}{Contenido}
+\renewcommand{\partname}{Parte}
+\renewcommand{\appendixname}{Apéndice}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\AtBeginDocument{\renewcommand\tablename{Tabla}}
+\renewcommand{\abstractname}{Resumen}
+\renewcommand{\refname}{Bibliografía}
+\renewcommand{\chaptername}{Capítulo} % para 'book'
+\renewcommand{\bibname}{Bibliografía} % para 'book'
+\end{lstlisting}
+
+\section{Texto simple}
+Hasta ahora solo hemos hablado de un documento sin nada de texto, el primer comando necesario es la inclusión de un título, autor y fecha, para ello, en el preámbulo se escribe
+\begin{lstlisting}
+\title{Un título interesante}
+\author{Yo}
+\date\today
+\end{lstlisting}
+En donde \lstinline|\today| es un comando para escribir la fecha actual según su computador. Luego comienzas todos los contenidos del documento con el comando:
+\begin{lstlisting}
+\begin{document}
+% Aquí va el contenido...
+\end{document}
+\end{lstlisting}
+Para ponerle el titular utilizas el comando \lstinline|\maketitle|, por lo que, su documento debería verse como:
+\begin{lstlisting}
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=2cm,left=2cm]{geometry}
+
+\title{Un artículo}
+\author{José Cuevas}
+\date\today
+
+\begin{document}
+\maketitle
+
+...
+\end{document}
+\end{lstlisting}
+Luego, después de hacer el título con el comando ya indicado puede comenzar a escribir libremente, para \textit{enfatizar} ciertas palabras hay una serie de comandos para modificar el texto normal, estas se activan utilizando un comando de tipo \lstinline|\comando{...}| o a través de modificando todo el texto de un entorno como \lstinline|{\cmd ...}|. Las modificaciones pueden verse en la siguiente tabla:\\
+\begin{longtable}{llll}
+\hline Comando en linea & Atajo (\TeX{}Maker) & Comando para entorno & Produce\\ \hline\hline
+\lstinline|\textit{}| & \verb|Ctrl+I| & \lstinline|{\it ...}| & \textit{Itálica}\\
+\lstinline|\textbf{}| & \verb|Ctrl+B| & \lstinline|{\bf ...}| & \textbf{Negritas}\\
+\lstinline|\textsc{}| & \verb|Ctrl+Shift+C| & \lstinline|{\sc ...}| & \textsc{Versallitas}\\
+\lstinline|\textsl{}| & \verb|Ctrl+Shift+S| & \lstinline|{\sl ...}| & \textsl{Inclinado}\\ \hline
+\end{longtable}
+Además, todo documento \LaTeX{} cuenta con cuatro tipos de fuentes a las que puede acceder:
+\begin{longtable}{lll}
+\hline Comando en linea & Comando para entorno & Produce\\ \hline\hline
+\lstinline|\textrm{}| & \lstinline|{\rm ...}| & Romana\\
+\lstinline|\textsf{}| & \lstinline|{\sf ...}| & \textsf{Sans-Serif}\\
+\lstinline|\texttt{}| & \lstinline|{\tt ...}| & \texttt{Mono-espaciada}\\
+\lstinline|$...$| & \lstinline|$$...$$| & $Matematicas.$\\ \hline
+\end{longtable}
+Estos cuatro comandos no generan un texto con una fuente específica en realidad, sino que escriben texto con una \textbf{familia} o \textbf{tipo} de fuente. Esto será retomado a futuro cuando se muestren paquetes que alteran estas familias. Asimismo, la escritura en fuente matemática será estudiada en el próximo capítulo con detención.
+
+Además se puede escribir en los siguientes tamaños de letra:
+\begin{longtable}{ll}
+\hline Comando & Produce \\ \hline \hline
+\lstinline|{\tiny ...}| & {\tiny Pequeñísimo}\\
+\lstinline|{\scriptsize ...}| & {\scriptsize Muy pequeñito}\\
+\lstinline|{\footnotesize ...}| & {\footnotesize Pequeñito}\\
+\lstinline|{\small ...}| & {\small Pequeño}\\
+\lstinline|{\normalsize ...}| & {\normalsize Normal}\\
+\lstinline|{\large ...}| & {\large Grande}\\
+\lstinline|{\Large ...}| & {\Large Muy grande}\\
+\lstinline|{\huge ...}| & {\huge Enorme}\\
+\lstinline|{\Huge ...}| & {\Huge Gigante}\\\hline
+\end{longtable}
+\begin{ex}
+Esta es la explicación de un teorema:
+\begin{lstlisting}
+{\large\sc El teorema de Palomar:} Siempre que se tengan $n+1$ palomas distribuidas en $n$ cajas, al menos una caja tendrá \textbf{dos palomas}. 
+\end{lstlisting}
+Lo que produce:
+\cbox{{\large\sc El teorema de Palomar:} Siempre que se tengan $n+1$ palomas distribuidas en $n$ cajas, al menos una caja tendrá \textbf{dos palomas}.}
+\end{ex}
+Como dato extra, para hacer las comillas en \LaTeX{} se utiliza \lstinline|``...''| (``...''), \lstinline|`'| (`...') o \lstinline|<<...>>| (<<...>>).
+
+\section{Párrafos, símbolos y listas}
+Al escribir debe considerar que hay una serie de símbolos especiales que tienen un uso específico en \LaTeX{}, para poder utilizarlos en la escritura siga la siguiente tabla:
+\begin{longtable}{p{1cm}p{2.2cm}p{8cm}}
+\hline Símbolo & Comando & Uso en \LaTeX{}\\ \hline\hline
+\char`\\ & \lstinline|\char`\\| & Iniciar comando\\
+\{ \} & \lstinline|\{ \}| & Determinar entorno o bloque de comando.\\
+\$ & \lstinline|\$| & Determinar entorno en modo matemático.\\
+\_ \^{} & \lstinline|\_ \^{}| & Sub y super índices en modo matemático.\\
+\# & \lstinline|\#| & Indicar parámetros en la macros (crear comandos).\\
+\~{} & \lstinline|\~{}| & Evitar cortes de renglón.\\
+\% & \lstinline|\%| & Realizar comentarios.\\ \hline
+\end{longtable}
+
+Para cambiar de línea presionar \texttt{enter} no servirá de mucho. En \LaTeX{} las líneas cambian con el comando \lstinline|\\|. Este comando, sin embargo, no le otorga sangría al siguiente párrafo, para ponerle sangría se debe presionar dos veces \texttt{enter}.
+
+El comando \lstinline|\\| también puede específicar una distancia entre párrafos utilizando los símbolos \lstinline|[]| con la distancia escrita en \texttt{cm} (centímetros), \texttt{mm} (milímetros), \texttt{in} (pulgadas) o una fracción de una medida universal de \LaTeX{}. Con lo último hablamos de comandos como \lstinline|\textwidth| (largo de texto) o \lstinline|\pagewidth| (largo de página).
+
+Para generar espacio de otra forma se pueden utilizar los comandos \lstinline|\hspace{}| y \lstinline|\vspace{}| donde en su campo obligatorio va la distancia horizontal o vertical respectivamente.
+
+También podemos cambiar la alineación de texto con un par de comandos sencillos, utilizando el entorno \texttt{center} puedes centrar el texto, con \texttt{left} ponerlo a la izquierda o con \texttt{right} a la derecha. Si se siente confundido, un entorno se crea en \LaTeX{} con un par de comandos de apertura y cierre \lstinline|\begin{comando}...\end{comando}|. Los comandos para entornos les llamamos a aquellos que modifican todas las propiedades de un entorno, también se puede formar un entorno normal con el uso de corchetes tipo \lstinline|{...}|.
+
+Para hacer listas solemos utilizar el entorno \texttt{enumerate} para que sea enumerada e \texttt{itemize} para que no lo sea. Para enlistar los elementos se escribe \lstinline|\item ...|.
+\begin{ex}
+Un ejemplo es una lista de compras:
+\begin{lstlisting}
+\begin{center}
+\it Lista de compras:
+\end{center}
+\begin{enumerate}
+\item Ropa.
+\item Comida:
+	\begin{enumerate}
+	\item Frutas:
+		\begin{itemize}
+		\item Manzanas.
+		\item Bananas.
+		\end{itemize}
+	\item Pan.
+	\item Bebidas y jugos.
+	\end{enumerate}
+\item Útiles.
+\end{enumerate}
+\end{lstlisting}
+Lo que produce:
+\cbox{\begin{center}
+\it Lista de compras:
+\end{center}
+\begin{enumerate}
+\item Ropa.
+\item Comida:
+	\begin{enumerate}
+	\item Frutas:
+		\begin{itemize}
+		\item Manzanas.
+		\item Bananas.
+		\end{itemize}
+	\item Pan.
+	\item Bebidas y jugos.
+	\end{enumerate}
+\item Útiles.
+\end{enumerate}}
+\end{ex}
+También se puede utilizar el paquete \texttt{enumerate} para poder modificar de forma sencilla la notación de las listas enumeradas. Por ejemplo, se escribe:
+\begin{lstlisting}
+\begin{enumerate}[a)]
+\item ...
+\end{enumerate}
+\end{lstlisting}
+Y se obtiene una lista que se enumera a), b), etc. También funciona con números romanos (ej, \texttt{I.} o en minúsculas \texttt{i.}) y números arábicos (ej. \texttt{(1)}).
+
+Los símbolos utilizados por el entorno \texttt{enumerate} por defecto vienen dados por comandos \lstinline|\labelenumi|, \lstinline|\labelenumii|, \lstinline|\labelenumiii|, \lstinline|labelenumiv|, etc. De manera que si, por ejemplo, quisiera que la primera enumeración fuese por defecto \texttt{(A.) (B.) (C.)}, debo redefinir el comando. En la redefinición debo indicar el número con \lstinline|{enumi}|, \lstinline|{enumii}| y así. Por ejemplo, el siguiente código:
+\begin{lstlisting}
+\renewcommand{\labelenumi}{\Alph{enumi}.)}
+\renewcommand{\labelenumii}{\Alph{enumi}.\arabic{enumii})}
+\end{lstlisting}
+Produce que una lista salga así:
+\cbox{\begin{enumerate}[\Alph{enumi}.)]
+\item Problema A.
+\item Problema B.
+	\begin{enumerate}[\Alph{enumi}.\arabic{enumii})]
+	\item Parte 1.
+	\item Parte 2.
+	\end{enumerate}
+\item Problema C.
+\end{enumerate}}
+
+\section{Inventando y redefiniendo comandos}
+El catálogo de \LaTeX{} es bastante amplio con lo que a comandos respecta, pero siempre puede mejorar con una que otra opción que te gustaría simplificar, para ello podemos definir nuestros propios comandos con el comando (vaya la redundancia) \lstinline|\newcommand{nombre}[núm]{def}|. El primer campo define el nombre del comando, el campo opcional define la cantidad de entornos que utilizará (si no se escribe, el programa asume cero) y el segundo campo define el comando.
+
+Por ejemplo, supongamos que deseo definir un comando para los símbolos < (menor que) y > (mayor que), para ello utilizo el código
+\begin{lstlisting}
+\newcommand{\lt}{<}
+\newcommand{\gt}{>} % lt y gt son acrónimos para 'less than' y 'greater than'
+\end{lstlisting}
+El comando genera un error si el nombre que le has dado ya constituye un comando predefinido. Si, por alguna razón, quieres seguir usándolo puedes redefinir el comando con \lstinline|\renewcommand{...}{...}|.
+
+También se puede crear entornos (aquellos que se llaman con \lstinline|\begin{...} \end{...}|) utilizando \lstinline|\newenvironment{nombre}[num]{antes}{después}|. El primer campo determina el nombre, el campo opcional la cantidad de campos obligatorios, el segundo el código antes del texto y el tercero el código despues, por ejemplo:
+\begin{lstlisting}
+\newenvironment{important}{\begin{center}\bf}{\end{center}}
+\end{lstlisting}
+Analíticamente puedes redefinir un entorno con \lstinline|\renewenvironment{...}{...}{...}|.
+
+\chapter{Haciendo matemáticas}
+La gran razón del uso de \LaTeX{} es su elegancia al momento de hacer o escribir ecuaciones matemáticas. Para poder utilizar matemáticas entre lineas como así, $x+1$ (también llamado \texttt{modo inline}), se utilizan los delimitadores \lstinline|$...$| donde la ecuación va dentro de los símbolos de dolar. Para poder escribir matemática en su propia línea (\texttt{modo display}) como prosigue
+$$\int x^2\,dx$$
+se utilizan los delimitadores \lstinline|$$...$$| o también \lstinline|\[...\]|.
+
+\section{Lo básico}
+En general, no se debe aprender nada en \LaTeX{} para escribir fórmulas con un par de excepciones. Se utilizan los símbolos \lstinline|^| y \lstinline|_| para simular los exponentes y los subíndices en las expresiones. Otros símbolos matemáticos están dados por comandos simples e intuitivos como se enlistan en la siguiente tabla:
+\begin{longtable}{ll|ll}
+\hline Comando & Produce & Comando & Produce \\ \hline \hline
+\lstinline|\sum| & $\displaystyle\sum$ & \lstinline|\int| & $\displaystyle\int$\\
+\lstinline|\prod| & $\displaystyle\prod$ & \lstinline|\lim| & $\displaystyle\lim$\\
+\lstinline|\sin| & $\sin$ & \lstinline|\cos| & $\cos$\\
+\lstinline|\tan| & $\tan$ & \lstinline|\ln| & $\ln$\\
+\lstinline|\log| & $\log$ & \lstinline|\exp| & $\exp$\\\hline
+\end{longtable}
+
+Aquí puede notar que en general los comandos que son funciones escritas de forma normal suelen escribirse igual pero con el símbolo \lstinline|\| antes.
+
+Además es usual que también se quieran hacer fracciones, las fracciones se describen con el comando \lstinline|\frac{...}{...}| donde dentro de los corchetes van la parte superior e inferior de esta fracción. Esta puede verse muy bien en modo display
+$$\frac{x+1}{x-1}$$
+Pero puede verse terrible en modo inline $\frac{x+1}{x-1}$. Para poder forzar el modo inline a verse como el display puede utilizar el comando \lstinline|\displaystyle|, pero puede simplificar su código escribiendo \lstinline|\dfrac{...}{...}| en su lugar, este comando automáticamente forma una fracción en modo display $\dfrac{x+1}{x-1}$, el uso de este último es bastante recomendable en fracciones continuas, este es un ejemplo solo con \lstinline|\frac|:
+$$1+\frac{1}{1+\frac{1}{1+\frac{1}{1+\cdots}}}$$
+Y este es el mismo ejemplo pero con \lstinline|\dfrac|:
+$$1+\dfrac{1}{1+\dfrac{1}{1+\dfrac{1}{1+\cdots}}}$$
+También cabe destacar que para poder escribir super o subíndices con más de un símbolo se debe escribir tal expresión dentro de \lstinline|{...}|, por ejemplo, el comando \lstinline|10^-1| da $10^-1$, para evitar tal error se escribe \lstinline|10^{-1}| lo que da $10^{-1}$ como esperado.
+
+Para escribir el símbolo de multiplicación hay dos opciones comunes, el punto centrado que se hace con \lstinline|\cdot| ($\cdot$) y la cruz que se hace por \lstinline|\times| ($\times$), también podría querer utilizar el símbolo de división que se denota como \lstinline|\div| ($\div$).
+
+Para escribir letras griegas como $\alpha,\beta,\dots$ se escriben tal cual precedidas por el backslash, como \lstinline|\alpha,\beta,\dots|. Para escribirse en mayúsculas solo se escribe en mayúsculas la primera letra, es decir, \lstinline|\Gamma,\Delta,\dots| produce $\Gamma,\Delta,\dots$ Por tanto, la letra $\pi$ se escribe como \lstinline|\pi|.
+
+Para escribir radicales o raíces cuadradas como $\sqrt{2}$ se utiliza \lstinline|\sqrt{2}|, pero para escribir cualquier raíz se debe utilizar un corchete antes para especificar el índice, por ejemplo, $\sqrt[3]{2}$ con \lstinline|\sqrt[3]{2}|.
+
+Los espacios en modo matemático son suprimidos de forma que escribir \lstinline|$a b$| da $a b$. Para poder escribir espacios se utiliza \lstinline|$a\,b\;c\quad d\qquad e$| los que producen espacios de
+$$a\,b\;c\quad d\qquad e$$
+Los símbolos de relación entre números como ``mayor que'' y ``menor que'' se escriben como normalmente. Para indicar posible igualdad se utilizan \lstinline|\leq| y \lstinline|\geq| que producen $a\leq b$ y $b\geq c$ respectivamente. La desigualdad se hace con \lstinline|\neq|.
+\begin{ex}
+El siguiente parrafo habla de la suma de Gauss:
+\begin{lstlisting}
+La suma de Gauss índica que si tenemos una suma $S_N$ de todos los enteros hasta $N$, la cuál puede denotarse como:
+$$S_N=\sum_{k=1}^N k$$
+Podemos sumar los elementos del final y del inicio para deducir que:
+$$S_N=\frac{N(N+1)}{2}.$$
+\end{lstlisting}
+Esto produce:
+\cbox{La suma de Gauss índica que si tenemos una suma $S_N$ de todos los enteros hasta $N$, la cuál puede denotarse como:
+$$S_N=\sum_{k=1}^N k$$
+Podemos sumar los elementos del final y del inicio para deducir que:
+$$S_N=\frac{N(N+1)}{2}.$$}
+\end{ex}
+
+Para utilizar paréntesis de corchetes en \LaTeX{} se requiere del uso de un backslash antes, como \lstinline|\{...\}| lo que produce $\{...\}$. Para indicar pertenencia se utiliza \lstinline|\in| y para negar pertenencia se puede usar \lstinline|\not\in| lo que produce $a\in A$ y $b\not\in A$. Para indicar que dos conjuntos son sub o superconjuntos se utilizan \lstinline|\subset| y \lstinline|\supset| como $A\subset B$ y $B\supset A$ respectivamente. También se le puede añadir un \texttt{eq} al final para hacer la linea bajo el símbolo para identificar posible igualdad, es decir, \lstinline|\subseteq| produce $A\subseteq B$.
+
+Usualmente se utiliza una notación de tipo $\mathbb{N}$ para simbolizar conjuntos importantes, eso se logra modificando los caracteres, para ello se utilizan los siguientes comandos:
+\begin{longtable}{ll}
+\hline Comando & Produce\\\hline\hline
+\lstinline|\mathbb{}| & $\mathbb{ABC}$\\
+\lstinline|\mathcal{}| & $\mathcal{ABC}$\\
+\lstinline|\mathscr{}|\footnote{Requiere el paquete \texttt{mathrsfs}.} & $\mathscr{ABC}$\\
+\lstinline|\mathfrak{}| & $\mathfrak{ABC}$\\ \hline
+\end{longtable}
+
+Otros comandos utilizados en lógica matemática y teoría de conjuntos son los símbolos ``para todo'' que se escribe \lstinline|\forall| ($\forall$), ``existe'' \lstinline|\exists| ($\exists$), ``y'' \lstinline|\wedge| ($\wedge$), ``o'' \lstinline|\vee| ($\vee$), ``unión'' \lstinline|\cup| ($\cup$), ``intersección'' \lstinline|\cap| ($\cap$), ``diferencia de conjuntos'' \lstinline|\setminus| ($\setminus$) y ``conjunto vacío'' \lstinline|\emptyset| ($\emptyset$). En particular prefiero como se ve \lstinline|\varnothing| ($\varnothing$), por lo que, para que siempre que escriba \lstinline|\emptyset| salga \lstinline|\varnothing| escribes en el preámbulo:
+\begin{lstlisting}
+\renewcommand{\emptyset}{\varnothing}
+\end{lstlisting}
+
+Otra recomendación personal es que para acortar como escribir los conjuntos $\N$, $\Z$ y otros, puedes definir en el preámbulo los comandos:
+\begin{lstlisting}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\end{lstlisting}
+Una recomendación extra es que siempre que busque un símbolo que no conozca puede acceder gratuitamente al sitio \textbf{Detexify} \url{http://detexify.kirelabs.org/classify.html}, aquí usted dibuja el símbolo que busca y la página le otorga una lista de ellos con la especificación de si se utiliza en modo de texto o matemático y si requiere de algún paquete.
+
+\section{Ecuaciones enumeradas, alineadas y más}
+Algo común en los libros es enumerar los fórmulas matemáticas y/o científicas importantes para poder referenciarlas luego, para ello utilizamos el entorno \texttt{equation} como prosigue:
+\begin{lstlisting}
+\begin{equation}
+1+1=2
+\end{equation}
+\end{lstlisting}
+Lo que produce
+\cbox{\begin{equation}
+1+1=2
+\end{equation}}
+Un error común es que cuando alumnos quieren escribir varias líneas de fórmulas utilizan \lstinline|\\| dentro de un entorno \lstinline|$$...$$|, lo cual \LaTeX{} no lee apropiadamente. La forma correcta de hacer ecuaciones alineadas es utilizar el entorno \texttt{align}, aquí las ecuaciones se alinean por medio del símbolo \lstinline|&| y se permite el uso \lstinline|\\|, sin embargo, todas las lineas son enumeradas, para evitar eso escribes \lstinline|\nonumber| o \lstinline|\notag| en las líneas que no quieres enumerar. Si quieres escribir una ecuación alineada sin ninguna línea enumerada utilizas el entorno \texttt{align*}.
+
+Para demostrar la aplicación de \texttt{align} y \lstinline|\nonumber| se demuestra el siguiente ejemplo:
+\begin{lstlisting}
+\begin{align}
+(a+b)^2 &= c^2+4\cdot\frac{1}{2}ab\nonumber\\ % Los '&' se utilizan para alinear dichos caracteres...
+a^2+2ab+b^2 &= c^2+2ab\nonumber\\
+a^2+b^2 &= c^2
+\end{align}
+Despejando un poco se obtiene la otra expresión para un cateto:
+\begin{equation}
+a=\sqrt{b^2-c^2}
+\end{equation}
+\end{lstlisting}
+\cbox{\begin{align}
+(a+b)^2 &= c^2+4\cdot\frac{1}{2}ab\nonumber\\
+a^2+2ab+b^2 &= c^2+2ab\nonumber\\
+a^2+b^2 &= c^2
+\end{align}
+Despejando un poco se obtiene la otra expresión para un cateto:
+\begin{equation}
+a=\sqrt{b^2-c^2}
+\end{equation}}
+Lo que nos lleva a la siguiente lección, como cancelar ecuaciones. Con esto hablamos de esa linea diagonal que pasa sobre los símbolos, para ello primero incorporamos el paquete \texttt{cancel} y luego usted escoge que tipo de cancelación quiere realizar:
+\begin{longtable}{ll}
+\hline Comando & Produce \\ \hline\hline
+\lstinline|\cancel{ab}| & $\cancel{ab}$\\
+\lstinline|\bcancel{ab}| & $\bcancel{ab}$\\
+\lstinline|\xcancel{ab}| & $\xcancel{ab}$\\
+\lstinline|\cancelto{1}{ab}| & $\cancelto{1}{ab}$\\\hline
+\end{longtable}
+
+Volviendo a las ecuaciones alineadas...
+
+\section{Matrices, vectores y más}
+Cuando se utilizan símbolos muy grandes (como fracciones, integrales o matrices) los paréntesis al rededor se vuelven feos o pequeños en comparación, para hacerlos más grandes se utiliza \lstinline|\left(| (o cualquier otro símbolo en el lugar de \lstinline|(|) y \lstinline|\right)|. Si se escribe \texttt{left} es obligatorio cerrarlo con \texttt{right}, si solo quieres utilizar uno, puedes cerrar el otro con un símbolo vacío descrito con \texttt{.}.
+\begin{ex}
+El comando
+\begin{lstlisting}
+Para demostrar que...
+$$\frac{d}{dx}\left[\int_a^x f(x)\,dx\right]=\left.\frac{d}{dx}F(x)\right|_a^x=f(x)$$
+\end{lstlisting}
+Genera:
+\cbox{Para demostrar que la derivada de una integral es igual a la función utilizaremos el siguiente proceso:
+$$\frac{d}{dx}\left[\int_a^x f(x)\,dx\right]=\left.\frac{d}{dx}F(x)\right|_a^x=f(x)$$}
+\end{ex}
+
+En general, la mejor forma de distribuir datos es a través del comando \lstinline|\begin{array}{orden} ... \end{array}|. En realidad, este es un comando versátil (funciona tanto en modo texto como matemático), pero no corresponde a un entorno matemático (es decir, debes usarlo dentro de \lstinline|$$ ... $$|). El orden queda determinado por una letra por columna que determina la alineación.
+\begin{longtable}{ll}
+\hline Letra & Alineación\\ \hline\hline
+\texttt{l} & Izquierda\\
+\texttt{c} & Centrado\\
+\texttt{r} & Derecha\\
+\texttt{p\{largo\}} & Párrafo de largo específico\\ \hline
+\end{longtable}
+Como dije, este es el método más general, pero si desea crear matrices específicas también puede utilizar el entorno \texttt{matrix}, por ejemplo:
+\begin{lstlisting}
+$$\mathcal{M} =
+\begin{matrix}
+1 & 0\\
+0 & 1
+\end{matrix})$$
+\end{lstlisting}
+\cbox{$$\mathcal{M} = \left(
+\begin{matrix}
+1 & 0\\
+0 & 1
+\end{matrix}
+\right)$$}
+También, puede usar otros tipos de matrices según el paréntesis querido, como \lstinline|bmatrix| $\begin{bmatrix}
+1 & 0\\
+0 & 1
+\end{bmatrix}$, \lstinline|pmatrix| $\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}$, \lstinline|vmatrix| $\begin{vmatrix}
+1 & 0\\
+0 & 1
+\end{vmatrix}$ y \lstinline|Vmatrix| $\begin{Vmatrix}
+1 & 0\\
+0 & 1
+\end{Vmatrix}$.
+
+Para usar la notación de vector se suele usar la letra en negritas \lstinline|{\bf ...}| (aun que personalmente lo detesto) ${\bf a}$ o una flecha por sobre la letra que se genera con \lstinline|\vec{}| $\vec{a}$. El sombrerito del vector unitario se hace con \lstinline|\hat{}| $\hat{a}$, la comilla de la primera derivada se hace con \lstinline|'| $a'$ (de verse mal utilice \lstinline|\,| para generar más espacio), el punto de la derivada temporal se hace con \lstinline|\dot{}| $\dot{a}$, el doble punto con \lstinline|\ddot{}| $\ddot{a}$, para generar la linea sobre las letras se utiliza \lstinline|\bar{}| $\bar{a}$ y la tilde con \lstinline|\tilde{}| $\tilde{a}$.
+
+Para generar el valor absoluto puede utilizar libremente \lstinline@|x|@ ($|x|$), pero se recomienda \lstinline@\vert x\vert@ ($\vert x\vert$)\footnote{La diferencia en este caso no es muy notoria, pero en ciertos dispositivos lo es.}, para hacer la doble línea se utiliza \lstinline|\Vert x\Vert| ($\Vert x\Vert$), con \lstinline|\langle| y \lstinline|\rangle| se forma $\langle x\rangle$, con \lstinline|\lceil| y \lstinline|\rceil| se forma $\lceil x\rceil$, con \lstinline|\lfloor| y \lstinline|\rfloor| se forma $\lfloor x\rfloor$.
+
+\section{Teoremas}
+En \LaTeX{} se les llama \textit{``teoremas''} a ambientes que poseen tipo (ej: teorema, lema, ejercicio), numeración (opcional pero recomendada) y nombre (opcional, ej: teorema pitagórico). Los teoremas se importan con el paquete \texttt{amsmath} y \texttt{amsthm}.
+
+Antes de crear los teoremas se debe decidir su estilo, entre los estilos más básicos están
+\begin{longtable}{lp{6cm}}
+\hline Estilo & Ejemplo\\ \hline\hline
+\texttt{definition} & \textbf{Teorema 1.} Bla bla bla...\\
+\texttt{plain} & \textbf{Teorema 2.} \textit{Bla bla bla...}\\
+\texttt{remark} & \textit{Teorema 3.} Bla bla bla...\\ \hline
+\end{longtable}
+Se accede a ellos con la línea \lstinline|\theoremstyle{estilo}| antes de los teoremas que poseeran ese estilo (puede incluir múltiples teoremas con múltiples estilos siempre anteponiendo el estilo antes que los teoremas).
+
+Un teorema básico se llama por la línea
+\begin{lstlisting}
+\newtheorem{abreviación}[contador]{Tipo}[sección]
+\end{lstlisting}
+En \textit{abreviación} va la palabra clave para llamar al teorema, los teoremas se llaman a través de entornos con dicha palabra. El tipo del teorema es el texto que tendrá al demostrarse y la sección depende de la numeración requerida, podemos enumerar teoremas por partes, capítulos, secciones, etc.
+
+El contador se utiliza cuando queremos que varios teoremas tengan un sólo contador común. Por ejemplo, supongamos que defino un teorema \texttt{thm} de nombre \textit{``teorema''} y luego, defino otro \texttt{lem} de nombre \textit{``lema''}, sin embargo, tras definir el teorema 1.1 quiero obtener un lema 1.2 y luego un teorema 1.3, entonces en el lugar del contador de \texttt{lem} escribo \texttt{thm} y ya está. Cabe destacar que no se pueden utilizar el contador y la sección al mismo tiempo.
+
+Por ejemplo, el teorema más básico sería:
+\begin{lstlisting}
+\theoremstyle{definition}
+\newtheorem{mythm}{Teorema}[chapter]
+\end{lstlisting}
+Tal que luego, escribir:
+\begin{lstlisting}
+\begin{mythm}[Pitagórico]
+Dado un triangulo de catetos $a$ y $b$...
+\end{mythm}
+\end{lstlisting}
+Produce:
+\begin{mythm}[Pitagórico]
+Dado un triangulo de catetos $a$ y $b$, e hipotenusa $c$ se cumple:
+$$a^2+b^2=c^2.$$
+\end{mythm}
+Además puedes crear tu propio estilo para teoremas con el comando \lstinline|\newtheoremstyle| el cual funciona como prosigue:
+\begin{lstlisting}
+\newtheoremstyle{custom} % nombre del estilo
+	{0cm} % espacio sobre el teorema
+	{0cm} % espacio bajo el teorema
+	{\normalfont} % fuente para el cuerpo
+	{0.5cm} % sangría
+	{\sffamily\bfseries} % fuente título
+	{:} % puntuación entre título y cuerpo
+	{4pt} % espacio entre título y cuerpo
+	{\thmname{#1}\thmnumber{ #2}\thmnote{ -- \textit{#3}}} % configuración del teorema
+\end{lstlisting}
+En la configuración \lstinline|#1| representa el título del teorema (ej: ``Definición''), \lstinline|#2| el número (ej: ``1.1''), \lstinline|#3| el nombre (ej: ``Teorema de Pitágoras''). Las palabras \lstinline|\thmname{}| y otras sirven para lo mismo, pero generan su propia estructura opcional, de forma que un teorema sin nombre no tenga la línea \lstinline|--| si no se incluye.
+
+\begin{thebibliography}{99}
+\bibitem{mora} Alexánder Borbón y Walter Mora. \textit{Edición de Textos Científicos \LaTeX{} 2017}. 2\textsuperscript{a} edición, 2017.
+\bibitem{indiatug} Indian \TeX{} Users Group. \textit{\LaTeX{} Tutorials}. 2003.
+\bibitem{notancorta} Tobias Oetiker, Hubert Partl, Irene Hyna y Elisabeth Schlegl. \textit{La Introducción No-tan-corta a \LaTeX{} $2_\varepsilon$}. 2014.
+\end{thebibliography}
+
+\end{document}

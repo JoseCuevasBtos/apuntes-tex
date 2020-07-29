@@ -1,0 +1,1005 @@
+\documentclass[11pt,a4paper]{book} 
+\usepackage{standalone}
+\input{../template.tex}
+\addbibresource{conjuntos2.bib}
+\makeindex[intoc]
+\makenomenclature
+\usetikzlibrary{arrows}
+
+% ========= Comandos personales ==========
+\renewcommand{\P}{\mathcal{P}}
+\DeclareMathOperator{\cto}{cto}
+\DeclareMathOperator{\Ord}{Ord}
+\DeclareMathOperator{\ord}{ord}
+\renewcommand{\Ind}{\mathop{\rm Ind}}
+\DeclareMathOperator{\FGE}{FGE}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Fld}{Fld}
+
+\begin{document}
+
+\includepdf[pages=-]{conjuntos-portada.pdf}
+
+\frontmatter
+\begin{titlepage}
+	\raggedleft
+	\rule{1pt}{\textheight}
+	\hspace{0.05\textwidth}
+	\parbox[b]{0.75\textwidth}{
+		{\Huge\bfseries Midiendo el\\[0.5\baselineskip]infinito}\\[2\baselineskip] % Título
+		{\large\textit{Introducción a la lógica, mediante la hipótesis del continuo}}\\[4\baselineskip] % Subtítulo
+		{\Large\textsc{Joseph Höhlen}\\[0.5\baselineskip]} % Autor
+		\vspace{0.5\textheight}
+	}
+\end{titlepage}
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+\noindent \textsc{Curso Físico-Matemático, Liceo Galvarino Riveros de Castro, Chile}\\\\
+\url{http://www.pagina.com}\\ \\
+La investigación bla bla bla.\\ \\
+\textit{Primera publicación, \today{}.} 
+
+\tableofcontents
+
+\chapter{Prefacio}
+Originalmente, no tenía planeado escribir este libro, de hecho, pretendía hacer un artículo acerca del tema que se menciona en el subtítulo: la \textit{hipótesis del continuo}. La cuestión está en que, simultáneamente, trabajo en otros temas más complicados de la matemática, y al escribir sobre ellos me veo en la obligación de impartir un capítulo o dos, introduciendo a la notación, a la lógica matemática y a la teoría de conjuntos; por lo que decidí, como último recurso, recopilar todos esos datos en un único y breve texto. Esto, trae consigo una característica que favorece al lector, pues puede leerse sin saber absolutamente nada de matemáticas previas; como una vez dijo Richard Feynman: ``todo lo que se necesita es infinita inteligencia'', con ello nos referimos (o al menos esta es mi interpretación) a que si bien no se demandan lecturas anteriores, tampoco es un texto para niños, requiere de una intuición y una atención que sólo se podría esperar de lectores más maduros, pero en esencia, un estudiante también podría comprenderlo.
+
+La problemática que protagoniza el libro constituye al problema surge del estudio de cardinales infinitos, la especialidad del poco conocido, pero influyente matemático Georg Cantor, bajo la teoría conjuntivista de Zermelo-Fraenkel con axioma de elección. Su fama incrementó con el tiempo, hasta el punto de que fue incluido como el primero de la lista de los 23 problemas de Hilbert. El mismo enunciado es un tanto difícil de expresar con palabras (o al menos, de hacerse puede resultar un tanto inútil pues es incomprensible para el lector promedio), por lo que, daremos el problema recién en el último capítulo, en el cual daremos información sobre su estado (el cual es, asimismo, un tanto ambiguo).
+
+La razón para estudiar este problema es que pasa directamente por un tema en las matemáticas que me parece absolutamente fascinante: los cardinales infinitos. Mi intención no es la de preparar a los estudiantes para sus asignaturas universitarias, sino introducirlos en un mundo que es discutiblemente desconocido, incluso dentro de la comunidad académica de matemáticas; pero que resulta absolutamente fascinante por varias causas. Una de ellas es la visión que otorga respecto de este concepto que siempre resulta tan controversial: el infinito, pues la mayoría suele considerarlo un número, mientras que el matemático promedio piensa que no. En este contexto, el infinito es \textit{algo parecido a} un número, es, en realidad, varios números, todos de \textbf{distinto tamaño} (todo tendrá sentido al final). En la práctica, es probable que el enfoque que he tomado, sea recibido como inútil, debido a que gran parte de los conocimientos impartidos carecen de aplicaciones pragmáticas, es por ello que quiero que piense que es por un amor al conocimiento, uno muy ligado a las artes; pues, pese a su abstracción (o tal vez gracias a ellas) ha inspirado curiosidad en muchos de nosotros e inclusive ha sido estro de escritores (\textit{Aleph} de Roberto Bolaño) o pintores (la portada es \textit{Cascada} de M. C. Escher).
+\begin{flushright}
+--José I. Cuevas Barrientos alias \textit{Joseph Höhlen}
+\end{flushright}
+
+\chapter{Introducción}
+El libro tiene tres objetivos fundamentales, los cuales son introducir al concepto o noción de matemáticas rigurosas y tratar los temas de las teorías de conjuntos y de la lógica matemática, para ello, consta de un breve capítulo introductorio a los lenguajes formales que es (o debería ser) requisito universal de las matemáticas puesto que se utiliza en todas las ramas, tanto en los enunciados como sus demostraciones.
+
+Un detalle fundamental acerca del libro es que, como su subtítulo indica, esta escrito en formato de lecturas respecto a los temas lógico-conjuntistas, por ende, si lo que usted busca son problemas y métodos de solución, he de aclarar que no ha de encontrar dichos elementos. Mas, un consuelo es que en mi afán de acortar lo más posible el texto hay un sinfín de propiedades sin demostración (sólo aquellos enunciados cuya demostración considero necesaria la poseen) y que en más de una ocasión los he visto incluidos como problemas en libros comunes respecto a estos temas; de la misma forma, considero que dichas demostraciones restantes son tarea del lector. Asimismo, hay otro tipo de notas como estas ``(¿por qué?)'' puestas intencionalmente para hacer reflexionar al lector y comprobar que lo que se dice es cierto.
+
+\mainmatter
+\chapter[Introducción a los lenguajes formales lógicos]{Introducción a los lenguajes formales lógicos}
+El concepto global de lógica que pretendemos abordar en este libro es una noción algebraica basada en las teorías de Boole. El álgebra en sí mismo requiere de un objeto primitivo que viene a ser el de conjunto que se desarrolla en la primera parte del libro, pero mucho antes de si quiera realizarse los pasos más básicos, la matemática al igual que todas las ciencias requiere de un lenguaje. Los matemáticos no necesitan de ciertos artilugios de las lenguas comunes como distintos tipos de verbos o pronombres particulares (al ser abstracto, es un sinsentido referirse a un ``yo'' o un ``tu''), por lo que esta lengua va a ser fundamentalmente más sencilla, abriendo paso a una pseudo-universalidad (pues hay ciertas funciones o términos cuya notación varía según la región). Y si bien, pierde cierta complitud en comparación, adquiere un carácter de precisión absoluta. En este capítulo introduciremos al lenguaje lógico que hemos de utilizar en el resto del libro. Aquí el complemento ``\textit{lógico}'' refiere a que posee ciertas reglas que formalizan y estudian el razonamiento, mas, vale decir que en este capítulo no se enseñará a razonar; eso es propio de todo lector, lo único que haremos es formalizar dicho proceso (i.e., ponerlo en símbolos) y de paso ponerlo en práctica.
+
+\section{Lenguajes formales}
+En primera instancia, el objetivo de la lógica es la de razonar lo que correspondería a lo realizable mediante el lenguaje (i.e. todos los viernes llueve, hoy es viernes, por ende, va a llover), sin embargo, todas las lenguas están llenas de expresiones de carácter emotivo (i.e. exclamar ``¡Por Dios!'' en señal de indignación o dolor) y expresiones que no conllevan a ningún tipo de razonamiento (i.e. ``¿Cómo estás?''), por lo que, con la lógica hemos de construir una noción primitiva del lenguaje que nos permita enunciar lo necesario para las matemáticas.
+
+Para ello, distinguiremos entre \textit{lenguaje}\index{lenguaje} y \textit{modelo}\index{modelo}, entendiendo la primera como el conjunto ordenado de signos y la segunda como la interpretación ha dar a aquellos signos.
+\begin{mydef}[Lenguaje de primer orden]
+	Diremos que $\mathcal{L}$ es un \textit{lenguaje de primer orden} si posee símbolos para denotar sus constantes, variables, funtores, relatores (al menos debe poseer un relator, el igualador ``=''), un negador, implicador, y el cuantificador universal. Además puede poseer o no un descriptor.
+\end{mydef}
+Ahora, iremos explicando que significan todos esos términos, al mismo tiempo que introduciremos una notación para cada uno.
+
+Las \textit{constantes}\index{constante} denotan objetos fijos, cuya representación es clara y para nada ambigua. Ejemplos matemáticos lo son $\emptyset$, 0, 1, $\pi$, etc. En nuestro lenguaje particular que habremos de definir, denotaremos las constantes como $c,\,c',\,c''$, etc. De paso nos daremos el lujo de escribirlos como $c_0, c_1, c_2, \dots$, pero formalmente la notación será equivalente a la anterior, de esa manera, solo requerimos de una cantidad finita de símbolos. En teoría, nuestro lenguaje también requiere de un \textit{universo} que será el conjunto de todas nuestras constantes, pero no indagaremos más que en esta descripción, pues aún no hemos definido conjunto si quiera.
+
+Cabe destacar que en el capítulo 2, se demuestra la paradoja de Cantor para la teoría conjuntista ZF, que nos indica que dicho conjunto no existe o, mejor dicho, que no se puede \textit{construir}. Esto no debe interpretarse como que nuestro lenguaje carece de universo, o peor aún, que no existen conjuntos porque sería contradictorio; no, el universo del cual nos referimos (el semántico, si se quiere) es externo, esta distinción puede ser un tanto difícil de apreciar, pero es esencial para no dar lugar a misinterpretaciones.
+
+Las \textit{variables}\index{variable} describen la misma noción de objeto, pero sin estar fijo. Al igual que con las constantes, les representaremos mediante los signos $x,\,x',\,x''$, etc., que en práctica serán descritos como $x_0,x_1,x_2,\dots$, o también $x,y,z$.
+
+Los \textit{funtores}\index{funtor} describen un término a base de un grupo finito de otros términos. Le decimos $n$-ádico si requiere de $n$ términos para tomar sentido. El funtor de una serie de constantes es, en sí mismo (si existe) una constante, y analogamente para las variables. Ejemplos de un funtor monádico es ``el padre de'' que simbolizaremos como $p$, de manera que si $j$ es Juan, $pj$ es el padre de Juan. Los denotaremos en nuestro lenguaje como $f_i^n$, donde $n$ es su orden (cantidad de parámetros) e $i$ un índice para diferenciarlos. En la aritmética, $+$, $\times$, $-$, $/$ representan funtores diádicos.
+
+Los \textit{relatores}\index{relator} toman valores de verdad (cierto o falso) en torno a un número finito de términos, al igual que con los funtores, a los relatores de rango $n$ les llamamos $n$-ádicos. Admitimos también, que si al menos uno de los términos es una variable, el relator no tiene sentido. Ejemplos cotidianos podría ser ``ser calvo'' denotado como $C$, de manera que $Cj$ significa ``Juan es calvo'', lo que puede o no ser cierto, nuevamente, por esto $Cx$ no tiene sentido ya que es imposible determinar la veracidad de la expresión. Esta medida de escape será común, incluso si todas las constantes del universo comparten el mismo valor de verdad (es decir, a pesar de que en nuestro universo todos sean calvos, $Cx$ sigue siendo una incógnita). Los denotamos como $R^n_i$ donde $n$ es su rango e $i$ su índice. Ejemplos matemáticos lo son $=$ (el igualador), $\leq$, $\in$, etc. Cabe destacar que todo lenguaje debe poseer al menos un relator, que siempre será denotado como $R^2_0$ (o su equivalente simbólico) que corresponde al igualador.
+
+Ahora, introduciremos a los \textit{conectores lógicos}\index{conector!lógico} que, a partir de fórmulas (aquellas expresiones que toman valores de verdad) nos permiten obtener otras. El primero de ellos es el \textit{negador}\index{negador} (denotado $\neg$, léase ``no''), el cual es monádico e invierte el valor de verdad de una fórmula (es decir, si $P$ es cierto, $\neg P$ es falso). Los siguientes son todos diádicos. El segundo es el \textit{disyuntor}\index{disyuntor} (denotado $\vee$, léase ``o'') que resulta cierto siempre que alguna de sus fórmulas lo sea, de lo contrario, es falsa. Luego, está el \textit{conjuntor}\index{conjuntor} (denotado $\wedge$, léase ``y'') que resulta cierto si y sólo si las dos fórmulas que le componen lo son. El \textit{implicador}\index{implicador} (denotado $\implies$, léase ``entonces'' o ``implica'') que resulta falso sólo si el primero es verdadero, pero el segundo no. Y, finalmente, el \textit{coimplicador}\index{coimplicador} (denotado $\iff$, léase ``si y sólo si'') que resulta cierto siempre que las dos fórmulas posean el mismo valor de verdad.
+\begin{figure}
+	\centering
+	\begin{tabular}{cc||c|c|c|c|c}
+		$p$ & $q$ & $\neg p$ & $p\vee q$ & $p\wedge q$ & $p\implies q$ & $p\iff q$ \\
+		0 & 0 & 1 & 0 & 0 & 1 & 1 \\
+		0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+		1 & 0 & 0 & 1 & 0 & 0 & 0 \\
+		1 & 1 & 0 & 1 & 1 & 1 & 1
+	\end{tabular}
+	\caption{Tablas de verdad (0 es falso, 1 es verdadero).}
+\end{figure}
+
+Luego, cabe destacar que hay un par de reglas que son equivalentes. Por ejemplo, $(p\implies q)\wedge(q\implies p)$ es lo mismo que $p\iff q$. También $\neg(\neq p\vee\neg q)$ es lo mismo que $p\vee q$ y $\neg p\implies q$ es lo mismo que $p\vee q$. Por ello, en teoría, sólo se requieren dos conectores lógicos: el negador y el implicador, pero eso no quita que, al igual que con las constantes y variables, nos demos el lujo de usar todos los conectores según sea más sencillo de escribir.
+
+Ahora siguen los cuantificadores que nos permiten hablar en términos generales acerca de ciertas expresiones. Aquí, las variables se pueden utilizar y obtener un valor de verdad a partir de ellos. Los cuantificadores son tres, el primero es el \textit{universal}\index{cuantificador!universal} (denotado $\forall$, léase ``para todo'') que admite fórmulas para todas las constantes del universo. Luego, está el \textit{existencial}\index{cuantificador!existencial} (denotado $\exists$, léase ``existe'') que admite que una fórmula sea verdad para al menos alguna constante del universo. Finalmente, una variación es el \textit{cuantificador existencial con marca de unicidad}\index{cuantificador!existencial con marca de unicidad} (denotado $\exists!$, léase ``existe un único'') que indica que una fórmula es cierta solo para una constante. Se utilizan de la siguiente manera
+$$\exists x\;\alpha\iff\neg\forall x(\neg\alpha)$$
+(donde $\alpha$ representa una fórmula que puede o no depender de $x$). En la última ecuación hemos enunciado también una regla de equivalencia, y es que en el lenguaje matemático admitimos que la sentencia ``existe un $x$ para el que $\alpha$ es cierto'' es lo mismo que ``para no todos los $x$ se da que $\alpha$ es falso''. Cabe destacar que si hay múltiples variables cuantificadas por el mismo tipo de cuantificador, se puede obviar las múltiples iteraciones del mismo, es decir
+$$\forall x\forall y\forall z\;\alpha\iff\forall xyz\;\alpha.$$
+Además, el cuantificador existencial con marca de unicidad puede caracterizarse como prosigue:
+$$\exists!x\;\alpha(x)\iff\exists y\forall x(\alpha(x)\implies x=y).$$
+Al igual que con los conectores, sólo requerimos del universal para realizar el trabajo de todos, pero los utilizaremos de igual manera por comodidad.
+
+Finalmente, el \textit{descriptor}\index{descriptor} (denotado $|$ o $:$, léase ``tal que'') es un símbolo tal que la expresión $x|\alpha$ represente la única constante que hace cumplir $\alpha$. Obsérvese que inmediatamente este símbolo nos trae ciertas complicaciones pues puede darse que $x$ no sea único o, peor, que no exista tal $x$. Aquí, se abren varias opciones: la primera es que el lenguaje simplemente carezca de descriptor (por eso lo hemos puesto como opcional en la definición de lenguaje), o que simplemente decidamos que dicha clase de expresiones no posea valor de verdad, o por último, que dada esa situación, elijamos una constante especial, digamos $d$, que pasará a tomar dicho valor.
+
+Con esto ya tenemos definido que cosa puede ser o no un lenguaje matemático, mas vale decir que lo que es verdaderamente importante no es el lenguaje mismo sino el modelo tras él. El lector puede interpretar esto como la lectura de un libro. Dos libros son esencialmente equivalentes si poseen la mismas palabras, cosas como la tipografía o el tamaño de las letras, la portada, entre otras, son irrelevantes. La elección de símbolos matemáticos es absolutamente arbitraria, pero su uso o significado no lo es.
+
+Otra observación es que hemos podido identificar que clase de expresiones son términos o fórmulas. No es difícil probar que ninguna expresión (con o sin sentido) puede ser un término y una fórmula al mismo tiempo.
+
+\section{Variables libres, ligadas y sustitución de términos}
+...
+
+\part{Teoría de conjuntos}
+\chapter{La Teoría Axiomática de Conjuntos}
+A finales del siglo 19, las matemáticas experimentaron una sacudida que cambiaría el rumbo y la perspectiva de una generación de científicos para siempre; las mentes más destacadas se ponían a discutir respecto de cuál era el punto de partida para las matemáticas, en un sentido casi objetivo. De ahí surgen varias respuestas e inclusive nace un nuevo campo (como lo son el álgebra o la geometría) inspirado por las problemáticas del momento, la lógica matemática. En particular, un grupo de matemáticos que se dedicaban a estudiar la generalidad de las matemáticas mismas --actores que hoy en día llevarían el nombre poco conocido de ``metamatemáticos''-- descubrieron que todos los conocimientos podían escribirse en el lenguaje de la teoría de conjuntos, pasando a sentarse junto a la lógica en este nuevo espacio que surgía en las matemáticas.
+
+Al estudiarse el álgebra, el lector podrá comprobar que una definición complaciente puede ser la de ``matemáticas que estudian las estructuras dotadas de cierta forma'', donde \textit{forma} significa, en este contexto, que sus elementos son agrupaciones de objetos con ciertos patrones o propiedades en común; cosas como los conjuntos numéricos, entre otras. En este sentido, los \textit{conjuntos}\index{conjunto} son objetos amorfos o que carecen de toda forma cuya gran propiedad es la de poder contener a otros objetos.
+
+\section{Axiomas ZF}
+Primero describiremos el concepto de \textit{axioma}\index{axioma}, el cual corresponde a un enunciado o proposición descrita en términos lógicos que se admite sin desmotración previa. Algunos autores hablan de que una de las propiedades de los axiomas es que deben ser ideas sencillas y evidentes, de lo contrario el enunciado pasa a denominarse \textit{principio}, pero en este contexto son sinónimos. Una característica vital de los axiomas es que, a diferencia de como se tratarían en las ciencias fácticas donde se comienza con definiciones, sus objetos de estudio no se definen de antemano, sino que los mismos axiomas le describen lo que induce una cierta representación, pero que no es obligatoria del mismo.
+
+No obstante, introduciremos una relación inicial que es la de pertenecia, es decir, admitiremos una relación $\in$ entre conjuntos, tal que la expresión $a\in A$\nomenclature{$\in$}{Pertenece a} se lea como que ``$a$ pertenece o está contenida en $A$''. En la teoría NBG, está relación marcará una diferencia entre lo que se denomina \textit{clase} y \textit{conjunto}.
+\begin{axiom}[de Extensionalidad (ZF-1)]\index{axioma!de extensionalidad}
+	$$\forall AB(\forall x(x\in A\iff x\in B)\implies A=B).$$
+
+	Todo par de conjuntos $A,B$ son iguales syss un elemento de $A$ lo es también de $B$ y viceversa.
+\end{axiom}
+De esto se infiere la carencia de orden de los elementos de un conjunto.
+\begin{axiom}[del Conjunto Vacío (ZF-2)]\index{axioma!del conjunto vacío}
+	$\exists\emptyset(\forall x(x\in\emptyset\iff x\neq x))$.
+
+	Existe un conjunto, denotado como $\emptyset$\nomenclature{$\emptyset$}{conjunto vacío} tal que no posee elementos.
+\end{axiom}
+Cabe destacar que el hecho de que admitamos que los axiomas conjuntistas son correctos (por definición de \textit{axioma}) ello no implica que los conjuntos existan si quiera. Esta es la importancia de introducir el conjunto vacío. Más adelante veremos que, de demostrar la existencia de cualquier conjunto se deriva la existencia del vacío en ZF, en este sentido, también el lector se convencerá de que es el conjunto más ``natural'' que podríamos haber introducido.
+\begin{mydef}[Subconjunto]
+	Sean $A$ y $B$ dos conjuntos tales que todo elemento de $A$ está en $B$, entonces en ese caso escribiremos que $A\subseteq B$\nomenclature{$\subseteq,\subset$}{Subconjunto, subconjunto propio, resp.} (léase ``$A$ es subconjunto\index{subconjunto} de $B$''). Si, además $A\neq B$, entonces podremos escribir que $A\subset B$ (léase ``$A$ es subconjunto propio\index{subconjunto!propio} o estricto de $B$'').
+\end{mydef}
+\begin{prop}[Propiedades de la inclusión]
+	Sean $A,B,C$ conjuntos, se cumple:
+	\begin{enumerate}[$a)$]
+		\item $\emptyset\subseteq A$ ($\emptyset$ es el mínimo de la inclusión).
+		\item $A\subseteq A$ (reflexividad).
+		\item $A\subseteq B\wedge B\subseteq C\implies A\subseteq C$ (transitividad).
+		\item $A\subseteq B\wedge B\subseteq A\implies A=B$ (antisimetría).
+	\end{enumerate}
+\end{prop}
+\begin{prop}[Propiedades de la inclusión estricta]
+	Sean $A,B,C$ conjuntos, se cumple:
+	\begin{enumerate}
+		\item $A\not\subset A$ (irreflexividad).
+		\item $A\subset B\wedge B\subseteq C\implies A\subset B$.
+		\item $A\subseteq B\wedge B\subset C\implies A\subset B$.
+		\item $A\subset B\wedge B\subset C\implies A\subset B$ (transitividad).
+		\item $A\subset B\implies B\not\subset A$ (asimetría).
+	\end{enumerate}
+\end{prop}
+\begin{axiom}[Esquema de Especificación (ZF-3)]\index{esquema!de formación de clases}
+	Dada una fórmula $(n+1)$-aria $\phi(x;t_0,\dots,t_{n-1})$ tal que sus variables libres son $x,t_0,\dots,t_{n-1}$; entonces existe un subconjunto $B$ de $A$ tal que sus elementos son aquellos $x$ para los que la fórmula se cumple.
+	$$\forall A\exists B(\forall x(x\in B\iff x\in A\wedge\phi(x;t_0,\dots,t_{n-1})))$$
+\end{axiom}
+Un \textit{esquema axiomático}\index{esquema} corresponde a un conjunto de axiomas que comparten una misma estructura, o más bien, un axioma en donde uno de sus elementos es variable. En nuestro caso, lo es la fórmula $\phi$, pues al carecer de una definición puede representar infinitas fórmulas. Esto significa que la teoría ZF posee infinitos axiomas, este hecho resulta particularmente molestos para algunos matemáticos, por ello, veremos que la teoría NBG logra, mediante una serie de axiomas, sustituir parcialmente este esquema. En particular, NBG es una teoría con finitos axiomas, en otras palabras, NBG es \textit{finitamente axiomatizable}.
+
+En lo sucesivo admitiremos la notación de que $\{x:\phi(x,t_0,\dots,t_{n-1})\}$ representa el conjunto (si existe) de todos los $x$ que hacen cumplir $\phi(x,t_0,\dots,t_{n-1})$ para cualesquiera $t_0,\dots,t_{n-1}$. En particular, $\{x\in A:\phi(x,t_0,\dots,t_{n-1})\}$ representa el conjunto descrito en el esquema de formación de clases.
+\begin{axiom}[del Par (Desordenado, ZF-4)]\index{axioma!del par}
+	$$\forall xy\exists z\forall w(w\in z\iff w=x\vee w=y).$$
+
+	Para todo par de conjuntos $x,y$ existe otro conjunto cuyos elementos son sólo ellos. Usualmente dicho conjunto se denota como $\{x,y\}$ y se llama \textit{par desordenado}\index{par!desordenado}, puesto que por el axioma de extensionalidad no importa el orden de como se escriba.
+\end{axiom}
+Una consecuencia inmediata del axioma es que dado un conjunto $x$, existe otro que sólo le posee de elemento, es decir, $\{y:y=x\}=\{x,x\}=\{x\}$.
+
+Luego, veremos que todos los axiomas ZF están escritos en términos de conjuntos de manera que estos corresponden a nuestros únicos tipos de elementos tecnicamente. No obstante, a pesar de que hay una forma conjuntista que repasaremos para construir los números, a estos los consideraremos objetos de distinta índole debido a que su forma como conjuntos es desusada; el mismo argumento vale para los puntos de un espacio, polimonios, entre otros. Un conjunto cuyos elementos son todos conjuntos se describirá como una \textit{familia de conjuntos}\index{familia!de conjuntos}.
+\begin{thm}[Paradoja de Russell-Zermelo (ZF)]\index{paradoja!de Russell-Zermelo}
+	Se define el \textit{conjunto de Russell}\index{clase!de Russell} como aquel que posee a todos los elementos que no se poseen a sí mismos
+	$$R:=\{x:x\notin x\},$$
+	este conjunto no existe.
+\end{thm}
+\begin{proof}
+Veamos que, de existir, habría una paradoja con el mismo $R$ puesto que $R\in R\iff R\notin R$, lo que es una contradicción.
+\end{proof}
+La paradoja de Russell tomó un papel importante a principios del siglo 20. En este momento, un grupo de matemáticos liderados por Georg Cantor trataban de axiomatizar la Teoría de Conjuntos. La paradoja de Russell pasó a demostrar que uno de los axiomas previstos, un equivalente al esquema de formación de clases sin la restricción de que el conjunto sea subconjunto de otro, llevaba a contradicciones. Tomando esto en cuenta, años más tarde cuando Zermelo publicaría por primera vez una teoría conjuntista utilizaría nuestro esquema actual para evitar el problema. Cabe destacar que en NBG, el conjunto (o más bien, la clase) de Russell sí existe y es también bastante interesante como logran evitar la paradoja de Russell.
+\begin{thm}[Paradoja de Cantor (ZF)]\index{paradoja!de Cantor}
+	Análogo al conjunto vacío que carece de elementos, se define el conjunto universo\index{clase!universo} $U$ como el conjunto que posee a todos los otros conjuntos:
+	$$U:=\{x:x=x\},$$
+	este conjunto no existe.
+\end{thm}
+\begin{proof}
+Nótese que si $U$ existiése, podríamos definir a $R$ por formación de clases como subconjunto de $U$ y concluir la paradoja de Russell, lo que sería absurdo.
+\end{proof}
+Debido a esto, en lo sucesivo hablaremos unicamente de ``universos relativos''. Cabe notar que al igual que con la clase de Russell, este conjunto también es posible de construir en NBG.
+\begin{axiom}[de Unión (ZF-5)]\index{axioma!de unión}
+	$\forall\mathcal{X}\exists Y\forall x(x\in Y\iff\exists X(x\in X\wedge X\in\mathcal{X})).$
+
+	Dada una familia de conjuntos $\mathcal{X}$ existe un conjunto cuyos elementos son los miembros de los miembros de $\mathcal{X}$.
+\end{axiom}
+\begin{mydef}[Unión, intersección, entre otras]
+	Primero, cabe destacar que denotaremos el conjunto descrito por el axioma de unión, como 
+	$$\bigcup\mathcal{A}=\bigcup_{A\in\mathcal{A}}A.$$
+	Asimismo, usando dicho axioma junto al esquema de formación de clases, podemos definir
+	$$\bigcap\mathcal{A}=\bigcap_{A\in\mathcal{A}}A:=\left\{a\in\bigcup\mathcal{A}:\forall a\exists A(a\in A\wedge A\in\mathcal{A})\right\}.$$
+	En particular, si tenemos un par de conjuntos $A,B$, denotamos $\bigcup\{A,B\}=A\cup B$, conjunto al que llamamos su \textit{unión}. Así mismo, denotamos $\bigcap\{A,B\}=A\cap B$, conjunto al que llamamos su \textit{intersección}. Para una agrupación de conjuntos tales que su intersección (es decir, la intersección de la familia que les contiene) es vacía se dice que sus elementos son \textit{disjuntos}.
+
+	Además, fijado un conjunto $U$ al que llamaremos \textit{universo relativo} b dado un subconjunto $A$ de él, definiremos su \textit{complemento} como el conjunto de elementos de $U$ que no pertenecen a $A$:
+	$$A^c:=\{a\in U:a\notin A\}$$
+	Finalmente, dados $A,B$ subconjuntos de $U$, definimos su diferencia $A\setminus B:=A\cap B^c$.
+\end{mydef}
+\begin{prop}[Propiedades de la unión]
+	Sean $A,B,C$ conjuntos, entonces se cumple:
+	\begin{enumerate}
+		\item $\bigcup\emptyset = \emptyset$.
+		\item $\bigcup\{A\} = A$.
+		\item $A\cup A=A$ (idempotencia)
+		\item $A\cup B=B\cup A$ (conmutatividad).
+		\item $(A\cup B)\cup C=A\cup(B\cup C)$ (asociatividad).
+		\item $A\cup\emptyset=A$ (elemento neutro).
+		\item $A\subseteq U$ syss $A\cup U=U$.
+		\item Si $A\subseteq U$ entonces $A\cup A^c=U$.
+		\item Si $A\in\mathcal{A}$, entonces $A\subseteq\bigcup\mathcal{A}$.
+		\item Si $\mathcal{A}\subseteq\mathcal{B}$, entonces $\bigcup\mathcal{A}\subseteq\bigcup\mathcal{B}$ (isotonía).
+		\item Si $U$ es tal que para todo $A\in\mathcal{A}$ se de que $A\subseteq U$, entonces $\bigcup\mathcal{A}\subseteq U$.
+	\end{enumerate}
+\end{prop}
+\begin{prop}[Propiedades de la intersección]
+	Sean $A,B,C$ conjuntos, entonces se cumple:
+	\begin{enumerate}
+		\item $\bigcap\emptyset = \emptyset$.
+		\item $\bigcap\{A\} = A$.
+		\item $A\cap A=A$ (idempotencia)
+		\item $A\cap B=B\cap A$ (conmutatividad).
+		\item $(A\cap B)\cap C=A\cap(B\cap C)$ (asociatividad).
+		\item $A\cap\emptyset=\emptyset$ (elemento absorvente o aniquilador).
+		\item $A\subseteq U$ syss $A\cap U=A$.
+		\item Si $A\subseteq U$ entonces $A\cap A^c=\emptyset$.
+		\item Si $A\in\mathcal{A}$, entonces $\bigcap\mathcal{A}\subseteq A$.
+		\item Si $\mathcal{A}\neq\emptyset$ y $\mathcal{A}\subseteq\mathcal{B}$, entonces $\bigcap\mathcal{B}\subseteq\bigcap\mathcal{A}$ (antimonotonía).
+		\item Si $B$ es tal que para todo $A\in\mathcal{A}$ se de que $B\subseteq A$, entonces $B\subseteq \bigcap\mathcal{A}$.
+		\item $A\cup(B\cap C)=(A\cup B)\cap(A\cup C)$ (distributividad).
+		\item $A\cap(B\cup C)=(A\cap B)\cup(A\cap C)$ (distributividad).
+		\item $A\cup(A\cap B)=A$ (absorción).
+		\item $A\cap(A\cup B)=A$ (absorción).
+	\end{enumerate}
+\end{prop}
+\begin{prop}[Propiedades del complemento y la diferencia]
+	Sean $A,B$ subconjuntos de $U$, el universo relativo, entonces se cumple:
+	\begin{enumerate}
+		\item $U^c=\emptyset$ y $\emptyset^c=U$.
+		\item $(A^c)^c=A$.
+		\item $(A\cup B)^c=A^c\cap B^c$ (ley de De Morgan).
+		\item $(A\cap B)^c=A^c\cup B^c$ (ley de De Morgan).
+		\item $A\subseteq B$ syss $B^c\subseteq A^c$.
+		\item $A\setminus A=\emptyset$.
+		\item $A\setminus\emptyset=A$.
+		\item $A\subseteq B$ syss $A\setminus B=\emptyset$.
+		\item $(A\setminus B)\setminus C=A\setminus(B\cup C)$.
+		\item $A\setminus(B\setminus C)=(A\setminus B)\cup(A\cap C)$.
+	\end{enumerate}
+\end{prop}
+\begin{axiom}[por Partes (ZF-6)]
+	$\forall A\exists B\forall x(x\in B\iff x\subseteq A)$.
+
+	Para todo conjunto $A$ existe otro $B$ tal que contiene a todos los conjuntos que son subconjuntos de $A$.
+\end{axiom}
+Dado un conjunto $A$, aquél descrito por el axioma le llamaremos \textit{conjunto potencia}\index{conjunto!potencia} y le denotaremos como $\P A$\nomenclature{$\P$}{Conjunto o clase potencia}.
+\begin{prop}[Propiedades del conjunto potencia]
+	Sean $A,B$ conjuntos, entonces se cumple:
+	\begin{enumerate}
+		\item $\emptyset,A\in\P A$.
+		\item $\P\emptyset=\{\emptyset\}$.
+		\item $A\subseteq B$ syss $\P A\subseteq\P B$.
+		\item $\P A\cap\P B=\P(A\cap B)$.
+		\item $\P A\cup\P B\subseteq\P(A\cup B)$.
+	\end{enumerate}
+\end{prop}
+
+\section{Relaciones}
+\begin{mydef}[Par ordenado]
+	Decimos que un conjunto, que denotaremos como $(x,y)$ corresponde a un \textit{par ordenado}\index{par!ordenado} syss para todos $x_1,y_1,x_2,y_2$ para los que se cumpla $(x_1,y_1)=(x_2,y_2)$ se da que $x_1=x_2$ e $y_1=y_2$. Asimismo, se define una terna ordenada como $(x,y,z)=((x,y),z)$ y, más generalmente, definida una $n$-tupla\index{ntupla@$n$-tupla ordenada}, se define una $(n+1)$-tupla como
+	$$(x_0,x_1,\dots,x_{n-1},x_n)=((x_0,\dots,x_{n-1}),x_n).$$
+\end{mydef}
+\begin{lem}
+	$\{x,y\}=\{u,v\}$ syss $x=u\wedge y=v$ o $x=v\wedge y=u$.
+\end{lem}
+\begin{prop}
+	El par ordenado de Kuratowski, definido como $(x,y)=\{\{x\},\{x,y\}\}$, así como el de Wiener $(x,y)=\{\{\emptyset,\{x\}\},\{\{y\}\}\}$ cumplen con la definición misma de par ordenado.
+\end{prop}
+Para detalles técnicos (como, por ejemplo, como demostrar la existencia de un conjunto con todos los pares ordenados de otro prefijado) nos referiremos a la versión de Kuratowski al hablar de ``par ordenado'' a secas.
+\begin{mydef}[Producto cartesiano]
+	Sean $A,B$ conjuntos, definimos el producto cartesiano de $A$ por $B$, denotado como $A\times B$, como el conjunto de todos los posibles pares ordenados en donde el primer elemento es de $A$ y el segundo de $B$, es decir
+	$$A\times B:=\{z:\exists xy(z=(x,y)\wedge x\in A\wedge y\in B)\}.$$
+	En lo sucesivo, escribiremos el par antes del descriptor para ahorrar notación. Asimismo, podemos definir el producto cartesiano en una familia ordenada de $n$ conjuntos, con $n\geq 3$ sabiendo que por inducción si existe el producto de $n$ conjuntos se define para $n+1$ como:
+	$$A_0\times\cdots\times A_{n-1}\times A_n=(A_0\times\cdots\times A_{n-1})\times A_n.$$
+	Cabe destacar que el producto cartesiano de un conjunto por sí mismo $n$ veces lo denotaremos como
+	$$A^n:=\underbrace{A\times\cdots\times A}_{n\text{ veces}}$$
+\end{mydef}
+Es fácil probar la existencia del producto cartesiano binario (y por ende, todo producto cartesiano finito), puesto que los pares ordenados de un conjunto $A$ son elementos de $\P(\P A)$.
+\begin{prop}[Propiedades del producto cartesiano]
+	Sean $A,\,B,$ $C,\,D$ conjuntos, entonces se cumple:
+	\begin{enumerate}
+		\item $A\subseteq C\wedge B\subseteq D$ implica $A\times B\subseteq C\times D$ (isotonía).
+		\item $A\times(B\cup C)=(A\times B)\cup(A\times C)$ y $(A\cup B)\times C=(A\times C)\cup(B\times C)$ (distributividad).
+		\item $A\times(B\cap C)=(A\times B)\cap(A\times C)$ y $(A\cap B)\times C=(A\times C)\cap(B\times C)$ (distributividad).
+		\item $A\times(B\setminus C)=(A\times B)\setminus(A\times C)$ y $(A\setminus B)\times C=(A\times C)\setminus(B\times C)$ (distributividad).
+	\end{enumerate}
+\end{prop}
+\begin{mydef}[Relación]
+	Decimos que un conjunto $R$ es una relación\index{relación} $n$-aria, si todos sus elementos son $n$-tuplas ordenadas. Si $R$ resultase una relación binaria y $(x,y)\in R$, entonces podemos escribir esto último como $xRy$. Para toda relación, existe una relación denotada $R^{-1}$ a la que llamamos su \textit{inversa}\index{relación!inversa}, en donde toda $n$-tupla de $R$ está en el orden inverso en $R^{-1}$, en particular, si $xRy$ entonces $yR^{-1}x$.
+
+	Además de ello, dada una relación binaria definimos los siguientes conjuntos:
+	\begin{align*}
+		\Dom R&:=\{x:\exists y((x,y)\in R)\},\\
+		\Img R&:=\{y:\exists x((x,y)\in R)\},\\
+		\Fld R&:=\Dom R\cup\Img R
+	\end{align*}
+	los que llamaremos \textit{dominio}\index{dominio}\nomenclature{$\Dom R$}{Dominio de una relación binaria}, \textit{rango} o \textit{imagen}\index{rango}\nomenclature{$\Img R$}{Rango de una relación binaria} y \textit{campo}\index{campo}\nomenclature{$\Fld R$}{Campo de una relación binaria} resp. de la relación. Debido a esto, en lo sucesivo diremos ``relaciones'' a secas para referirnos a las binarias y especificaremos en caso contrario.
+\end{mydef}
+De esta forma, es fácil comprobar que toda relación es subconjunto de $(\Fld R)^2$ y todo subconjunto de $X^2$ es una relación. Debido a esto, varios libros definen las relaciones como subconjuntos de productos cartesianos, pero el lector ha de saber que para efectos prácticos, ambas definiciones son equivalentes.
+
+Otra observación es que cualquier operación entre conjuntos que hemos definido por el momento se puede aplicar en una familia de relaciones de mismo orden para obtener otra relación también del mismo orden. En caso de que las relaciones no sean del mismo orden, la relación resultante será del menor de los ordenes. Dado un universo relativo, es fácil comprobar que $\subseteq,\subset,=,\in$ representan relaciones binarias. Cabe destacar que $\emptyset$ es también una relación.
+\begin{prop}[Propiedades de las relaciones]
+	Sean $R,S$ relaciones. Entonces:
+	\begin{enumerate}
+		\item $\Dom\emptyset=\Img\emptyset=\Fld\emptyset=\emptyset$.
+		\item $\Dom(R\cup S)=\Dom R\cup\Dom S$, $\Img(R\cup S)=\Img R\cup\Img S$ y $\Fld(R\cup S)=\Fld R\cup\Fld S$ (distributividad).
+		\item $\Dom(R\cap S)\subseteq\Dom R\cap\Dom S$, $\Img(R\cap S)\subseteq\Img R\cap\Img S$ y $\Fld(R\cap S)\subseteq\Fld R\cap\Fld S$.
+		\item $\Dom(R\setminus S)\subseteq\Dom R\setminus\Dom S$, $\Img(R\setminus S)\subseteq\Img R\setminus\Img S$ y $\Fld(R\setminus S)\subseteq\Fld R\setminus\Fld S$.
+		\item Si $R\subseteq S$, entonces $\Dom R\subseteq\Dom S$, $\Img R\subseteq\Img S$ y $\Fld R\subseteq\Fld S$.
+	\end{enumerate}
+\end{prop}
+\begin{prop}[Propiedades de las relaciones inversas]
+	Sean $R,S$ relaciones. Entonces:
+	\begin{enumerate}
+		\item Sean $A,B$ conjuntos, $(A\times B)^{-1}=B\times A$.
+		\item $(R^{-1})^{-1}=R$.
+		\item $\Dom(R^{-1})=\Img R$, $\Img(R^{-1})=\Dom R$ y $\Fld(R^{-1})=\Fld R$.
+		\item $(R\cup S)^{-1}=R^{-1}\cup S^{-1}$ (distributividad).
+		\item $(R\cap S)^{-1}=R^{-1}\cap S^{-1}$ (distributividad).
+		\item $(R\setminus S)^{-1}=R^{-1}\setminus S^{-1}$ (distributividad).
+		\item Si $R\subseteq S$, entonces $R^{-1}\subseteq S^{-1}$ (isotonía).
+	\end{enumerate}
+\end{prop}
+\begin{mydef}[Composición de relaciones, imágenes directas e inversas]
+	Sean $R,S$ relaciones tales que $\Img R=\Dom S$, entonces definimos la composición\index{composición!de relaciones} de $R$ con $S$ como\nomenclature{$\circ$}{Composición de relaciones}
+	$$R\circ S:=\{(x,z):\exists y((x,y)\in R\wedge(y,z)\in S)\}.$$
+	Sea $X\subseteq\Dom R$, definimos la imagen directa\index{imagen!directa} de $X$ respecto a $R$ como\nomenclature{$R[x]$}{imagen directa de $X$ respecto a $R$}
+	$$R[X]=\{y:\exists x(x\in X\wedge(x,y)\in R)\},$$
+	y sea $Y\subseteq\Img R$, definimos la imagen inversa\index{imagen!inversa} de $Y$ respecto a $R$ como\nomenclature{$R^{-1}[Y]$}{imagen inversa de $Y$ respecto a $R$}
+	$$R^{-1}[Y]=\{x:\exists y(y\in Y\wedge(x,y)\in R)\}.$$
+	Otro concepto que introduciremos es el de relación identidad\index{relación!identidad}. Dado un conjunto $A$, dicha relación es aquella que sólo se cumple para dos elementos iguales, es decir\nomenclature{$\Id_A$}{Relación identidad en $A$}
+	$$\Id_A:=\{(a,a):\exists a(a\in A)\}.$$
+\end{mydef}
+Una nota respecto a la composición de relaciones es que están denotados en el orden inverso al habitual. Esto es debido a una cuestión de notación respecto a las funciones, que veremos más adelante; no obstante, esto será bastante útil.
+
+Anteriormente dijimos que una definición alternativa de ``relación'' es subconjunto de un producto cartesiano. Siendo $A,B$ conjuntos y $R\subseteq A\times B$, esto lo expresaremos escribiendo $R:A\multimap B$. Otra cuestión es que si $T=R\circ S$ con $R:A\multimap B$ y $S:B\multimap C$, entonces, esto lo representaremos mediante el siguiente diagrama
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=2]
+		\node (A) at (0,0) {$A$};
+		\node (B) at (1,0) {$B$};
+		\node (C) at (1,-1) {$C$};
+		\draw[-o] (A) -- node[above]{$R$} (B);
+		\draw[-o] (B) -- node[right]{$S$} (C);
+		\draw[-o] (A) -- node[below left]{$T$} (C);
+	\end{tikzpicture}
+\end{figure}\\
+y diciendo que ``conmuta''.
+\begin{prop}[Propiedades de la composición de relaciones]
+	Sean $R:A\multimap B$, $S:B\multimap C$ y $T:C\multimap D$ relaciones (con $A,B,C,D$ conjuntos). Entonces:
+	\begin{enumerate}
+		\item Los siguientes diagramas:
+			\begin{figure}
+				\centering
+				\subcaptionbox{}{
+					\begin{tikzpicture}[scale=2]
+						\node (A) at (0,0) {$A$};
+						\node (B) at (1,0) {$B$};
+						\node (C) at (1,-1) {$C$};
+						\node (D) at (2,-1) {$D$};
+						\begin{scope}[-o]
+							\draw (A) -- node[above]{$R$} (B);
+							\draw (B) -- node[right]{$S$} (C);
+							\draw (C) -- node[below]{$T$} (D);
+							\draw (A) -- node[below left]{$R\circ S$} (C);
+							\draw (B) -- node[above right]{$S\circ T$} (D);
+							\draw [bend left =90, looseness=1.25] (A) to (D);
+							\draw [bend right=90, looseness=1.25] (A) to (D);
+						\end{scope}
+						\draw (1.5,.5) node[above right] {$R\circ(S\circ T)$} (.5,-1.5) node[below left] {$(R\circ S)\circ T$};
+					\end{tikzpicture}
+					}
+					\subcaptionbox{}{
+						\begin{tikzpicture}[scale=2]
+							\node (A1) at (0,0) {$A$};
+							\node (A2) at (1,0) {$A$};
+							\node (B1) at (0,-1) {$B$};
+							\node (B2) at (1,-1) {$B$};
+						\begin{scope}[-o]
+							\draw (A1) -- node[above]{$\Id_A$} (A2);
+							\draw (B1) -- node[below]{$\Id_B$} (B2);
+							\draw (A1) -- node[left]{$R$} (B1);
+							\draw (A2) -- node[right]{$R$} (B2);
+							\draw (A1) -- node[fill=white]{$R$} (B2);
+						\end{scope}
+					\end{tikzpicture}
+					}
+				\caption{}\label{fig:composition-relations}
+			\end{figure}
+
+		conmutan.
+		\item $R\circ(S\cup T)=(R\circ S)\cup(R\circ T)$.
+		\item $R\circ(S\cap T)\subseteq(R\circ S)\cap(R\circ T)$.
+		\item $(R\circ S)\setminus(R\circ T)\subseteq R\circ(S\setminus T)$.
+		\item $(R\circ S)^{-1}=S^{-1}\circ R^{-1}$.
+	\end{enumerate}
+\end{prop}
+
+\begin{mydef}[Propiedades de las relaciones]
+	Dada una relación $R$ cuyo dominio e imagen son subconjuntos de $A$. Llamaremos a $R$ de alguna de las siguientes formas si se cumple para todo $x,y,z\in A$:
+	\begin{description}
+		\item[Reflexiva] $xRx$.\index{reflexividad}
+		\item[Irreflexiva] $\neg xRx$.\index{irreflexividad}
+		\item[Simétrica] $xRy\implies yRx$.\index{simetría (relación)}
+		\item[Asimétrica] $xRy\implies \neg yRx$.\index{asimetría (relación)}
+		\item[Antisimétrica] $xRy\wedge yRx\implies x=y$.\index{antisimetría (relación)}
+		\item[Transitiva] $xRy\wedge yRz\implies xRz$.\index{transitividad}
+		\item[Conexa] $xRy\vee yRx$.\index{conexión (relación)}
+		\item[Débilmente conexa] $xRy\vee yRx\vee x=y$.\index{conexión débil (relación)}
+		\item[Unívoca] $xRy\wedge xRz\implies y=z$.\index{unívoca (relación)}
+	\end{description}
+	Si para algún $x,y$ se da que $xRy$ o que $yRx$ se dirá que entonces éstos son \textit{comparables} (bajo $R$).
+\end{mydef}
+\begin{prop}
+	Sea $R$ una relación. Entonces:
+	\begin{enumerate}[$a)$]
+		\item Si es asimétrica es irreflexiva y antisimétrica.
+		\item Si es simétrica y transitiva entonces es reflexiva.
+	\end{enumerate}
+\end{prop}
+\begin{mydef}[Conjuntos ordenados y bien ordenados]
+	Sea ${\leq}:A\multimap A$. Diremos que $\leq$ es una relación de orden\index{relación!de orden} o también que $(A,\leq)$ es un conjunto ordenado\index{conjunto!ordenado} syss $\leq$ es reflexiva, antisimétrica y transitiva. Si $\leq$ es conexa, decimos que es una relación de orden total o lineal\index{relación!de orden!total, lineal}; de lo contrario, decimos que es de orden parcial\index{relación!de orden!parcial}. Además, sea $(A,\leq)$ un conjunto ordenado, decimos que $x\in A$ es:
+	\begin{description}
+		\item[Mínimo] $\forall y\in A(y\leq x\implies x=y)$.\index{minimo@mínimo}
+		\item[Minimal] $\forall y\in A(y\not\leq x\vee x=y)$.\index{minimal}
+		\item[Máximo] $\forall y\in A(x\leq y\implies x=y)$.\index{maximo@máximo}
+		\item[Maximal] $\forall y\in A(x\not\leq y\vee x=y)$.\index{maximal}
+	\end{description}
+	Si $A$ es un conjunto ordenado y además todo subconjunto no vacío de $A$ posee al menos un elemento minimal, entonces decimos que $A$ está bien fundada. Si $A$ está bien fundada y además todo minimal de un subconjunto resulta ser un mínimo, entonces decimos que $A$ es un conjunto bien ordenado.
+\end{mydef}
+Dada una familia de conjuntos cualesquiera, $\subseteq$ representa una relación de orden, por lo general de tipo parcial.
+
+Ahora hemos de dar a comprender la diferencia fundamental entre \textit{mínimo} y \textit{minimal} (pese a que no sólo suenan similares fonéticamente sino que también su definición es parecida), el primero cumple que $x\leq y$ para todos los $y$ (esta cualidad la expresaremos como que ``$x$ es más pequeño que todo $y$'') mientras que la segunda dice que dicho $x$ es más pequeño que todo $y$ con el que es comparable.
+
+Para explicar mejor los conceptos de orden parcial y total introduciremos unos llamados \textit{diagramas de orden}\index{diagrama!de orden} en los que habrán niveles y uniremos un elemento de dos niveles consecutivos (digamos $y$ el de arriba y $x$ el de abajo) siempre que $x\leq y$ y no exista un $z$ distinto de $x$ e $y$ tal que $x\leq z\leq y$.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node (1) at (0,0) {1};
+		\node (2) at (1,0) {2};
+		\node (3) at (.5,1) {3};
+		\node (4) at (.5,2) {4};
+		\node (5) at (-.5,3) {6};
+		\node (6) at (.5,3) {7};
+		\node (7) at (1.5,3) {8};
+		\node (8) at (0,4) {9};
+		\node (9) at (1.5,4) {10};
+		\node (10) at (1.5,2) {5};
+		\draw (1) -- (3) -- (4) -- (6) -- (8) -- (5) -- (4) -- (7) -- (9) (2) -- (3) -- (10);
+	\end{tikzpicture}
+	\caption{Diagrama de orden parcial}\label{fig:partial-order-diagram}
+\end{figure}
+
+Es fácil ver que en los diagramas de orden los elementos en el mismo nivel no son comparables y que en el digrama~\ref{fig:partial-order-diagram} el 1 y el 2 son los minimales, mientras que el 9, el 10 y el 5 son los maximales. Otra observación es que si el conjunto careciera del 2, el 1 sería un mínimo. Gracias a los diagramas es también comprensible el porqué de que las relaciones de orden total sean también llamadas ``de orden lineal''.
+\begin{prop}
+	Sea $(A,\leq)$ un conjunto ordentado, entonces:
+	\begin{enumerate}
+		\item $A$ puede tener un solo mínimo (resp. máximo).
+		\item Si $A$ posee un mínimo (resp. máximo) entonces éste es su único minimal (resp. maximal).
+		\item Si $A$ es un conjunto totalmente ordenado entonces todo minimal (resp. maximal) es un mínimo (resp. máximo).
+	\end{enumerate}
+\end{prop}
+\begin{prop}
+	Si $(A,\leq)$ es un conjunto bien ordenado, entonces posee un mínimo y es un conjunto totalmente ordenado.
+\end{prop}
+
+	Más generalmente, diremos que $R$ es una \textit{relación de equivalencia}\index{relación!de equivalencia} syss es reflexiva, simétrica y transitiva. De serlo, dado un elemento $a\in A$, definimos una \textit{clase de equivalencia}\index{clase!de equivalencia} como prosigue:
+	$$[a]_R:=\{b\in A:aRb\}.$$
+	Dada una relación de equivalencia $R$ en un conjunto $A$, definimos el \textit{conjunto cociente}\index{conjunto!cociente} como:
+	$$A/R:=\{[a]_R\in\P(A):a\in A\}.$$
+\begin{prop}
+	Sea $R$ una relación de equivalencia en $A$ y $a,b\in A$. Entonces:
+	\begin{enumerate}[$a)$]
+		\item $aRb\iff [a]_R=[b]_R$.
+		\item $\neg aRb\iff [a]_R\cap[b]_R=\emptyset$.
+	\end{enumerate}
+\end{prop}
+Esta es la razón por la que les llamamos ``clases de equivalencia'' en primer lugar. Considerando la proposición anterior, es evidente que en un conjunto cociente se ``reparten'' los elementos del conjunto original. Ejemplos de clase de equivalencia lo son $=$, $\equiv$ (equivalencia modular, álgebra y aritmética), $\equiv$ (congruencia, geometría), $\sim$ (semejanza de triángulos, geometría).
+
+\section{Funciones}
+La generalidad con la que la teoría de conjuntos trata su concepto es, muchas veces, vista como un arma de doble filo en matemáticas; por un lado, nos permite analizar propiedades casi universales, mas la falta de restricciones y/o propiedades nos inhiben de deducir resultados más importantes o de dotar a nuestros objetos de una cierta estructura o forma en general, como señalabamos.
+
+Las funciones son un determinado tipo de relaciones, pero debido a las propiedades y clasificaciones en la que se dividen se convierten en objetos fundamentales para las teorías conjuntistas, al punto de que incluso ciertas teorías les introducen en su mismo sistema axiomático.
+\begin{mydef}[Función]
+	Decimos que un conjunto $f$ es un \textit{aplicación}\index{aplicación, función} o \textit{función} con dominio en $A$ y codominio\index{codominio} en $B$, lo que denotaremos como que $f:A\rightarrow B$, si se cumple que $f:A\multimap B$, $\Dom f=A$ y que $f$ es unívoca. En ciertos casos, cuando $\Dom f\subset A$ podemos decir que $f$ es una aplicación o función parcial\index{aplicación, función!parcial}. Una diferencia gráfica con las relaciones es que si $(x,y)\in f$ entonces lo escribiremos como que $f(x)=y$. En este sentido llamaremos a $y$ la \textit{imagen}\index{imagen} de $x$, y también diremos que $x$ es la \textit{preimagen}\index{preimagen} de $y$.
+
+	Siendo $f:A\rightarrow B$ una aplicación (parcial o no), ésta es además:
+	\begin{description}
+		\item[Inyectiva] $\forall xy(x\in A\wedge y\in A\implies(f(x)=f(y)\implies x=y))$.\index{aplicación, función!inyectiva}
+		\item[Suprayectiva o epiyectiva] $\forall y(y\in B\implies\exists x(x\in A\wedge f(x)=y))$.\index{aplicación, función!suprayectiva, epiyectiva}
+		\item[Biyectiva] Si $f$ es inyectiva y suprayectiva.\index{aplicación, función!biyectiva}
+	\end{description}
+\end{mydef}
+Sea $f:A\rightarrow B$, entonces un par de observaciones es que la definición de función puede interpretarse como que todo $x\in A$ posee una única imagen. La inyectividad dice que todo $y\in B$ posee a lo más una preimagen y la suprayectividad dice que todo $y\in B$ posee al menos una preimagen. Por ende, la biyectividad dice que todo $y\in B$ posee una única preimagen. Nótese que toda función $f$ posee una relación inversa, mas no siempre resulta ser una función; de hecho, las únicas funciones cuyas inversas son también funciones son las \textbf{biyectivas}.
+
+Nótese también que la relación $\Id_A$ en cualquier conjunto corresponde a una función biyectiva, mientras que $\emptyset$ corresponde a una relación inyectiva (¿por qué?).
+\begin{prop}
+	Sea $f:A\rightarrow B$ una biyección, entonces el diagrama
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=2]
+			\node (A1) at (0,0) {$A$};
+			\node (B1) at (1,0) {$B$};
+			\node (A2) at (1,-1) {$A$};
+			\node (B2) at (2,-1) {$B$};
+			\begin{scope}[->]
+				\draw (A1) -- node[above]{$f$} (B1);
+				\draw (B1) -- node[fill=white]{$f^{-1}$} (A2);
+				\draw (A2) -- node[below]{$f$} (B2);
+				\draw (A1) -- node[below left]{$\Id_A$} (A2);
+				\draw (B1) -- node[above right]{$\Id_B$} (B2);
+			\end{scope}
+		\end{tikzpicture}
+		\caption{}
+	\end{figure}\\
+	conmuta.
+\end{prop}
+Nótese que como las funciones son un tipo de relaciones y la composición de las mismas es, en efecto, una función los diagramas de la fig.~\ref{fig:composition-relations} también se aplican a funciones.
+\begin{thm}
+	Sean $f:A\rightarrow B$ y $g:B\rightarrow A$ aplicaciones. Entonces:
+	\begin{enumerate}
+		\item Si $f\circ g$ es inyectiva, entonces $f$ lo es.
+		\item Si $f\circ g$ es suprayectiva, entonces $g$ lo es.
+		\item Si $f\circ g$ es biyectiva, entonces $f$ es inyectiva y $g$ es suprayectiva.
+		\item $f\circ g=\Id_A$ y $g\circ f=\Id_B$ syss $f,g$ son biyectivas y $g=f^{-1}$.
+	\end{enumerate}
+\end{thm}
+\textbf{Productos cartesianos infinitos.} El axioma de unión, en su forma general, abre las puertas abiertamente tanto para uniones binarias y finitas como infinitas debido a su uso de los generalizadores. No obstante es fácil ver que ninguna de nuestras descripciones de pares ordenados da lugar a siquiera comprender como se vería un producto infinito de conjuntos. Dejando de lado el hecho de que aún no hemos probado que los conjuntos infinitos siquiera existan veremos como las aplicaciones ayudan a resolver dicha incógnita.
+
+Primero, asumiremos que tenemos un conjunto bien ordenado $A$, tal que para todo $a\in A$, $x_a$ represente un conjunto (en esencia $x$ representa una aplicación, pero sin codominio definido por el momento), definiremos $X=\bigcup_{a\in A}x_a$ y finalmente definiremos
+$$\prod_{a\in A}x_a:=\{(f:A\rightarrow X):\forall a\in A(f(a)\in x_a)\}.$$
+Es decir, en lugar de considerar los elementos de un supuesto producto infinito como una especie de $n$-tupla generalizada, utilizamos a funciones, las cuales están bien definidas incluso para conjuntos infinitos y de cualquier tipo, es importante que el lector comprenda bien este concepto pues será vital en el siguiente capítulo.
+
+\section{Las teorías NBG y MK}
+Tal como indicamos al inicio del capítulo, la teoría ZF(C) es la más utilizada, hay otras teorías importantes de destacar, en particular, la propuesta por von Neumann-Bernays-Gödel (NBG) y la extensión de Morse-Kelly (MK). Cabe destacar que la teoría propuesta en esta sección es una simplificación puesto que se sacrifican varios axiomas (el de intersección y complemento de clases, de pertenencia, de dominio, de relación inversa, etc.) por una generalización esquemática que es el axioma de comprensión.
+\begin{mydef}[Clase]
+	En ZF(C) todos los elementos son conjuntos que, debido a las propiedades descritas, pueden contener otros elementos. En NBG y MK, todos los elementos son \textit{clases}\index{clase} y estos pueden contener a otros elementos. Un elemento $x$, en NBG, es llamado un conjunto\index{conjunto} syss existe una clase $Y$ tal que $x\in Y$. También, diremos que una clase $X$ es \textit{propia}\index{clase!propia} si no es un conjunto.
+\end{mydef}
+La propiedad de ser un conjunto la caracterizaremos así
+$$\cto x\iff\exists y(x\in y).$$
+Además, en los axiomas siguientes los elementos descritos con letras mayúsculas corresponderan a clases, mientras que los elementos en minúsculas corresponderan a conjuntos.
+\begin{axiom}[de Extensionalidad (NBG-1)]
+	$$\forall AB(\forall x(x\in A\iff x\in B)\implies A=B).$$
+\end{axiom}
+\begin{axiom}[de Comprensión (NBG-2)]\index{axioma!de comprensión}
+	Con $\phi(x;t_1,\dots,t_n)$ una fórmula $(n+1)$-aria normal\footnote{Es decir que está escrita indirectamente sólo utilizando conectores lógicos y el relator $\in$. Por ende, también se admite el igualador al ser descrito de forma conjuntista en el axioma de extensionalidad y el relator monádico de ``ser conjunto'' puesto que también está escrito en dichos términos.} se cumple que
+	$$\exists A\forall x(x\in A\iff\phi(x;t_1,\dots,t_n)).$$
+\end{axiom}
+Cabe destacar que el axioma de comprensión resuelve por un lado nuestros problemas respecto de como construir ciertos conjuntos (aún así, se le recomienda al lector darse dicho ejercicio en las construcciones que se hagan), pero levanta sospechas entorno a como trabaja objetos de definición atípica como la clase de Russell por ejemplo. Bueno, el secreto de NBG es su diferenciación entre clase y conjunto, implementando las nociones de clases propias. Por lo general, los conjuntos que no resultan construibles en ZF(C) suelen ser clases propias en NBG.
+
+También cabe destacar que por el axioma de comprensión, dada una agrupación finita de clases (agrupación en un sentido del lenguaje, no una familia de conjuntos como tal) están definidas las operaciones binarias descritas en la sección 1 de éste capítulo.
+\begin{axiom}[del Par (NBG-3)]
+	$\forall ab\exists c\forall x(x\in c\iff x=a\vee x=b)$.
+\end{axiom}
+Lo importante aquí es notar que el par desordenado es también un conjunto.
+\begin{axiom}[del Conjunto Vacío (NBG-4)]
+	$\exists x\forall y(y\notin x)$.
+\end{axiom}
+Nótese que en este caso, el axioma del conjunto vacío afirma dos cosas: que dicha clase existe y que es un conjunto.
+\begin{axiom}[de la Unión (NBG-5)]
+	$$\forall x\exists y\forall z(\exists w(z\in w\wedge w\in x)\implies z\in y).$$
+\end{axiom}
+\begin{axiom}[de Reemplazo (NBG-6)]\index{axioma!de reemplazo}
+	$$\forall F(\cto\Dom F\implies\cto\Img F).$$
+\end{axiom}
+\begin{thm}
+	Toda subclase de un conjunto es un conjunto.
+\end{thm}
+\begin{thm}
+	La clase de Russell, definida por comprensión como
+	$$R=\{x:x\notin x\}$$
+	es propia, asimismo, la clase universal
+	$$U=\{x:\cto x\}$$
+	lo es.
+\end{thm}
+\begin{axiom}[por Partes (NBG-7)]
+	$\forall x\exists y\forall z(z\subseteq x\iff z\in y)$.
+\end{axiom}
+Nótese que gracias al esquema de comprensión se pueden construir funciones a gusto y por ende el axioma de remplazo implica el esquema de especificación, por lo tanto, todo conjunto construible en ZF(C) lo es en NBG. Es importante saber que sólo hemos introducido los axiomas \textit{imprescindibles} para lo que pretenden ser, osea, teorías conjuntistas; mas no corresponden a su totalidad, en los siguientes capítulos iremos introduciendo progresivamente otros axiomas al ser absolutamente necesario, al igual que las razones por las que han sido introducidas en las teorías de conjuntos.
+
+\section{Números naturales, enteros y racionales}
+\begin{axiom}[de Infinitud (ZF-7, NBG-8)]\index{axioma!de infinitud}
+	$$\exists n(\emptyset\in n\wedge\forall x(x\in n\implies x\cup\{x\}\in n)).$$
+	Sea $x$ un conjunto, diremos que $x\cup\{x\}$ es el \textit{sucesor} de $x$ (a veces denotado como $x'$, $\text{succ}\,x$ y en nuestro caso $x^+$\nomenclature{$n^+$}{El sucesor de un número ordinal $n$}), lo que el axioma de infinitud dice es que existen conjuntos que contienen a $\emptyset$ y si contienen a un elemento contienen también a su sucesor. Este tipo de clases se llaman ``inductivas''\index{inductiva (clase, conjunto)}.
+\end{axiom}
+Este argumento funciona especialmente si se asume que $x\notin x$ (esto es una conclusión del axioma de regularidad y de fundación).
+
+El axioma es llamado de infinitud entre otras cosas porque sin éste no se pueden demostrar la existencia de los conjuntos infinitos.
+\begin{thm}
+	Existe un único conjunto inductivo que es el mínimo respecto a la inclusión. Éste se denotará como $\N$\nomenclature{$\N$}{Conjunto de números naturales} y a sus elementos les diremos ``números naturales''\index{numero@número!natural}.
+\end{thm}
+\begin{proof}
+...
+\end{proof}
+En $\N$ denotaremos $0=\emptyset$,
+\begin{align*}
+	1&=0^+=\{0\},\\
+	2&=1^+=\{0,1\},\\
+	3&=2^+=\{0,1,2\},\\
+	&\vdots
+\end{align*}
+\begin{thm}[Axiomas de Peano]\index{axioma!de Peano}
+	Se cumple que:
+	\begin{enumerate}
+		\item $0\in\N$.
+		\item $n\in\N\implies n^+\in\N$.
+		\item $\neg\exists n\in\N(n^+=0)$.
+		\item $\forall nm(n\in\N\wedge m\in\N\implies (n^+=m^+\iff n=m))$.
+		\item $\forall N(N\subseteq\N\wedge(\emptyset\in N\wedge\forall x(x\in N\implies x^+\in N))\implies N=\N)$ (principio de inducción).\index{principio!de inducción}
+	\end{enumerate}
+\end{thm}
+\begin{thm}[Propiedad de recursión]
+	Sea $A$ un conjunto cualquiera no vacío con $a\in A$ y $g:A\times\N\rightarrow A$ una función. Entonces existe una única función $f:\N\rightarrow A$ tal que
+	$$f(0)=a,\quad f(n^+)=g(f(n),n).$$
+\end{thm}
+\begin{proof}
+	
+\end{proof}
+<++>
+
+\chapter{Números ordinales}
+Uno de los pilares de la teoría de conjuntos son unos elementos muy particulares llamados los ``números ordinales''. Su nombre deriva de la palabra ``orden'', pues como veremos dichos números poseen una fuerte relación a una noción que ya hemos visto, pero sobre la cual no hemos profundizado aún, la de relaciones bien ordenadas.
+
+\section{Conjuntos bien ordenados}
+En el capítulo anterior vimos la definición de ciertos conceptos como el de conjunto bien ordenado o bien fundado que, para memoria del lector, significan que cada subconjunto del mismo posee un mínimo y un minimal respectivamente. En esta sección veremos las implicaciones de tales propiedades que también utilizaremos en la sección siguiente.
+\begin{mydef}[Morfismos de orden, aplicaciones crecientes y decrecientes]
+	Sean $(A,\leq)$ y $(B,\preceq)$ conjuntos ordenados, una aplicación $f:A\rightarrow B$ se dice un \textit{homomorfismo de orden}\index{homomorfismo!de orden}\footnote{gr. \textit{homos}, similar; \textit{formo}, forma} syss para todos $x,y\in A$
+	$$x\leq y\implies f(x)\preceq f(y)$$
+	diremos también que es un monomorfismo\index{monomorfismo!de orden}, epimorfismo\index{epimorfismo!de orden} o isomorfismo\index{isomorfismo!de orden}\footnote{gr. \textit{iso}, igual; \textit{formo}, forma} de orden si $f$ resulta ser inyectiva, suprayectiva y biyectiva resp. Si $f:A\rightarrow A$ entonces se dice que es un endomorfismo\footnote{gr. \textit{endo}, de adentro, interno; \textit{formo}, forma} de orden y un automorfismo si es biyectiva. Si existe un isomorfismo de orden entre dos conjuntos diremos que éstos son isomorfos en orden.
+
+	Dentro de otros contextos (i.e dentro del análisis matemático) suelen decirles funciones crecientes a los homomorfismos de orden, por otro lado, si 
+	$$x\leq y\implies f(y)\preceq f(x)$$
+	entonces se le dice función decreciente.
+\end{mydef}
+\begin{prop}
+	Sean $A,B,C$ conjuntos ordenados, entonces:
+	\begin{enumerate}
+		\item Si $f:A\rightarrow B$ es un isomorfismo de orden, entonces $f^{-1}:B\rightarrow A$ lo es también.
+		\item Si $f:A\rightarrow B$ y $g:B\rightarrow C$ son isomorfismos de orden, entonces $f\circ g:A\rightarrow C$ lo es también.
+		\item Si $A$ y $B$ son isomorfos en orden entonces $A$ es parcialmente ordenado (totalmente ordenado, bien ordenado o bien fundado resp.) syss $B$ lo es también.
+		\item Si $A$ y $B$ son isomorfos en orden entonces $a\in A$ es el mínimo (máximo, un minimal, un maximal, resp.) syss $f(a)\in B$ lo es también dentro de su conjunto.
+	\end{enumerate}
+\end{prop}
+\begin{mydef}[Secciones iniciales]
+	Sea $(X,\leq)$ un conjunto ordenado, diremos que un subconjunto $S\subseteq X$ es una \textit{sección inicial}\index{sección inicial} de él syss
+	$$\forall x,y\in X(x\leq y\wedge y\in S\implies x\in S),$$
+	diremos que la sección inicial es propia\index{sección inicial!propia} si $S\neq X$.
+
+	También admitiremos la notación de que\nomenclature{$O_\leq^X(x_0)$}{Conjunto de $x\in X$ tales que $x\leq x_0$}
+	$$O_\leq^X(x_0):=\{x\in X:x\leq x_0\},\quad O_<^X(x_0):=\{x\in X:x<x_0\}.$$
+	Cuando no haya ambigüedad de los signos nos permitiremos omitir el sup-índice.
+\end{mydef}
+\begin{prop}
+	Toda sección inicial propia $S$ de un conjunto bien ordenado $X$ es de la forma $O_<(x_0)$.
+\end{prop}
+\begin{proof}
+	Como $S$ es una sección inicial propia se da que $X\setminus S$ es un subconjunto no vacío de $X$, por lo que posee un mínimo $x_0$ y se comprueba que $S=O_<(x_0)$.
+\end{proof}
+Nótese que esto no siempre se da para todos los conjuntos ordenados, para poner un contraejemplo considere el conjunto con su orden parcial descritos en el siguiente diagrama:
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node (1) at (0,0) {1};
+		\node (2) at (1,0) {2};
+		\node (3) at (.5,1) {3};
+		\draw (1) -- (3) -- (2);
+	\end{tikzpicture}
+	\caption{}
+\end{figure}
+
+Nótese que $\{1\}$ y $\{2\}$ son secciones iniciales propias y que no existe un conjunto del tipo $O_<(x)$ al que le sean iguales.
+\begin{thm}[Principio de inducción transfinita]\ref{principio!de inducción transfinita}
+	Sea una clase $A$ bien ordenada, si se cumple que
+	$$\forall x\in A(O_<(x)\subseteq B\implies x\in B)$$
+	entonces $A\subseteq B$.
+\end{thm}
+\begin{proof}
+	Supongamos que $B\nsubseteq A$ por lo que $A\setminus B$ resulta un subclase no vacía de $A$, entonces posee un mínimo $x_0\notin B$ y se comprueba que $O_<(x_0)\subseteq B$ por lo que $x_0\in B$, lo que resulta absurdo.
+\end{proof}
+Una variación del principio de inducción transfinita es que cuando se indica que $B$ es subclase de $A$, entonces el resultado comprueba que $A=B$.
+\begin{thm}
+	Sea $(A,\leq)$ un conjunto bien ordenado y $f$ un endomorfismo de orden estricto sobre $A$, entonces para todo $a\in A$ se da que $a\leq f(a)$.
+\end{thm}
+\begin{proof}
+	Sea $B:=\{x\in A:x\leq f(x)\}\subseteq A$, demostraremos que $B=A$ por principio de inducción transfinita. Sea $x\in A$ tal que $O_<(x)\subseteq B$ veamos que $x\in B$. Para todo $y\in O_<(x)$ se da que $y\leq f(y)<f(x)$ por ser un morfismo de orden estricto, por lo que $f(x)\in A\setminus O_<(x)$ y como $x=\min(A\setminus f(x))$ se concluye que $x\leq f(x)$, osea, que $x\in B$.
+\end{proof}
+\begin{cor}
+	Sean $A,B$ conjuntos bien ordenados. Entonces:
+	\begin{enumerate}
+		\item Si son isomorfos en orden, entonces dicho isomorfismo es único.
+		\item $A$ no es isomorfo a ningún sección inicial propio suyo.
+		\item Dos secciones iniciales propias distintas de $A$ no pueden ser isomorfos en orden.
+	\end{enumerate}
+\end{cor}
+\begin{proof}
+	En lo siguiente, $\leq$ representa el orden de $A$. Probaremos la (1) y la (2).
+
+	Para el (1) supongamos que $f$ y $g$ son isomorfismos de orden desde $A$ a $B$, entonces $f\circ g^{-1}$ es un automorfismo de orden sobre $A$, por ende $x\leq g^{-1}(f(x))$, aplicando $g$ a ambos lados obtenemos que $g(x)\leq f(x)$ para todo $x$. Análogamente se deduce que $f(x)\leq g(x)$ y por antisimetría de $\leq$ se concluye que $f(x)=g(x)$ para todo $x$.
+
+	Para la (2) supongamos que $f:A\rightarrow O_<(x)$ fuese un isomorfismo, entonces $f(x)\in O_<(x)$, por lo que $f(x)<x$ contradiciendo el teorema anterior.
+\end{proof}
+\begin{thm}\label{thm:well-ordered-isomorphisms}
+	Sean $(A,\leq),(B,\preceq)$ conjuntos bien ordenados, entonces se cumple al menos una de las siguientes proposiciones:
+	\begin{enumerate}
+		\item $A$ y $B$ son isomorfos en orden.
+		\item $A$ es isomorfo a una sección inicial de $B$.
+		\item $B$ es isomorfo a una sección inicial de $A$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	En esta demostración denotaremos $X\sim Y$ si dos conjuntos son isomorfos en orden. Sea
+	$$S=\{x\in A:\exists y\in B(O_<(x)\sim O_\prec(y))\},$$
+	entonces, definimos la aplicación $f:C\rightarrow B$ como aquella tal que
+	$$f=\{(x,y)\in S\times B:O_<(x)\sim O_\prec(y)\}.$$
+	Demostraremos que $S$ es una sección inicial propia de $A$. Supongamos que $x<y$ con $y\in S$, de forma que existe un isomorfismo $g$ (y que, como hemos visto, es único) entre $O_<(y)$ y $O_\prec(f(y))$. Luego consideremos a la restricción de $g$ a $O_<(x)$, su imágen ha de ser un segmento inicial propio de $O_\prec(f(y))$ (¿por qué?), luego ha de ser un conjunto de la forma $O_\prec(z)$ con $z\in B$, por lo que $z=f(x)$ y $x\in S$ como se quería probar.
+
+	Asimismo se puede ver que $f$ es un monomorfismo de orden y que $T:=\Img f$ es una sección inicial de $B$. Esto da pie a varios casos: que $S=A\vee S\subset A$ y que $T=B\vee T\subset B$; de los cuales el único no favorable es que $S\subset A$ y que $T\subset B$. En dicho caso, existe un $x\in A$ tal que $S=O_<(x)$ y un $y\in B$ tal que $T=O_\prec(y)$, pero en dicho caso, $y=f(x)$ lo que sería absurdo.
+\end{proof}
+\begin{thm}
+	Sean $\{F_t\}_{t\in T}$ una familia de conjuntos totalmente ordenados no-vacíos cuya respectiva relación es $\leq_t$, donde $T$ es un conjunto bien ordenado. Entonces la relación $\preceq$ sobre el producto cartesiano $\mathcal{F}:=\prod_{t\in T}F_t$ definida como
+	$$f\preceq g\iff f=g\vee\exists m(m=\min\{t\in T:f(t)\neq g(t)\}\wedge f(m)\leq_m g(m))$$
+	es también de orden total. Además, $(\mathcal{F},\preceq)$ está bien ordenado syss para todo $t\in T$ $(F_t,\leq_t)$ está bien ordenado.
+\end{thm}
+Esta relación es llamada \textit{orden lexicográfico}\index{relación de orden!lexicográfico} del producto.
+
+\section{Números ordinales}
+\begin{axiom}[de Fundación (ZF-8, NBG-9)]\index{axioma!de fundación}
+	$$\forall x(x\neq\emptyset\implies\exists y(y\in x\wedge\neg\exists z(z\in y\wedge z\in x))).$$
+	Todo conjunto no vacío posee un minimal respecto a $\in$ (también llamado un $\in$-minimal).
+\end{axiom}
+Otra forma de describir el axioma de fundación es que es que toda clase está bien fundada respecto a $\in$.
+\begin{cor}
+	No existe una secuencia infinita decreciente respecto a $\in$, es decir, no existe una función $x:\N\rightarrow U$ tal que $x_{i+1}\in x_n$.
+\end{cor}
+\begin{thm}\label{thm:well-founded-in-sequence}
+	Para todo conjunto $x$: $x\notin x$ y no existe $y$ tal que $y\in x$ e $x\in y$. Más generalmente, no existe una secuencia finita decreciente (digamos de $n$ términos) respecto a $\in$ tal que $x_0\in x_{n-1}$.
+\end{thm}
+\begin{proof}
+	Para demostrar que $x\notin x$ supongamos, por contradicción, que existiése un $x$ tal que $x\in x$, entonces sería un conjunto y por axioma del par existiría $y=\{x\}$ el cual es absurdo con el axioma de fundación. Para la segunda, considera que el conjunto $\{x,y\}$cae en la misma paradoja.
+\end{proof}
+Nótese que asumiendo el axioma de fundación la clase de Russell equivale a la clase universo.
+\begin{mydef}[Número ordinal]
+	Diremos que una clase $X$ es \textit{transitiva}\index{transitiva (clase)} syss $\forall y(y\in X\implies y\subseteq X)$. Diremos que una clase es un \textit{ordinal} syss es transitiva, y la relación $\in$ es debilmente conexa y está bien fundada (esto lo denotaremos como que $\Ord X$\nomenclature{$\Ord$}{Tal clase es un ordinal}).
+\end{mydef}
+Veamos que el axioma de fundación implica que toda clase está bien fundada, por lo que en realidad habría que demostrarse las dos primeras condiciones, no obstante, haremos esa demostración restante para ver que la teoría se sustenta bastante bien incluso si no se asume.
+
+Para las siguientes demostraciones utilizaremos esta definición de clase bien fundada respecto a $\in$:
+$$x\teyt{ bien fundada}\iff\forall y(y\subseteq x\wedge y\neq\emptyset\implies\exists z(z\in y\wedge z\cap y=\emptyset))$$
+que es equivalente a la que ya hemos dado (¿por qué?).
+
+Definiremos la siguiente clase
+$$\Omega=\{x:\cto x\wedge\Ord x\}$$
+con el axioma de comprensión. Eventualmente demostraremos que $\Omega$ es una clase propia en NBG y que no es construible en ZF.
+\begin{mydef}[Clase inductiva]
+	Diremos que una clase $x$ es \textit{inductiva} syss
+	$$\emptyset\in x\wedge\forall y(y\in x\implies y\cup\{y\}\in x).$$
+	A la clase $y\cup\{y\}$ la llamaremos el \textit{sucesor} de $y$ y suele ser denotado de varias formas ($\mathop{succ}y$, $y'$), mas la que utilizaremos en este texto será como $y^+$\nomenclature{$x^+$}{Sucesor de $x$}.
+\end{mydef}
+\begin{thm}
+	La clase $\Omega$ es inductiva, más generalmente,
+	$$\Ord x\implies\Ord x^+$$
+\end{thm}
+\begin{proof}
+	Es sencillo ver que $\Ord\emptyset$.
+
+	Ahora probaremos que $\Ord x\implies\Ord x^+$. Es sencillo probar que $x^+$ es transitivo y que la relación $\in$ es debilmente conexa (¿por qué?), con lo que estaríamos listos si asumimos el axioma de fundación.
+
+	Sin asumir el axioma de fundación probemos que $x^+$ está bien fundado. Supongamos por contradicción que existe un subconjunto no vacío $y$ de $x^+$ que no posee un $\in$-minimal. Sea $z\subseteq x\subset x^+$, entonces es claro que posee un $\in$-minimal, por ende, de existir tal $y$ no puede ser subconjunto de $x$, es decir, $x\in y$, osea que tal $y=w\cup\{x\}$, donde $w\subseteq x$. Nótese que $z\in y$ syss $z\in w$ o $z=x$, por ende, la parte de la intersección en la definición puede reescribirse como
+	$$(z\cap w)\cup(z\cap\{x\}).$$
+	Si $w\neq\emptyset$, entonces posee un $\in$-minimal $z$ tal que $z\cap w=\emptyset$ y $z\cap\{x\}=\emptyset$ por el teorema~\ref{thm:well-founded-in-sequence}. Si $w=\emptyset$, entonces $y=\{x\}$ y como $x$ está bien fundada, por el mismo teorema se demuestra que $x\cap\{x\}=\emptyset$.
+\end{proof}
+\begin{thm}
+	La clase $\Omega$ es transitiva, es decir,
+	$$\forall x(x\in y\wedge\Ord y\implies\Ord x)$$
+	osea que los elementos de ordinales son también ordinales.
+\end{thm}
+\begin{proof}
+	Sea $y$ un ordinal, por transitividad, $x\in y\implies x\subset y$, por lo que es inmediato que $x$ está bien fundado y es debilmente conexo respecto a $\in$. Ahora procederemos a ver que $x$ es transitivo. Sea $u\in v\wedge v\in x$, por transitividad de $y$ es fácil probar que $z:=\{u,v,x\}\subseteq y$. Como $y$ está bien fundado respecto a $\in$, dicho conjunto debe poseer un $\in$-minimal, es decir que se cumple alguna de las siguientes relaciones:
+	$$u\cap z=\emptyset,\; v\cap z=\emptyset,\;x\cap z=\emptyset.$$
+	Pero $u\in v\cap z$ y $v\in x\cap z$, por lo que, $u$ ha de ser el $\in$-minimal. Como $y$ es debilmente conexa tiene que darse que $u\in x\vee u=x\vee x\in u$, pero sería contradictorio que $u=x$ o que $x\in u$ (¿por qué?), por ende, $u\in x$, es decir, $v\subseteq x$ como se quería probar.
+\end{proof}
+\begin{lem}
+	La intersección de dos ordinales es también un ordinal.
+\end{lem}
+\begin{proof}
+	Tanto las cualidades de ser debilmente conexa y bien fundada entorno a $\in$ son evidentes. La transitividad es también sencilla:
+	\begin{align*}
+		x\in\alpha\cap\beta&\implies x\in\alpha\wedge x\in\beta\\
+		&\implies x\subseteq\alpha\wedge x\subseteq\beta\implies x\subseteq\alpha\cap\beta.
+	\end{align*}
+\end{proof}
+\begin{lem}
+	Sean $\alpha,\beta$ ordinales, entonces $\alpha\subseteq\beta\iff\alpha\in\beta\vee\alpha=\beta$.
+\end{lem}
+\begin{proof}
+	Es claro que la parte $\Leftarrow$ es trivial. Ahora supongamos que $\alpha\subset\beta$, entonces $\beta\setminus\alpha$ es un subconjunto no vacío de $\beta$, por lo que posee un $\in$-minimal $x$ que cumple $x\cap\beta\setminus\alpha=\emptyset$. Por ende, para todo $y\in x$, entonces $y\notin\beta\setminus\alpha$. Mas como $x\in\beta$, entonces $x\subset\beta$, es decir, $y\in\beta$, luego $y\in\alpha$, es decir, $x\subseteq\alpha$.
+
+	Si $y\in\alpha$, entonces $y\in\beta$ y por ser debilmente conexa, $x\in y\vee x=y\vee y\in x$. Observe que $x\notin y$, de lo contrario $x\in\alpha$ lo que contradice que $x\in\beta\setminus\alpha$. Tampoco $x=y$ por el mismo argumento. Luego $y\in x$, por lo que $\alpha\subseteq x$; es decir, $\alpha=x\in\beta$, como se quería probar.
+\end{proof}
+\begin{thm}\label{thm:ordinal-mutual-belonging}
+	La clase $\Omega$ es debilmente conexa respecto a $\in$, es decir,
+	$$\forall\alpha,\beta(\Ord\alpha\wedge\Ord\beta\implies\alpha\in\beta\vee\alpha=\beta\vee\beta\in\alpha).$$
+\end{thm}
+\begin{thm}
+	Todo ordinal $\alpha$ está bien ordenado respecto a la inclusión.
+\end{thm}
+\begin{proof}
+	Como ya sabemos, la inclusión es un orden en cualquier familia de conjuntos. Para ver que es un orden total basta considerar $x,y\in\alpha$, luego por ser debilmente conexa respecto a $\in$ se da que $x\in y\vee x=y\vee y\in x$, luego, recordar que $x,y$ son ordinales por el teorema anterior lo que significa que son transitivos, y la conexión está probada. Así mismo, es fácil probar que los $\in$-minimales son también $\subseteq$-minimales que, por ser totalmente ordenado, corresponde al mínimo.
+\end{proof}
+Por esta razón, en lugar de $\subseteq$ escribiremos $\leq$ al referirnos a los ordinales.
+\begin{thm}
+	Sean $\alpha,\beta$ ordinales, entonces:
+	\begin{enumerate}
+		\item Si $\alpha,\beta$ son isomorfos en orden, entonces $\alpha=\beta$.
+		\item $\alpha<\beta$ o $\alpha=\beta$ o $\beta<\alpha$.
+		\item Si $A\subseteq\Omega$, entonces $\bigcup A$ es un ordinal.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Para las propiedades 1) y 2) basta ver que $\alpha\in\beta\vee\alpha=\beta\vee\beta\in\alpha$ y que como los elementos de los ordinales son ordinales, entonces también resultan ser secciones iniciales propias.
+\end{proof}
+\begin{thm}
+	Todo conjunto bien ordenado es isomorfo en orden a un único ordinal.
+\end{thm}
+\begin{proof}
+	Basta considerar que $(\Omega,\leq)$ es una clase ordenada y un ordinal, luego si $(A,\preceq)$ es un conjunto ordenado por el teorema~\ref{thm:well-ordered-isomorphisms} se debe dar que son isomorfos entre sí o alguna sección inicial del otro. Pero no pueden ser isomorfos, ni $\Omega$ isomorfo a una sección inicial de $A$ puesto que por el axioma de reemplazo $\Omega$ sería un conjunto lo que hemos visto que es falso, por ende, $A$ debe ser isomorfo a una sección inicial propia de $\Omega$, es decir, a un ordinal.
+\end{proof}
+\begin{mydef}[Tipo de orden]
+	Dado un conjunto bien ordenado $(A,\leq)$ diremos que su \textit{tipo de orden}\index{tipo de orden} es el único número ordinal al que es isomorfo en orden y lo denotaremos como $\ord_\leq A$\nomenclature{$\ord_\leq A$}{Tipo de orden de la clase bien ordenada $(A,\leq)$} (y omitiremos el subíndice de no haber ambigüedad en los signos).
+\end{mydef}
+
+\section{El axioma de infinitud y la aritmética ordinal}
+\begin{mydef}[Ordinal sucesor y límite]
+	Diremos que un ordinal $\alpha$ es de tipo \textit{sucesor} syss existe otro ordinal $\beta$ tal que $\alpha=\beta^+$. Por otro lado, diremos que un ordinal es de tipo \textit{límite} syss corresponde a una clase inductiva. En partícular, llamamos $\omega$ al mínimo de los ordinales límite.
+\end{mydef}
+De aquí es fácil ver que todo ordinal o es nulo o es un sucesor o es un límite. Es fácil ver que $\Omega$ es un ordinal límite, pero ¿existen otros ordinales límite? Es ahora donde volvemos a introducir un axioma:
+\begin{axiom}[Axioma de infinitud]
+	Existen conjuntos inductivos.
+\end{axiom}
+\begin{thm}
+	Las siguientes expresiones son equivalentes:
+	\begin{enumerate}
+		\item Existen conjuntos $x$ para los cuales existen aplicaciones $S:x\rightarrow x$ inyectivas y no suprayectivas.
+		\item Existen conjuntos inductivos.
+		\item $\cto\omega$.
+		\item $\omega\in\Omega$.
+		\item Existe más de un ordinal límite.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Supongamos que existe dicho conjunto. Llamemos $x_0\in x$ a un elemento que no posee una antiimagen según $S$. Diremos que un subconjunto $y$ de $x$ es $S$-inductivo si $x_0\in y$ y para todo $z\in y$ se da que $S(z)\in y$. Entonces podemos construir la clase $I$ de todos subconjuntos $S$-inductivos de $x$ (que resulta ser un conjunto, ¿por qué?) y ver que $\bigcap I$ es de hecho el mínimo subconjunto $S$-inductivo, por lo que se puede construir una aplicación $f:\bigcap I\rightarrow\omega$ recursiva tal que $f(x_0)=\emptyset$ y para todo $f(S(z))=(f(z))^+$ que resulta una biyección (¿por qué?) con lo que se prueba que $\cto\omega$ es un conjunto. Si existiése más de un ordinal límite al menos uno sería un conjunto (pues sólo hay uno, $\Omega$, que es una clase propia) y por el teorema~\ref{thm:ordinal-mutual-belonging} uno debe pertenecer al otro. Finalmente la aplicación $()^+$ demuestra ser inyectiva y no recursiva en dicho ordinal.
+\end{proof}
+\begin{thm}[Inducción transfinita (variación)]
+	Sea $A$ una clase tal que $0\in A$, $\forall\alpha(\alpha\in A\implies\alpha^+\in A)$ y $\forall\lambda(\forall\delta\lt_\Omega\lambda(\delta\in A)\implies \lambda\in A)$ entonces $\Omega\subseteq A$.
+\end{thm}
+El teorema puede leerse como que $A$ es supclase de $\Omega$ cuando contiene al 0, a los sucesores de cualquier ordinal en $A$ y cuando posee a todos los ordinales sucesores menores a un límite, entonces contiene dicho límite. En síntesis que contiene a los tres tipos de ordinal.
+\begin{thm}[Propiedad de recursión transfinita]\index{propiedad!de recursión transfinita}
+	Sea $A$ una clase cualquiera. Dada una aplicación $G:\{f:\exists\alpha\leq\Omega(f:\alpha\rightarrow A)\}$ existe una única aplicación $F:\Omega\rightarrow A$ tal que para todo ordinal $\alpha$ se da que $F(\alpha)=G(F|_\alpha)$.
+\end{thm}
+\begin{proof}
+	Dado un ordinal $\alpha$, diremos que $f$ es una $\alpha$-aproximación si para todo $\beta<\alpha$ se da que $f(\beta)=G(f|_\beta)$. Veamos que todo ordinal posee una única aproximación, pues supongamos que $f$ y $g$ son $\alpha$-aproximaciones distintas, entonces por buen orden sea $\beta$ el mínimo ordinal en el que difieren, por lo que $f|_\beta=g|_\beta$, entonces $f(\beta)=G(f|_beta)=G(g|_beta)=g(\beta)$ lo que es absurdo. Para probar que existen aproximaciones para todo ordinal se hace una aplicación del principio de inducción transfinita (la variación). Finalmente, se define
+	$$F=\bigcup_{\alpha\in\Omega}f_\alpha$$
+	la cual evidentemente cumple con lo pedido.
+\end{proof}
+Recordar que en el teorema mismo hemos probado que para todo ordinal existe una única aplicación definida por recursión, por lo que el proceso puede aplicarse libremente para cualquier ordinal; esto lo utilizaremos principalmente sobre el ordinal $\omega$.
+\begin{mydef}[Función normal]
+	Sea $\Lambda$ un ordinal límite, entonces una aplicación $F:\Lambda\rightarrow\Omega$ será llamada \textit{normal} si satisface:
+	$$\forall\alpha\in\lambda(F(\alpha)<F(\alpha^+))\wedge\forall\lambda\in\Lambda(F(\lambda)=\bigcup_{\delta\lt\lambda}F(\delta)).$$
+\end{mydef}
+\begin{thm}\label{thm:normal-functions-crescent}
+	Toda función normal (con dominio $\Lambda$) es estrictamente creciente, osea,
+	$$\forall\alpha\beta\in\Lambda(\alpha<\beta\implies F(\alpha)<F(\beta)).$$
+\end{thm}
+\begin{proof}
+	Esto lo probaremos por inducción transfinita sobre $\beta$. El caso $\beta=0$ es trivial. Si $\alpha<\beta^+$ entonces $\alpha\leq\beta$, por lo que $F(\alpha)\leq F(\beta)<F(\beta^+)$. Si $\beta$ es un ordinal límite tal que $\alpha<\beta$, entonces, $\alpha^+<\beta$, por lo que, por definición, $F(\alpha)<F(\alpha^+)\leq F(\beta)$.
+\end{proof}
+\begin{lema}
+	Sea $F:\Lambda\rightarrow\Omega$ una función normal y $\lambda\in\Lambda$ un ordinal límite, entonces $F(\lambda)$ también lo es.
+\end{lema}
+\begin{thm}
+	La composición de funciones normales es también normal.
+\end{thm}
+\begin{proof}
+	Sean $F,G:\Lambda\rightarrow\Lambda$ dichas funciones (con $\Lambda$ un ordinal), entonces hemos de probar que $F\circ G$ es normal. Es fácil ver que para todo $\alpha\in\Lambda$ se da que $F(\alpha)<F(\alpha^+)$ y por el teorema~\ref{thm:normal-functions-crescent} se comprueba que $G(F(\alpha))<G(F(\alpha^+))$.
+
+	Si $\lambda\in\Lambda$ es un ordinal límite, entonces $F(\lambda)$ lo es y $G(F(\lambda))$ también. Sea $\alpha\in G(F(\lambda))$, entonces $\alpha<G(F(\lambda))$, por lo que ha de existir un $\beta<F(\lambda)$ tal que $\alpha<G(\beta)$, luego $\beta\in F(\delta)$ para algún $\delta<\lambda$, por lo que $\alpha<G(\beta)<G(F(\delta))$. Así mismo, la implicancia es evidente.
+\end{proof}
+\begin{mydef}[Adición de ordinales]
+	Sean $\alpha,\beta$ ordinales, entonces definimos por recursión:
+	$$\alpha+0=\alpha,\;\alpha+\beta^+=(\alpha+\beta)^+,\;\alpha+\lambda=\bigcup_{\delta\lt\lambda}\alpha+\delta.$$
+	donde $\lambda$ representa un ordinal límite.
+\end{mydef}
+
+\part{Lógica matemática}
+\chapter{Álgebra booleana}
+A la hora de aprender matemáticas es siempre relevante plantearse los objetivos que se buscan lograr mediante el estudio de algo en particular. La lógica es, según Aristóteles, el instrumento del conocimiento. Ésta es la que evalua y analiza los criterios mismos del razonar, los cuales abundan por montón en las matemáticas, principalmente en sus demostraciones; y si lo que se le exige a un científico es un pensamiento inquiebrantable y un escepticismo ante todo, no sería lógico pues que también dudase de los mismos métodos de demostración. Esta será nuestra tarea en lo que respecta a la primera parte de este texto, con la cual pretendemos deducir y caracterizar no sólo los procesos lógicos de las matemáticas, sino todo lo que si considera parte de un ``lenguaje formal'' o ``riguroso''.
+
+Cabe destacar que este capítulo utilizará conceptos extremadamente básicos de la teoría de conjuntos: especificamente, saber que un conjunto es una colección de objetos que carece de orden (no hay tal cosa como un ``primer'' elemento o uno que preceda a otro), y si un elemento $a$ está contenido o, mejor dicho, pertenece a un conjunto $A$, entonces lo escribiremos como que $a\in A$.
+\begin{mydef}[Álgebra booleana]
+	Diremos que una sextupla $(A,\vee,\wedge,\neg,0,1)$ es un álgebra de Boole syss para todo $x,y,z\in A$:
+	\begin{enumerate}
+		\item $x\vee x=x\wedge x=x$.
+		\item $x\vee y=y\vee x$ y $x\wedge y=y\wedge x$ (conmutatividad).
+		\item $(x\vee y)\vee z=x\vee(y\vee z)$ y $(x\wedge y)\wedge z=x\wedge(y\wedge z)$ (asociatividad).
+		\item $x\vee(y\wedge z)=(x\wedge y)\vee(x\wedge z)$ y $x\wedge(y\vee z)=(x\vee y)\wedge(x\vee z)$ (distributividad).
+		\item $x\vee(x\wedge y)=x\wedge(x\vee y)=x$.
+		\item $x\vee\neg x=1$ y $x\wedge\neg x=0$.
+		\item $x\vee 1=1$ y $x\wedge 0=0$.
+	\end{enumerate}
+	En varios casos al hablar de que $(A,\vee,\wedge,\neg,0,1)$ es un álgebra booleana mencionaremos simplemente a $A$, i.e. $A$ es un álgebra booleana y se espera que se entiendan las otras operaciones que le acompañan.
+\end{mydef}
+Un ejemplo de álgebra booleana es $(\P(A),\cup,\cap,()^c,\emptyset,A)$. La idea de estos objetos de ayudarnos a formalizar las leyes lógicas discutidas al principio de este libro.
+\begin{mydef}
+	Sea $A$ un álgebra booleana, definimos la relación $\leq_A$ entre sus elementos como que $x\leq y$ syss $x\wedge y=x$. En lo sucesivo, erradicaremos el índice de la relación por comodidad, pero en casos de confusión lo reintroduciremos.
+\end{mydef}
+\begin{prop}
+	Sea $A$ un álgebra booleana, entonces:
+	\begin{enumerate}
+		\item $x\leq y$ syss $x\vee y=y$.
+		\item $\leq_A$ es una relación de orden en $A$.
+		\item $x\vee 0=x\wedge 1=x$.
+		\item $0\leq x\leq 1$.
+		\item $x\leq y$ syss $x\wedge\neg y=0$.
+		\item $x=\neg y$ syss $x\vee y=1$ y $x\wedge y=1$.
+		\item $\neg\neg x=x$ (doble negación).
+		\item $\neg(x\vee y)=\neg x\wedge\neg y$ y $\neg(x\wedge y)=\neg x\vee\neg y$ (leyes de De Morgan).
+	\end{enumerate}
+\end{prop}
+\begin{mydef}[Morfismos]
+	Sean $A,B$ dos álgebras booleanas. Diremos que una aplicación $f:A\rightarrow B$ es un \textit{homomorfismo}\index{homomorfismo}\footnote{gr. \textit{homos}, similar; \textit{morfe}, forma.} syss para todo $x,y\in A$ se cumple:
+	\begin{enumerate}
+		\item $f(\neg x)=\neg f(x)$.
+		\item $f(x\vee y)=f(x)\vee f(y)$.
+		\item $f(0)=0$.
+		\item $f(1)=1$.
+	\end{enumerate}
+	Si $f$ es además inyectiva, suprayectiva o biyectiva se le llamará \textit{monomorfismo}\index{monomorfismo}, \textit{epimorfismo}\index{epimorfismo} e \textit{isomorfismo}\index{isomorfismo}\footnote{gr. \textit{iso}, igual; \textit{morfe}, forma.} resp. Si existe un isomorfismo entre dos álgebras booleanas, diremos que son isomorfos entre sí. Un homomorfismo de un mismo álgebra booleana a sí misma se llama \textit{endomorfismo}\index{endomorfismo}\footnote{gr. \textit{endo}, dentro, interior; \textit{morfe}, forma.} y si es biyectiva, se dice que es un \textit{automorfismo}\index{automorfismo}.
+\end{mydef}
+Nótese que uno podría agregar la regla de que $f(x\wedge y)=f(x)\wedge f(y)$, pero resulta innecesaria considerando las leyes de De Morgan. Además de preservar la ``forma'', los homomorfismos preservan el orden, es decir, si $x\leq y$, entonces $f(x)\leq f(y)$. Los conceptos de morfismos se aplican también en otras ramas y estructuras algebraicas.
+
+\appendix
+\part*{Apéndice}
+\chapter{Biografías matemáticas}
+Las biografías están ordenadas por año de nacimiento, si fuese por importancia (basado en mi conocimiento y en el tema del libro) yo podría a Cantor y a Gödel primeros, seguidos de Russell y finalmente, Zermelo. La información está basada en la página de la Escuela de Matemáticas y Estadísticas de la Universidad de San Andrews de Escocia (\url{https://www-history.mcs.st-andrews.ac.uk/BiogIndex.html}).
+
+\section{Georg Cantor}
+\begin{wrapfigure}{R}{.3\textwidth}
+	\centering
+	\includegraphics[width=.27\textwidth]{Cantor.jpeg}
+	\caption{}
+\end{wrapfigure}
+Los siguientes años fueron de particular dificultad para Cantor. En 1896, le escribió a \textbf{Hilbert} acerca de las paradojas conjuntivistas. Ese mismo año, murió su madre. En 1897, durante la primera Conferencia Internacional de Matemáticos de Zürich Cantor se reencontró con Dedekind y reestablecieron su amistad hasta 1899, donde Cantor tuvo que cesar por sus recurrentes ataques de enfermedad mental. Ese mismo año, murió su hermano menor.
+
+Para entonces, Cantor frecuentaba sanatorios para aliviar su estrés y problemas mentales. Finalmente, muere el 6 de enero de 1918 en Halle, Alemania.
+
+\begin{flushright}
+\textit{``[Los trabajos de Cantor son] el producto más refinado de ingenuidad matemática y uno de los logros supremos de la actividad humana puramente intelectual.''}\\
+--David Hilbert\\[\baselineskip]
+\textit{``Nadie debería exiliarnos del paraíso que Cantor ha creado.''}
+--David Hilbert\\[\baselineskip]
+\textit{``En las matemáticas el arte de proponer una cuestión debe ser considerada de mayor valor que resolverla.''}\\[\baselineskip]
+\textit{``La esencia de las matemáticas yace en su libertad.''}
+\end{flushright}
+
+\section{Kurt Gödel}
+\begin{wrapfigure}{o}{.3\textwidth}
+	\centering
+	\includegraphics[width=.27\textwidth]{Godel.jpeg}
+	\caption{}
+\end{wrapfigure}
+\textbf{Kurt Gödel} nació el 28 de abril de 1906 en Brünn, Austria-Hungaria (actualmente Brno, República Checa).
+
+Su infancia fue feliz y su desempeño académico formidable. Se dice que antes de terminar la secundaria ya dominaba la matemática universitaria y que, además de tener las mejores notas en latín, no había cometido error de gramática alguno en sus trabajos.
+
+\begin{flushright}
+\itshape
+``O las matemáticas son muy grandes para el cerebro humano, o el cerebro humano es más que una máquina.''
+\end{flushright}
+
+\printindex
+\printnomenclature
+
+\nocite{*}
+\printbibliography[heading=bibintoc]
+
+\end{document}

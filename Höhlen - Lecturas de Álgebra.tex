@@ -1,0 +1,2347 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage{standalone}
+\input{../template.tex}
+\makeindex[intoc]
+\makenomenclature
+\addbibresource{algebra.bib}
+
+\DeclareMathOperator{\mcd}{mcd}
+\DeclareMathOperator{\mcm}{mcm}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\car}{car}
+\DeclareMathOperator{\Adj}{Adj}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+	\raggedleft
+	\rule{1pt}{\textheight}
+	\hspace{0.05\textwidth}
+	\parbox[b]{0.75\textwidth}{
+		{\Huge\bfseries Estructuras\\[0.5\baselineskip]numéricas}\\[2\baselineskip] % Título
+		{\large\textit{Lecturas de Álgebra Moderna}}\\[4\baselineskip] % Subtítulo
+		{\Large\textsc{Joseph Höhlen}\\[0.5\baselineskip] \textit{Estudiante del Liceo Galvarino Riveros de Castro}} % Autor
+		\vspace{0.5\textheight}
+	}
+\end{titlepage}
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+\noindent \textsc{Curso Físico-Matemático, Liceo Galvarino Riveros de Castro, Chile}\\\\
+\url{https://independent.academia.edu/Jos%C3%A9IgnacioCuevasBarrientos}\\\\
+La investigación comenzó el 3 de marzo de 2019.\\\\
+\textit{Primera publicación, \today{}.} 
+
+\tableofcontents
+
+\chapter{Preámbulo}
+Antes que nada, debo dar una advertencia previa, este documento asume que el lector sabe de teoría conjuntivista elemental (definición de relación, función, cardinalidad) la cual para evitar el aburrimiento de volver a escribirlo lo voy a asumir como conocimiento pasado, de lo contrario, recomiendo revisar el capítulo~1 y sección~3.1 de mi artículo sobre la hipótesis del continuo\footcite{hohlen2019infinito} o el capítulo~1 de mi libro sobre análisis\footcite{hohlen2019analisis}.
+
+Dicho esto, me gusta reservar este capítulo para dar mis recomendaciones y razones para ponerlos en esta lista que sólo recopila algunos de los textos más importantes para mí durante la escritura de las contiguas páginas. Como es usual, están ordenados de más sencillos a más difíciles (que usualmente también implica más completo):
+\begin{enumerate}[1.]
+\item{\bfseries\cite{wallace1998groups}:} Se ha vuelto una especie de broma entre matemáticos el de estudiar solamente libros editados y publicados por Springer y asociados, pero una completamente justificada, debido al nivel de sus escritores que en la mayoría de casos dominan los temas al derecho y al revés y este sigue siendo el caso con la obra de David Wallace, la cual inmediatamente cumplió con mis expectativas. Por otro lado, el diseño es bastante inusual y vuelve el texto un poco más ligero que de costumbre, además de ello, posee bastantes ejemplos, ninguno injustificado que, entre otras cosas, ayudan al lector a relacionarse con las matrices y vectores --tanto veteranos como nuevos--; lo que siempre se agradece.
+\item{\bfseries\cite{navarro2014algebra}:} Otro de esos libros que se encuentran casualmente en línea. El autor, Juan Antonio Navarro, no deja mucha información personal en su sitio web \url{http://matematicas.unex.es/~navarro/}, no obstante, está claro su amor por las matemáticas que se ve evidenciado por la cantidad de material en sus cursos que incluye enlaces a otros escritores interesantes en español, a una página dedicada a las biografías de matemáticos (que utilizo para el capítulo~A) y sus escritos, entre los que destaco sus apuntes de licenciatura. Su texto sobre álgebra conmutativa me fue vital para la creación de este libro y él es, entre otras cosas, la prueba de que no se necesita más que un portátil y conexión a internet para estudiar lo que sea.
+\item{\bfseries\cite{wilkins2007abstract}:} Cuando comencé a estudiar me vi afligido por la falta de buenos libros de álgebra abstracta, puesto que la mayoría redundan tanto de ejemplos que apenas logran dar un par de teoremas y mucho menos demostraciones. La verdad no recordaba como ni cuando, pero tenía una copia de los apuntes del curso de este profesor en mi computador que resultó siendo una lectura fundamental al punto de que probablemente el primer capítulo sea lo más cercano a una traducción de aquél libro. No sólo eso, sino que al darme un paseo por su sitio web me dí cuenta de la cantidad de material que ofrece (i.e. traducciones a Cantor, Hamilton, Newton y Riemann), los cursos que abarca y el alto estándar que ofrecen sus clases. Esta no es una recomendación exclusiva a sus apuntes de 2007 (que por el momento han resultado ser los más completos) sino a toda su bibliografía disponible gratuitamente en \url{https://www.maths.tcd.ie/~dwilkins/Courses/}.
+\item{\bfseries\cite{castilloalgebra}:} Siempre que quiero adentrarme en un tema matemático del que no entiendo o sé absolutamente nada --o considero que mis conocimientos previos son muy básicos-- reviso mi carpeta de libros digitales para ver si Carlos Ivorra Castillo tiene un texto relacionado (¡y suele ser el caso!). Sus escritos son un desafío de leer de principio a fin, pero la recompensa es infinita, yo mismo he comprobado que sus conocimientos son tan bastos que en más de un sentido se equiparan o superan los cursos universitarios reales --sin desprestigiar dichas instituciones--, además que da gusto notar a un autor tan formidable en español. Un enlace para todos sus trabajos \url{https://www.uv.es/ivorra/Libros/Libros.htm}.
+\end{enumerate}
+Una última acotación es que si algún libro en la bibliografía trae enlace es porque dicho es oficial y de libre acceso. La misma sección debe considerarse más una recomendación de lecturas complementarias, aun que, por supuesto, estos textos fueron también mi guía; si lo desea, puede caracterizar mis trabajos como síntesis o como una recopilación.
+
+\chapter{Introducción}
+La matemática teórica, en mi opinión, se subdivide en cinco ramas fundamentales: lógica y teoría de conjuntos, teoría de números, álgebra, análisis y geometría. Evidentemente hay más de un caso en el que algunas de estas se intersectan para formar algo, por lo general, mucho más complejo y específico, pero que termina siendo de tremendo impacto para la comunidad científica de igual manera. Este es el caso con, por ejemplo, la topología que bajo ciertos lentes puede considerarse una intersección que involucra análisis real y geometría (aun que claro bastante más abstracta que de costumbre). También el lector puede incomodarse al pensar que la teoría de números es entonces una parte del álgebra, prefiero que se le considere como un prefacio de ella, pero aún así como dos ramas independientes. Por ejemplo, el estudio de los irracionales está más relacionado al análisis real, pero los irracionales trascendentales son más dependientes de la teoría de Galois, por lo que no es exclusiva de ella de cualquier forma; sé que es comprensible pues la mayoría de libros de álgebra --al menos los buenos-- trabajan bastante el tema, pero es como pensar que la trigonometría corresponde al análisis bajo el mismo argumento.
+
+Lo que no puedo negar y si quiero aclarar para cualquier persona indecisa sobre estudiar o no el tema es su relevancia para las otras ramas de las matemáticas. Para ser sincero, no se puede llegar demasiado lejos en el cálculo sin conocimientos básicos del álgebra lineal --de hecho, esa fue mi inspiración original para estudiarlo-- y lo mismo puede decirse de la geometría moderna, y aun que no es obligatorio para su examen, las aplicaciones del álgebra abstracta en las construcciones de regla y compás son de gran interés para el estudiante promedio (y lo puedo comprender).
+
+\mainmatter
+\part{Álgebra Abstracta}
+\chapter{Introducción a la teoría de grupos}
+\section{Grupos y subgrupos}
+\nomenclature{syss, $\iff$}{Si y sólo si\nomnorefpage}
+\nomenclature{resp.}{Respectivamente\nomnorefpage}
+\nomenclature{$\implies$}{Entonces\nomnorefpage}
+\nomenclature{$\in$}{Pertenece a\nomnorefpage}
+\nomenclature{$\wedge$}{Y (lógico)\nomnorefpage}
+\nomenclature{$\vee$}{O (lógico)\nomnorefpage}
+\nomenclature{$f\circ g$}{Composición de funciones, $(f\circ g)(x)=g(f(x))$\nomnorefpage}
+\nomenclature{$\cup$}{Unión (de conjuntos)\nomnorefpage}
+\nomenclature{$\cap$}{Intersección (de conjuntos)\nomnorefpage}
+\nomenclature{$|A|$}{Cardinal del conjunto $A$\nomnorefpage}
+\nomenclature{$\N$}{Conjunto de números naturales\nomnorefpage}
+\nomenclature{$\Z$}{Conjunto de números enteros\nomnorefpage}
+\nomenclature{$\R$}{Conjunto de números reales\nomnorefpage}
+\nomenclature{$\Id_A$}{Función identidad del conjunto $A$\nomnorefpage}
+\begin{mydef}[Ley de composición interna]
+Téngase un conjunto $A$, llamaremos \textit{ley de composición interna} u \textit{operación binaria interna} a toda aplicación
+\begin{align*}
+*:A\times A&\longrightarrow A\\
+*(a,b)&\longmapsto ab
+\end{align*}
+(la segunda parte corresponde a la notación para la función). Además, esta puede poseer las siguientes propiedades
+\begin{description}
+	\item[Asociatividad]\index{asociatividad} $(ab)c=a(bc)$.
+	\item[Elemento neutro]\index{elemento!neutro} Existe $e\in A$ tal que $ae=ea=a$.
+	\item[Elemento opuesto]\index{elemento!opuesto} Dado un neutro $e$ para todo $a$ existe $a^{-1}$ tal que $aa^{-1}=a^{-1}a=e$.
+	\item[Conmutatividad]\index{conmutatividad} $ab=ba$.
+\end{description}
+\end{mydef}
+Usualmente denominamos la propiedad de que $a,b\in A$ implica $ab\in A$ como \textbf{clausura}\index{clausura}.
+
+Veremos que nuestra definición base puede verse un tanto arbitraria, sin embargo, al pensar en ella considere el ejemplo de la suma y la multiplicación sobre los conjuntos numéricos elementales como $\Z,\Q$, etc.
+\begin{lem}\label{thm:unique-neutral-element}
+Sea $A$ un conjunto y $\cdot$ una operatoria binaria en él tal que existan un par $e,f\in A$ que para todo $a\in A$ cumplan $ea=a$ y $af=a$, entonces $e=f$.
+\end{lem}
+\begin{proof}
+Veamos que $ef=e$ y $ef=f$.
+\end{proof}
+\begin{mydef}[Estructuras algebraicas]\index{estructura algebraica}
+Dado una ley de composición interna $\cdot$ sobre $G$, clasificamos a $(G,\cdot)$ como una de las siguientes estructuras algebraicas:
+\begin{description}
+	\item[Semigrupo]\index{semigrupo} Si $\cdot$ es asociativa.
+	\item[Monoide]\index{monoide} Si $\cdot$ es semigrupo y posee neutro.
+	\item[Grupo]\index{grupo} Si $\cdot$ es monoide y posee opuesto.
+	\item[Grupo abeliano o conmutativo]\index{grupo!abeliano, conmutativo} Si $\cdot$ es grupo y conmutativo.
+\end{description}
+A su vez, si $(G,\cdot)$ es una estructura con asociatividad y conmutatividad podríamos llamarle semigrupo conmutativo.
+\end{mydef}
+\begin{thm}
+Sea $(G,\cdot)$ una estructura algebraica:
+\begin{enumerate}[$a)$]
+	\item Si posee elemento neutro es único.
+	\item Si es grupo entonces posee cancelación\index{cancelación} por la izquierda y derecha:
+	$$ab=ac\iff b=c,\quad ab=cb\iff a=c.$$
+	\item Si es grupo entonces el opuesto es único.
+	\item $(a^{-1})^{-1}=a$.
+	\item $(ab)^{-1}=b^{-1}a^{-1}$.
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}[$a)$]
+\item Supongamos que existen dos elementos neutro $e_1,e_2$
+$$e_1=e_1e_2=e_2e_1=e_2.$$
+\item Simplemente aplica $a^{-1}$ por la izquierda y $b^{-1}$ por la derecha resp.
+\item Aplicar cancelación.
+\item $$(a^{-1})^{-1}=(a^{-1})^{-1}(a^{-1}a)=((a^{-1})^{-1}a^{-1})a=a.$$
+\item $c:=(ab)^{-1}$, luego
+$$a^{-1}=a^{-1}(abc)=(a^{-1}a)bc=bc,$$
+luego, aplicamos $b^{-1}$ a ambos lados por la izquierda y la igualdad se sostiene.
+\end{enumerate}
+\end{proof}
+\begin{thm}
+Sea $(S,\cdot)$ un semigrupo tal que para todo $a,b\in S$ existan $x,y\in S$ tales que $ax=b$ e $ya=b$, entonces $S$ es un grupo.
+\end{thm}
+\begin{proof}
+Como es para cualquier par de números consideremos el caso $ea=a$ donde $e\in S$, ahora probemos que dicho elemento es neutro para cualquier otro número elegido. Sea $c=ab$, entonces $ec=e(ab)=(ea)b=ab=c$, por el lema~\ref{thm:unique-neutral-element} vemos que es neutro. Como $e\in S$, por construcción existen $c',c''\in S$ tal que $c'c=e$ y $cc''=e$, a la segunda apliquemos producto por $c'$ a ambos lados para ver que $c'=c'e=c'(cc'')=(c'c)c''=c''$; es decir, $c'=c''$ y por tanto es inverso.
+\end{proof}
+\begin{thm}
+Sea $(S,\cdot)$ un semigrupo finito con cancelación (por la izquierda y derecha), entonces es un grupo.
+\end{thm}
+\begin{mydef}[Producto interno]
+Sean $(A,*)$ y $(B,\star)$ dos estructuras algebraicas, entonces se define una operación
+\begin{align*}
+\circ:(A\times B)^2&\longrightarrow A\times B\\
+(a_1,b_1)\circ(a_2,b_2)&\longmapsto(a_1*a_2,b_1\star b_2)
+\end{align*}
+tal que $(A\times B,\circ)$ se define como el producto interno de dichas estructuras.
+\end{mydef}
+\begin{thm}
+El producto interno de grupos es un grupo.
+\end{thm}
+\begin{mydef}[Subgrupo]\index{subgrupo}
+Sea $(A,*)$ un grupo y $B\subset A$ tal que $(B,*|_{B\times B})$ es un grupo, entonces se dice que es \textit{subgrupo} de $A$.
+\end{mydef}
+\begin{thm}[Criterio de subgrupos]\index{criterio!de subgrupos}
+Sea $(B,*)$ un subgrupo de $(A,*)$ syss:
+\begin{enumerate}[1)]
+\item Para todo $a,b\in B$ entonces $ab\in B$.
+\item Para todo $a\in B$ entonces $a^{-1}\in B$.
+\end{enumerate}
+\end{thm}
+\begin{thm}
+Sean $B,C$ subgrupos de $(A,*)$, entonces $B\cap C$ es subgrupo de $A$.
+\end{thm}
+\begin{proof}
+Veamos que es inmediato del criterio de subgrupos.
+\end{proof}
+\begin{thm}
+Sean $B,C$ subgrupos de $(A,*)$. Si $B\cup C$ es subgrupo de $A$, entonces $B\subseteq C$ o $C\subseteq B$.
+\end{thm}
+\begin{proof}
+Supongamos primero, que existe un elemento $b\in B$ tal que $b\notin C$, y demostremos que $C\subseteq B$.
+
+Sea $c\in C$, luego como $B\cup C$ es subgrupo, entonces $bc\in B\cup C$, es decir, $bc\in B$ o $bc\in C$. La segunda es imposible puesto que si $bc\in C$ como $c^{-1}\in C$ se tendría que $b\in C$, lo que contradice nuestra construcción; por lo tanto es la primera, y como $b\in B$ tenemos que $b^{-1}\in B$, dando así, que $c\in B$.
+\end{proof}
+\begin{mydef}[Subgrupo generado por $X$]\index{subgrupo!generado}
+Sea $X$ subconjunto de $(G,\cdot)$ tal que $\mathcal{H}$ es la clase de todos los subgrupos $H_i$ de $G$ tales que $X\subseteq H$. Entonces llamamos \textit{subgrupo generado por} $X$ al conjunto
+$$\langle X\rangle=\bigcap\mathcal{H}$$
+\nomenclature{$\langle X\rangle$}{Subgrupo generado por el conjunto $X$}
+\end{mydef}
+\begin{cor}
+Sea $X$ subconjunto de $(G,\cdot)$ entonces $X=\langle X\rangle$ syss $X$ es subgrupo de $G$.
+\end{cor}
+\begin{proof}
+Veamos que se identifican de inmediato dos propiedades de la definición de $\langle X\rangle$:
+\begin{enumerate}[1)]
+\item $X\subseteq\langle X\rangle$.
+\item Sea $H$ un subgrupo de $G$ tal que $X\subseteq H$ entonces $\langle X\rangle\subseteq H$.
+\end{enumerate}
+De ambas, el enunciado es concluyente.
+\end{proof}
+\begin{lem}
+Sea $X\subseteq(G,\cdot)$ entonces $\langle X\rangle$ contiene a todos los productos finitos de la forma
+$$x_1x_2\cdots x_n$$
+tales que $x_i$ o $x_i^{-1}$ pertenece a $X$.
+\end{lem}
+\begin{proof}
+Supongamos que existiese dicho conjunto al que denotaríamos por $S$, entonces es evidente que $S$ corresponde a un subgrupo de $G$, es decir, $\langle X\rangle\subseteq S$.
+\end{proof}
+A su vez, definiremos las \textbf{potencias}\index{potencias} de un número como
+$$a^n=\begin{cases}
+\underbrace{a*\cdots*a}_n,&n\gt 0\\
+e,&n=0\\
+(a^{|n|})^{-1}&n\lt 0
+\end{cases}$$
+\begin{thm}
+Sea $(A,*)$ un grupo, y $n,m$ enteros entonces
+\begin{enumerate}
+\item $a^na^m=a^{n+m}$.
+\item $(a^n)^m=a^{nm}$.
+\item $(a^{-1})^n=a^{-n}$.
+\end{enumerate}
+\end{thm}
+\begin{thm}
+Sea $a\in(A,\cdot)$ donde este es un grupo. Entonces $\langle a\rangle=\{a^n:n\in\Z\}$ que resulta ser abeliano (en la siguiente sección se entregan pruebas de ello).
+\end{thm}
+Nótese que por consecuencias de ser grupo, si existiese $n$ positivo tal que fuese el menor número natural que cumpla que $a^n=e$, entonces $|\langle a\rangle|=n$.
+
+\section{Álgebra sobre números}
+En la sección~[TdC~1.4] ya hablé sobre la construcción formalista de los números naturales, enteros y racionales (cuyos conjuntos se denotan como $\N$, $\Z$ y $\Q$ resp.); por lo cual no redundaré en divagar sobre detalles técnicos, sino que otorgaré información básica necesaria para realizar ciertas demostraciones que nos permitan comprender las propiedades fundamentales de los números --o al menos aquellas que rozan el análisis matemático--.
+\begin{mydef}[Principio de inducción para $\N$]\index{inducción}
+Sea $A\subseteq\N$ tal que cumpla que $0\in A$ y para todo $n$ el pertenecer a $A$ implica que su sucesor $n^+$ también lo hace, entonces $A=\N$. 
+\end{mydef}
+En la práctica utilizaremos esto para demostrar que ciertas propiedades se aplican para todos los naturales, de manera que se debe comprender dicho proceso como que si $\phi(n)$ es una propiedad se comienza por probar que $\phi(0)$ y que si $\phi(n)$ entonces $\phi(n+1)$.
+\begin{mydef}[Suma y multiplicación]\index{suma}\index{multiplicación}
+Definimos dichas operatorias en $\N$ por recursión de forma que
+\begin{align*}
+a+0=a,&\quad a+b^+=(a+b)^+;\\
+a\cdot 0=a,&\quad a\cdot b^+=ab+a.
+\end{align*}
+\end{mydef}
+\begin{thm}
+$(\N,+)$ es un monoide conmutativo con cancelación.
+\end{thm}
+\begin{proof}
+Realmente esta constituye una larga serie de demostraciones que consiste en ver que la suma de naturales poseen asociatividad, elemento neutro (que pueden ser y son distintos), conmutatividad y para finalizar la cancelación (en este caso por la derecha). Lo haremos en dicho orden y por inducción:
+\begin{enumerate}[$a)$]
+	\item Caso base: $(a+b)+0=a+b=a+(b+0)$.\\
+	Hipótesis: $(a+b)+c=a+(b+c)$.\\
+	Paso inductivo:
+	\begin{align*}
+	(a+b)+(c+1)&=((a+b)+c)+1=(a+(b+c))+1\\
+	&=a+((b+c)+1)=a+(b+(c+1)).
+	\end{align*}
+	\item El elemento neutro es el 0 y su demostración es trivial.
+	\item Para este se debe probar primero la conmutatividad con el 1 lo que se hace por inducción sin mayor problema. Seguido de esto, la demostración para la conmutatividad sólo requiere de usar la asociatividad.
+	\item La cancelación por la derecha igual es bien sencilla aun que hace uso del 4\textsuperscript{o} axioma de Peano (que dice que dos números poseen igual sucesor syss son iguales) apareciente en el documento ya mencionado.
+\end{enumerate}
+\end{proof}
+\begin{lem}
+$a\cdot 0=0\cdot a=0$.
+\end{lem}
+\begin{proof}
+Realizar por inducción.
+\end{proof}
+\begin{thm}
+$\cdot$ posee distributividad\index{distributividad} con respecto a $+$ en $\N$, es decir:
+$$a(b+c)=ab+ac,\quad(a+b)c=ac+bc$$
+\end{thm}
+\begin{proof}
+Ambas son por inducción sobre $c$.
+
+Caso base: $a(b+0)=ab=ab+0=ab+a\cdot 0$.\\
+Hipótesis: $a(b+c)=ab+bc$.\\
+Paso inductivo:
+\begin{align*}
+a(b+(c+1))&=a((b+c)+1)=a(b+c)+a\\
+&=ab+ac+a=ab+a(c+1).
+\end{align*}
+El último paso es por definición recursiva de multiplicación.
+
+Caso base: $(a+b)\cdot 0=0=0+0=a\cdot 0+b\cdot 0$.\\
+Hipótesis: $(a+b)c=ac+bc$.\\
+Paso inductivo:
+\begin{align*}
+(a+b)(c+1)&=(a+b)c+(a+b)=ac+bc+a+b\\
+&=ac+a+bc+b=a(c+1)+b(c+1).
+\end{align*}
+Nótese que en realidad hay varios pasos que he saltado respecto al orden de los factores, pues me parece redundante habiendo demostrado asociatividad y conmutatividad de la suma.
+\end{proof}
+\begin{thm}
+$(\N,\cdot)$ es un monoide conmutativo.
+\end{thm}
+\begin{proof}
+Las demostraciones serán por inducción en el orden asociatividad, neutro, conmutatividad:
+\begin{enumerate}
+	\item Es inducción sobre el tercer término, se aplica distributividad.
+	\item Es el 1.
+	\item Se deduce con distributividad y conmutatividad del 1 que forma parte de la demostración de que es elemento neutro.
+\end{enumerate}
+\end{proof}
+Además definimos la relación $\leq$ (léase ``menor o igual que'') tal que
+$$a\leq b\iff\exists r\in\N:b=a+r,$$
+luego podemos denotar que $r=b-a$ y se puede comprobar que es único. Esta relación es importante pues es de orden total, lo que significa que es reflexiva, antisimétrica, transitiva y conexa (o que admite comparabilidad fuerte); divulgando podemos decir que significa que podemos ordenar los elementos de $\N$ en un línea en vez de otros diagramas más confusos y \textit{caóticos} (propios de un orden parcial u otro tipo de relaciones).
+
+Luego, la construcción de $\Z$ viene dada considerando que todo número es en realidad una clase de equivalencia $[a,b]$ donde el lector debe interpretar esto como todas las restas equivalentes a $a-b$, de esta forma, debemos redefinir la suma y la multiplicación, como prosigue:
+$$[a,b]+[c,d]=[a+b,c+d],\quad[a,b]\cdot[c,d]=[ac+bd,bc+ad].$$
+\begin{thm}
+$(\Z,+)$ es un grupo abeliano, $(\Z,\cdot)$ es un monoide conmutativo con distributividad.
+\end{thm}
+\begin{proof}
+Es fácil ver que $\Z$ conserva todas las propiedades de $\N$ con respecto a la suma y multiplicación. Pero gana otra puesto que el inverso de $[a,b]$ es $[b,a]$, probando que es un anillo unitario conmutativo.
+\end{proof}
+La relación $\leq$ ahora significa
+$$[a,b]\leq[c,d]\iff a+d\leq c+b$$
+y también es un orden total.
+
+Asimismo, la construcción de $\Q$ viene considerando las clases de equivalencia $[a,b]$ que representan todas las fracciones proporcionales entre si, por transitividad, a $a/b$ (con $b\neq 0$). De esta forma, debemos redefinir la suma y la multiplicación como prosigue (considere que $[a,b]:=\frac{a}{b}$):
+$$\frac{a}{b}+\frac{c}{d}=\frac{ad+cb}{bd},\quad\frac{a}{b}\frac{c}{d}=\frac{ac}{bd}.$$
+\begin{thm}
+$(\Q,+)$ y $(\Q\setminus\{0\},\cdot)$ son grupos abelianos con distributividad.
+\end{thm}
+\begin{proof}
+Consideremos que $a,b,c,d,e,f\in\Z$ que es un anillo unitario conmutativo respecto a la suma y multiplicación respectiva. La asociatividad se prueba pues
+\begin{align*}
+\left(\frac{a}{b}+\frac{c}{d}\right)+\frac{e}{f}&=\frac{ad+cb}{bd}+\frac{e}{f}=\frac{(ad)f+(cb)f+e(bd)}{(bd)f}\\
+&=\frac{a(df)+(cf)b+(ed)b}{b(df)}=\frac{a}{b}+\frac{cf+ed}{df}\\
+&=\frac{a}{b}+\left(\frac{c}{d}+\frac{e}{f}\right).
+\end{align*}
+El elemento neutro es el $0/1$ que es equivalente con $0/n$ con $n\in\Z\setminus\{0\}$. El inverso de $a/b$ es $(-a)/b$ y la conmutatividad es trivial.
+
+Las propiedades de la multiplicación son inmediatas y el inverso de $a/b$ es $b/a$ siempre que $a\neq 0$.
+
+La distributividad es trivial.
+\end{proof}
+En este contexto $\leq$ significa
+$$\frac{a}{b}\leq\frac{c}{d}\iff ad\leq cb$$
+siempre que $a,b,c,d$ sean positivos.
+
+En teoría, tras $\Q$ debería venir $\R$ el conjunto de los números reales, sin embargo, su construcción es extremadamente compleja --al menos lo suficiente para no poder ser descrita en un único párrafo--, no obstante, describo el proceso en el capítulo~2 de \cite{hohlen2019analisis} si el lector desea saber; incluyendo demostraciones de que $\R$ conserva las propiedades de $\Q$ ya mencionadas.
+
+Pero vamos a regresar un poco al conjunto de los enteros para dar una pequeña introducción a la \textbf{Teoría Elemental de Números}, comenzando por un teorema vital:
+\begin{thm}[Principio del buen orden]\index{principio!del buen orden}
+Todo subconjunto no vacío de $\N$, posee mínimo elemento,
+$$\forall A\subseteq\N,\;(A\neq\emptyset\iff\exists\min A).$$
+\end{thm}
+%\nomenclature{$\forall $}{Para todo\nomnorefpage}
+%\nomenclature{$\exists,\exists! $}{Existe, existe un único, resp.\nomnorefpage}
+\nomenclature{$\emptyset$}{Conjunto vacío\nomnorefpage}
+\begin{proof}
+Introduzcamos la notación de que existe un conjunto $I_n\subseteq\N$ tal que $I_n=\{m\in\N:m\leq n\}$. Luego, diremos que para cada $A$ existe un $I_n\subseteq\N\setminus A$. Si $0\in A$ entonces $\min A=0$ puesto que todo $x\in\N\implies 0\leq x$. Si $0\notin A$ entonces $I_n\neq\emptyset$, sin embargo, $I_n\neq\N$, por tanto, no satisface el 5\textsuperscript{o} axioma de Peano, es decir, que existe un $m\in I_n$ tal que $m'\notin I_n$ y efectivamente, dicho número es $n$ (porque $n'\geq n$), luego si consideramos el $I_n$ mayor que satisfaga $I_n\subseteq\N\setminus A$ entonces $n'\in A$ y, $\min A=n'$.
+\end{proof}
+Además de ello, una observación sobre notación que utilizaremos más adelante:
+\begin{mydef}
+Si queremos expresar la suma $a_0+a_1+\cdots+a_n$ de manera más corta utilizaremos la siguiente notación
+$$\sum_{i=0}^n a_i:=a_0+a_1+\cdots+a_n$$
+\nomenclature{$\sum_{i=0}^n$}{Sumatoria de índice $i=0$ hasta $n$}
+que se lee como ``\textbf{sumatoria}\index{sumatoria} con índice $i=0$ hasta $i=n$ de $a_i$''.
+
+Análogamente, expresaremos un producto repetido $a_0\cdot a_1\cdots a_n$ como
+$$\prod_{i=0}^n a_i=a_0\times a_1\times\cdots\times a_n$$
+\nomenclature{$\prod_{i=0}^n$}{Producto de índice $i=0$ hasta $n$}
+que se lee como ``\textbf{pitatoria}\index{pitatoria}\index{producto} o \textbf{producto} con índice $i=0$ hasta $i=n$ de $a_i$''. En el caso hipotético de que la sumatoria (producto resp.) tenga índice mayor que $n$, entonces el resultado será siempre 0 (1 resp.). 
+\end{mydef}
+
+\section{Teoría elemental de números}
+Esta sección será una copia directa de mi artículo \cite{hohlen2019teoria}.
+
+Comenzaremos por una aplicación directa del principio del buen ordenamiento de $\N$:
+\begin{thm}[Algoritmo de la división]\index{algoritmo!división entera}
+Dados cualesquiera $a,b\in\Z$ con $a\gt 0$, existen unos únicos números $q,r\in\Z$ tales que
+$$b=aq+r,\quad 0\leq r\lt a$$
+\end{thm}
+\begin{proof}
+Vamos a definir un conjunto
+$$S=\{x\in\N:x=b-an,\quad n\in\Z\}$$
+y veremos que es no vacío.
+
+Si $b\geq 0$ entonces para $n=0$ se obtiene $x=b-a\cdot 0=b\geq 0$ luego $b\in S$.
+
+Si $b\lt 0$ entonces, como $a$ es entero positivo, luego $a\geq 1$, multiplicando por $-b$ obtenemos
+$$-ab\geq -b\implies x=b-ab\geq 0,$$
+finalmente $x\in S$, es decir, $S$ es siempre no vacío.
+
+Por axioma del buen orden, $S$ posee mínimo al que denotaremos como
+$$r=b-aq.$$
+Ahora hemos de probar la desigualdad con $r$. Supongamos que (como $r$ es natural) por contradicción $r\geq a$, luego $r-a=b-aq-a=b-a(q+1)\geq 0$, por lo tanto, $r-a\in S$, lo que contradice el que nuestro $r$ sea el mínimo elemento.
+
+Finalmente probaremos la unicidad suponiendo que existen múltiples $r_1,r_2$ y $q_1,q_2$ que satisfacen, la ecuación, luego
+$$aq_1+r_1=aq_2+r_2,$$
+supongamos que $r_2\geq r_1$ es positivo, luego
+$$r_2-r_1=a(q_1-q_2)$$
+como $a$ es positivo y entero, $q_1-q_2$ debe ser también entero positivo. Luego $r_2-r_1$ debe ser múltiplo de $a$, sin embargo, como
+$$0\leq r_1\leq r_2\lt a,$$
+entonces debe ser cero; con lo cual se concluye que $q_1=q_2$.
+\end{proof}
+A tal $q$ en el algoritmo se le dice ``cociente''\index{cociente}, mientras que a $r$ se le denomina ``resto''\index{resto}.
+\begin{mydef}[Divisibilidad]
+Sean $a,b\in\Z$ (léase ``$a$ y $b$ enteros''), escribiremos $a\mid b$ \nomenclature{$a\mid b$}{$a$ es divisor de $b$.} (léase ``$a$ divide a $b$'', ``$b$ es múltiplo de $a$'' o ``$a$ es un divisor\index{divisor} de $b$'') si y sólo si existe un entero $q$ tal que $b=aq$.
+\end{mydef}
+\begin{thm}
+La divisibilidad en los naturales es una relación de orden parcial.
+\end{thm}
+\begin{proof}
+Es claro que es reflexiva. La transitividad es sencilla, pues
+$$a\mid b\wedge b\mid c\iff b=aq_1\wedge c=bq_2\implies c=(aq_1)q_2=a(q_1q_2)\implies a\mid c.$$
+La antisimetría es la más difícil, pero nótese que si $b=aq_1$ con $q_1\in\N$, entonces $b\geq a$ y $\leq$ (y $\geq$ también) es una relación de orden total, lo que significa que es antisimétrica.
+
+También podemos ver que no es de orden total puesto que $2\nmid 3$ y $3\nmid 2$.
+\end{proof}
+Por ejemplo $2\mid 10$ o $3\mid 6$.
+\begin{thm}\label{thm:divisibility-propierties}
+Sean $a,b,c\in\Z$ con $a\neq 0$ entonces:
+\begin{enumerate}[1.]
+\item $a\mid 0$, $a\mid ka$ y $1\mid a$ para todo $k\in\Z$.
+\item $a\mid b$ y $c\mid d$ implican $ac\mid bd$.
+\item $a\mid b$ y $b\mid c$ implican $a\mid c$.
+\item $a\mid b$ y $a\mid c$ implican $a\mid ub+vc$, donde $u,v\in\Z$.
+\item $a\mid b$ con $a,b$ positivos implica $a\leq b$.
+\item $a\mid b$ y $b\mid a$ implican $|a|=|b|$.
+\end{enumerate}
+\end{thm}
+\begin{proof}
+Probaremos el 4:
+
+Por construcción existen $q_1,q_2\in\Z$ tales que $b=aq_1$ y $c=aq_2$, finalmente $u b+v c=u aq_1+v aq_2=a(u q_1+v q_2)$.
+\end{proof}
+\begin{mydef}[Máximo común divisor]
+Dados $a,b\in\Z$ definimos el máximo común divisor\index{maximo@máximo!común divisor} $M=(a;b)$\nomenclature{$\mcd(a,b),(a;b)$}{Máximo común divisor entre $a$ y $b$} (a veces denotado como $\mcd(a,b)$) como aquel que satisface:
+\begin{enumerate}[$a)$]
+\item $M\mid a$ y $M\mid b$.
+\item Si $c\mid a$ y $c\mid b$ entonces $c\leq M$.
+\end{enumerate}
+\end{mydef}
+Cabe destacar que el máximo común divisor no es una \textit{función ordenada}, es decir, $(a;b)=(b;a)$.
+\begin{thm}
+Sean $a,b,k\in\Z$ no nulos, entonces
+\begin{enumerate}[$a)$]
+\item $(a;b)=(-a;b)=(-a;-b)=(|a|;|b|)$.
+\item $(ak;bk)=|k|(a;b)$.
+\item $(a;b)=d$. $(a/d;b/d)=1$.
+\end{enumerate}
+\end{thm}
+\begin{lem}
+Sean $a,b\in\Z$ tales que $b=aq+r$, entonces $(a;b)=(a;r)$.
+\end{lem}
+\begin{proof}
+Sean $k=(a;b)$ y $l=(a;r)$. Es fácil ver que como $r=b-aq$, entonces $k\mid r$ por definición $k\leq l$. Asimismo, se deduce que $k\geq l$; con lo cual $k=l$.
+\end{proof}
+\begin{thm}[Algoritmo de Euclides]\index{algoritmo!de Euclides}
+Sean $a,b\in\Z$, una forma de calcular $(a;b)$ es a través del siguiente método:
+\begin{align*}
+b=aq_1+r_1,&\quad 0\lt r_1\lt a\\
+a=r_1q_2+r_2,&\quad 0\lt r_2\lt r_1\\
+r_1=r_2q_3+r_3,&\quad 0\lt r_3\lt r_2\\
+&\vdots\\
+r_n=r_{n+1}q_{n+2},
+\end{align*}
+dónde $r_{n+1}=(a;b)$.
+\end{thm}
+Tomemos dos números cualesquiera: 288 y 560, e intentemos aplicar al método de Euclides:
+\begin{align*}
+560&=288\cdot 1+272\\
+288&=272\cdot 1+16\\
+272&=16\cdot 17
+\end{align*}
+por lo tanto $16=(288;560)$.
+\begin{thm}[Identidad de Bézout]\label{thm:bezout-identity}\index{identidad!de Bézout}
+Para todo $a,b\in\Z$ existen $x,y\in\Z$ tales que $(a;b)=ax+by$.
+\end{thm}
+\begin{proof}
+Definamos el conjunto
+$$S=\{z\gt 0:z=ax+by,\quad x,y\in\Z\}$$
+veamos que no es vacío. Pues $a^2+b^2\in S$. Por principio del buen ordenamiento posee mínimo $g=ax_0+by_0$.
+
+Podemos ver que $g$ divide a $a$ y a $b$ pues
+$$a=qg+r,\quad 0\leq r\lt g$$
+con lo cual
+\begin{align*}
+r&=a-qg\\
+&=a-q(ax_0+by_0)\\
+&=a(1-qx_0)+by_0\in S
+\end{align*}
+Si $r\neq 0$ entonces se contradice con que $g$ era el menor.
+
+Como $g$ es un divisor común de $a,b$ se concluye que $g\leq d=(a;b)$.
+
+Como $d\mid a$, $d\mid b$, entonces $d\mid ax_0+by_0=g$. Al ser ambos positivos, $d\leq g$. Por antisimetría $d=g$.
+\end{proof}
+\begin{mydef}[Números coprimos y primos]
+Decimos que $a,b\in\Z$ son \textit{coprimos}\index{número!coprimo} syss $(a;b)=1$. Un número primo\index{número!primo} $p$ es aquel que es positivo y sólo posee dos divisores naturales: el 1 y $p$. Los números que son el producto de números primos son llamados \textit{compuestos}\index{número!compuesto}.
+\end{mydef}
+Nótese que como los números primos por definición poseen dos divisores, el 1 no es primo, pero tampoco cumple con la condición para ser compuesto. Más adelante veremos que es el único natural que posee esta propiedad.
+\begin{thm}
+Sea $p$ un número primo tal que $p\nmid a$ entonces $p,a$ son coprimos.
+\end{thm}
+\begin{proof}
+Por definición $d=(p;a)$ cumple $d\mid p$, luego $d\mid 1$ o $d\mid p$. Como $d\mid a$ y $p\nmid a$ entonces $d\nmid p$, es decir, $d\mid 1$.
+\end{proof}
+Esto podríamos haberlo utilizado como definición auxiliar de \textit{primo}.
+\begin{thm}
+Si se encuentran $u,v\in\Z$ tales que
+$$ua+vb=1,$$
+entonces $a,b$ son coprimos.
+\end{thm}
+\begin{proof}
+Considere la prueba anterior, demostramos que el mínimo del conjunto equivale al máximo común divisor, como dicho conjunto admite únicamente valores positivos, el mínimo valor posible es 1, de ser obtenido, es inmediato que equivale al mcd.
+\end{proof}
+\begin{thm}[Lema de Euclides]\index{lema!de Euclides}
+Sea $a\mid bc$ con $a,b$ coprimos; entonces $a\mid c$.
+\end{thm}
+\begin{proof}
+Por identidad de Bézout, $1=ax_0+by_0$, por lo tanto, $c=ax_0c+by_0c$. Evidentemente $a\mid ax_0c$ y por construcción $a\mid y_0bc$, luego $a\mid ax_0c+by_0c=c$.
+\end{proof}
+Más adelante nos referiremos a esta propiedad como ``ley de cancelación''.
+\begin{thm}\label{thm:coprime-transitivity}
+Sea $(a;b)=1$ y $(a;c)=1$, entonces $(a;bc)=1$.
+\end{thm}
+\begin{proof}
+Digamos que $d=(a;bc)$. Como $d\mid a$ y $(a;b)=1$, se obtiene que $(d;b)=1$. Por lema de Euclides $d\mid c$. Y como $(a;c)=1$ entonces $d=1$.
+\end{proof}
+\begin{thm}
+Sea $p$ primo tal que $p\mid ab$ entonces $p\mid a$ o $p\mid b$. Más aún, si $p\mid a_1\cdots a_n$, entonces divide a por lo menos uno de los $a_i$.
+\end{thm}
+\begin{proof}
+Probaremos la primera proposición. Si $p\mid ab$ pero $p\nmid a$, lo que implica $(p;a)=1$, por lema de Euclides, $p\mid b$. El resto es por inducción.
+\end{proof}
+\begin{thm}[Teorema fundamental de la aritmética]\index{teorema fundamental!de la aritmética}
+Todo número natural mayor que 1 es o primo o compuesto y puede escribirse como un único producto de números de primos (descomposición prima)\index{descomposición!prima}.
+\end{thm}
+\begin{proof}
+Primero probaremos que todo número o es primo o es compuesto. Supongamos que tenemos el siguiente conjunto
+$$S=\{n\in\N:n\gt1\text{ y $n$ es primo o compuesto}\},$$
+probaremos que contiene a todo $n\gt 1$ por inducción. Evidentemente $2\in S$. Si $n+1$ es primo entonces pertenece a $S$, sino, puede escribirse como $n+1=ab$ donde como $a\mid n+1$ se cumple que $a\leq n+1$ y $b\leq n+1$, luego $a,b\in S$; es decir, $a,b$ o son primos o son producto de primos, por lo tanto, $n+1$ es compuesto.
+
+Ahora probaremos que la descomposición prima es única. Supongamos que no lo fuese y hubiesen dos posibles descomposiciones primas:
+$$n=p_1p_2\cdots p_n=q_1q_2\cdots q_n$$
+donde $p_1\leq p_2\leq\cdots\leq p_n$ y $q_1\leq q_2\leq\cdots\leq q_n$. Luego $p_1\mid q_1q_2\cdots q_n$. Por ser primo, $p_1\mid q_i$ para algún $1\leq i\leq n$, es decir, $p_1\leq q_1$. Por simetría $q_1\mid p_1\cdots p_n$ y $q_1\leq p_1$. Como $p_1=q_1$. Luego podemos aplicar el mismo método sobre
+$$\frac{n}{p_1}=p_2\cdots p_n=q_2\cdots q_n$$
+para ver que, por inducción, $p_1=q_1$, $p_2=q_2$, $\dots$, $p_n=q_n$. Es decir, la factorización es única.
+\end{proof}
+\begin{thm}
+Los números primos son infinitos.
+\end{thm}
+\begin{proof}
+Supongamos por contradicción que los primos fueran finitos, entonces podríamos hacer una lista de todos ellos como prosigue:
+$$P:=\{p_1,p_2,\dots,p_n\},$$
+como nos hemos asegurado que $p_i$ es positivo y mayor que 1, es fácil ver que si $p_i\mid c$ entonces $p_i\nmid c+1$. Finalmente el número
+$$c=p_1\cdot p_2\cdots p_n+1$$
+no sería divisible por ningún de los primos en nuestra lista, y por lo tanto, por ningún otro número más que si mismo y el 1; es decir, $c$ sería primo, contradiciendo que los habíamos organizado en una lista.
+\end{proof}
+También, suele ser necesario tener que confirmar si un número es primo, por lo cual, hay varias formas, la primera es \textbf{la criba de Eratóstenes} que consiste en denotar los números de 2 hasta $n$ y comenzar tachando los múltiplos de los primos, los no tachados resultan ser primos:
+$$\begin{array}{*{10}{c}}
+ & & {\color{niceblue}\mathbf{ 2 }} & {\color{niceblue}\mathbf{ 3 }} & \cancel{ 4 } & {\color{niceblue}\mathbf{ 5 }} & \cancel{ 6 } & {\color{niceblue}\mathbf{ 7 }} & \cancel{ 8 } & \cancel{ 9 }\\
+\cancel{ 10 } & {\color{niceblue}\mathbf{ 11 }} & \cancel{ 12 } & {\color{niceblue}\mathbf{ 13 }} & \cancel{ 14 } & \cancel{ 15 } & \cancel{ 16 } & {\color{niceblue}\mathbf{ 17 }} & \cancel{ 18 } & {\color{niceblue}\mathbf{ 19 }}\\
+\cancel{ 20 } & \cancel{ 21 } & \cancel{ 22 } & {\color{niceblue}\mathbf{ 23 }} & \cancel{ 24 } & \cancel{ 25 } & \cancel{ 26 } & \cancel{ 27 } & \cancel{ 28 } & {\color{niceblue}\mathbf{ 29 }}\\
+\cancel{ 30 } & {\color{niceblue}\mathbf{ 31 }} & \cancel{ 32 } & \cancel{ 33 } & \cancel{ 34 } & \cancel{ 35 } & \cancel{ 36 } & {\color{niceblue}\mathbf{ 37 }} & \cancel{ 38 } & \cancel{ 39 }\\
+\cancel{ 40 } & {\color{niceblue}\mathbf{ 41 }} & \cancel{ 42 } & {\color{niceblue}\mathbf{ 43 }} & \cancel{ 44 } & \cancel{ 45 } & \cancel{ 46 } & {\color{niceblue}\mathbf{ 47 }} & \cancel{ 48 } & \cancel{ 49 }\\
+\cancel{ 50 } & \cancel{ 51 } & \cancel{ 52 } & {\color{niceblue}\mathbf{ 53 }} & \cancel{ 54 } & \cancel{ 55 } & \cancel{ 56 } & \cancel{ 57 } & \cancel{ 58 } & {\color{niceblue}\mathbf{ 59 }}\\
+\cancel{ 60 } & {\color{niceblue}\mathbf{ 61 }} & \cancel{ 62 } & \cancel{ 63 } & \cancel{ 64 } & \cancel{ 65 } & \cancel{ 66 } & {\color{niceblue}\mathbf{ 67 }} & \cancel{ 68 } & \cancel{ 69 }\\
+\cancel{ 70 } & {\color{niceblue}\mathbf{ 71 }} & \cancel{ 72 } & {\color{niceblue}\mathbf{ 73 }} & \cancel{ 74 } & \cancel{ 75 } & \cancel{ 76 } & \cancel{ 77 } & \cancel{ 78 } & {\color{niceblue}\mathbf{ 79 }}\\
+\cancel{ 80 } & \cancel{ 81 } & \cancel{ 82 } & {\color{niceblue}\mathbf{ 83 }} & \cancel{ 84 } & \cancel{ 85 } & \cancel{ 86 } & \cancel{ 87 } & \cancel{ 88 } & {\color{niceblue}\mathbf{ 89 }}\\
+\cancel{ 90 } & \cancel{ 91 } & \cancel{ 92 } & \cancel{ 93 } & \cancel{ 94 } & \cancel{ 95 } & \cancel{ 96 } & {\color{niceblue}\mathbf{ 97 }} & \cancel{ 98 } & \cancel{ 99 }\\
+\end{array}$$
+pero considera que si queremos ver si $n$ es primo debemos comprobar que no sea divisible por ningún número entre 2 y $n-1$ (lo cuál es un proceso terriblemente ineficiente). Por lo cuál, el truco está en probar \textbf{sólo} los números primos, del 2 hasta $\sqrt{n}$.
+\begin{mydef}[Orden $p$-ádico]
+Sea $n$ un número mayor a 1 y $p$ un número primo, entonces diremos que su orden $p$-ádico\index{orden!$p$-ádico} $\nu_p(n)$ \nomenclature{$\nu_p(n)$}{Orden $p$-ádico de $n$} es el natural tal que $p^\nu\mid n$, pero $p^{\nu+1}\nmid n$.
+\end{mydef}
+Una identidad muy interesante, y que puede ser de mucho uso es que si $\tau(n)$\nomenclature{$\tau(n)$}{Número de divisores de $n$} es la función que calcula la cantidad de divisores que tiene un natural $n$.
+\begin{thm}
+Sea $n\gt 1$ un número natural, divisible por los primos $p_1,\dots,p_m$. Entonces
+$$\tau(n)=(\nu_{p_1}(n)+1)(\nu_{p_2}(n)+1)\cdots(\nu_{p_m}(n)+1)=\prod_{p\mid n}(\nu_p(n)+1).$$
+\end{thm}
+\begin{proof}
+Nótese que todos los divisores de $n$ resultan ser combinaciones de la forma
+$$\prod_{i=1}^m p_i^{\beta_i}$$
+dónde $0\leq\beta_i\leq\nu_{p_i}(n)$. Por lo que es fácil ver que $\beta_i$ posee $(\nu_{p_i}(n)+1)$ posibles valores, por ende, la fórmula del enunciado.
+\end{proof}
+
+\section{Clases laterales y subgrupos normales}
+Sean $A,B$ subgrupos de $(G,\cdot)$ denotamos
+$$A\cdot B=AB:=\{ab:a\in A,b\in B\},$$
+con ello admitimos una nueva definición fundamental:
+\begin{mydef}[Clases laterales]
+Sea $(A,\cdot)$ una estructura, $B\subseteq A$ y $a\in A$; entonces definimos las \textit{clases laterales}\index{clase!lateral} (por la izquierda y la derecha resp.) como $\{a\}B$ y $B\{a\}$, que usualmente abreviamos como $aB$ y $Ba$.
+\end{mydef}
+Nótese que si $A$ es un monoide, entonces todo subconjunto es una clase lateral de ambos tipos.
+\begin{lem}\label{thm:left-coset}
+Sea $H$ un subgrupo de $G$ y $x,y\in G$, entonces:
+\begin{enumerate}[$a)$]
+\item $x\in xH$.
+\item Sea $h\in H$ tal que $y=xh$ entonces $xH=yH$.
+\item Sea $xH\cap yH\neq\emptyset$ entonces $xH=yH$.
+\end{enumerate}
+\end{lem}
+\begin{proof}
+\begin{enumerate}[$a)$]
+	\item Si $H$ es \textbf{subgrupo} entonces posee neutro.
+	\item Supongamos que $z\in xH$ probar que $z\in yH$. Por construcción $z=xa$ con $a\in H$, como $h\in H$ luego $h^{-1}\in H$ luego $h^{-1}a\in H$ y $yh^{-1}a=xhh^{-1}a=xa=z\in yH$.\\
+	Supongamos que $z\in yH$ probar que $z\in xH$. Por construcción $z=ya=(xh)a$ con $a\in H$, como $h\in H$ luego $ha\in H$, finalmente $x(ha)=(xh)a\in xH$.\\
+	Como $xH\subseteq yH$ y $yH\subseteq xH$ entonces $xH=yH$.
+	\item Vamos a asumir que $z\in xH\cap yH$, es decir, $z\in xH$ y $z\in yH$, por ende, $z=xa=yb$ con $a,b\in H$. De aquí vemos que $b^{-1}\in H$ y, luego $ab^{-1}\in H$, y obtenemos que $y=x(ab^{-1})$, lo que por la propiedad $b)$ demuestra que ambas clases laterales son iguales.
+\end{enumerate}
+\end{proof}
+\begin{lem}
+Toda clase lateral (izquierda o derecha) $xH$ posee el mismo cardinal.
+\end{lem}
+\begin{proof}
+Nótese que la aplicación $f:H\rightarrow xH$ definida por $f(h)=xh$ es una biyección. Por transitividad, todos poseen el mismo cardinal.
+\end{proof}
+Vemos que las propiedades se conservan si cambiamos el orden de $xH$ a $Hx$ y en la propiedad $b)$ a $y=hx$.
+\begin{thm}[Teorema de Lagrange]\index{teorema!de Lagrange}
+Sea $G$ un grupo finito y $H$ un subgrupo de él, entonces el cardinal de $H$ divide al de $G$.
+\end{thm}
+\begin{proof}
+Veamos que todo elemento de $G$ debe pertenecer a una única clase lateral izquierda de $H$ (por el lema~\ref{thm:left-coset}). Como toda clase lateral izquierda posee mismo cardinal $|H|$, existe algún $n$ tal que $|G|=n|H|$.
+\end{proof}
+\begin{mydef}[Grupo cociente]
+Sea $H$ un subgrupo de $(G,\cdot)$, llamamos al \textit{conjunto cociente}\index{conjunto!cociente} de $G$ por $H$ al conjunto de todas las clases laterales por la izquierda de $H$, denotado por $G/H$\nomenclature{$G/H$}{Conjunto cociente de $G$ por $H$}.
+\end{mydef}
+Recuerde que el grupo cociente se diferencia del conjunto cociente, siendo el primero aquél que acabamos de definir, mientras el segundo es un conjunto de clases de equivalencia respecto a una relación.
+
+El teorema de Lagrange dice que si $G$ es finito entonces $|G/H|=|G|/|H|$.
+\begin{cor}
+Si $(G,\cdot)$ es un grupo finito con $x\in G$, entonces $|\langle x\rangle|\mid|G|$.
+\end{cor}
+\begin{cor}
+Si $G$ es un grupo finito de cardinal primo entonces es cíclico.
+\end{cor}
+\begin{proof}
+Sea $x\in G$ entonces $\langle x\rangle$ es mayor a uno y divide al cardinal de $G$, por lo tanto, es dicho cardinal.
+\end{proof}
+\begin{mydef}[Subgrupo normal]\index{subgrupo!normal}
+Decimos que un subgrupo $N$ de un grupo $(G,\cdot)$ es un \textit{subgrupo normal} syss para todo $n\in N$ entonces $xnx^{-1}\in N$ con $x\in G$ (cualquiera).
+\end{mydef}
+\begin{thm}
+Todo subgrupo $N$ de un grupo abeliano $G$ es normal.
+\end{thm}
+\begin{proof}
+Veamos que para cualquier $x\in G$ y $n\in N$ entonces
+$$xnx^{-1}=(xn)x^{-1}=n(xx^{-1})=ne=n.$$
+\end{proof}
+\begin{thm}
+Un subgrupo $N$ de $(G,\cdot)$ es normal syss $xNx^{-1}=N$ para todo $x\in G$. 
+\end{thm}
+\begin{proof}
+$\implies$. Veamos que si $N$ es un subgrupo normal de $G$, entonces para cualquier $x\in G$ se da $xNx^{-1}\subseteq N$ por definición, luego para $x^{-1}\in G$ se da que $x^{-1}(xNx^{-1})x=N\subseteq xNx^{-1}$ lo que implica $xNx^{-1}=N$.
+
+$\Longleftarrow$. Se deriva de la defición de subgrupo normal.
+\end{proof}
+\begin{cor}\label{thm:normal-subgroup-product-commute}
+Un subgrupo $N$ es normal syss $xN=Nx$ para todo $x\in G$.
+\end{cor}
+Ojo, el corolario~\ref{thm:normal-subgroup-product-commute} no dice que sus elementos conmutan, es decir, que si $n\in N$ para todo $x\in G$, $xn=nx$. Sino que dice que el producto en el conjunto conmuta, por lo tanto, todo elemento de ambas clases laterales es común, pero no derivan exactamente en el mismo orden --en síntesis, la conmutatividad no es una conclusión--.
+\begin{thm}
+Sean $N$ un subgrupo normal de $G$ y $x,y\in G$ entonces $(xN)(yN)=(xy)N$.
+\end{thm}
+\begin{prop}\label{thm:quotient-group-structure}
+Sea $N$ un subgrupo normal de $(G,\cdot)$, entonces $(G/N,\cdot)$ es un grupo.
+\end{prop}
+
+\section{Morfismos}
+\begin{mydef}[Morfismos]
+Consideremos una aplicación $f:(G,\cdot)\rightarrow(H,\cdot)$ entre dos estructuras algebraicas. Le llamamos un \textit{homomorfismo}\index{homomorfismo!de grupos}\footnote{Del griego, $\grave{o}\mu\acute{o}\varsigma$ (omós): similar, $\mu o\rho\varphi\acute{\eta}$ (morfé): forma.} syss la aplicación conserva las propiedades fundamentales (es decir, asociatividad, neutro, etc.) de $G$. Para ello, solo basta que para todo $a,b\in G$ se cumpla
+$$f(ab)=f(a)f(b).$$
+Llamamos a $f$ de distintas maneras según las propiedades de la función per se: \textit{monomorfismo}\index{monomorfismo} si es inyectiva, \textit{epimorfismo}\index{epimorfismo} si es suprayectiva, \textit{isomorfismo}\index{isomorfismo!de grupos}\footnote{Del griego, $\acute{\iota}\sigma o\varsigma$ (isos): igual, $\mu o\rho\varphi\acute{\eta}$ (morfé): forma.} si es biyectiva y \textit{automorfismo}\index{automorfismo!de grupos} si es una aplicación desde y hasta la misma estructura. Los homomorfismos de un grupo a sí mismo son llamados \textit{endomorfismos}\index{endomorfismo!de grupos} y los endomorfismos biyectivos se llaman \textit{automorfismos}.
+
+Si existe un isomorfismo entre $(G,\cdot)$ y $(H,\cdot)$ se dice que son \textit{isomorfos} y se denota como $G\cong H$\nomenclature{$A\cong B$}{$A$ y $B$ son isomorfos}.
+
+Siendo $G,H$ grupos, denotamos $\Hom(G,H)$ %\nomenclature{$\Hom(A,B)$}{Conjunto de homomorfismos de $A$ a $B$}
+como el conjunto de homomorfismos\index{conjunto!de homomorfismos} de $G$ a $H$ y $\End(V)$\nomenclature{$\End(A)$}{Conjunto de endomorfismos de $A$} como el conjunto de endomorfismos\index{conjunto!de endomorfismo} de $G$.
+\end{mydef}
+Si no se especifica, se asume que un homomorfismo es entre grupos.
+\begin{mydef}[Kernel]
+Sea $f:(G,\cdot_G)\rightarrow(H,\cdot_H)$ un homomorfismo, llamamos el \textit{kernel}\index{kernel, núcleo} de $f$ (denotado como $\ker f$) \nomenclature{$\ker f$}{Kernel o núcleo de la función $f$} como todo el conjunto de elementos de $G$ cuya imagen es el neutro de $(H,\cdot_H)$.
+\end{mydef}
+Nótese que siempre $f(e_G)=e_H$ pues $f(x)=f(e_G x)=f(e_G)f(x)$.
+\begin{lem}
+Sea $f:(G,\cdot_G)\rightarrow(H,\cdot_H)$ un homomorfismo, entonces $\ker f$ es un subgrupo normal de $G$.
+\end{lem}
+\begin{proof}
+Veamos primero que $\ker f$ es efectivamente un subgrupo. Para ello seguiremos el criterio: $x,y\in\ker f$ implica $f(xy)=f(x)f(y)=e_He_H=e_H$.
+
+Nótese también que como
+$$f(e_G)=f(xx^{-1})=f(x)f(x^{-1})=e_H\implies f(x^{-1})=f(x)^{-1},$$
+si $f(x)=e_H$ entonces $f(x^{-1})=e_H^{-1}=e_H$.
+
+Finalmente demostremos que es normal, sea $y\in G$, sigue
+$$f(yxy^{-1})=f(yx)f(y^{-1})=f(y)e_Hf(y)^{-1}=e_H.$$
+\end{proof}
+\begin{thm}
+Sea $f:(G,\cdot_G)\rightarrow(H,\cdot_H)$ un homomorfismo y $N$ un subgrupo de $\ker f$, tal que $g:G/N\rightarrow H$ es una aplicación tal que $g(aN)=f(b)$ con $b\in aN$ (cualquiera). La aplicación $g$ es siempre inyectiva syss $N=\ker f$.
+\end{thm}
+\begin{proof}
+Las demostraciones son esencialmente las mismas. Primero suponemos un par $x,y\in G$ tales que $f(x)=f(y)$, entonces $x=y(y^{-1}x)$ y definimos $z:=y^{-1}x\in G$ de lo cual se ve que $f(y^{-1}x)=f(y)^{-1}f(x)=e_H$, por ende, $z\in\ker f$. Por lo tanto, la inyectividad depende de asegurarse que $z$ siempre pertenece a $N$, es decir, que $N=\ker f$.
+\end{proof}
+\begin{thm}[Primer teorema de isomorfismos]\index{teorema!de isomorfismos (primero)}
+Sea $f:(G,\cdot_G)\rightarrow(H,\cdot_H)$ un homomorfismo, entonces $\Img f\cong G/\ker f$ (donde $\Img f$ es el conjunto imagen de una función).
+\end{thm}
+\begin{thm}[Segundo teorema de isomorfismos]\index{teorema!de isomorfismos (segundo)}
+Sean $H$ un subgrupo y $N$ uno normal de $(G,\cdot)$, entonces
+$$\frac{HN}{N}\cong\frac{H}{N\cap H}.$$
+\end{thm}
+\begin{proof}
+Veamos que $HN/N$ es el conjunto de todas las clases laterales de $N$ de tipo $hN$ con $h\in H$. Por lo que si $f:H\rightarrow HN/N$ es una aplicación tal que $f(h)=hN$, que por la proposición~\ref{thm:quotient-group-structure} resulta ser un homomorfismo podemos ver que posee $\ker f=N\cap H$ (pues si $h\in N$ entonces $hN=N$), lo que aplicando el primer teorema de isomorfismos demuestra el enunciado.
+\end{proof}
+\begin{thm}[Tercer teorema de isomorfismos]\index{teorema!de isomorfismos (tercero)}
+Sean $M,N$ subgrupos normales de $G$ con $M\subseteq N$, entonces
+$$\frac{G}{N}\cong\frac{G/M}{N/M}.$$
+\end{thm}
+\begin{proof}
+Consideremos la aplicación $f:G/M\rightarrow G/N$ tal que $f(xM)=xN$ que demuestra ser un epimorfismo (por inclusión de $M$ en $N$) con $\ker f=N/M$, entonces por primer teorema de isomorfismos tenemos que $\Img f\cong(G/M)/\ker f$, es decir, el enunciado.
+\nomenclature{$\Img f$}{Conjunto imagen de $f$\nomnorefpage}
+\end{proof}
+
+\section{Permutaciones y simetría}
+Como se indica en el artículo [TdC], siendo $A$ un conjunto, definimos $\Sigma_A$ \nomenclature{$\Sigma_A$}{Conjunto de permutaciones de $A$} como el conjunto de biyecciones\index{conjunto!de biyecciones} (también llamadas \textit{permutaciones}\index{permutación}) a sí mismo, si $A$ posee $n$ elementos, $\Sigma_A$ posee $n!$ elementos. En esta sección nos enfocaremos en los conjuntos finitos, aun que algunas cosas pueden aplicarse a conjuntos infinitos.
+\begin{thm}
+Sean $A,B$ conjuntos de mismo cardinal, entonces $(\Sigma_A,\circ)\cong(\Sigma_B,\circ)$.
+\end{thm}
+\begin{proof}
+Digamos que $g:A\rightarrow B$ es biyectiva, entonces el isomorfismo es una función (de funciones) tales que $h(f)=g^{-1}\circ f\circ g$.
+\end{proof}
+Esto también es sugestivo de usar una notación universal que comprenderá un conjunto $I_n=\{1,2,\dots,n\}$ tal que $\Sigma_n:=\Sigma_{I_n}$.
+\begin{mydef}[Acción]\index{acción}
+Sea $(G,\cdot)$ un grupo y $S$ un conjunto, una acción $\cdot:S\times G\rightarrow S$ es aquella tal que para todo $a\in S$ y $g_1,g_2\in G$
+$$(ag_1)g_2=a(g_1g_2),\quad a1=a$$
+\end{mydef}
+Las acciones representan permutaciones en realidad, pero es más útil tratarlas como una operación externa. Definamos
+\begin{align*}
+\tau_g:\Omega&\longrightarrow\Omega\\
+a&\longmapsto ag
+\end{align*}
+entonces, es fácil ver que $\tau_g\in\Sigma_S$ (multiplicando por $g^{-1}$).
+\begin{mydef}[Órbitas y estabilizadores]
+Siendo $G$ una acción sobre $S$, entonces para todo par $a,b\in S$ tenemos que
+$$a\sim b\iff\exists g\in G: ag=b,$$
+con lo cual es fácil probar que $\sim$ es una relación de orden. Luego denotamos $S_a$ como la clase de equivalencia de $a$ según $\sim$ y la llamamos la \textit{órbita\index{orbita@órbita} de $a$ en relación a $G$}.
+
+Por otro lado, definiremos el \textit{estabilizador\index{estabilizador} de $a$} como el conjunto $G_a:=\{g:ag=a\}$.
+\end{mydef}
+\begin{thm}
+Sea $G$ una acción sobre $S$ con $a\in S$, se cumple que
+$$|S_a|=|G/G_a|$$
+\end{thm}
+\begin{proof}
+Definamos la función
+\begin{align*}
+f:G/G_a&\longrightarrow S_a\\
+G_ag&\longmapsto ag,
+\end{align*}
+evidentemente es suprayectiva, por definición de $S_a$, y es inyectiva, puesto que si $ag=ag'$, entonces $ag'g^{-1}=a$, es decir, $g'g^{-1}\in G_a$.
+\end{proof}
+\begin{mydef}[Ciclo]
+Sea $G$ una acción sobre $S$, decimos que una órbita es \textit{trivial} cuando posee un único elemento. Llamamos \textit{ciclo}\index{ciclo} a una permutación $g$ tal que sólo posee una órbita no-trivial. Llamamos \textit{longitud}\index{longitud!de ciclo} de $g$ al cardinal de su órbita no-trivial. Los ciclos de longitud 2 se llaman \textit{trasposiciones}\index{permutación!trasposición}.
+
+Si $G=\langle g\rangle$, y la longitud de $g$ es finita, con $\{a,ag,\dots,ag^{m-1}\}$ su órbita no-trivial, entonces denotamos a $g$ como $(a,ag,\dots,ag^{m-1})$.
+
+Dos ciclos se dicen \textit{disjuntos}\index{ciclo!disjunto} syss sus órbitas lo son.
+\end{mydef}
+Por ejemplo, la permutación $g=\{(1,3),(2,2),(3,5),(4,4),(5,1),(6,6)\}$ es un ciclo y se puede escribir como $g=(1,3,5)=(3,5,1)=(5,1,3)$.
+\begin{thm}
+Sea $n\in\N^+$:
+	\begin{enumerate}
+	\item La longitud de un ciclo de $\Sigma_n$ coincide con su orden.
+	\item Dos ciclos disjuntos conmutan.
+	\item Toda permutación de $\Sigma_n$, a excepción de 1, se puede expresar como un producto único de ciclos disjuntos.
+	\item Sea $\sigma=c_1\cdots c_m$ con $c_i$ ciclos disjuntos dos a dos, entonces su orden el mínimo común múltiplo de los ordenes de los ciclos.
+	\item Toda permutación puede escribirse como producto de trasposiciones.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+	\item Si un ciclo es de longitud $m$ entonces su órbita no-trivial posee $m$ elementos, por ende, $ag^m=a$. Además todo otro valor en la órbita puede escribirse como $ag^i$, por ende, $ag^{i+m}=(ag^m)g^i=ag^i$.
+	\item Supongamos que $S_a$ es la órbita no trivial de $\sigma$ y $S_b$ la de $\tau$ tales que por construcción $S_a\cap S_b=\emptyset$, por lo cual si $a\in S_a$ entonces $a,\sigma(a)\notin S_b$ (y viceversa), por lo cual $\tau(a)=a$ y $\tau(\sigma(a))=\sigma(a)$. De aquí se concluye fácil la conmutatividad.
+	\item Supongamos que $\sigma(a_1)\neq a_1$ y definamos $a_i:=\sigma^i(a_1)$, entonces existe un $m\gt 0$ (que elegiremos como el mínimo) tal que $a_m=a_1$, luego $\alpha_1=(a_1,\dots,a_m)$ y, por ende, $(\alpha_1)^{-1}\sigma$ resulta ser la permutación con $a_1,\dots,a_m$ fijos. Repitiendo el proceso terminamos con que $1=(\alpha_p)^{-1}\cdots(\alpha_1)^{-1}\sigma$, es decir, $\sigma=\alpha_1\cdots\alpha_p$.
+	\item Digamos que cada ciclo $c_i$ es de orden $n_i$ y que $m$ es el mínimo común múltiplo de los ordenes, entonces $p=q_in_i$, por ende, $(c_1\cdot c_m)^p=(c_1^{n_1})^{q_1}\cdots(c_m^{n_m})^{q_m}=1$ y es el menor exponente positivo, porque de lo contrario existe un $i$ tal que $p'=q_in_i+r_i$ con $0\lt r_i\lt n_i$ no nulo y, por tanto, $c_i^{p'}=c_i^{r_i}\neq 1$.
+	\item Sólo basta ver que todo ciclo puede escribirse como un producto de trasposiciones, en particular $(a_1,\dots,a_m)=(a_1,a_2)(a_1,a_3)\cdots(a_1,a_m)$.
+	\end{enumerate}
+\end{proof}
+Consideremos la siguiente operación, teniéndose un conjunto $X=\{x_1,\dots,x_n\}$ tal que
+$$\Delta(x_1,\dots,x_n)=\prod_{i\lt j}(x_j-x_i),$$
+ahora, aplicando una permutación $\sigma$ obtenemos
+$$\Delta(x_{\sigma(1)},\dots,x_{\sigma(n)})=\pm\Delta(x_1,\dots,x_n)$$
+donde el hecho de ser positivo/negativo depende exclusivamente de la permutación; formalizando este concepto introducimos:
+\begin{mydef}[Signatura]
+Sea $\sigma\in\Sigma_n$ con $n\geq 2$, definimos $P_n:=\{\{i,j\}:1\leq i\lt j\leq n\}$, luego para todo $p\in P_n$ se da que
+$$\epsilon_\sigma(p)=\begin{cases}
+\phantom{-}1 &\sigma(i)\lt\sigma(j)\\
+-1 &\sigma(j)\lt\sigma(i)
+\end{cases}$$
+con lo que terminamos por definir la \textit{signatura}\index{signatura} (o \textit{signo}) de $\sigma$ como
+$$\sign\sigma:=\prod_{p\in P_n}\epsilon_\sigma(p).$$ \nomenclature{$\sign\sigma$}{Signatura de la permutación $\sigma$}
+Las permutaciones de signatura 1 son llamadas \textit{pares} y las de $-1$ \textit{impares}.
+\end{mydef}
+\begin{thm}
+Sean $\sigma,\tau$ permutaciones, entonces $\sign(\sigma\circ\tau)=\sign\sigma\cdot\sign\tau$.
+\end{thm}
+\begin{proof}
+Veamos primero que
+$$\epsilon_{\sigma\circ\tau}(p)=\epsilon_\sigma(p)\epsilon_\tau(\sigma[p]),$$
+luego, como $\sigma$ es una permutación, $P_n=\{\sigma[p]:p\in P_n\}$, por lo cual
+\begin{align*}
+\sign(\sigma\circ\tau)&=\prod_{p\in P_n}\epsilon_\sigma(p)\epsilon_\tau(\sigma[p])=\prod_{p\in P_n}\epsilon_\sigma(p)\prod_{p\in P_n}\epsilon_\tau(\sigma[p])\\
+&=\prod_{p\in P_n}\epsilon_\sigma(p)\prod_{p\in P_n}\epsilon_\tau(p)=\sign\sigma\sign\tau.
+\end{align*}
+\end{proof}
+Un teorema que nos permitirá interpretar de manera sencilla la función es el siguiente:
+\begin{thm}
+Una permutación es par\index{permutación!par, impar} (resp. impar) syss se descompone en un número par (resp. impar) de trasposiciones.
+\end{thm}
+\begin{proof}
+Sólo basta probar que toda trasposición posee signatura $-1$.
+\end{proof}
+
+\section{Teoremas de Sylow y temas afines}
+\begin{mydef}[Conjugación]\index{conjugación}
+Sea $G$ un grupo con $h,k\in G$; decimos que dichos elementos son \textit{conjugados} syss existe $g\in G$ tal que $k=ghg^{-1}$. Es fácil ver que la conjugación es una \textbf{relación de equivalencia}, por lo tanto, denominamos \textit{clases de conjugados}\index{clase!de conjugados} a las obtenidas por conjunto cociente. La clase de conjugados de un subconjunto $A\subseteq G$ se denota como $K(A)$. Nótese que si $A=\{a\}$, entonces
+$$K(a)=\{gag^{-1}:g\in G\}$$ \nomenclature{$K(a)$}{Clase de conjugados de $a$}
+\end{mydef}
+\begin{mydef}[Centralizador, normalizador y centro]
+Decimos que el \textit{centralizador}\index{centralizador} $C(A)$ de un subconjunto $A$ de un grupo $G$ son aquellos elementos $g$ tales que conmutan con todos los elementos de $A$, es decir
+$$C(A):=\{g\in G:\forall a\in A\;ga=ag\}.$$ \nomenclature{$C(A)$}{Centralizador del conjunto $A$}
+Similar, pero no igual es el \textit{normalizador}\index{normalizador} $N(A)$ que corresponde a todos los elementos que conmutan con $A$ en forma de clases laterales, es decir
+$$N(A):=\{g\in G:gA=Ag\}.$$ \nomenclature{$N(A)$}{Normalizador del conjunto $A$}
+Asimismo definimos el \textit{centro}\index{centro!de grupos} $Z(G)$ \nomenclature{$Z(G)$}{Centro de un grupo $G$} de un grupo $G$ como aquellos elementos que conmutan con todos los demas, es decir, $Z(G)=C(G)$. Es inmediato que $Z(G)$ es un subgrupo abeliano.
+\end{mydef}
+\begin{thm}
+Para cualquier $A\subseteq G$ con $G$ grupo, $C(A)$ es subgrupo.
+\end{thm}
+\begin{proof}
+Es inmediato pues
+$$(gh)a=g(ha)=g(ah)=(ga)h=(ag)h=a(gh),$$
+y la propiedad sobre $g^{-1}$ se reduce en multiplicar por $g$ por la izquierda y la derecha.
+\end{proof}
+\begin{cor}
+$G$ es abeliano syss $G=Z(G)$.
+\end{cor}
+\begin{lem}
+Para todo $x\in G$ se cumple que $|K(g)|=|G/C(g)|$.
+\end{lem}
+\begin{proof}
+Hágase la aplicación $f:G/C(x)\rightarrow K(x)$ tal que $f(gC(x))=gxg{-1}$. Evidentemente esta función es inyectiva y también es suprayectiva, pues la imagen resulta la clase de conjugados de $x$.
+\end{proof}
+Una consecuencia de esto es que las clases de conjugación de los elementos de $Z(G)$ sólo contiene un elemento, si mismo.
+\begin{thm}[Ecuación de Clases de Conjugación]\index{ecuación!de clases de conjugación}
+Sea $G$ un grupo finito cuyas clases de conjugados de múltiples elementos son $K_1, K_2,\dots,K_n$. Considere que $x_i$ es un elemento cualquiera de $K_i$\footnote{Que no requiere del axioma de elección, puesto que los conjuntos son finitos.}, entonces
+$$|G|=|Z(G)|+\sum_{i=1}^n|G/C(x_i)|.$$
+\end{thm}
+\begin{proof}
+Como las clases de conjugación son de equivalencia, son todas disjuntas y su unión es $G$, las clases de un único elemento unidas dan el centro de $G$, por lo que, la ecuación puede escribirse como
+$$|G|=|Z(G)|+\sum_{i=1}^n|K(x_i)|,$$
+pero por el lema anterior, $|K(x_i)|=|G/C(x_i)|$, por ende, el enunciado.
+\end{proof}
+Otras veces se escribe de misma forma, pero con $G/N(x_i)$ en lugar de $G/C(x_i)$. Nótese que para conjuntos de un sólo elemento $N(x)=C(x)$ por definición.
+
+Para el siguiente lema admitiremos que
+$$f^i=\underbrace{f\circ\cdots\circ f}_{i\,\rm veces}$$
+\begin{lem}
+Sea $f$ una biyección de orden $p$, un natural primo, en $(\Sigma_G,\circ)$\footnote{$\Sigma_G$ es el conjunto de todas las permutaciones de $G$.} (osea, $f^p(g)=g$) y sea $g\in G$, entonces el conjunto $\{f^n(s):n\in\N\}$ posee 1 o $p$ elementos.
+\end{lem}
+\begin{proof}
+Es evidente ver que si $f(g)=g$ entonces $f^k(g)=g$ para todo $k\in\N$. Si $f(g)\neq g$, veamos que no existen $i,j$ tales que $0\leq i\lt j\lt p$ y $f^i(s)=f^j(s)$, luego como $\Sigma_G$ es un grupo, lo podemos reformular con $m:=j-i$ a decir $f^m(s)=s$, con $0\lt m\lt p$, luego, $(m;p)=1$ (por ser $p$ primo) y por identidad de Bézout (\ref{thm:bezout-identity}) existen $a,b\in\Z$ tales que $ap+bm=1$, es decir, $f(s)=f^{ap+bm}(s)=f^{ap}(f^{bm}(s))=f^{ap}(s)=s$, lo cual es absurdo, es decir, $f^i(s)\neq f^j(s)$ (recordad las restricciones para $i,j$).
+\end{proof}
+\begin{thm}[Teorema algebraico de Cauchy]\index{teorema!de Cauchy}
+Sea $G$ un grupo y $p$ un número primo tal que $p$ divida a $|G|$ entonces existe $g\in G$ (distinto de $e$) tal que $g^p=e$.
+\end{thm}
+\begin{proof}
+Consideremos el conjunto $S$ de $p$-tuplas ordenadas de elementos de $G$ tales que el producto en su orden sea neutro. Es decir, $(s_1,s_2,$ $\dots,s_p)\in S$ syss $s_1\cdot s_2\cdots s_p=e$. Si $G$ posee cardinal $n$, entonces $S$ posee cardinal $n^{p-1}$, pues hay $n$ opciones para los $(p-1)$ primeros lugares, sin embargo, el último puesto debe ser el inverso del producto de los anteriores, por lo tanto, es único.
+
+Ahora consideremos la función $f:S\rightarrow S$ tal que $f(a_1,a_2,\dots,a_p)=(a_p,a_1,\dots,a_{p-1})$ (por conmutatividad de los inversos la nueva tupla también pertenece a $S$). El problema ahora se convierte en buscar una tupla tal que $f(s)=s$, pues entonces $s=(g,\dots, g)$, es decir, $g^p=e$. 
+
+Llamaremos $m$ a la cantidad de tuplas que $f(s)=s$, como es evidente que $f(e,\dots, e)=(e,\dots, e)$, entonces $m\geq 1$. Consideremos que $f(s)\neq s$ entonces, sabemos que hay $p$ aplicaciones de $f$ distintas tales que $f^i(s)\in S$, sabemos que existen $s,s'\in S$ tales que $s=f^j(s')$, entonces sólo contaremos los $s$ originales y sus imágenes, asumiendo que hay $k$ de ellos.
+
+Finalmente obtenemos que $n^{k-1}=m+kp$, como $p\mid n$ entonces $p\mid n^{p-1}$, es decir, $p\mid m+kp$, de lo que se concluye que $p\mid m$ por lo que $m\geq p$ pues es positivo. Y como todo primo es mayor o igual a 2, sabemos que hay al menos un $a\in G$ tal que $a^p=e$.
+\end{proof}
+\begin{mydef}
+Sea $p$ un número primo que divide al cardinal de un grupo finito $G$. Decimos que $G$ es un $p$-grupo si es de cardinal $p^k$ para algún $k\in\N$. Un $p$-subgrupo es aquel de cardinal $p^k$ para algún $k\in\N$. Un $p$-subgrupo de Sylow\index{subgrupo!de Sylow} es aquel de cardinal $p^k$ donde $p^k$ es la mayor potencia de $p$ que divide a $|G|$.
+\end{mydef}
+\begin{thm}[Teorema de Sylow I]\index{teorema!de Sylow I}
+Sea $p$ un primo que divide al cardinal $n$ de un grupo finito $G$, entonces existe un $p$-subgrupo de Sylow de $G$.
+\end{thm}
+\begin{proof}
+Lo probaremos por inducción sobre $n$.
+
+El caso $n=1$ es trivial, pues $G$ es el $p$-subgrupo de Sylow \textit{per se}.
+
+La hipótesis inductiva se aplica para todo cardinal menor a $p^\alpha m$ con $p\nmid m$. Por lo que probaremos el paso inductivo, para ello distinguiremos dos casos: $p$ divide a $|Z(G)|$ o no.
+
+Caso 1 ($p$ divide $|Z(G)|$): Por teorema de Cauchy, $Z(G)$ posee un elemento de orden $p$ que conformará el subgrupo $N$ que es normal por conmutatividad de sus elementos. Luego $|G/N|=p^{\alpha-1}m$ por teorema de Lagrange y por hipótesis inductiva, posee un subgrupo de cardinal $p^{\alpha-1}$ que denotaremos como $\overline{P}$.
+
+Ahora, definiremos $P=\{g\in G:gN\in\overline{P}\}$ y vemos que es subgrupo de $G$. Con lo cual podemos ver que
+\begin{align*}
+f:P&\longrightarrow\overline{P}\\
+f(p)&\longmapsto pN
+\end{align*}
+es un epimorfismo. Nótese que $\ker f=P\cap N=N$, luego por primer teorema de isomorfismos $P/N\cong\overline{P}$, luego $|\overline{P}|=p^{\alpha-1}=|P/N|=|P|/p$, es decir, $|P|=p^\alpha$, es decir, $P$ es un $p$-subgrupo de Sylow.
+
+Caso 2 ($p$ no divide a $|Z(G)|$): Por ecuación de clases de conjugación se tiene que $p$ divide a $|Z(G)|+\sum_{i=1}^n|G/C(x_i)|$, como $p$ no divide $|Z(G)|$, entonces no debe dividir a todos los cardinales de $G/C(x_i)$. Consideremos un $i$ fijo tal que $p$ no divide a $G/C(x_i)$, entonces por teorema de Lagrange sabemos que $|G/C(x_i)|=|G|/|C(x_i)|$, es decir, $|C(x_i)|$ debe ser de la forma $p^\alpha k$ con $k\lt m$, luego, por inducción, $C(x_i)$ posee un $p$-subgrupo de Sylow que también lo es de $G$.
+\end{proof}
+\begin{thm}[Teorema de Sylow II]\index{teorema!de Sylow II}
+Sea $p$ un primo que divide al cardinal de un grupo finito $G$, entonces todos los $p$-subgrupos de Sylow de $G$ son conjugados entre sí.
+\end{thm}
+
+\chapter{Introducción a la teoría de anillos}
+\section{Anillos, cuerpos e ideales}
+En el capítulo anterior repasamos las propiedades fundamentales de los grupos principalmente, que se enfocan en analizar un conjunto y una única operación binaria. En este capítulo, los protagonistas son los anillos que difieren al trabajar con dos operaciones simultáneamente, que por convenios relacionaremos a la suma y multiplicación sobre los números --por no especificar el tipo--.
+\begin{mydef}[Anillo]
+Diremos que una terna ordenada $(A,+,\cdot)$ es un \textbf{anillo}\index{anillo} siempre que $(A,+)$ sea un grupo abeliano, $(A,\cdot)$ un semigrupo y $\cdot$ se distribuye respecto a $+$. Denotaremos el neutro de $(A,+)$ como ``0'' y al inverso de $a\in A$ bajo esta operación como $-a$. Se dice que un anillo es \textit{unitario} si $(A,\cdot)$ es monoide con neutro ``1'' y \textit{conmutativo} si $(A,\cdot)$ posee conmutatividad.
+
+Se dice que $A$ es un \textit{dominio}\index{dominio}\footnote{Autores varían sobre el significado de este término en contexto del álgebra, Ivorra Castillo comparte esta definición, no obstante, para Herstein un dominio es un anillo sin \textit{divisores de cero}.} cuando es un anillo unitario y conmutativo con $1\neq 0$. De cumplirse que $1=0$, decimos que el anillo es \textit{trivial}\index{anillo!trivial}.
+\end{mydef}
+De aquí en adelante llamaremos a la primera operación de un anillo como ``suma'' o ``adición'', mientras la segunda es la ``multiplicación'' o ``producto''. La nomenclatura original de estas dos operaciones (el ``0'', el ``1'', etc.) se mantendrá para fines educativos.
+\begin{thm}
+$(\Z,+,\cdot)$ es un dominio.
+\end{thm}
+\begin{thm}
+Sea $A$ un anillo, con $a,b\in A$, entonces:
+\begin{enumerate}[$a)$]
+	\item $a\cdot 0=0\cdot a=0$ (absorbente o aniquilador).
+	\item $(-a)b=a(-b)=-ab$ (ley de signos).
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}[$a)$]
+	\item Veamos que $a\cdot 0=a\cdot(0+0)=a\cdot0+a\cdot0$, sumando $(-x)\cdot 0$ a ambos lados se obtiene que $x\cdot 0=0$. Es análogo para $0\cdot a$.
+	\item Observese que
+	$$ab+(-a)b=(a+(-a))b=0\cdot b=0,$$
+	como $(A,+)$ es un grupo abeliano, los inversos son únicos, por lo tanto el enunciado es correcto.
+\end{enumerate}
+\end{proof}
+\begin{mydef}[Unidad]
+Decimos que un elemento de un anillo $A$ es una \textit{unidad}\index{unidad} syss posee inverso multiplicativo en $A$.
+\end{mydef}
+En $\Z$ las únicas unidades son $\{1,-1\}$ (solemos denotar ambos simultáneamente como $\pm 1$, aun que un matemático debe entender que nos referimos a dos números distintos), mientras que en $\Q$ todo número no nulo es una unidad, esto posee relación directa con la geometría, puede imaginar esta definición siendo más amplia pues en el mundo real no existen neutros multiplicativos absolutos --a ciertas medidas les podemos llamar ``metro'' y se comportan como un ``1'' dentro de su contexto, pero con un \textit{cambio de unidades} este ya deja de ser el caso--.
+\begin{mydef}[Cuerpo]
+Un dominio $A$ es llamado \textit{cuerpo}\index{cuerpo}, syss todo elemento no nulo es una unidad.
+\end{mydef}
+\begin{mydef}[Dominio íntegro]
+Dado un dominio $A$, decimos que es un \textbf{dominio íntegro}\index{dominio!integro@íntegro} syss no existen $a,b\in D$ no nulos tales que $ab=0$. De existir tales números, les llamamos \textit{divisores de cero}\index{divisor!de cero}.
+\end{mydef}
+\begin{thm}
+Si $A$ es un cuerpo entonces es un dominio íntegro.
+\end{thm}
+\begin{proof}
+Sean $a,b\in A$ aquellos tales que $ab=0$, como no son nulos poseen inversos tales que $aa^{-1}=1$ e $bb^{-1}=1$ de manera que $abb^{-1}a^{-1}=1$ y $ab(ab)^{-1}=0(ab)^{-1}=0$, pero $1\neq 0$ por ser dominio.
+\end{proof}
+\begin{thm}
+$(\Q,+,\cdot)$ es un cuerpo.
+\end{thm}
+\begin{mydef}[Anillo ordenado]
+Una cuaterna $(A,+,\cdot,\leq)$ corresponde un \textit{anillo ordenado}\index{anillo!ordenado} syss $(A,+,\cdot)$ es un anillo, $(A,\leq)$ es un conjunto \textbf{totalmente} (o \textbf{linealmente}) ordenado y se cumplen los dos siguientes axiomas (con $a,b,c\in A$):
+\begin{enumerate}
+\item $a+c\leq b+c$ syss $a\leq b$.
+\item Si $0\leq a$ y $0\leq b$, entonces $0\leq ab$.
+\end{enumerate}
+\end{mydef}
+Denotaremos $\lt$ como la relación tal que $a\leq b$ y $a\neq b$; también $\geq$ es el inverso de $\leq$, es decir, $a\geq b$ equivale a $b\leq a$; y $a\gt b$ equivale a $a\geq b$ y $a\neq b$. Vemos que $\Z,\,\Q$ y $\R$ son anillos ordenados también.
+\begin{thm}
+Sea $A$ un anillo ordenado con $a,b,c,d\in A$, entonces:
+\begin{enumerate}[$a)$]
+\item $a\leq b$ y $c\leq d$, entonces $a+c\leq b+d$.
+\item $a\lt b$ y $c\leq d$, entonces $a+c\lt b+d$.
+\item $a\leq b$ syss $b-a\geq 0$.
+\item $a\leq b$ syss $-a\geq -b$.
+\item $a\geq 0$ syss $-a\leq 0$.
+\item $a^2\geq 0$.
+\item $1\gt 0$.
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{description}
+\item[$a)$] $a+c\leq b+c\leq b+d$.
+\item[$c)$] $0=a-a\leq b-a$.
+\item[$f)$] Si $a\geq 0$ entonces es trivial. De lo contrario $-a\geq 0$ y $a^2=(-a)^2\geq 0$.
+\item[$g)$] $1^2=1$.
+\end{description}
+\end{proof}
+\begin{mydef}[Ideal y subanillo]
+Sea $A$ un anillo, entonces decimos que un subconjunto $I$ es un \textit{ideal}\index{ideal} syss $-a$, $ak$, $ka$ y $a+b$ pertenecen a $I$ para todo $a,b\in I$ y $k\in A$. Además, $I$ se llama \textit{ideal propio}\index{ideal!propio} syss $I\neq A$.
+
+Por otro lado, un \textit{subanillo}\index{subanillo} $S$ de $A$ es aquél que también es un anillo, por lo tanto, $-a$, $ab$, $ba$ y $a+b$ pertenecen a $S$ para todo $a,b\in S$.
+\end{mydef}
+Es importante distinguir entre ambos elementos, pues un ideal es un subanillo, pero no todo subanillo es ideal (de ahí el nombre). Una observación inmediata es que todo ideal y subanillo siempre posee al cero. Es más, el conjunto $\{0\}$ es efectivamente un ideal y le decimos \textit{trivial}\index{ideal!no trivial}.
+
+Para ver de donde proviene la noción de ideal consideremos lo siguiente:
+\begin{mydef}[Morfismo de anillos]
+Análogo a la definición del capítulo~1, un \textit{homomorfismo}\index{homomorfismo!de anillos} (de anillos) es una aplicación $f:A\rightarrow B$ entre anillos que conserva las propiedades. Sean $a,b\in A$, luego
+$$f(a+b)=f(a)+f(b),\quad f(ab)=f(a)f(b),$$
+además de que $f(0_A)=0_B$. La nomenclatura se mantiene. El kernel es el conjunto de los $x\in A$ tales que $f(x)=0_B$.
+\end{mydef}
+\begin{thm}
+Sea $f$ un homomorfismo de anillos de $A$ a $B$ entonces $\ker f$ es un ideal.
+\end{thm}
+\begin{proof}
+Sean $a,b\in\ker f$ y $c\in A$. Por definición, vemos que $f(0_A)=f(c+(-c))=f(c)+f(-c)=0_B$, osea, $f(-c)=-f(c)$, luego, si $-a\in\ker f$. Como $f(ac)=f(a)f(c)=0_Bf(c)=0_B$ se ve claro que $ac,ca\in\ker f$. Y $f(a+b)=f(a)+f(b)=0_B+0_B=0_B$, por lo cual, $a+b\in\ker f$.
+\end{proof}
+Ahora, procederemos a ver ciertas propiedades de los ideales.
+\begin{prop}
+Todo ideal $I$ de un anillo unitario no-trivial $A$ es propio syss no contiene ninguna unidad.
+\end{prop}
+\begin{proof}
+Nótese que si contiene a una unidad $u\in I$ entonces existe $u^{-1}\in A$ tal que $uu^{-1}=1\in I$ por definición, luego para todo $a\in A$, $1a=a\in I$. El argumento funciona bien para ambos lados.
+\end{proof}
+\begin{cor}\label{thm:dip-field}
+Un dominio $A$ es un cuerpo syss sus únicos ideales son $A$ y el trivial.
+\end{cor}
+\begin{mydef}[Dominio euclídeo]
+Sea $A$ un dominio íntegro ordenado es un \textit{dominio euclídeo}\index{dominio!euclídeo} syss existe una función $\phi:A\setminus\{0\}\rightarrow\N$, llamada \textit{norma euclídea}\index{norma!euclídea}, si cumple los siguientes axiomas:
+\begin{enumerate}
+\item Si $a,b\in A$ entonces $\phi(a)\leq\phi(a,b)$.
+\item Si $a,b\in A$ existen $q,r\in A$ tales que $b=aq+r$, con $\phi(r)\lt\phi(a)$ o $r=0$.
+\end{enumerate}
+\end{mydef}
+Obsérvese que $\Z$ es un dominio euclídeo, donde la norma euclídea es evidentemente el valor absoluto.
+\begin{mydef}
+Sea $a\in A$ un dominio, entonces $aA=\{ar:r\in A\}$ es un ideal que apodamos \textit{principal}. Se dice que un dominio íntegro es un \textit{dominio de ideales principales}\index{dominio!de ideales principales (DIP)} (DIP) cuando todo ideal en él, es de esta forma.
+\end{mydef}
+Por el corolario~\ref{thm:dip-field} vemos que todo cuerpo es un DIP. En particular, $\Q$ es DIP.
+\begin{thm}
+Todo dominio euclídeo es un DIP.
+\end{thm}
+\begin{proof}
+Sea $A$ un dominio euclídeo de norma $\phi$. Sea $I$ un ideal no-trivial de $A$ y $a\in I$ el elemento tal que $\phi(a)=\min(\phi[I])$ (que existe por buen orden de $\N$).
+
+Si $b\in I$, existen $q,r\in A$ tales que $b=aq+r$, con $\phi(r)\lt\phi(a)$ o $r=0$ por definición de norma euclídea. Como $I$ es ideal, $aq\in I$, por ende, $r=b-aq\in I$. Como $a$ es el mínimo de $\phi$ en $I$, nos queda que $r=0$; es decir, $b=aq\in I$. En síntesis, $I\subseteq aA$; sin embargo, como $a\in I$, obtenemos que $aR\subseteq I$; por tricotomía, $I=aA$.
+\end{proof}
+\begin{mydef}
+Consideremos $X\subseteq A$, entonces denotaremos $(X)$ como el \textit{ideal generado por el conjunto} $X$ tal que para todo $x\in X$ se cumple que $x\in(X)$. Si $X=\{x_1,\dots,x_n\}$, entonces se puede abreviar notación escribiendo $(X):=(x_1,\dots,x_n)$ \nomenclature{$(X)$}{Ideal generado por el conjunto $X$}.
+
+Para todo ideal $I$ de $A$ para el que se encuentre un conjunto finito $X$ tal que $(X)=I$ se le dirá que está \textbf{finitamente generado}.
+\end{mydef}
+Luego, $\Z$ es también un DIP.
+\begin{thm}
+Sea $A$ un anillo conmutativo, entonces
+$$(X)=\left\{\sum_{x\in X}a_xx:a_x\in A\right\}.$$
+Evidentemente $(x)=xA$.
+\end{thm}
+\begin{thm}\label{thm:equivalent-forms-of-noetherian}
+Sea $A$ un dominio íntegro, entonces son equivalentes:
+\begin{enumerate}[(1)]
+\item Todo ideal de $A$ está finitamente generado.
+\item Para toda cadena ascendente de ideales de $A$
+$$I_0\subseteq I_1\subseteq I_2\subseteq\dots$$
+existe $n$ tal que para todo $m\geq n$ se da $I_n=I_m$.
+\item Toda familia no-vacía de ideales de $A$ admite un maximal\index{ideal!maximal}\footnote{Vea la expresión~[TdC~2.7].} por inclusión ($\subseteq$).
+\end{enumerate}
+\end{thm}
+\begin{proof}
+$(1)\implies(2)$. Sea $I_0\subseteq I_1\subseteq I_2\subseteq\cdots$ una cadena ascendente de ideales de $A$, entonces, $I:=\bigcup_{i=0}^\infty I_i$ (la unión de los ideales) es también un ideal, por (1), $I$ posee un generador finito $X$. Luego, todo elemento de $X$ pertenece a algún $I_i$, por ende, eventualmente se cumple que $X\subseteq I_n$, no obstante, $I=(X)\subseteq I_n$, por lo tanto se cumple el enunciado de (2) como se quería.
+
+$(2)\implies(3)$. Veamos que dicho $I_n$ en la cadena de la prop.~(2) corresponde al elemento máximo (en particular, el maximal) de dicha cadena, por ende, ambas expresiones son equivalentes.
+
+$(3)\implies(1)$. Si el ideal $I$ de $A$ no fuese finitamente generado, podríamos considerar $a_0\in I$ y ver que $(a_0)\subset I$, luego, podríamos extraer $a_1\in I\setminus(a_0)$ tal que $(a_0,a_1)\subset I$ y así sucesivamente para obtener una cadena infinita sin un elemento maximal.
+\end{proof}
+\begin{mydef}[Anillo noetheriano]
+Un dominio íntegro es un \textit{anillo noetheriano}\index{anillo!noetheriano} si cumple con las condiciones del teorema~\ref{thm:equivalent-forms-of-noetherian}.
+\end{mydef}
+Nótese que todo DIP es trivialmente noetheriano, por ende, todo cuerpo lo es también.
+
+\section{Divisibilidad en anillos}
+Curiosamente ya hemos visto como el conjunto de números enteros admite las ideas de divisibilidad, y en la siguiente sección sobre como esta propiedad se mantiene en polinomios racionales. El objetivo de esta sección es generalizar dicha propiedad en términos del álgebra moderna, también se pretende profundizar en teoría de números en el reino de la aritmética modular; por supuesto, comencemos con una definición:
+\begin{mydef}[Divisibilidad]
+Sea $A$ un dominio con $a,b\in A$. Escribimos $a\mid b$ cuando existe $q\in A$ tal que $b=aq$. Si dos elementos cumplen que $a\mid b$ y $b\mid a$, diremos que son \textbf{asociados}.
+\end{mydef}
+Las propiedades ya vistas en el teorema~\ref{thm:divisibility-propierties}, son análogas en su forma abstracta. Cabe destacar que podemos generalizar una e indicar que toda unidad $u$ divide a todo elemento de $A$, asimismo, dos elementos son asociados syss el segundo es el producto del primero por una unidad.
+
+Los divisores de un elemento se clasifican en: \textit{impropios}\index{divisor!propio, impropio}, son las unidades y los asociados de si mismo; y \textit{propios}.
+\begin{mydef}[Irreductibles y primos]
+Sea $A$ un dominio. Diremos que un elemento es \textit{irreductible}\index{elemento!reductible, irreductible} (resp. reductible) syss es no nulo, ni una unidad, ni posee (resp. sí posee) divisores propios.
+
+Diremos también que un elemento $p$ es \textit{primo}\index{elemento!primo} syss $p\mid ab$ implica $p\mid a$ o $p\mid b$.
+\end{mydef}
+De esta forma, podemos ver que todo dominio $A$ se divide en su elemento nulo, sus unidades, sus elementos reducibles y sus irreducibles.
+
+Usted puede alegar debido a la definición de irreductible y primo, debido a que en la sección~1.3 hemos definido primo como un elemento irreductible y luego hemos concluido la propiedad como una consecuencia. No hay error cometido, esa es la metodología que radica en la teoría \textit{elemental} de números, no obstante, para el álgebra abstracta, lo correcto es nuestra nueva descripción; veremos que en este contexto, ser irreductible y primo no siempre es lo mismo.
+\begin{thm}
+En un dominio íntegro $A$ todo primo es irreducible.
+\end{thm}
+\begin{proof}
+Sea $p=xy$ un primo de $A$ con $x,y\in A$. Por construcción, $xy\mid p$, lo que implica, $x\mid p$ e $y\mid p$. También $p\mid xy$, por definición, $p\mid x$ o $p\mid y$. Luego, alguno de los dos ($x$ o $y$) está asociado con $p$, por ende, el otro es una unidad; es decir, $p$ es irreducible.
+\end{proof}
+\begin{mydef}
+Un dominio $A$ se dice que posee la \textit{propiedad de factorización}\index{propiedad!de factorización}, cuando todo elemento reducible puede expresarse como un producto de elementos irreducibles. Dicho dominio será llamado un \textit{dominio de factorización única}\index{dominio!de factorización única (DFU)} (DFU) cuando posee dicha propiedad, pero con elementos primos en su lugar y cuando todo par de factorizaciones:
+$$n=p_1\cdots p_n=q_1\cdots q_m$$
+satisfacen que $n=m$ y que existe una permutación $\sigma:I_n\rightarrow I_n$ tal que $p_i$ y $q_{\sigma(i)}$ son asociados (unicidad de la factorización).
+\end{mydef}
+Si no comprende la unicidad, déjeme aclarárselo con un ejemplo. El número 6 puede descomponerse en factores irreductibles como
+$$6=2\cdot 3=(-3)\cdot(-2),$$
+nótese que podemos reordenar los elementos (por medio de la permutación) y ver que el $2$ y el $-2$ son asociados, por tanto, no corresponde a una ``factorización distinta''. En general, si $A$ es DFU entonces todo elemento podrá escribirse de la forma
+$$n=u\prod_{i=0}^k p_i^{\alpha_i},$$
+donde $u$ es una unidad, $p_i$ es un elemento irreducible y para $i\neq j$ se da que $p_i$ no está asociado con $p_j$.
+
+El teorema fundamental de la aritmética señala que $\Z$ es un DFU.
+\begin{thm}\label{thm:factorization-in-noetherian}
+Sea $A$ un anillo noetheriano, entonces, posee la propiedad de factorización. Si además todo irreducible es primo, entonces $A$ es DFU.
+\end{thm}
+\begin{proof}
+Lo probaremos por negación de la implicación, es decir probaremos que si $A$ no posee la propiedad de factorización entonces $A$ no sería noetheriano (lógicamente este método es verídico).
+
+Comencemos por construir un conjunto $S$ que contiene: el cero, las unidades de $A$, sus elementos irreducibles y los productos \textbf{finitos} entre irreducibles. Luego, supongamos que $B:=A\setminus S$ fuese no-vacío, de manera que existe $x\in B$; como $x$ es reductible, existen $y,z\in A$ no-unitarios tales que $x=yz$, y por lo menos alguno pertenece a $B$.
+
+Utilizando esta información, crearemos una secuencia de elementos de $B$ tales que $x_0=x$ y $x_{n+1}\mid x_n$ con ambos siempre en $B$. En general, para $m\gt n$ se tiene que $x_m\mid x_n$, pero $x_n\nmid x_m$.
+
+Luego, el conjunto $I=\{a:\exists n\in\N\;x_n\mid a\}$ es un ideal y veremos que no puede ser finitamente generado. Para ello, consideremos que los elementos $y_0,\dots,y_k$ son pertenecientes a $I$. Por lo tanto, debe existir un $m\in\N$ tal que $x_m\mid y_i$ para todo $0\leq i\leq k$. Dicho conjunto no puede generar el conjunto, pues de lo contrario $x_m\mid x_n$ para todo $n\in\N$ lo que es una contradicción.
+
+Para la segunda afirmación, supondremos que $n$ es un elemento con dos factorizaciones
+$$n=\prod_{i=0}^j p_i=\prod_{i=0}^k q_i,$$
+como las factorizaciones son iguales, podemos decir que se dividen entre sí, por ende, $p_0\mid\prod_{i=0}^k q_i$ y, como $p_0$ es primo, $p_0\mid q_i$ para algún $i=0,\dots,k$. Construyamos la permutación $\sigma$ tal que $p_0\mid q_{\sigma(0)}$, pero como ambos son irreductibles, son asociados. Por cancelación, nos queda que $\prod_{i=1}^j p_i=\prod_{i=1}^k q_{\sigma(i)}$ y repetimos la operación $j$ veces para comprobar el teorema.
+\end{proof}
+\begin{mydef}
+Sea $A$ un anillo. Diremos que un ideal $P$ en $A$ es \textit{primo}\index{ideal!primo} syss $P\neq A$ y si $I,J$ son ideales de $A$ tales que $IJ\subseteq P$ entonces $I\subseteq P$ o $J\subseteq P$.
+
+Diremos que un ideal $M$ en $A$ es \textit{maximal}\index{ideal!maximal} syss $M\subseteq I\subseteq A$ implica que $M=I$ o $I=A$.
+\end{mydef}
+\begin{thm}
+Un ideal $P$ es un dominio $A$ es primo syss $A/P$ es un dominio íntegro.
+\end{thm}
+\begin{proof}
+$\implies$. Nótese que como $P\neq A$, entonces $1\notin P$, luego $[1]\neq 0$, es decir, $A/P$ es un dominio. Si $a,b\in P/A$ cumplen que $[a][b]=[ab]=0$, entonces $ab\in P$ lo que implica que $a\in P$ o $b\in P$ por definición, por tanto es íntegro.
+
+$\Longleftarrow$. Es análogo.
+\end{proof}
+\begin{thm}
+Un ideal $M$ en un dominio $A$ es maximal syss $A/M$ es un cuerpo.
+\end{thm}
+\begin{proof}
+$\implies$. Como $M\neq A$, $A/M$ es un dominio. Supongamos que $I$ es un ideal de $A/M$ y $f:A\rightarrow A/M$ es un homomorfismo de anillos, entonces $J:=f^{-1}(I)$ es un ideal que satisface que $M\subseteq J\subseteq A$, luego $M=J$ o $J=A$. En el primer caso, $I$ corresponde al ideal trivial $(0)$. En el segundo, corresponde al ideal $(1)$. Luego por el corolario~\ref{thm:dip-field} es un cuerpo.
+
+$\Longleftarrow$. Es análogo.
+\end{proof}
+\begin{cor}
+En un dominio $A$, todo ideal maximal es primo.
+\end{cor}
+\begin{lem}
+Sea $A$ un dominio íntegro y $p\in A$ no nulo, entonces:
+\begin{enumerate}
+	\item $(p)$ es primo syss $p$ lo es.
+	\item $p$ es irreductible syss $(p)$ es maximal entre los ideales principales.
+\end{enumerate}
+\end{lem}
+Como un DIP es un dominio, vemos que efectivamente todo irreductible es primo. Lo que sumado al teorema~\ref{thm:factorization-in-noetherian} nos da: 
+\begin{thm}
+Todo DIP es un DFU.
+\end{thm}
+\begin{mydef}
+Sea $A$ un DFU, entonces definiremos un \textit{máximo común divisor}\index{maximo@máximo!común divisor} (mcd) entre dos números $a,b\in A$ como el producto de todos los primos que dividen a ambos elevados al mínimo exponente en cada caso. Análogamente definimos un \textit{mínimo común múltiplo}\index{minimo@mínimo!común múltiplo} (mcm) entre ambos como el producto de todos los primos que dividen a cualquiera de los dos elevados al máximo exponente en cada caso.
+\end{mydef}
+Nótese que siempre, todos los mcd's y mcm's resp. son asociados entre sí.
+\begin{thm}[Identidad de Bézout (Fuerte)]
+Sea $A$ un DIP con $a_0,\dots,a_n\in A$; luego sea $d$ un mcd, entonces
+$$(d)=\sum_{i=0}^n(a_i);$$
+en particular, existen $b_0,\dots,b_n\in A$ tales que
+$$\sum_{i=0}^n a_ib_i=d.$$
+\end{thm}
+\begin{proof}
+Definamos que $(d)=\sum_{i=0}^n(a_0)$, probaremos que $d$ es un mcd de dicha secuencia. Evidentemente $d\mid a_i$ para $i=0,\dots,n$ y si $s$ es un divisor común, entonces $(d)\subseteq(s)$ lo que implica $s\mid d$. Como el resto de mcd's son asociados, también están contenidos en $(d)$.
+\end{proof}
+Nótese que conceptos como los de coprimos se mantienen igualmente.
+
+Otro concepto, que nos será de especial utilidad en la sección sobre divisibilidad polinómica, es la de cuerpo de cocientes:
+\begin{thm}
+Sea $A$ un dominio, entonces, denotaremos por $\sim$ a la relación en $A^2$ tal que
+$$(a,b)\sim(c,d)\iff ad=bc.$$
+Luego $\sim$ resulta ser una relación de equivalencia, con la cual definimos $K:=A^2/\sim$ como el conjunto de las clases de equivalencia de $A$; a $K$ le llamamos su \textit{cuerpo de cocientes}\index{cuerpo!de cocientes} (también llamado \textit{anillo} o \textit{cuerpo de fracciones}), pues efectivamente resulta ser un cuerpo y posee todos los elementos de $A$.
+\end{thm}
+
+\section{Polinomios}
+Una noción fundamental a lo largo de todo el álgebra, tanto abstracta como concreta, es la de los \textit{polinomios}\index{polinomio}. Aquí apreciamos una diferencia fundamental con el análisis y es que para dicha rama, esto consiste un tipo de función, pero aquí les trataremos como objetos apartados, como si fuesen números. La razón para ello es principalmente la siguiente, consideremos que tenemos el polinomio $x^2+1$ dentro de los reales y queremos \textit{extender} el cuerpo a los complejos, entonces queremos que dicho objeto se siga comportando igual sin complicaciones.
+
+Para la construcción de los polinomios, primero construiremos una versión más rudimentaria: los \textit{monomios}\index{monomio}. El término ``-nomio'' significa, adecuadamente, términos, de manera que queremos algo de la forma $x^2y$ por ejemplificar. Aún no nos preocuparemos de ``los números que acompañan los monomios'', llamados \textit{coeficientes}\index{coeficiente!polinomio}.
+
+Entonces, por el momento, todo monomio está representado por una función $u:S\rightarrow\N$ contenida en un conjunto $M$ tal que el conjunto $\{i\in S:u(i)\neq 0\}$ es finito. En particular, $S$ representa nuestras \textit{indeterminadas} (usualmente denotadas como $x$, $y$, etc.) y $u$ representa el exponente de cada una. Es una restricción el siempre contar con sólo finitas indeterminadas.
+
+Supongamos que $\epsilon_x\in M$ es la función que da 1 cuando la indeterminada corresponde a la de su índice y 0 de lo contrario, entonces un monomio de $n$ indeterminadas $x_1,\dots,x_n$ puede denotarse como $u=u(x_1)\epsilon_{x_1}+\cdots+u(x_n)\epsilon_{x_n}$.
+
+\begin{mydef}[Polinomio]
+Finalmente, siendo $A$ un anillo, denotaremos $A[S]$ \nomenclature{$A[S]$}{Conjunto de polinomios con coeficientes en $A$ y con indeterminadas de $S$} como el conjunto de todos los polinomios con indeterminadas en $S$ y coeficientes en $A$. $f\in A[S]$ será una aplicación $f:M\rightarrow A$ tal que el conjunto $\{u\in M:f(u)\neq 0\}$ es finito (es decir, posee finitos términos). Si recuerda, cada $u$ representa un monomio, pues, $f(u)$ representa el coeficiente de dicho monomio, en síntesis, todo $f$ viene a representar la expresión:
+$$f(u_1)x_1^{u_1(x_1)}\cdots x_n^{u_1(x_n)}+\cdots+f(u_m)x_1^{u_m(x_1)}\cdots x_n^{u_m(x_n)}.$$
+Definimos el grado\index{grado!de un polinomio} (en inglés, \textit{degree}) de un polinomio, como la mayor suma de exponentes por término, formalmente
+$$\deg f=\max\{u(x_1)+\cdots+u(x_n):f(u)\neq 0\}$$ \nomenclature{$\deg f$}{Grado del polinomio $f$}
+Digamos que el grado de $f$ es $d$, si hay un sólo término de $f$ de grado $d$ diremos que el coeficiente de dicho término es llamado \textit{coeficiente director}\index{coeficiente!director}. Si el coeficiente director es 1, se dice que el polinomio es \textit{mónico}\index{polinomio!mónico}.
+\end{mydef}
+Cabe destacar que puede darse el caso que dado un polinomio no-constante de una sola indeterminada $f$ exista un $x\in A$ tal que $f(x)=0$, en ese caso decimos que $x$ es una \textit{raíz}\index{raíz!de un polinomio} del polinomio.
+
+En realidad, todo este proceso corresponde a una formalidad para la construcción absoluta de los polinomios, en lo sucesivo, sólo los denotaremos mediante sus representaciones, por ejemplo
+$$f(x)=\sum_{i\geq 0}a_ix^i$$
+el cual pertenece a $A[x]$. Por lo general se suelen usar polinomios de una única variable por su simpleza, cabe destacar que si estos poseen un grado digamos $n$, entonces es por que el término $x^n$ es el mayor con coeficiente no nulo.
+
+Sean $f,g\in A[x]$, entonces
+\begin{align*}
+(f+g)(x)&:=f(x)+g(x)=\sum_{i\geq 0}(a_i+b_i)x^i\\
+(f\cdot g)(x)&:=f(x)\cdot g(x)=\sum_{k\geq 0}\left(\sum_{i+j=k}a_ib_j\right)x^k.
+\end{align*}
+\begin{thm}
+Sea $A$ un anillo, entonces $(A[x],+,\cdot)$ lo es. Si $A$ es unitario, $A[x]$ también lo es. Si $A$ es conmutativo, $A[x]$ también lo es.
+\end{thm}
+\begin{proof}
+Es evidente que $(A[x],+)$ es un grupo abeliano, la asociatividad del producto se demuestra con
+\begin{align*}
+(fg)h&=\sum_{v\geq 0}\left(\sum_{u+k=v}\left(\sum_{i+j=u}a_ib_j\right)c_k\right)x^v=\sum_{v\geq 0}\left(\sum_{i+j+k=v}a_ib_jc_k\right)x^v\\
+&=\sum_{v\geq 0}\left(\sum_{i+w=v}a_i\sum_{j+k=w}b_jc_k\right)x^v=f(gh),
+\end{align*}
+la distributividad es simple, puede comprobarla manualmente. Si $A$ es unitario, entonces $1(x):=1\in A[x]$ que es, asimismo, una unidad. La conmutatividad es trivial.
+\end{proof}
+Podemos afirmar sencillamente que $\deg(f+g)\leq\max(\deg f,\deg g)$ y $\deg(fg)\leq\deg f+\deg g$.
+\begin{thm}\label{thm:degree-product-polinomial}
+Sean $f,g\in A[x]$ no nulos, de grados $n$ y $m$ respectivamente, tales que $a_n,b_m$ \textbf{no} son divisores de cero, entonces
+$$\deg(fg)=\deg f+\deg g.$$
+\end{thm}
+\begin{proof}
+Notemos que como $a_n,b_m$ son no nulos y no divisores de cero, se da $\sum_{i+j=n+m}a_ib_j=a_nb_m\neq 0$, pues para todo $i\gt n$ y $j\gt m$ ocurre $a_i=b_j=0$, es decir, $\deg(fg)\leq\deg f+\deg g$, por tricotomía, $\deg(fg)=\deg f+\deg g$.
+\end{proof}
+Cabe destacar que como todo polinomio de una indeterminada posee coeficientes en el anillo, todo polinomio de $(n+1)$ indeterminadas es realmente un polinomio de una con coeficiente en el anillo de polinomios de $n$ indeterminadas, es decir, $A[x_1,\dots,x_n,x_{n+1}]=A[x_1,\dots,x_n][x_{n+1}]$.
+
+Notemos que si $f\in A[x_1,\dots,x_n]$ entonces se escribe como prosigue
+$$f(x_1,\dots,x_n)=\sum_{i_1,\dots,i_n\geq 0}a_{i_1\cdots i_n}x_1^{i_1}\cdots x_n^{i_n};$$
+evidentemente, $A[x_1,\dots,x_n]$ es siempre un anillo por inducción.
+\begin{thm}
+Sea $A$ un dominio íntegro, entonces $A[x_1,\dots,x_n]$ es un dominio íntegro.
+\end{thm}
+\begin{proof}
+Por el teorema anterior, sabemos que multiplicar dos polinomios no nulos incrementa su grado y por definición de grado en polinomios de múltiples variables este siempre crece, por tanto, no puede ser nulo a menos que uno de ellos sea nulo, osea, es un dominio íntegro. Para formalismos, el argumento se aplica con inducción.
+\end{proof}
+\begin{thm}
+Todas las unidades de un dominio íntegro $A$ lo son también de $A[x_1,\dots,x_n]$.
+\end{thm}
+\begin{proof}
+Por el teorema~\ref{thm:degree-product-polinomial} vemos que multiplicar polinomios sólo incrementa el grado de éste, por ende, el polinomio debe ser constante para ser invertible, luego, debe ser una unidad de $A$.
+\end{proof}
+Similar a como en la sección~1.3 introducimos la división de números mediante un algoritmo, veremos que los polinomios comparten dicha propiedad:
+\begin{thm}[Algoritmo de división polinómica]\index{algoritmo!división polinómica}
+Sea $A$ un anillo con $\alpha\in A[x]$ un polinomio no nulo cuyo coeficiente director es una unidad de $A$ y $\beta\in A[x]$ cualquiera. Existen unos únicos polinomios $q,r\in A[x]$ tales que
+$$\beta(x)=\alpha(x)\cdot q(x)+r(x),\quad 0\leq\deg r\lt\deg\alpha$$
+\end{thm}
+\begin{proof}
+Diremos que $n:=\deg\alpha$ y $m:=\deg\beta$. Si $n\gt m$ entonces $q=0$ y $r=\beta$. De caso contrario ($n\leq m$), lo probaremos por inducción sobre $m$.
+
+Caso $m=0$: ocurre con $\beta(x)=b_0$ y $\alpha(x)=a_0$, con $a_0$ unidad, por tanto, $q(x)=a_0^{-1}b_0$.
+
+Caso $m$: Consideremos que $\beta(x)=b_0+\cdots+b_mx^m$ y $\alpha(x)=a_0+\cdots+a_nx^n$, luego $\alpha a_n^{-1}b_mx^{m-n}=\sum_{i=0}^n a_ia_n^{-1}b_m x^{m-n+i}$ posee mismo término director, por ende, existen $q,r\in A[x]$ tales que:
+$$\beta-\alpha a_n^{-1}b_mx^{m-n}=\alpha q+r$$
+(por hipótesis inductiva, pues el polinomio de la izquierda tiene grado a lo más $m-1$). Finalmente, pasamos el término de $\alpha$ a la derecha para obtener que
+$$\beta(x)=\alpha(x)\cdot(a_n^{-1}b_mx^{m-n}+q(x))+r(x)$$
+que satisface todas nuestras restricciones.
+
+La unicidad de $q,r$ se produce pues si existiese otro par $q',r'\in A[x]$ se tendría que
+$$\alpha q+r=\alpha q'+r'\iff\alpha(q-q')=r'-r$$
+como son distintos, son no nulos, por lo tanto, $\deg(r'-r)\lt\deg\alpha\leq\deg\alpha+\deg(q-q')$ lo que es absurdo.
+\end{proof}
+Nuevamente, a $q(x),r(x)$ les llamamos \textit{cociente} y \textit{resto} resp. De igual forma, si el resto en la división entre $\beta(x)$ sobre $\alpha(x)$ escribiremos $\alpha(x)\mid\beta(x)$ como si de números enteros se tratase.
+\begin{thm}[Regla de Ruffini]\index{regla!de Ruffini}
+Sea $A$ un anillo con $p(x)\in A[x]$ y $a\in A$. Luego la división de $p(x)$ con $(x-a)$ es la constante $p(a)$. Una consecuencia es que $(x-a)\mid p(x)$ syss $a$ es una raíz de $p$.
+\end{thm}
+\begin{thm}\label{thm:polynomials-max-roots}
+Sea $A$ un anillo con $p(x)\in A[x]$ de grado $n$, entonces $p$ tiene, a lo sumo, $n$ raíces.
+\end{thm}
+\begin{thm}[Algoritmo de Horner-Ruffini]\index{algoritmo!de Horner-Ruffini}
+Sean $A$ un dominio íntegro con $x_0\in R$ y $p(x)\in A[x]$ un polinomio de la forma $p(x)=a_0+\cdots+a_nx^n$. Defínase la secuencia, de forma inductiva (a la inversa):
+$$b_n:=a_n,\quad b_i=a_i+b_{i+1}x_0;$$
+entonces se cumple que
+$$p(x)=(x-x_0)(b_nx^{n-1}+\cdots+b_1)+b_0$$
+\end{thm}
+\begin{proof}
+Para ver el funcionamiento del algoritmo, nótese que el polinomio puede escribirse como
+$$p(x)=a_0+x(a_1+\cdots x(a_{n-1}+xa_n)\cdots).$$
+\end{proof}
+Un ejemplo rápido de aplicación es dividir el polinomio $3x^2+2x+1$ sobre $x+1=x-(-1)$:
+\begin{figure}
+\centering
+\begin{tabular}{c|ccc}
+& 3 & 2 & 1\\
+{\color{niceblue}$-1$} & & ${\color{nicegreen}3}\cdot{\color{niceblue}-1}=-3$ & ${\color{niceyellow}-1}\cdot{\color{niceblue}-1}=1$\\ \hline
+& {\color{nicegreen}3} & $2+(-3)={\color{niceyellow}-1}$ & $1+1={\color{nicered}2}$ 
+\end{tabular}
+\caption{Aplicación del algoritmo de Horner-Ruffini.}
+\end{figure}
+
+Podemos ver que es correcto, pues
+$$(x-{\color{niceblue}(-1)})({\color{nicegreen}3}x+{\color{niceyellow}(-1)})+{\color{nicered}2}=3x^2-x+3x-1+2=3x^2+2x+1.$$
+\begin{thm}[Polinomio de interpolación de Lagrange]\index{polinomio!de interpolación de Lagrange}
+Sea $A$ un cuerpo con $a_1,\dots,a_n,b_1,\dots,b_n\in A$. Existe un único polinomio $f\in A[x]$ de grado menor a $n$ tal que $f(a_i)=b_i$ para todo $i=1,\dots,n$; y está dado por la fórmula\footnote{En análisis matemático, la expresión $P_i(a_i)$ estaría indeterminada por ser del tipo ``$0/0$'', no obstante, aquí, se realiza la disivión polinómica primero y luego se efectúa la aplicación en el punto $a_i$. Dicho de otro modo, no se indetermina y se entiende que se erradica el factor $x-a_i$ del producto.}
+\begin{equation}
+f(x)=\sum_{i=1}^nb_i\frac{P_i(x)}{P_i(a_i)},\quad P_i(x)=\frac{\prod_{j=1}^n(x-a_j)}{x-a_i}.
+\end{equation}
+\end{thm}
+\begin{proof}
+Es fácil ver que $P_i(a_j)=0$ cuando $i\neq j$, por lo que, el polinomio de Lagrange efectivamente cumple con las condiciones indicadas. Para ver que es el único de grado menor a $n$, consideremos que $g(x)\in A[x]$ también cumpliese con las condiciones, luego $(f-g)(x)$ sería un polinomio de grado menor que $n$ con $n$ raíces, lo que es imposible por el teorema~\ref{thm:polynomials-max-roots}.
+\end{proof}
+\begin{thm}
+Si $A$ es un cuerpo, entonces $A[x]$ es un dominio euclídeo.
+\end{thm}
+\begin{proof}
+Basta ver que la norma euclídea es el grado de los polinomios y que si $A$ es un cuerpo, todo polinomio posee una unidad como coeficiente director.
+\end{proof}
+\begin{thm}[Teorema de bases de Hilbert]\index{teorema!de bases de Hilbert}
+Si $A$ es un anillo noetheriano, entonces $A[x_1,\dots,x_n]$ lo es.
+\end{thm}
+\begin{proof}
+Esencialmente sólo nos basta probar que si $A$ es noetheriano, $A[x]$ lo es. Pues la generalización se reduce a simple inducción.
+
+Sea $I$ un ideal de $A[x]$, entonces definiremos $I_i$ como el conjunto compuesto por todos los coeficientes directores de los polinomios de $I$ de grado $i$ (más el cero).
+
+Es fácil ver que $I_0\subseteq I_1\subseteq I_2\subseteq\dots$ (pues basta multiplicar por $x$ el polinomio que justifica que $a_i\in I_i$ para ver que pertenece también a $I_{i+1}$). Aplicando la definición de noetheriano, existe un $n$ tal que $I_n$ es el maximal.
+
+Sea $I_i=(a_{i0},\dots,a_{im})$ (nótese que si $I_i$ se puede generar con menos de $i$ elementos, podemos rellenar con generadores redundantes).
+
+Luego sea $p_{ij}$ un polinomio en $I$ de grado $i$ tal que todo coeficiente de grado $k$ sea $a_{kj}$. Definamos $J:=(p_{ij}:i=0,\dots,n;j=0,\dots,m)$. Evidentemente $J\subseteq I$.
+
+Sea $f$ un polinomio de grado $k$ contenido en $I$, probaremos que $f\in J$ por inducción sobre $k$. Si $k\gt n$, vemos que el coeficiente director de los polinomios $x^{k-n}p_{n0},\dots,x^{k-n}p_{nm}$ son $a_{n0},\dots,a_{nm}$ que definen $I_k=I_n$, luego, existen $b_0,\dots,b_m\in A$ tales que
+$$q:=b_0x^{k-n}a_{n0}+\cdots+b_mx^{k-n}a_{nm}$$
+es un polinomio que comparte coeficiente director y grado con $f$ (y además pertenece a $I$), luego, $f-q$ es de grado menor que $q$ y por hipótesis inductiva, pertenece a $J$. El argumento es análogo si $k\leq n$. Con esta información se concluye que $I\subseteq J$ lo que, por tricotomía, implica que $I=J$. Más concretamente, demostramos que todo ideal de $A[x]$ está finitamente generado.
+\end{proof}
+
+\section{Divisibilidad de polinomios}
+\begin{mydef}[Contenido]
+Sea $A$ un DFU, definimos la aplicación $c:A[x]\rightarrow\P(A)$, llamada \textit{contenido del polinomio}\index{contenido!de un polinomio}, como aquella tal que sea $d$ el mcd de los coeficientes no-nulos de $f\in A[x]$, entonces $c(f)=(d)$ \nomenclature{$c(f)$}{Contenido del polinomio $f$}. Definimos que $c(0)=(0)$.
+
+Decimos que un polinomio es \textit{primitivo}\index{polinomio!primitivo} syss $c(f)=(1)$, es decir, si sus coeficientes no-nulos son coprimos. En particular, todo polinomio mónico es primitivo.
+\end{mydef}
+\begin{lem}[Lema de Gauss, Primitividad]\index{lema!de Gauss, primitividad}
+Sea $A$ un DFU con $f,g\in A[x]$ primitivos, entonces $f\cdot g$ es primitivo.
+\end{lem}
+\begin{proof}
+Sean $f(x)=a_0+a_1x+\cdots+a_nx^n$ y $g(x)=b_0+\cdots+b_mx^m$, entonces $f\cdot g(x)=c_0+\cdots+c_{n+m}x^{n+m}$. Sea $p$ un número primo y digamos que divide a todos los $a_i$ con $i\lt u$ y los $b_i$ con $i\lt v$, entonces
+$$p\mid c_{u+v}-a_ub_v=\sum_{i=0}^{u-1}{\color{nicered}b_i}c_{u+v-i}+\sum_{i=0}^{v-1}b_{u+v-i}{\color{nicered}c_i}$$
+debido a que $p$ divide los términos en rojo. Pero como $p\nmid a_u,b_v$ concluimos que $p\nmid c_{u+v}$.
+\end{proof}
+\begin{thm}
+Sean $f,g\in A[x]$ y $k\in A$, entonces
+\begin{enumerate}[$a)$]
+	\item $c(kf)=(k)c(f)$.
+	\item $c(fg)=c(f)c(g)$.
+\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}[$a)$]
+	\item Por propiedades del mcd.
+	\item Consideremos que $c(f)=a,\,c(g)=b$; por lo que $f=af^*$, $g=bg^*$ con $f^*,g^*$ primitivas. Entonces $c(fg)=c((ab)f^*g^*)=(ab)c(f^*g^*)$. Pero por lema de primitividad de Gauss, $f^*g^*$ es primitiva, por ende el teorema.
+	\end{enumerate}
+\end{proof}
+\begin{lem}
+Sea $A$ un DFU con $K$ su cuerpo de cocientes y $f,g\in A[x]$ polinomios primitivos no-constantes. $f$ y $g$ son asociados en $K[x]$ syss lo son en $A[x]$.
+\end{lem}
+\begin{proof}
+Si lo son, entonces existen $a,b\in A$ no-nulos tales que $f=(a/b)g$, es decir, $af=bg$. Observe que
+$$(a)=(a)c(f)=c(af)=c(bg)=(b)c(g)=(b),$$
+por lo que $a,b$ son asociados y existe una unidad $u\in A$ tal que $b=au$. Con esto $af=bg=aug$, por cancelación, nos queda que, efectivamente, $f,g$ son asociados en $A[x]$.
+\end{proof}
+\begin{thm}[Criterio de Irreductibilidad de Gauss]\index{criterio!de irreductibilidad de Gauss}
+Sea $A$ un DFU, $K$ su cuerpo de cocientes y $f\in A[x]$ un polinomio primitivo no-constante. $f$ es irreductible en $A[x]$ syss lo es en $K[x]$.
+\end{thm}
+\begin{proof}
+$\Longleftarrow$. Éste caso es trivial.
+
+$\implies$. Supongamos que $f$ es reductible en $K[x]$, pero no en $A(x)$, por lo que $f=gh$ con $g,h\in K[x]$. Esto significa que
+$$g(x)=\sum_{i=0}^n\frac{a_i}{b_i}x^i,\quad h(x)=\sum_{i=0}^m\frac{c_i}{d_i}x^i$$
+con $b_i,c_i$ no-nulos. Definamos $b:=\prod_{i=0}^n b_i$ y $\tilde{b}_i:=b/b_i$ con lo que $g_1(x)=\sum_{i=1}^n a_i\tilde{b}_ix^i$ de contenido $u$, por lo que $g_2:=g_1/u$. Por lo que $g=(b/u)g_2$ y $h=(d/v)h_2$, es decir,
+$$f=\frac{bd}{uv}g_2h_2$$
+como $u,v$ son no-nulos, $f$ y $g_2h_2$ son primitivos asociados en $K[x]$, luego lo son en $A[x]$.
+\end{proof}
+\begin{thm}[Criterio de Irreductibilidad de Eisenstein]\index{criterio!de irreductibilidad de Eisenstein}
+Sean $A$ un DFU, $K$ su cuerpo de cocientes y $f=\sum_{i=0}^n a_ix^i\in A[x]$ no-constante. Sea $p\in A$ un primo, luego $f$ es irreducible en $K$ si:
+	\begin{enumerate}
+	\item $p\nmid a_n$.
+	\item $p\mid a_i$ para $i=0,1,\dots,n-1$.
+	\item $p^2\nmid a_0$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+Supondremos que $f=af^*$ con $f^*$ primitiva ($a$ es una unidad en $K$), de modo que si fuese reducible en $K$ existirían $g=\sum_{i=0}^rb_ix^i,h=\sum_{i=0}^sc_ix^i\in A[x]$ primitivos, no-constantes, tales que $f^*=gh$. Nótese que $a^*_0=b_0c_0$, por lo que $p\mid b_0$ o $p\mid c_0$, pero no ambos (restricción por construcción), por ello supondremos el primer caso.
+
+$p$ no puede dividir todos los $b_i$ por ser $g$ primitiva, así que digamos que sea $k$ el primer índice tal que $p\nmid b_k$ con $0\lt k\leq r\lt n$. Sabemos que $p\mid a_k=\sum_{i+j=k}b_ic_j$, además de dividir todos los términos individualmente a excepción del último, por lo que, $p$ divide a la resta (que da como resultado $b_kc_0$), pero $p\nmid b_k$ y $p\nmid c_0$, lo que sería absurdo. 
+\end{proof}
+\begin{thm}
+Sea $A$ un dominio con $a\in A$ una unidad y $b\in A$ cualquiera, entonces $p(x)$ es irreductible syss $p(ax+b)$ lo es.
+\end{thm}
+\begin{proof}
+Para demostrarlo veremos que $f:A[x]\rightarrow A[x]$ donde $f(p(x))=p(ax+b)$ es un isomorfismo de anillos. Es claro que es un homomorfismo, y como $g(x)=ax+b$ es una biyección, comprobamos el enunciado.
+\end{proof}
+Usualmente se suelen aplicar en conjunto el criterio de Eisenstein con el teorema anterior para demostrar la irreductibilidad de un polinomio. Por ejemplo, utilizando el mismo polinomio que en la aplicación del algoritmo de Horner-Ruffini, $p(x)=3x^2+2x+1$, probaremos que es irreductible en $\Q$, primero multiplicamos todos los términos por 3 para obtener $3p(x)=9x^2+6x+3$, luego consideremos el polinomio
+$$3p\left(\frac 13(x+1)\right)=(x+1)^2+2(x+1)+3=x^2+2x+1+2x+2+3=x^2+4x+6$$
+que es irreductible por criterio de Eisenstein. Recuerde que 3 es una unidad de $\Q$ y como el polinomio original es primitivo, entonces es irreductible también en $\Z$.
+\begin{thm}[Teorema de las raíces racionales]
+Sea $A$ un DFU, $K$ su cuerpo de cocientes y $p(x)\in A[x]$ un polinomio no-constante:
+$$p(x)=\sum_{i=0}^n c_ix^i.$$
+Si $\alpha=a/b$, con $a,b\in A$ coprimos, es una raíz de $p(x)$, entonces $a\mid c_0$ y $b\mid c_n$.
+\end{thm}
+\begin{proof}
+Como $\alpha=a/b$ es una solución
+$$\sum_{i=0}^n\frac{a^i}{b^i}c_i=0,$$
+multiplicando por $b^n$ y aplicando técnicas de despeje obtenemos las dos ecuaciones siguientes:
+\begin{align*}
+a^nc_n&=-b\sum_{i=0}^{n-1}a^ib^{n-1-i}c_i\\
+b^nc_0&=-a\sum_{i=1}^{n-1}a^{i-1}b^{n-i}c_i,
+\end{align*}
+en las cuales, evidentemente los factores resultan ser elementos de $A$, por lo que, $b\mid a^nc_n$ y $a\mid b^nc_0$, pero como $a,b$ son coprimos, nos resulta que $b\mid c_n$ y $a\mid c_0$ tal como lo indica el enunciado.
+\end{proof}
+Esto es útil al buscar raíces 
+\begin{cor}
+Sea $A$ un DFU, $K$ su cuerpo de cocientes y $p(x)\in A[x]$ un polinomio no-constante mónico, entonces $\alpha\in K$ es una raíz de $p$ syss $\alpha\in A$.
+\end{cor}
+\textbf{Extensión básica de cuerpos.} Tal como extendimos los enteros para admitir los cocientes entre ellos mediante los racionales, nos gustaría extender ciertos cuerpos algebraicos para admitir soluciones a polinomios, es decir, sería ideal poder construir una extensión de $\Z$ que contuviese a $\sqrt{2}$ y se mantuviese como un cuerpo, sin tener que pasar por un conjunto que ya tuviese los elementos de ambos. Veremos que dicho método es posible.
+\begin{thm}
+Sea $k$ un cuerpo con $p(x)\in k[x]$ un polinomio sin raíz. Entonces existe una \textit{extensión} $K$ que es un cuerpo que contiene a $k$ y a una raíz de $p$.
+\end{thm}
+\begin{proof}
+Por regla de Ruffini sabemos que cualquier factor $q$ de $p$ compartiría raíz, podemos elegir que un factor irreductible tal que $(q(x))$ es un ideal maximal y luego $K:=k[x]/(q(x))$ resulta ser un cuerpo.
+
+Nótese que para todo $a\in k$ se tiene que $[a]\in K$. Luego, denotamos nuestra raíz como $\alpha:=[x]$ (recordad que las clases de equivalencias son de polinomios de $k[x]$), como el anillo cociente es respecto a $q(x)$ que divide a $p(x)$ tenemos que
+$$0=[p(x)]=\sum_{i\geq 0}[a_i][x]^i=\sum_{i\geq 0}a_i\alpha^i=p(\alpha),$$
+osea que $\alpha$ es una raíz de $p$ en $K$.
+\end{proof}
+Cabe destacar que diremos que un elemento es una \textit{raíz cuadrada}\index{raíz!cuadrada} de $a$ syss es la raíz de $x^2-a$. Asimismo diremos que es \textit{raíz cúbica}\index{raíz!cúbica} cuando es raíz de $x^3-a$ y, en general, que es una \textit{$n$-ésima raíz}\index{raíz!$n$-ésima} cuando es raíz de $x^n-a$.
+\begin{mydef}
+Sea $k$ un cuerpo con $p(x)\in k[x]$ un polinomio sin raíz. Entonces denotando $\alpha$ como una raíz de $p$, entonces $k[\alpha]$ es la extensión de $k$ construida en condiciones de la demostración anterior.
+\end{mydef}
+Nótese que para todo $p(x)\in k[x]$,
+$$[p(x)]=\sum_{i\geq 0}[a_i][x]^i=\sum_{i\geq 0}a_i\alpha^i=p(\alpha),$$
+es decir, que la extensión que hemos construido resulta ser el cuerpo de polinomios de $\alpha$ (de ahí la notación). De igual manera podríamos construir una extensión con un polinomio que si tuviese raíz, pero es inmediato notar que es el mismo $k$.
+
+Nuestra observación es vital, pues definimos $i$ como una raíz para el polinomio $x^2+1$, de manera que podemos construir la extensión $\Q[i]$ que es, asimismo, un cuerpo; el cual llamaremos \textit{racionales de Gauss} o \textit{racionales gaussianos}\index{número!gaussiano}. Es fácil ver que
+$$\Z[i]:=\{a+bi:a,b\in\Z\}$$
+es un subanillo suyo que llamaremos \textit{enteros gaussianos}. En el libro de análisis llegamos a construir un cuerpo aún más completo que es el de los reales $\R$, cuya extensión $\R[i]$ también denotada como $\C$ \nomenclature{$\C$}{Conjunto de números complejos} y conocida como el conjunto de números \textit{complejos}\index{número!complejo} posee una propiedad vital para el álgebra.
+
+\section{Aritmética modular}
+\begin{mydef}[Congruencia modular]\index{congruencia}
+Sea $A$ un dominio íntegro e $I$ un ideal no nulo ni sí mismo. Entonces, para dos elementos $a,b\in I$, denotaremos la siguiente relación
+$$a\equiv b\pmod{I}\iff a-b\in I,$$ \nomenclature{$a\equiv b\pmod{I}$}{$a$ y $b$ son congruentes en módulos $I$}
+dónde la primera se lee como ``$a$ es congruente con $b$ en módulo $I$''. Si el ideal está finitamente generado, se omitirán los paréntesis dentro de la relación; por ejemplo, si $I=(a_0,\dots,a_n)$ puede escribirse $a\equiv b\pmod{a_0,\dots,a_n}$.
+\end{mydef}
+\begin{thm}
+Sea $A$ un dominio íntegro, $I$ un ideal, $a,b,c,d\in A$ tales que $a\equiv b\pmod I$ y $c\equiv d\pmod I$, entonces:
+\begin{enumerate}[$a)$]
+\item $a+c\equiv b+d\pmod I$.
+\item $ac\equiv bd\pmod I$.
+\end{enumerate}
+\end{thm}
+\begin{proof}
+Veamos que por construcción, $a=b+u$ y $c=d+v$ con $u,v\in I$:
+\begin{enumerate}[$a)$]
+	\item Luego, $a+c=b+d+(u+v)$ con $u+v\in I$.
+	\item $ac=(b+u)(d+v)=bd+(bv+ud+uv)$ con dicho último término en $I$.
+\end{enumerate}
+\end{proof}
+\begin{cor}
+Sea $A$ un dominio íntegro, $I$ un ideal y $a,b\in A$ tales que $a\equiv b\pmod I$. Para todo $k$ natural no nulo, $a^k\equiv b^k\pmod I$.
+\end{cor}
+\begin{mydef}[Factorial]
+Definimos el factorial\index{factorial} en $\N$ de manera recursiva como la función tal que
+$$0!=1,\quad (n+1)!=(n+1)\cdot n!$$
+\end{mydef}
+\begin{thm}[Teorema de Wilson]\index{teorema!de Wilson}
+Sea $p$ un número primo (de $\Z$), entonces
+$$(p-1)!\equiv -1\pmod{p}$$
+\end{thm}
+\begin{proof}
+Como $\Z$ es un dominio, entonces $\Z/(p)$ es un cuerpo, por ende, todo elemento $1\leq n\leq p-1$ posee inverso. Ahora, puede darse que sí mismo sea su inverso, por lo cual procedemos a buscar raíces al polinomio $x^2-1\equiv 0$, cuyos factores son $x-1$ y $x+1$, es decir, que sólo $x=1$ ó $x=p-1$ son sus propios inversos. Sin embargo, $x=1$ ya es el elemento unitario de $\Z/(p)$, luego $(p-2)!\equiv 1$, multiplicamos por ambos lados por $p-1\equiv -1$ y obtenemos el teorema.
+\end{proof}
+\begin{thm}[Teorema chino del resto]\index{teorema!chino del resto}
+Sea $A$ un anillo con un par de ideales $I,J$ tales que $I+J=A$, entonces:
+\begin{enumerate}[$a)$]
+	\item Sean $a,b\in A$, entonces el sistema de ecuaciones
+	$$x\equiv a\pmod I,\quad x\equiv b\pmod J$$
+	posee solución.
+	\item Cualquier par de soluciones es congruente en módulo $I\cap J$.
+	\item Se da que
+	$$A/(I\cap J)\cong A/I\times A/J$$
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}[$a)$]
+	\item Como $I+J=A$ existen $i\in I$ y $j\in J$ resp. tales que $i+j=1$, luego
+	\begin{align*}
+	aj+bi&\equiv aj\equiv a(i+j)=a\pmod I,\\
+	aj+bi&\equiv bi\equiv b(i+j)=b\pmod J.
+	\end{align*}
+	\item Consideremos que $c$ sea una solución, luego $x-c\in I$ y $x-c\in J$, es decir, $x-c\in I\cap J$.
+	\item Es fácil ver que
+	\begin{align*}
+	f:A&\longrightarrow A/I\times A/J\\
+	f(a)&\longmapsto ([a]_I, [a]_J)
+	\end{align*}
+	es un homomorfismo. De hecho, debido a la propiedad $a)$ vemos que es también un epimorfismo. También, cabe destacar que $\ker f=I\cap J$. Para finalizar cabe destacar que el resultado es una aplicación directa del primer teorema de isomorfismos.
+\end{enumerate}
+\end{proof}
+Cabe destacar que en $\Z$, es fácil probar que si $d=\mcm(a,b)$ entonces $(a)\cap(b)=(d)$, la primera parte corresponde a ver que los números son coprimos, por tanto, $d=ab$.
+\begin{cor}
+En $\Z$ sean $m_1,\dots,m_n$ coprimos dos a dos\footnote{Es decir, que dado cualquier $i,j$ distintos, $m_i$ es coprimo con $m_j$.} con $m:=m_1\cdots m_n$ entonces
+$$\Z/(m)\cong\Z/(m_1)\times\cdots\times\Z/(m_n)$$
+\end{cor}
+Sea $n\in\Z$ no nulo, denotaremos de la siguiente forma, los unidades del conjunto cociente respecto al ideal principal de $\Z$. Por una aplicación de la identidad de Bézout, notamos que corresponden a los elementos coprimos con $n$:
+$$(\Z/(n))^*=\{[m]_n:(m;n)=1\}.$$
+\begin{mydef}[Función $\varphi$ de Euler]\index{función!$\varphi$ de Euler}
+Sea $A$ un dominio íntegro, entonces definimos la función $\varphi$ (a veces llamada \textit{indicador} o \textit{indicatriz}) de Euler de un elemento no nulo $n$ como el cardinal de congruencias en módulo $n$ coprimos a $n$, es decir:
+$$\varphi(n):=|(A/(n))^*|$$ \nomenclature{$\varphi(n)$}{Función $\varphi$ de Euler de $n$}
+\end{mydef}
+En particular, nótese que las congruencias en un dominio ordenado, corresponden a los números entre 1 y $n$.
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[2dgraph,
+	ymax = 1000, xlabel = {$n$}, ylabel = {$\varphi(n)$}
+]
+\addplot[niceblue, mark=*, only marks, mark options={scale=.5}] table {euler-phi.dat};
+\end{axis}
+\end{tikzpicture}
+\caption{Función aplicada a los 1000 primeros naturales no-nulos.}\label{fig:euler-phi-function}
+\end{figure}
+
+\begin{thm}
+Se cumple que
+	\begin{enumerate}[$a)$]
+	\item Si $p\in\Z$ es primo mayor que cero con $k$ un natural no nulo, entonces $\varphi(p^k)=p^{k-1}(p-1)$.
+	\item Sean $n,m\in\Z$ tales que son coprimos, entonces $\varphi(nm)=\varphi(n)\varphi(m)$.
+	\item Sea $n\in\Z$ reducible, tales que $p_0,\dots,p_m$ son los primos mayores que cero que le dividen, entonces:
+	$$\varphi(n)=n\prod_{i=0}^m\left(1-\frac{1}{p_i}\right)$$
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}
+	\item Considere que todo número será coprimo con $p^k$ syss no es divisible por $p$.
+	\item Por teorema chino del resto, sabemos que existe un isomorfismo de anillos
+	$$\Z/(nm)\cong\Z/(n)\times\Z/(m),$$
+	con el cual, podemos inducir un isomorfismo de grupos
+	$$(\Z/(nm))^*\cong(\Z/(n)\times\Z/(m))^*\cong(\Z/(n))^*\times(\Z/(m))^*$$
+	cuya cardinalidad confirma la propiedad.
+	\item Aplicando lo anterior con el hecho de que $A$ es DFU se llega a dicha fórmula.
+\end{enumerate}
+\end{proof}
+Nótese que por la propiedad $a)$ comprendemos que la diagonal en la fig.~\ref{fig:euler-phi-function} corresponde a los primos del 2 al 1000, al igual que si $p$ es primo, $\varphi(p)=|p|-1$. Sólo como dato curioso, el último primo en la lista es 997, por lo tanto, el mayor valor en la figura es el 996.
+\begin{thm}[Teorema de Euler-Fermat]\index{teorema!de Euler-Fermat}
+Sea $n\in \Z$ no nulo ni unitario y $a$ un numéro coprimo con él, entonces
+$$a^{\varphi(n)}\equiv 1\pmod n$$
+\end{thm}
+\begin{proof}
+Supongamos que $P$ es el conjunto de coprimos positivos menores a $n$, con $a,u,v\in P$, luego
+$$au\equiv av\pmod{n}\iff u\equiv v\pmod{n};$$
+además por teorema~\ref{thm:coprime-transitivity} sabemos que $au$ y $av$ son coprimos a $n$; de esto se concluye que los módulos son iguales aun que no necesariamente en el mismo orden. Finalmente, definamos $w:=\prod_{p\in P}p$ (el producto de los coprimos menores o iguales a $n$), con lo cual, por propiedad anterior nos queda que
+$$w=\prod_{p\in P}p\equiv\prod_{p\in P}ap=a^{\varphi(n)}w\pmod n$$
+lo que por ``ley de cancelación'' (pues $(w;n)=1$) nos otorga el teorema.
+\end{proof}
+\begin{thm}[Pequeño teorema de Fermat]\index{teorema!pequeño de Fermat}
+Sea $A$ un DIP ordenado con $p\in A$ un primo positivo y con $p\nmid a$, entonces
+$$a^{p-1}\equiv 1\pmod p$$
+\end{thm}
+\begin{cor}
+Dadas las condiciones anteriores:
+$$a^p\equiv a\pmod p$$
+\end{cor}
+
+\part{Álgebra Lineal}
+\chapter{Módulos}
+Uno de los objetos más conocidos del álgebra son los vectores y matrices, especialmente debido a sus múltiples aplicaciones sobretodo en física. En este capítulo veremos como definimos una nueva estructura: los \textit{módulos} que vendía a generalizar la noción de espacio vectorial que nos será útil, entre otras cosas, para el análisis de varias variables.
+
+\section{Módulos y espacios vectoriales}
+Antes que nada, daremos ciertas especificaciones, diremos que $A$ es un \textit{anillo de división}\index{anillo!de división} cuando es un anillo unitario, cuyos elementos no nulos son unidades. En otras palabras que todo anillo de división es un cuerpo que puede o no ser conmutativo en el producto.
+\begin{mydef}[$A$-módulo]
+Sea $A$ un anillo unitario, entonces decimos que $(M,+,\cdot)$ es un \textit{$A$-módulo izquierdo}\index{modulo@módulo} syss posee una operación interna $+:M\times M\rightarrow M$ con la que forma un grupo abeliano y una operación \textit{externa} $\cdot:A\times M\rightarrow M$ que satisface las siguientes propiedades con $a,b\in A$ y $r,s\in M$:
+\begin{enumerate}
+	\item $a(br)=(ab)r$.
+	\item $1r=r$.
+	\item $a(r+s)=ar+as$.
+	\item $(a+b)r=ar+br$.
+\end{enumerate}
+La definición es análoga con el producto por la derecha, en cuyo caso se llama \textit{$A$-módulo derecho}.
+
+Si $A$ es un anillo de división entonces todo $A$-módulo se llama \textit{$A$-espacio vectorial}\index{espacio!vectorial}, sus elementos son llamados \textit{vectores}\index{vector} y los elementos de $A$ son llamados \textit{escalares}\index{escalar}.
+\end{mydef}
+Notemos que la estructura de un módulo es muy similar a la de un anillo, sólo que considerando que la segunda operación es externa. Unos ejemplos un tanto obvios de $A$-módulos son cualquier ideal de $A$, además de cualquier extensión. Por ejemplo, $\Q[i]$ es un $\Q$-módulo, igual que $\Z[i]$ es un $\Z$-módulo.
+\begin{mydef}[Morfismo (de módulos)]
+Sea $A$ un anillo unitario y $N,M$ $A$-módulos por la izquierda, entonces, la aplicación $f:M\rightarrow N$ es un \textbf{homomorfismo}\index{homomorfismo!de módulos} (de módulos) syss para todo $m,m'\in M$, $a\in A$:
+$$f(m+m')=f(m)+f(m'),\quad f(a\cdot m)=a\cdot f(m)$$
+(la definición es análoga para $A$-módulos por la derecha).
+
+Un homomorfismo de espacios vectoriales es también llamado una \textit{aplicación lineal}\index{aplicación!lineal}.
+\end{mydef}
+\begin{mydef}[Submódulo]\index{submódulo}
+Siendo $A$ un anillo unitario y $N,M$ $A$-módulos por el mismo lado, se dice que $N$ es \textit{submódulo} de $M$ syss $N\subseteq M$.
+
+Es fácil ver que la intersección de varios submódulos es, en sí mismo, un submódulo de $M$ y siendo $X\subseteq M$, denotamos $\langle X\rangle$ \nomenclature{$\langle X\rangle$}{Submódulo generado por el conjunto $X$} el \textit{submódulo generado por $X$} como la intersección de todos los submódulos de $M$ que contengan a $X$ (otras notaciones son $\operatorname{span}X$ y $\operatorname{lin}X$).
+
+Si $X$ cumple que $M=\langle X\rangle$ le llamamos un \textit{sistema generador}\index{sistema!generador de submódulos}. Diremos que $M$ está \textit{finitamente generado} cuando $X$ sea finito.
+\end{mydef}
+\begin{thm}
+Sea $A$ un anillo unitario con $M$ un $A$-módulo, se prueba que $N\subseteq M$ es submódulo syss cumple:
+\begin{enumerate}[$a)$]
+	\item $N\neq\emptyset$.
+	\item $r,s\in N$ implica $r+s\in N$.
+	\item $a\in A$ y $r\in N$ implica $ar\in N$.
+\end{enumerate}
+\end{thm}
+Nótese que, por tanto, la estructura de un submódulo es similar a la de un ideal. Otro detalle es que algunos textos abrevian notación escribiendo los requisitos $b)$ y $c)$ como que $ar+bs\in N$ para todo $a,b\in A$ y $r,s\in N$.
+
+A las expresiones de la forma
+$$a_1m_1+\cdots+a_nm_n=\sum_{i=1}^n a_im_i$$
+con $a_i\in A$ y $m_i\in M$ solemos llamarlas \textbf{combinaciones lineales}\index{combinación lineal}, y a los valores $a_i$ siendo los \textit{coeficientes}.
+\begin{thm}
+Sea $A$ un anillo unitario con $X$ subconjunto de un $A$-módulo $M$, entonces
+$$\langle X\rangle=\left\{\sum_{x\in X}a_xx:a_x\in A\right\}$$
+\end{thm}
+\begin{proof}
+Es fácil ver que el conjunto descrito es efectivamente un submódulo de $M$ que contiene a $X$. También, podemos ver que cualquier submódulo de $M$ que contenga a $X$ es superconjunto del descrito, por ende, efectivamente satisface la definición.
+\end{proof}
+Nos será útil definir que siempre $\langle\emptyset\rangle=\{0\}$.
+\begin{mydef}[Suma de submódulos]\index{suma!de submódulos}
+Sea $\{N_i\}_{i\in I}$ una familia de submódulos de un $A$-módulo $M$. Entonces definimos su \textit{suma de submódulos} como
+$$\sum_{i\in I}N_i=\left\{\sum_{i\in I}n_i:\forall i\in I,\,n_i\in N_i\right\}.$$
+Cabe destacar que dicha familia se considera \textit{independiente} syss, para todo $i\in I$
+$$N_i\cap\sum_{j\neq i}N_j=\{0\}$$
+en cuyo caso, la suma se denota con un símbolo $\oplus$ en vez de $+$, además de llamarse \textit{suma directa}\index{suma!directa de submódulos} y de adaptarse la notación de que
+$$\bigoplus_{i\in I}N_i=\sum_{i\in I}N_i.$$ \nomenclature{$\bigoplus_{i\in I}N_i$}{Suma directa de los submódulos $N_i$}
+\end{mydef}
+\begin{thm}
+Sea $M$ un $A$-módulo y $\{N_i\}_{i\in I}$ una familia de submódulos, entonces
+$$\sum_{i\in I}N_i=\left\langle\bigcup_{i\in I}N_i\right\rangle.$$
+\end{thm}
+\begin{mydef}[Producto de módulos]\index{producto!de módulos}
+Sea $\{M_i\}_{i\in I}$ una familia de $A$-módulos izquierdos, entonces definimos las operaciones $+,\cdot$ sobre el producto como
+\begin{align*}
+(m_1,\dots,m_n)+(m^{\prime}_1,\dots,m^{\prime}_n)&=(m_1+m_1^{\prime},\dots,m_n+m_n^{\prime})\\
+a(m_1,\dots,m_n)&=(am_1,\dots,am_n)
+\end{align*}
+con $m_i,m_i^{\prime}\in M_i$ y $a\in A$. Es evidente que si los módulos son por la derecha, las definiciones son análogas.
+
+Es inmediato el hecho de que el producto de $A$-módulos es un $A$-módulo en sí mismo.
+\end{mydef}
+\begin{thm}\label{thm:module-bases-properties}
+Sea $M$ un $A$-módulo y $\{N_i\}_{i\in I}$ una familia de submódulos tales que $M=\sum_{i\in I}N_i$, son equivalentes:
+\begin{enumerate}[$a)$]
+	\item $M=\bigoplus_{i\in I}N_i$.
+	\item Si $\sum_{i\in I}m_i=0$ con $m_i\in N_i$ para todo $i\in I$, entonces $m_i=0$.
+	\item Para todo $m\in M$ existen unos únicos $m_i\in N_i$ para cada $i\in I$ tales que
+	$$m=\sum_{i\in I}m_i.$$
+\end{enumerate}
+\end{thm}
+\begin{proof}
+$a)\implies b)$. Procedemos a demostrarlo por contradicción, supongamos que existe un subconjunto $J\subseteq I$ tal que
+$$\sum_{j\in J}m_j=0$$
+con $m_j\neq 0$ para todo $j\in J$. Por axioma de elección tomemos un $j_0\in J$ tal que, evidentemente $m_{j_0}=\sum_{j\in J\setminus\{j_0\}}-m_j$. Luego
+$$m_{j_0}\in N_{j_0}\cap\sum_{j\in J\setminus\{j_0\}}N_j\subseteq N_{j_0}\cap\sum_{i\in I\setminus\{j_0\}}N_i$$
+puesto que $m_j\in N_j$ equivale a que $(-m_j)\in N_j$.
+
+$b)\implies c)$. Consideraremos el siguiente homomorfismo
+\begin{align*}
+f:\prod_{i\in I}N_i&\longrightarrow M\\
+(m_i)_{i\in I}&\longmapsto\sum_{i\in I}m_i,
+\end{align*}
+por construcción, sabemos que corresponde a un epimorfismo, y la propiedad $b)$ nos asegura que $\ker f=(0)_{i\in I}$, por ende es un monomorfismo.
+
+$c)\implies a)$. Para todo $m_i\in N_i$ sabemos que su construcción puede ser por medio de la forma trivial
+$$m_i+\sum_{j\neq i}0,$$
+la cual, la propiedad $c)$ asegura es la única forma de construirle, por ende, la intersección
+$$N_i\cap\sum_{j\neq i}N_j=\{0\}$$
+como se quiere.
+\end{proof}
+\begin{thm}
+Sea $M$ un $A$-módulo con $\{N_i\}_{i\in I}$ una familia de submódulos independientes, entonces
+$$\bigoplus_{i\in I}N_i\cong\prod_{i\in I}N_i$$
+\end{thm}
+\begin{mydef}[Conjunto libre y bases]
+Sea $M$ un $A$-módulo con $X\subseteq M$. Diremos que $X$ es \textit{libre}\index{conjunto!libre} o que sus elementos son \textit{linealmente independientes} syss la ecuación
+$$a_0x_0+\cdots+a_nx_n=0$$
+se da con $x_i\in X$ distintos dos a dos y $a_i\in A$ siempre que $a_i=0$ para todo $i=0,\dots,n$. De lo contrario decimos que el conjunto está \textit{ligado}\index{conjunto!ligado} o que hay elementos que son \textit{linealmente dependientes} entre sí.
+
+Si, $X$ es un conjunto libre y además es un sistema generador, diremos que $X$ es una \textit{base}\index{base} de dicho módulo. Si $M$ posee alguna base, entonces, se dice que es \textit{libre}\index{modulo@módulo!libre}.
+\end{mydef}
+\begin{thm}
+Sea $M$ un $A$-módulo, entonces $M$ es isomorfo a $A^n$ (como módulos) syss posee una base de cardinal $n$.
+\end{thm}
+\begin{proof}
+Notemos que si $X$ es una base cualquiera de $M$, entonces
+$$M=\bigoplus_{x\in X}\langle x\rangle;$$
+luego es isomorfo a $\prod_{x\in X}\langle x\rangle$ y $\langle x\rangle\cong A$ trivialmente para todo $x\in X$.
+\end{proof}
+Si ha tenido clases de vectores o cualquier tipo de introducción a ellos, los ha visto representados por flechas en el espacio. De hecho, Argand popularizo la representación cartesiana de los números complejos como puntos e inclusive vectores en $\R^2$ y es que, podemos demostrar con facilidad que $\C=\R[i]\cong\R^2$ con nuestro teorema. Otro ejemplo de aplicación (aun que poco común) es el de ver que $\Q[\sqrt{2}]\cong\Q^2$ y que $\Q[\sqrt[3]{2}]\cong\Q^3$ (aquí una base puede ser $\{1,\sqrt[3]{2},\sqrt[3]{2^2}\}$). Esto, un poco más adelante, nos ayuda a generalizar la noción de \textit{dimensión}.
+
+Se llama la \textit{base canónica}\index{base!canónica} del $A$-módulo $A^n$ como el conjunto $\{e_1,\dots,e_n\}$ donde $e_i$ representa la $n$-tupla que contiene puros ceros y en la $i$-ésima posición un 1.
+
+Por ejemplo, la base canónica de $A^3$ es $\{(1,0,0), (0,1,0), (0,0,1)\}$.
+\begin{thm}
+Sea $D$ un anillo de división y $V$ un $D$-espacio vectorial con $X\subseteq V$, entonces existe un elemento que es una combinación lineal de los restantes syss $X$ está ligado.
+\end{thm}
+\begin{proof}
+$\implies$. Si $y=\sum_{x\in X}a_x x\neq 0$ con $a_x\in D$, entonces
+$$y+\sum_{x\in X}(-a_x)x=0$$
+lo cual demuestra que $X$ está ligado.
+
+$\Longleftarrow$. Si $X$ está ligado, entonces
+$$\sum_{x\in X}a_xx=0$$
+con $a_x\in A$ no nulos todos (al menos dos), luego podemos aplicar el \textbf{axioma de elección}\footnote{Este es un axioma opcional para ZFC debido a la controversia que generan sus resultados, entre los que se encuentra \textit{la paradoja de Banach-Tarski}. No obstante, si el conjunto es numerable, el axioma no es necesario \textit{per se}.} para extraer un elemento cualquiera $y\in X$ cuyo respectivo $a_y$ no sea nulo y ver que
+$$y=\sum_{x\in X\setminus\{y\}}(-a_y^{-1}a_x)x.$$
+\end{proof}
+\begin{thm}
+Todo sistema generador $X$ de un $D$-espacio vectorial $V$ contiene una base.
+\end{thm}
+\begin{proof}
+Si $X$ es finito y está ligado, entonces un elemento debe ser ser la combinación lineal de los restantes y, por lo tanto, puede ser eliminado. Bajo este proceso se llega, por una cantidad finita de pasos, a una base de $V$.
+
+Si $X$ es infinito e $Y$ es un sistema generador finito y de cardinal $n$, entonces todo elemento de $Y$ puede ser escrito como una combinación lineal finita de elementos de $X$, llamaremos $X_i$ al subconjunto de elementos que generan el $i$-ésimo de $Y$; luego $\bigcup_{i=1}^n X_i$ es un subconjunto finito de $X$ que también es generador, por ende contiene una base, también contenida en $X$.
+\end{proof}
+\begin{thm}
+Todo par de bases de un $D$-espacio vectorial $V$ poseen el mismo cardinal.
+\end{thm}
+\begin{proof}
+Supongamos que tenemos dos bases $X$, $Y$ y que $|X|\leq|Y|$, entonces, utilizando el axioma de elección extraeremos un tal $y_1$. Luego, existen unos únicos $a_x\in D$ tales que
+$$y_0=\sum_{x\in X}a_x x$$
+dónde al menos un $a_x$ es no nulo, llamaremos $x_0$ a uno de ellos. Luego, denotaremos $Z_0:=X\setminus\{x_0\}\cup\{y_0\}$, y se demuestra que
+$$\sum_{x\in Z_0}(-a_{x_0}^{-1}a_x)x=x_0$$
+con $a_{y_0}:=-1$, por ende, $X\subseteq\langle Z_0\rangle=V$.
+
+Repitamos el proceso y extraigamos otro $y_1\in Y\setminus\{y_0\}$, tal que
+$$y_1=\sum_{x\in Z_0}b_x x,$$
+con $b_x$ no nulo para algún $x\in X\setminus\{x_0\}$ (puesto que $y_0$ e $y_1$ son linealmente independientes), llamaremos $x_1$ a alguno de ellos. Luego, denotaremos $Z_1:=Z_0\setminus\{x_1\}\cup\{y_1\}$, y se demuestra que
+$$\sum_{x\in Z_1}(-b_{x_1}^{-1}b_x)x=x_1$$
+con $b_{y_1}:=-1$. Repitiendo este proceso, obtenemos un conjunto de cardinal $|X|$ de puros elementos de $Y$ que es una base, por lo cual, los cardinales deben ser iguales (de lo contrario, habrían elementos linealmente dependientes).
+\end{proof}
+\begin{thm}
+Sea $A$ un anillo conmutativo y unitario, entonces todo par de bases de un $A$-módulo libre $M$ poseen el mismo cardinal.
+\end{thm}
+\begin{proof}
+Sea $I$ un ideal maximal de $A$, entonces
+$$IM=\left\{\sum_{m\in M}a_mm:a_m\in I\right\}$$
+es un submódulo de $M$ tal que $M/IM$ resulta ser un $A/I$-módulo.
+
+Ya sabemos que $A/I$ es un cuerpo, por lo que $M/IM$ es un $A/I$-espacio vectorial y toda base posee mismo cardinal, por ende, nuestro problema radica en demostrar que toda base de $M$ es base de $M/IM$ y viceversa.
+
+Es inmediato ver que todo sistema generador de $M$ tiene su equivalente a uno de $M/IM$, puesto que la duda está en demostrar que si es linealmente independiente en $M$ lo es en $M/IM$.
+
+Sea $B=\{u_1,\dots,u_n\}$ una base de $M$, probemos que sus congruencias son linealmente independientes en $M$. Consideremos que se cumple lo siguiente
+$$\sum_{i=1}^n[a_i][u_i]=[0]$$
+lo que equivale a decir que $\sum_{i=1}^n a_iu_i\in IM$, por ende, $\sum_{i=1}^n a_iu_i=\sum_{j=1}^m b_jm_j$ con $b_j\in I$ y $m_j\in M$. Pero como $B$ es una base, se cumple que
+$$m_j=\sum_{k=1}^n c_{kj}u_k$$
+con $c_{kj}\in A$. Luego
+$$\sum_{i=1}^n a_iu_i=\sum_{j=1}^m b_jm_j=\sum_{j=1}^m b_j\left(\sum_{i=1}^n c_{ij}u_i\right)=\sum_{i=1}^n\left(\sum_{j=1}^m b_jc_{ij}\right)u_i,$$
+como $B$ es base se tiene que los coeficientes lineales son únicos, es decir, $a_i=\sum_{j=1}^m b_jc_{ij}$, y como $b_j\in I$ concluimos que $a_i\in I$, osea, $[a_i]=[0]$. Lo que confirma nuestra hipótesis.
+\end{proof}
+\begin{mydef}[Dimensión y rango]
+Siendo $M$ un $A$-módulo, denotamos $\rang_A M$ \nomenclature{$\rang_A M$}{Rango del $A$-módulo $M$} el \textit{rango}\index{rango} del módulo, que corresponde al cardinal de cualquiera de sus bases. Si $A$ es un anillo de división, le decimos \textit{dimensión}\index{dimensión} a la misma cantidad y la denotamos como $\dim_A M$ \nomenclature{$\dim_D V$}{Dimensión del $D$-espacio vectorial $V$}.
+\end{mydef}
+Reitero en considerar que el cardinal no necesariamente es finito, sin embargo, es evidente que las aplicaciones suelen ser enfocadas en estos.
+
+No he ido en detalle a esto, pero consideremos lo que generan ciertos conjuntos en $\R^3$ (el espacio euclídeo). Un único vector (no-nulo) genera una recta y un par de vectores linealmente independientes generan un plano (ver fig.~\ref{fig:plane-generated}). Además y para prepararnos para un teorema próximo, nótese que si $V$ es un $D$-espacio vectorial con un subespacio $W$, el conjunto cociente $V/W$ contiene todas las traslaciones posibles de $W$ (pues $W$ siempre pasa por el origen) y que dos vectores sean congruentes en módulo $W$ significa que su resta pertenece a $W$. Si $W$ es una recta, me gusta pensarlo como que los finales de dos vectores congruentes construyen una recta paralela a $W$ (de hecho, esto es tomado como una definición en ciertos libros de geometría analítica).
+\begin{figure}
+\centering
+\begin{tikzpicture}[tdplot_main_coords,scale=1.3]
+\draw[gray, thin] \foreach \z in {-3,...,3} {(\z,-3) -- (\z,3) (-3,\z) -- (3,\z)};
+\draw \foreach \x in {-3,...,3} {(3,\x,-1.5) -- (-3,\x,1.5)} \foreach \y in {-3,...,3} {(\y,-3,{-\y/2}) -- (\y,3,{-\y/2})};
+\draw[nicered, thick, latex-latex] (-2,0,1) -- node[fill=white]{$v_1$} (0,0) -- node[sloped,above]{$v_2$} (0,-.5);
+\end{tikzpicture}
+\caption{Subespacio de dimensión 2 generado en $\R^3$.}\label{fig:plane-generated}
+\end{figure}
+\begin{thm}[Prolongación de base]
+Sea $W$ un subespacio de un $D$-espacio vectorial $V$ de dimensión $n$ y sea $B_W=\{u_1,\dots,u_k\}$ una base de $W$, entonces, existe un conjunto $B_V=\{v_{k+1},\dots,v_n\}$ tal que $B_W\cup B_V$ es una base de $V$.
+\end{thm}
+\begin{proof}
+El caso $W=V$ es trivial, por lo que nos dedicaremos a considerar $W\neq V$.
+
+Como $W\subset V$, el conjunto $V\setminus W$ es no vacío, y tomaremos un vector $v_{k+1}$ cualquiera, el cual es linealmente independiente a la base $B_W$, por lo que verificamos si $B_W\oplus\langle v_{k+1}\rangle=V$, de lo contrario repetimos el proceso. Un dato importante es que siempre que añadamos nuevos vectores, tendremos una base de un subespacio, por lo que, efectivamente constituiremos al final una base para $V$ de $n$ elementos.
+\end{proof}
+\begin{thm}
+Sea $V$ un $D$-espacio vectorial con $W$ siendo un subespacio, entonces
+\begin{enumerate}
+	\item $\dim(V)=\dim(W)+\dim(V/W)$.
+	\item $\dim(V)=\dim(W)\iff V=W$ (sólo cuando la dimensión es finita).
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}
+	\item Consideremos que $W\neq V$ (en caso contrario, $V/W=\{0\}$, cuyas dimensiones son nulas) y que posee una base $B_W=\{u_1,\dots,u_k\}$ la que extendemos con un conjunto libre $C=\{v_{k+1},\dots,v_n\}\subset V\setminus W$, comenzaremos por probar que $B'$ es libre en $V/W$ y luego que es un sistema generador.
+	
+	Supongamos que una combinación lineal de congruencias de $B'$ es nula, luego, dicha congruencia pertenecería a $W$, por lo que podría escribirse como una combinación lineal de $B_W$:
+	$$\sum_{i=k+1}^n a_iv_i=\sum_{i=1}^k b_iu_i,$$
+	dejándolo como una única suma nos queda que una combinación lineal de la base de $V$ es nula, por ende, todos los coeficientes son nulos y, en particular, $B'$ es libre.
+	
+	La parte de sistema generador es simple pues sea $m\in V/W$, entonces puede escribirse como una combinación lineal de $B_W\cup B'$ (pues es una base de $V$), en congruencias esto se reduce a 
+	$$[m]=\sum_{i=1}^k a_i[u_i]+\sum_{i=k+1}^n b_i[v_i]=\sum_{i=k+1}^n b_i[v_i]$$
+	puesto que como $u_i\in W$ su congruencia es nula. Finalmente, $B_W$ y $B'$ son conjuntos disjuntos cuya unión es una base de $V$, por ende, el enunciado.
+	\item Consideremos el teorema de prolongación de base, es evidente que toda base \textbf{finita} no requiere más elementos, luego es también base de $V$ y como conclusión, el enunciado.
+\end{enumerate}
+\end{proof}
+Notemos que el teorema no se aplica siempre a módulos, por ejemplo, es fácil ver que $2\Z$ es un $\Z$-módulo de base $\{2\}$ submódulo de $\Z$ mismo, luego, una ``prolongación'' sería añadir el 3, no obstante, tendríamos una base de dos elementos, cuando $\Z$ es de rango 1.
+
+\section{Matrices}
+La matemática respecto de las matrices no es, en sí misma, más complicada de lo que ya hemos visto, no obstante, considero que es terriblemente importante comprender la motivación detrás de ellos, pues carecer de esta información generaría completa impotencia ante cualquier aplicación de estos como herramientas.
+
+Sea $M$ un $A$-módulo libre de rango $n$ y sean $B_1,B_2$ un par de bases para $M$. Denotaremos los elementos de $B_1$ como $\{u_1,\dots,u_n\}$, mientras que los de $B_2$ como $\{v_1,\dots,v_n\}$. Por el teorema~\ref{thm:module-bases-properties}, sabemos que todo $m\in M$ puede escribirse como
+$$m=\sum_{i=1}^n a_iu_i,$$
+con $a_i\in A$. Asimismo, existen $b_{ij}\in A$ tales que
+$$u_i=\sum_{j=1}^n b_{ij}v_j.$$
+Por lo cual, si tuviésemos todos los valores $a_i$ y $b_{ij}$, $m$ termina siendo expresado por la fórmula
+$$m=\sum_{j=1}^n\left(\sum_{i=1}^n a_ib_{ij}\right)v_j.$$
+Usualmente, a este proceso le denominamos \textit{cambio de base}\index{cambio!de base}. Nótese que los valores $a_i$ pueden expresarse como una $n$-tupla debido a que ya demostramos que $M\cong A^n$, pero no poseemos ninguna clase de objeto que ordene los valores $b_{ij}$. Este será nuestro objetivo al introducir a las matrices.
+\begin{mydef}[Matriz]
+Una \textit{matriz}\index{matriz} sobre un anillo unitario $A$ de orden (forma) $m\times n$ es una aplicación $M:\{1,\dots,m\}\times\{1,\dots,n\}\rightarrow A$, en la práctica, denotaremos $M(i,j)=m_{ij}$, y usualmente se escribe en la forma expandida
+$$M=\begin{pmatrix}
+m_{11} & m_{12} & \cdots & m_{1n} \\
+m_{21} & m_{22} & \cdots & m_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+m_{m1} & m_{m2} & \cdots & m_{mn}
+\end{pmatrix}$$
+(también en ciertos textos de estudios se utilizan paréntesis de corchete) y de forma compacta como $M=(m_{ij})$.
+La $i$-ésima fila la denotaremos como $M_i=(m_{i1},\dots,m_{in})$ y la $j$-ésima columna como
+$$M^j=\begin{pmatrix}
+m_{1j} \\ m_{2j} \\ \vdots \\ m_{mj}
+\end{pmatrix},$$
+ambas son matrices.
+
+El conjunto de matrices de orden $m\times n$ de $A$ será denotado por $\Mat_{m\times n}(A)$\nomenclature{$\Mat_{n\times m}(A)$}{Conjunto de matrices de orden $m\times n$ de $A$}. Si la matriz es de forma $n\times n$ diremos que es \textit{cuadrada}\index{matriz!cuadrada} y su conjunto se denotará por $\Mat_n(A)$ \nomenclature{$\Mat_n(A)$}{Conjunto de matrices de orden $n\times n$ de $A$}.
+
+Si la matriz es de orden $1\times n$ (resp. $n\times 1$) se le llama \textit{matriz fila}\index{matriz!columna, fila} (resp. \textit{matriz columna}) o \textit{vector fila}\index{vector!columna, fila} (resp. \textit{vector columna}) si $A$ es un anillo de división y obviamos el número fijo:
+$$M=(m_1,\dots,m_n),\quad M=\begin{pmatrix}
+m_1 \\ \vdots \\ m_n
+\end{pmatrix}.$$
+La \textit{matriz nula}\index{matriz!nula} de orden $m\times n$ es aquella cuyos valores son siempre cero. La \textit{matriz diagonal}\index{matriz!diagonal} es una matriz cuadrada tales que todos sus valores son nulos, excepto aquellos $m_{11},m_{22},\dots,m_{nn}$. La \textit{matriz escalar}\index{matriz!escalar} es una matriz diagonal, tal que sus valores en la diagonal son el mismo y cuando es 1, se le llama \textit{matriz identidad}\index{matriz!identidad} y se denota como $I_n$\nomenclature{$I_n$}{Matriz identidad de orden $n\times n$}. Un detalle de notación es que usualmente llamamos al elemento en la posición $(i,j)$ de una matriz identidad como la \textit{delta de Kronecker}
+$$\delta_{ij}=\begin{cases}
+1,&\quad i=j\\
+0,&\quad i\neq j
+\end{cases}$$ \nomenclature{$\delta_{ij}$}{Delta de Kronecker de índices $i,j$}
+Siendo $M\in\Mat_{m\times n}(A)$, denotamos su \textit{traspuesta}\index{matriz!traspuesta} como la matriz $M^t\in\Mat_{n\times m}(A)$ tal que si $M=(m_{ij})$ entonces $M^t=(m_{ji})$ \nomenclature{$M^t$}{Matriz traspuesta de $M$}. Una matriz cuadrada se dice \textit{simétrica}\index{matriz!simétrica} syss es igual a su traspuesta.
+
+Sean $M,N\in\Mat_{m\times n}(A)$ con $M=(m_{ij}), N=(n_{ij})$ y $a\in A$, definimos:
+\begin{description}
+	\item[Suma de matrices]\index{suma!de matrices} $M+N=(m_{ij}+n_{ij})$.
+	\item[Producto por un escalar]\index{producto!de matriz por un escalar} $aM=(am_{ij})$ y $Ma=(m_{ij}a)$.
+	\item[Producto entre matrices]\index{producto!de matrices} Sea $M\in\Mat_{m\times n}(A)$ y $N\in\Mat_{n\times p}(A)$ (ojo a las dimensiones), entonces, $M\cdot N\in\Mat_{m\times p}(A)$ como
+	$$MN=\left(\sum_{k=1}^n m_{ik}n_{kj}\right)$$
+\end{description}
+\end{mydef}
+Evidentemente $\Mat_{m\times n}(A)$ es un $A$-módulo libre de rango $mn$ (si $A$ es unitario y conmutativo).
+
+Nótese también que la coordenada $i,j$ de la matriz producto $BC$ será el producto matricial $B_iC^j$ (si bien el resultado es una matriz cuadrada de dimensión 1, lo consideraremos como un elemento de $A$).
+\begin{thm}
+Sea $A$ un anillo unitario tal que $B,C,D$ son matrices con las dimensiones adecuadas para cada caso, entonces:
+\begin{enumerate}
+	\item $(BC)D=B(CD)$.
+	\item $B(C+D)=BC+BD$.
+	\item $(B+C)D=BD+CD$.
+	\item Si $B\in\Mat_{m\times n}(A)$, entonces $I_mB=BI_n=B$.
+\end{enumerate}
+En definitiva, $\Mat_n(A)$ para todo $n$ natural no nulo, es un anillo unitario.
+\end{thm}
+Nótese que por ende, $\Mat_n(A)$ siempre resulta ser un anillo unitario (no-conmutativo). Si alguna matriz en $\Mat_n(A)$ posee inversa, entonces diremos que es \textit{regular}\index{matriz!regular}, de lo contrario es \textit{singular}. Más adelante veremos que criterios debe tener para cumplir esta condición y como calcular la inversa.
+\begin{thm}
+Sean $B,C\in\Mat_{m\times n}(A),\,D\in\Mat_{n\times p}(A)$, entonces:
+\begin{enumerate}
+	\item $(B^t)^t=B$.
+	\item $(B+C)^t=B^t+C^t$.
+	\item Si $A$ es conmutativo, entonces $(BD)^t=D^tB^t$.
+	\item Si $B$ es regular y cuadrada, entonces $(B^{-1})^t=(B^t)^{-1}$.
+\end{enumerate}
+\end{thm}
+Sea $B=(u_1,\dots,u_n)$ una base ordenada de $M$ un $A$-módulo, denotamos $\Phi_B:M\rightarrow\Mat_{n\times 1}(A)$ como el isomorfismo, llamado \textit{sistema de coordenadas}\index{sistema!de coordenadas}, tal que
+$$\Phi_B\left(\sum_{i=1}^n a_iu_i\right)=\begin{pmatrix}
+a_1\\ \vdots\\ a_n
+\end{pmatrix},$$
+al coeficiente $a_i$ le llamamos $i$-ésima \textit{coordenada}\index{coordenada}.
+\begin{thm}\label{thm:matrix-morphism}
+Sea $f:N\rightarrow M$ un homomorfismo entre $A$-módulos con $B=(u_1,\dots,u_n)$ una base ordenada de $N$ y $B'=(v_1,\dots,v_m)$ uno de $M$, tales que para todo $1\leq j\leq n$:
+$$f(u_j)=\sum_{i=1}^m b_{ij}v_i,$$
+entonces existe una única matriz ${\rm M}_B^{B'}(f)=(b_{ij})\in\Mat_{m\times n}(A)$ \nomenclature{${\rm M}_B^{B'}(f)$}{Matriz asociada al homomorfismo $f$ de un módulo generado por una base $B$ a otro de base $B'$} tal que para todo $u\in N$:
+$$\Phi_{B'}(f(u))={\rm M}_B^{B'}(f)\cdot\Phi_B(u).$$
+\end{thm}
+\begin{proof}
+Notemos que como $f$ es un homomorfismo, entonces para todo $u$
+\begin{align*}
+f(u)&=f\left(\sum_{j=1}^n a_ju_j\right)=\sum_{j=1}^n a_jf(u_j)\sum_{j=1}^na_j\left(\sum_{i=1}^mb_{ij}v_i\right)\\
+&=\sum_{i=1}^m\left(\sum_{j=1}^n b_{ij}a_j\right)v_i.
+\end{align*}
+El coeficiente corresponde a l producto ${\rm M}_B^{B'}(f)\cdot\Phi_B(u)$, por ende, la matriz descrita cumple la condición, mientras que la unicidad de ${\rm M}_B^{B'}$ deriva directamente de la unicidad de las coordenadas.
+\end{proof}
+Vamos a considerar un ejemplo particularmente sencillo, consideraremos que $f$ es el automorfismo identidad. La primera base será $B=(1,\imaginary)$ y la segunda será $B'=(1,1+\imaginary)$, y evidentemente
+$$f(1)=1\cdot 1+0\cdot\frac{\imaginary}{2},\quad f(\imaginary)=(-1)\cdot 1+1\cdot(1+\imaginary),$$
+por lo tanto, la matriz ${\rm M}_B^{B'}(f)$ debería ser
+$$\begin{pmatrix}
+1 & -1 \\
+0 & 1
+\end{pmatrix}$$
+(observe que los datos están guardados en columnas similar a nuestras coordenadas, de hecho, $B^i$ resulta ser las coordenadas para el $i$-ésimo vector de la base). Ahora tomemos el vector\footnote{Es probable que el lector este acostumbrado a llamar \textit{``vectores''} a las matrices columna o fila, no obstante, cabe recordar que definimos dicho término como cualquier elemento de un $D$-espacio vectorial. En este sentido, $1$ es un vector de $\R$.} $3+4\imaginary$ (que es completamente arbitrario) y es notorio que se escribiría como $(-1,4)$, para comprobarlo realizamos el cálculo largo:
+$$\begin{bmatrix}
+1 & -1\\ 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+3\\ 4
+\end{bmatrix}
+=
+\begin{bmatrix}
+3\cdot 1+(-1)\cdot 4\\ 3\cdot 0+1\cdot 4
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1\\4
+\end{bmatrix}$$
+Otra forma, más fácil de recordar el proceso es notar que llevado a un automorfismo con un $A$-módulo de rango $n$ se da
+$$\begin{bmatrix}
+b_{11} & \cdots & b_{1n}\\
+\vdots & \ddots & \vdots\\
+b_{n1} & \cdots & b_{nn}
+\end{bmatrix}
+\begin{bmatrix}
+a_1\\\vdots\\a_n
+\end{bmatrix}
+=
+a_1\begin{bmatrix}
+b_{11}\\\vdots\\b_{n1}
+\end{bmatrix}+
+a_2\begin{bmatrix}
+b_{12}\\\vdots\\b_{n2}
+\end{bmatrix}+\cdots+
+a_n\begin{bmatrix}
+b_{1n}\\\vdots\\b_{nn}
+\end{bmatrix}
+=\sum_{i=1}^n a_iB^i$$
+Lo cual tiene sentido pues señalamos que $B^i$ son las coordenadas de la $i$-ésima base. La importancia de esta matriz es que determina completamente el homomorfismo $f$.
+\begin{thm}
+Sean $f:M\rightarrow N$ y $g:N\rightarrow P$ homomorfismos de $A$-módulos libres de bases ordenadas $B$, $B'$ y $B''$ respectivamente, entonces
+$${\rm M}_B^{B''}(f\circ g)={\rm M}_{B'}^{B''}(g){\rm M}_B^{B'}(f)$$
+\end{thm}
+\begin{proof}
+Por el teorema anterior consideremos $u\in M$, entonces
+\begin{align*}
+{\rm M}_{B'}^{B''}(g){\rm M}_B^{B'}(f)\Phi_B(u)&={\rm M}_{B'}^{B''}(g)\Phi_{B'}(f(u))\\
+&=\Phi_{B''}(g(f(u)))=\Phi_{B''}((f\circ g)(u)).
+\end{align*}
+\end{proof}
+\begin{thm}
+Sea $f:M\rightarrow N$ un homomorfismo de $A$-módulos de bases $B,B'$ resp., entonces $f$ es un isomorfismo syss ${\rm M}_B^{B'}(f)$ es una matriz regular y, en dicho caso, se cumple ${\rm M}_{B'}^B(f^{-1})={\rm M}_B^{B'}(f)^{-1}$.
+\end{thm}
+\begin{proof}
+Para lo siguiente supondremos que $\rang M=m$ y $\rang N=n$.
+
+$\implies$. Si es un isomorfismo, entonces $f^{-1}$ es un isomorfismo y $I_m={\rm M}_B^B(\Id_M)={\rm M}_B^B(f\circ f^{-1})={\rm M}_{B'}^B(f^{-1}){\rm M}_B^{B'}(f)$.
+
+$\Longleftarrow$. Si la matriz es regular, entonces existe $g$ tal que es su inversa, es decir, ${\rm M}_{B'}^B(g){\rm M}_B^{B'}(f)={\rm M}_B^B(f\circ g)=I_m$ y ${\rm M}_B^{B'}(f){\rm M}_{B'}^B(g)=M_{B'}^{B'}(g\circ f)=I_n$, de lo que se concluye que $f$ es biyectiva y $g=f'$.
+\end{proof}
+Cabe destacar que los teoremas y métodos aplicados funcionan de igual manera para vectores fila, pero invirtiendo el orden descrito, por ejemplo, en condiciones del teorema~\ref{thm:matrix-morphism}, siendo $u\in N$ con $\Phi_B:N\rightarrow\Mat_{\rang N\times 1}(A)$
+$$\Phi_B(u){\rm M}_B^{B'}(f)=\Phi_{B'}(f(u)).$$
+\begin{thm}
+Sea $A$ un dominio con $M,N$ $A$-módulos de rangos $n,m$ resp., entonces $\Hom(N,M)\cong\Mat_{n\times m}(A)$.
+\end{thm}
+\begin{proof}
+Siendo $B,B'$ bases de $N,M$ resp. vemos que la aplicación requerida corresponde a ${\rm M}_B^{B'}$. Es inmediato probar la inyectividad de la función. Para ver que es suprayectiva comenzaremos por recordar que todo homomorfismo está completamente determinado por el valor en las bases, así que definamos $B=(u_1,\dots,u_n)$ y ${\rm M}_i:=f(u_i)$, entonces ${\rm M}_B^{B'}(f)$ es la matriz cuya $i$-ésima fila es ${\rm M}_i$. Probado ya que la biyectividad de la función, la prueba está completa.
+\end{proof}
+\begin{cor}
+Sea $A$ un dominio con $V$ un $A$-módulo de rango $n$, entonces $\End(V)\cong\Mat_n(A)$.
+\end{cor}
+Nótese que $(\End(V),\circ)$ y $(\Mat_n(A),\cdot)$ son isomorfos como grupos.
+
+\subsection*{Operaciones de matrices}
+Otra razón para recurrir al uso de matrices es que tienen definidas entre sí, un conjunto bastante interesante de operaciones entre las que se incluye:
+\begin{enumerate}
+	\item Multiplicar una fila por una constante.
+	\item Intercambiar dos filas entre sí.
+	\item Sumarle un múltiplo de una fila a otra.
+\end{enumerate}
+Y sus equivalentes para columnas.
+\begin{thm}
+Existe $K_i:A\rightarrow\Mat_n(A)$ tal que para todo $B\in\Mat_{n\times m}(A)$ el producto $K_i(a)\cdot B$ (resp. $B\cdot K_i(a)$) resulta ser la misma pero con la $i$-ésima fila (resp. columna) multiplicada por $a\in A$. Donde se define
+$$K_k(a)(i,j):=\begin{cases}
+0 &i\neq j\\
+1 &i=j\neq k\\
+a &i=j=k
+\end{cases}$$
+\end{thm}
+\begin{thm}
+Existe $F_{ij}\in\Mat_n(A)$ tal que para todo $B\in\Mat_{n\times m}(A)$ el producto $F_{ij} B$ (resp. $BF_{ij}$) resulta ser la misma pero con las filas (resp. columnas) $i,j$ intercambiadas. Dicho $F_{ij}=(\delta_{i\sigma(j)})$ donde $\delta_{ij}$ es la delta de Kronecker y $\sigma(j)$ es la trasposición $(i,j)$.
+\end{thm}
+\begin{proof}
+Observe que la coordenada $(i,j)$ de $F_{uv}B$ esta dada por $(F_{uv})_iB^j$. Si $i\neq u,v$ entonces $(F_{uv})_i=e_i$, si $i=u$ entonces $(F_{uv})_i=e_v$ y viceversa; por ende, en el primer caso $(F_{uv})_iB^j=b_{ij}$, de lo contrario, $(F_{uv})_uB^j=b_{vj}$ (cambio de fila).
+
+La prueba es análoga para columnas.
+\end{proof}
+Observe que para todo $i,j\in\N^+$ se da que $F_{ij}F_{ij}=I_n$, es decir, $F_{ij}$ es su propia inversa.
+\begin{thm}
+Existe $L_{ij}:A\rightarrow\Mat_n(A)$ tal que para todo $B\in\Mat_{n\times m}(A)$ el producto $L_{ij}(a)B$ (resp. $BL_{ij}(a)$) resulta ser la misma pero tal que la $i$-ésima fila (resp. columna) esta sumada a $a$ veces la $j$-ésima fila (resp. columna). Dicha $L_{ij}(a)$ es similar a la matriz identidad, pero con la condición de que toma el valor $a$ en la posición $(i,j)$.
+\end{thm}
+\begin{proof}
+Para demostrarlo, definiremos $a_{(i,j)}\in\Mat_n(A)$ como aquella que tiene ceros en todas las posiciones, pero toma $a$ en la posición $(i,j)$. La demostración comienza con ver que $a_{(i,j)}B$ es la matriz tal que todas sus filas son nulas excepto la $j$-ésima que tiene los valores de la $i$-ésima. Luego $L_{ij}(a):=I_n+a_{(i,j)}$ y completamos la demostración con la asociatividad del producto matricial.
+
+La prueba es análoga para columnas.
+\end{proof}
+La importancia de estas tres operaciones es que podemos aplicarlas en matrices regulares, en un proceso llamado \textit{eliminación de Gauss}, en un mismo lado (i.e. por la izquierda exclusivamente) para llegar a la matriz identidad, con lo cual, el producto de ellas (que es fácil de calcular debido a su uso) y obtener la inversa.
+
+Por ejemplo, tomemos la siguiente matriz:
+$$B=\begin{pmatrix}
+1 &0 &-1\\ 0 &2 &3\\ 1 &0 &2
+\end{pmatrix}$$
+Ahora, sigue el siguiente procedimiento:
+\begin{align*}
+\begin{pmatrix}
+1 &0 &-1\\ 0 &2 &3\\ 0 &0 &3
+\end{pmatrix}&=L_{31}(-1)B\\
+\begin{pmatrix}
+1 &0 &-1\\ 0 &2 &0\\ 0 &0 &3
+\end{pmatrix}&=L_{23}(-1)L_{31}(-1)B\\
+\begin{pmatrix}
+1 &0 &0\\ 0 &1 &0\\ 0 &0 &1
+\end{pmatrix}&=\underbrace{L_{13}(1)K_2(1/2)K_3(1/3)L_{23}(-1)L_{31}(-1)}_{B^{-1}}B
+\end{align*}
+Luego, calculamos $B^{-1}$:
+\begin{align*}
+B^{-1}&=L_{13}(1)K_2(1/2)K_3(1/3)L_{23}(-1)L_{31}(-1)\\
+&=L_{13}(1)K_2(1/2)K_3(1/3)L_{23}(-1)\begin{pmatrix}
+1 &0 &0\\ 0 &1 &0\\ -1 &0 &1
+\end{pmatrix}\\
+&=L_{13}(1)K_2(1/2)K_3(1/3)\begin{pmatrix}
+1 &0 &0\\ 1 &1 &-1\\ -1 &0 &1
+\end{pmatrix}\\
+&=L_{13}(1)\begin{pmatrix}
+1 &0 &0\\ 1/2 &1/2 &-1/2\\ -1/3 &0 &1/3
+\end{pmatrix}=\begin{pmatrix}
+2/3 &0 &1/3\\ 1/2 &1/2 &-1/2\\ -1/3 &0 &1/3
+\end{pmatrix}
+\end{align*}
+Usted puede comprobar fácilmente la efectividad de nuestro método.
+
+\subsection*{Rangos de matrices}
+\begin{mydef}[Rango de una matriz]
+Sea $A$ un anillo conmutativo y asociativo, con $B\in\Mat_{n\times m}(A)$. Definimos el \textit{rango}\index{rango!de una matriz} de una matriz $\rang B$ como el rango de sus matrices fila. Denotamos $\rang_c B$ como el rango de sus matrices columna.
+\end{mydef}
+\begin{thm}
+Para todo $B\in\Mat_{n\times m}(A)$ se da $\rang B=\rang_c B$ o también que $\rang B=\rang(B^t)$ (son expresiones equivalentes).
+\end{thm}
+\begin{proof}
+Digamos que $\rang B=r$, entonces, para todo $i=r+1,\dots,n$ se cumple
+$$B_i=\sum_{k=1}^r a_{ik}B_k$$
+por definición. En particular
+$$b_{ij}=\sum_{k=1}^r a_{ik}b_{kj}$$
+\end{proof}
+Una aplicación común de las matrices es para resolver sistemas de ecuaciones. En general, estos se escriben como sigue
+\begin{align*}
+\lambda_{11}x_1+\lambda_{12}x_2+\cdots+\lambda_{1n}x_n&=y_1\\
+\lambda_{21}x_1+\lambda_{22}x_2+\cdots+\lambda_{2n}x_n&=y_2\\
+&\vdots\\
+\lambda_{m1}x_1+\lambda_{m2}x_2+\cdots+\lambda_{mn}x_n&=y_m,
+\end{align*}
+de esta manera, podemos escribir el sistema, en forma matricial, como $\Lambda\cdot X=Y$, donde conocidos $\Lambda, Y$ se buscan los $X$ que satisfagan la ecuación. Volveremos a este problema más adelante.
+
+Denotaremos $A\mid B$ a la matriz $A$, pero con una columna adicional, correspondiente a $B$.
+\begin{thm}[Teorema de Rouché-Frobenius]\index{teorema!de Rouché-Frobenius}
+Sea $\Lambda\cdot X=Y$ un sistema de ecuaciones, éste tendrá solución syss $\rang(\Lambda)=\rang(\Lambda\mid Y)$. Además, si $X_0$ es una solución, entonces $X_0+\ker\Lambda$ es el conjunto de todas las soluciones.
+\end{thm}
+\begin{proof}
+$\Longleftarrow$. Supongamos que $\rang(\Lambda)=\rang(\Lambda\mid Y)$, entonces, $Y=\sum_{i=1}^rx_i\Lambda^i$, por ende, podemos construir $X$ como el vector columna de los $x_i$ tal que es solución.
+
+$\implies$. Si existe una solución $X_0$ tal que $\Lambda X_0=Y$, entonces $Y=\sum_{k=1}^r x_k\Lambda^i$, por ende, añadirle no aumentará el rango de $\Lambda$.
+
+Sean $X_1,X_2$ soluciones, entonces deben satisfacer que $\Lambda\cdot(X_1-X_2)=0$, es decir, $X_1-X_2\in\ker\Lambda$.
+\end{proof}
+
+\section{Determinantes y temas afines}
+\begin{mydef}[Forma multilineal]
+Sea $A$ un anillo unitario y $n\in\N^+$, luego, una aplicación $f:(A^n)^n\rightarrow A$ se dice \textit{una forma multilineal}\index{forma multilineal} syss para todo $v_1,\dots,v_n,v'\in A^n$ y $a,b\in A$ se cumple
+$$f(v_1,\dots,av_i+bv',\dots,v_n)=af(v_1,\dots,v_i,\dots,v_n)+bf(v_1,\dots,v',\dots,v_n).$$
+Diremos que la forma es \textit{antisimétrica}\index{forma multilineal!antisimétrica} si dados $x,y\in(A^n)^n$ tales que $y=(x_{\sigma(1)},\dots,x_{\sigma(n)})$ con $\sigma\in\Sigma_n$ una trasposición se da que $f(x)=-f(y)$. Diremos que es \textit{alternada}\index{forma multilineal!alternada} cuando para todo $x\in(A^n)^n$ tal que $x_i=x_j$ (con $i\neq j$) se cumple $f(x)=0$.
+\end{mydef}
+\begin{thm}
+Sea $A$ un anillo unitario y $f:(A^n)^n\rightarrow A$ una forma multilineal:
+	\begin{enumerate}[$a)$]
+	\item $f$ es antisimétrica syss para todo $\sigma\in\Sigma_n$ se cumple:
+	$$f(v_{\sigma(1)},\dots,v_{\sigma(n)})=\sign\sigma\cdot f(v_1,\dots,v_n)$$
+	\item Si $f$ es alternada, entonces es antisimétrica. Si es antisimétrica y $\car A\neq 2$, entonces es alternada.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}[$a)$]
+	\item Veamos que la definición de antisimetría sugiere que si $\sigma$ es una trasposición entonces la función cambia de signo, como $\sign\sigma$ esta dado por $(-1)^m$ donde $m$ es el número de trasposiciones que le forman, entonces la prueba está completa.
+	\item Nótese que
+	\begin{align*}
+	0&=f(v_1,\dots,\overset{(i)}{v_i+v_j},\dots,\overset{(j)}{v_i+v_j},\dots,v_n)\\
+	&={\color{nicered}f(v_1,\dots,\overset{(i)}{v_i},\dots,\overset{(j)}{v_i},\dots,v_n)}+f(v_1,\dots,\overset{(i)}{v_j},\dots,\overset{(j)}{v_i},\dots,v_n)\\
+	&{}+f(v_1,\dots,\overset{(i)}{v_i},\dots,\overset{(j)}{v_j},\dots,v_n)+{\color{nicered}f(v_1,\dots,\overset{(i)}{v_j},\dots,\overset{(j)}{v_j},\dots,v_n)}
+	\end{align*}
+	Luego, observe que los términos en rojo son, por definición de forma alternada, nulos y por ende nos queda que $f$ es antisimétrica. El proceso es el mismo para probar la bicondicionalidad.
+	\end{enumerate}
+\end{proof}
+\begin{thm}
+Sea $A$ un anillo unitario tal que $(e_1,\dots,e_n)$ es la base canónica de $A^n$, y $f:(A^n)^n\rightarrow A$. Si $f$ es alternada entonces para todo $a\in A$ existe una sola función $f$ tal que $f(e_1,\dots,e_n)=a$.
+\end{thm}
+\begin{proof}
+Como $(e_i)_{i=1}^n$ es la base canónica para todo $i=1,\dots,n$ existen $a_{ij_i}$ tales que
+$$v_i=\sum_{j_i=1}^n a_{ij_i}e_{j_i},$$
+por ende, podemos reescribir $f$ como
+$$f(v_1,\dots,v_n)=\sum_{j_1=1}^n\cdots\sum_{j_n=1}a_{1j_1}\cdots a_{nj_n}f(e_{j_1},\dots,e_{j_n}),$$
+pero nótese que si $j_i=j_k$ con $i\neq k$, entonces $f(e_{j_1},\dots,e_{j_n})=0$ por ser alternada. Esto nos permite ver que $j_i$ debe ser una permutación de $i$. Asimismo, si $j_i$ lo fuese, tenemos que
+$$f(e_{j_1},\dots,e_{j_n})=(\sign j_i)f(e_1,\dots,e_n)=(\sign j_i)a$$
+con lo que, la ecuación general queda expresada como
+\begin{equation}
+f(v_1,\dots,v_n)=a\sum_{\sigma\in\Sigma_n}(\sign\sigma)\prod_{i=1}^na_{i,\sigma(i)},
+\end{equation}
+lo que con facilidad, podemos probar que es una forma multilineal.
+\end{proof}
+Nótese que como las forma multilineales utilizan de argumento una $n$-tupla de $n$-vectores de $A$, podemos utilizar matrices cuadradas de dimensión $n$ en su lugar y conservar las definiciones y propiedades, al igual que introducir la definición:
+\begin{mydef}[Determinante]
+Sea $A$ un anillo unitario y $n\in\N^+$, entonces definimos la \textit{determinante}\index{determinante} como la única forma multilineal alternada $f:\Mat_n(A)\rightarrow A$ tal que $f(I_n)=1$. Siendo $M\in\Mat_n(A)$, denotamos $\det(M)$ o $|M|$ su determinante. \nomenclature{$\det(M),|M|$}{Determinante de la matriz $M$}
+\end{mydef}
+\begin{thm}
+Sea $B\in\Mat_n(A)$, entonces $\det(B)=\det(B^t)$.
+\end{thm}
+\begin{proof}
+Nótese que
+\begin{align*}
+\det(B^t)&=\sum_{\sigma\in\Sigma_n}(\sign\sigma)\prod_{i=1}^nb_{\sigma(i),i}\\
+&=\sum_{\sigma\in\Sigma_n}(\sign\sigma^{-1})\prod_{i=1}^nb_{i,\sigma^{-1}(i)},
+\end{align*}
+como $\sign:(\Sigma_n,\circ)\rightarrow(\{-1,1\},\cdot)$ es un homomorfismo de grupos, $\sign(\sigma^{-1})=(\sign\sigma)^{-1}$. Además $(\pm 1)^{-1}=\pm 1$, con ellas comprobamos el enunciado.
+\end{proof}
+\begin{thm}
+Sean $B,C\in\Mat_n(A)$, entonces $\det(BC)=\det(B)\det(C)$ ($\det:(\Mat_n(A),\cdot)\rightarrow(A,\cdot)$ es un homomorfismo de grupos).
+\end{thm}
+\begin{proof}
+Sólo nos basta probar que $f(B)=\det(BC)$ es una forma multilineal alternada, para ello notemos que si definimos $D:=BC$ entonces $f(B)=f(B_1,\dots,B_n)=\det(D_1,\dots,D_n)$, donde $D_i=(B_iC_1,\dots,B_iC^n)$. De esto concluimos facilmente que $f$ es una forma multilineal (por asociatividad de la multiplicación matricial) y que es alternada, por lo tanto, nos basta ver el valor que toma en $I_n$ que es evidentemente $\det(C)$, con lo que el teorema queda probado.
+\end{proof}
+La determinante para $n=2$ está dada por
+\begin{equation}
+\det\begin{bmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{bmatrix}=a_{11}a_{22}-a_{12}a_{21}.
+\end{equation}
+El caso $n=3$ es más complejo, así que para recordarlo mejor utilizaremos la \textbf{regla de Barrow}\index{regla!de Barrow}
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=2]
+\matrix (a) [matrix of math nodes,column sep=7,row sep=7,left delimiter=(,right delimiter=)] {
+	a_{11} & a_{12} & a_{13} & a_{11} & a_{12} & a_{13} \\
+	a_{21} & a_{22} & a_{23} & a_{21} & a_{22} & a_{23} \\
+	a_{31} & a_{32} & a_{33} & a_{31} & a_{32} & a_{33} \\
+};
+\draw[dashed] (a-1-3.north east) -- (a-3-3.south east);
+\draw[nicegreen, very thick] (a-1-1) -- (a-2-2) -- (a-3-3) (a-1-2) -- (a-2-3) -- (a-3-4) (a-1-3) -- (a-2-4) -- (a-3-5);
+\draw[very thick, nicered] (a-1-6) -- (a-2-5) -- (a-3-4) (a-1-5) -- (a-2-4) -- (a-3-3) (a-1-4) -- (a-2-3) -- (a-3-2);
+\end{tikzpicture}
+\caption{Regla de Barrow.}\label{fig:barrow-rule}
+\end{figure}
+
+La fig.~\ref{fig:barrow-rule} debe interpretarse así: los datos unidos se multiplican, si la línea es verde se suma y si es roja se resta. Dejando la fórmula como
+\begin{equation}
+\det\begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} \\
+a_{31} & a_{32} & a_{33}
+\end{bmatrix}=
+\begin{matrix}
+\phantom{{}-}({\color{nicegreen}a_{11}a_{22}a_{33}+a_{12}a_{23}a_{31}+a_{13}a_{21}a_{32}})\\
+{}-({\color{nicered}a_{13}a_{22}a_{31}+a_{12}a_{21}a_{33}+a_{11}a_{23}a_{32}})
+\end{matrix}
+\end{equation}
+Unos ejemplos sobre las operaciones descritas al final de la sección anterior es el siguiente:
+\begin{thm}
+Siendo $u\neq v$ y $a\in A$ no nulo, se cumple que
+	\begin{enumerate}
+	\item $\det(K_u(a))=a$.
+	\item $\det(F_{uv})=-1$.
+	\item $\det(L_{uv}(a))=1$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{description}
+	\item[1. y 2.] se desprenden de la definición de determinante como forma multilineal alternada.
+	\item[3.] Denotemos $\ell_{ij}$ al valor de $L_{uv}(a)$ en la posición $(i,j)$. Sea $\sigma\in\Sigma_n$ cualquier permutación tal que $\sigma(u)=v$ (de forma que incluya al elemento en la posición $(u,v)$), luego, por definición, $\sigma(v)\neq v$, por lo que, $\ell_{v,\sigma(v)}=0$ y la única permutación tal que el producto no es nulo resulta ser, nuevamente, la identidad, por lo que la determinante es 1.
+	\end{description}
+\end{proof}
+Ahora definiremos un concepto para facilitar el cálculo de determinantes:
+\begin{mydef}[Menor complemento]\index{menor complemento}
+Sea $A$ un anillo unitario, $B\in\Mat_n$ e $1\leq i,j\leq n$. Entonces definimos el \textbf{menor complemento de $B$ en $(i,j)$} como la determinante de la matriz cuadrada que resulta al eliminarle la $i$-ésima fila y la $j$-ésima columna; la denotamos como $B_{ij}$ \nomenclature{$B_{ij}$}{Menor complemento de la matriz $B$ en $(i,j)$}.
+\end{mydef}
+\begin{lem}\label{lem:laplace-lemma}
+Sea $A$ un dominio y $B\in\Mat_n$ tal que en la $i$-ésima fila sólo posee un único valor no nulo, $b_{ij}$. Entonces
+$$\det(B)=(-1)^{i+j}b_{ij}B_{ij}$$
+\end{lem}
+\begin{proof}
+Supongamos que corresponde a la $n$-ésima fila y el elemento es $b_{nn}$, entonces, podemos considerar solamente las permutaciones de $\Sigma_{n-1}$, pues $\sigma(n)=n$, de lo contrario el producto es nulo:
+\begin{align*}
+\det(B)&=b_{nn}\sum_{\sigma\in\Sigma_{n-1}}(\sign\sigma)\prod_{i=1}^{n-1}b_{i\sigma(i)}\\
+&=b_{nn}B_{nn}=(-1)^{n+n}b_{nn}B_{nn}.
+\end{align*}
+Si la fila no es la $n$-ésima, la desplazamos $(n-i)$ veces para que concuerde, lo mismo hacemos con la columna. Notese que por cada ``traslación'' debemos invertir el signo del resultado por antisimetría de la determinante, es decir, que nuestro resultado quedará de la forma:
+$$\det(B)=(-1)^{(n-i)+(n-j)}b_{ij}B_{ij}=(-1)^{i+j}b_{ij}B_{ij}$$
+\end{proof}
+Otro método para recordar la determinante de la matriz cuadrada de dimensión 3 (y superiores) es el siguiente:
+\begin{thm}[Fórmula de Laplace]\index{formula@fórmula!de Laplace}
+Sea $A$ un dominio y $B=(b_{ij})$ una matriz cuadrada de dimensión $n$, entonces
+\begin{equation}
+\det(B)=\sum_{i=1}^n(-1)^{i+j}b_{ij}B_{ij}=\sum_{j=1}^n(-1)^{i+j}b_{ij}B_{ij}.
+\end{equation}
+\end{thm}
+\begin{proof}
+Consideremos la $i$-ésima fila de $B$, $B_i=\sum_{j=1}^nb_{ij}e_j$, por definición, por ende
+$$\det(B)=\det\left(B_1,\dots,\sum_{j=1}b_{ij}e_j,\dots,B_n\right)=\sum_{j=1}^nb_{ij}\det(B_1,\dots,e_j,\dots,B_n),$$
+nótese que el hecho de que la $i$-ésima fila sea $e_j$ calza perfectamente con las condiciones para el lema~\ref{lem:laplace-lemma}, por lo que concluimos la formula enunciada.
+\end{proof}
+\begin{mydef}[Matriz adjunta]
+Sea $A$ un dominio y $B\in\Mat_n(A)$. Definimos su \textit{matriz adjunta}\index{matriz!adjunta}, denotada como $\Adj(B)$ \nomenclature{$\Adj(B)$}{Matriz adjunta a $B$}, a aquella definida como $\Adj(B)=\left((-1)^{i+j}B_{ji}\right)$.
+\end{mydef}
+\begin{thm}[Fórmula generalizada de Laplace]\index{formula@fórmula!generalizada de Laplace}
+Sea $A$ un dominio y $B\in\Mat_n(A)$, entonces
+$$B\cdot\Adj(B)=\Adj(B)\cdot B=\det(B)\cdot I_n$$
+\end{thm}
+\begin{cor}
+Sea $A$ un dominio y $B\in\Mat_n(A)$, entonces $B$ es regular syss $\det B$ es una unidad.
+\end{cor}
+
+\section{Diagonalización, autovectores y temas afínes}
+\begin{mydef}[Diagonizable]
+Diremos que un endomorfismo $f$ de un $A$-módulo $V$ es \textit{diagonizable}\index{endomorfismo!diagonizable} syss existe una base tal que la matriz asociada de $f$ es diagonal.
+\end{mydef}
+\begin{mydef}[Autovalores y autovectores]
+Sea $f$ un endomorfismo de un $D$-espacio vectorial $V$, se dice que $\lambda\in D$ es un \textit{autovalor}\index{autovalor} o \textit{valor propio} syss existe $v\in V$ tal que
+$$f(v)=\lambda v.$$
+En ese caso, $v$ se dice un \textit{autovector}\index{autovector} o \textit{vector propio}.
+
+Definimos el \textit{espectro\index{espectro} de $f$} como el conjunto de sus autovalores:
+$$\sigma(f)=\{\lambda\in D:\exists v\in V\;f(v)=\lambda v\}.$$
+\end{mydef}
+\begin{thm}
+Sea $\lambda\in D$ un autovalor de $f\in\End(V)$, entonces definimos el conjunto
+$$V_\lambda=\{v\in V:f(v)=\lambda v\}$$
+que resulta ser un subespacio de $V$ determinado por la fórmula
+$$V_\lambda=\ker(f-\lambda\cdot\Id_V);$$
+a este conjunto le llamamos \textit{subespacio de $\lambda$ según $f$}\index{subespacio!de un autovalor}.
+\end{thm}
+\begin{thm}
+Sean $\lambda_1,\dots,\lambda_n$ autovalores distintos de $f\in\End(V)$, entonces
+$$\sum_{i=1}^n V_{\lambda_i}=\bigoplus_{i=1}^n V_{\lambda_i}.$$
+\end{thm}
+\begin{proof}
+La demostración se basa en ver que los subespacios son linealmente independientes, es decir, si
+$\sum_{i=1}^n v_i=0$
+con $v_i\in V_{\lambda_i}$ entonces $v_i=0$ para todo $i=1,\dots,n$. Lo haremos por inducción.
+
+El caso $n=1$ es trivial, por lo que procederemos a la hipótesis inductiva. Tengamos
+$$\sum_{i=1}^{n+1}v_i=0,$$
+entonces apliquemos $f$ a todos los vectores, puesto que $f(0)=0$ por ser endomorfismo. Esto nos da
+$$\sum_{i=1}^{n+1}\lambda_i v_i=0.$$
+Ahora, reduzcamos la ecuación por $\lambda_{n+1}\sum_{i=1}^n v_i$, que por construcción sabemos que es nulo, con lo que eliminamos el $(n+1)$-ésimo vector:
+$$\sum_{i=1}^{n+1}(\lambda_i-\lambda_{n+1})v_i=0$$
+Por hipótesis inductiva concluimos que $v_i=0$ para $i=1,\dots,n$, por lo que nuestra ecuación original se reduce a
+$$\sum_{i=1}^{n+1}v_i=\sum_{i=1}^nv_i+v_{n+1}=v_{n+1}=0.$$ 
+\end{proof}
+\begin{thm}
+Un endomorfismo $f$ es diagonizable syss existe una base compuesta únicamente por autovectores.
+\end{thm}
+Para calcular los autovalores de un endomorfismo $f$ de un $A$-espacio vectorial $V$ de dimensión $n$ debemos definir, en primer lugar, el \textit{polinomio característico}\index{polinomio!característico} de la matriz $B\in\Mat_n(A)$ asociada:
+\begin{equation}
+p_f(x):=\det(B-xI_n)
+\end{equation} \nomenclature{$p_f(x)$}{Polinomio característico del endomorfismo $f$}
+\begin{lem}
+$\lambda\in A$ es un autovalor de $f\in\End(V)$ syss es la raíz de $p_f$, es decir, si $p_f(\lambda)=0$.
+\end{lem}
+\begin{thm}
+Si un endomorfismo $f\in\End(V)$ de un espacio vectorial de $n$ dimensiones cumple que su polinomio característico posee $n$ raíces, entonces $f$ es diagonizable.
+\end{thm}
+\begin{proof}
+A cada raíz le corresponde un autovalor distinto, como cada autovalor genera un subespacio y los subespacios son linealmente independientes, entonces su suma directa tiene al menos $n$ dimensiones, por ende, corresponde a $V$.
+\end{proof}
+Nótese que un endomorfismo puede ser diagonizable con menos raíces, dado que un autovalor puede generar un subespacio de más de una dimensión.
+
+\appendix
+\part*{Apéndice}
+\chapter{Bibliografías matemáticas}
+Para complementar el texto, he dejado aquí unas síntesis de mi auditoria de las vidas de los matemáticos más importantes en estas lecciones. En cierto modo, mi papel será de traductor, puesto que toda la información la he obtenido del índice de la Universidad de St. Andrews \url{http://www-groups.dcs.st-andrews.ac.uk/~history/BiogIndex.html} y del libro \cite{temple1986men}. El orden es temporalmente cronológico. Los nombre de matemáticos relacionados y las aportes más relevantes respectivamente serán puestos en negritas.
+
+\section{Pierre Fermat}
+\begin{wrapfigure}{R}{.3\textwidth}
+\includegraphics[width=.25\textwidth]{Fermat.jpeg}
+\caption{}
+\end{wrapfigure}
+Pierre Fermat nació el 17 de agosto de 1601 en Beaumont-de-Lomagne, Francia; hijo de un mercader de cuero y consejero segundo de su ciudad natal.
+
+A mediados de la década de 1620, se trasladaría a Bordeaux donde realizaría sus primeras investigaciones matemáticas serias hasta que se establecería en Orléans a estudiar leyes en la Universidad, con lo que se convertiría en abogado y oficial gubernamental de Toulouse, sellando su oficio con un cambio de nombre a Pierre de Fermat en 1931.
+
+Años más tarde, algunos de sus compañeros de trabajo se darían cuenta del estado ``de confusión'' de Fermat debido a su preocupación por las matemáticas y se haría amigo de otro canciller de Toulouse, \textbf{Carcavi}.
+
+Irónicamente, en 1936, en conjunto a Carcavi se comunicaría con \textbf{Mersenne} respecto a sus descubrimientos del movimiento de caída libre (lo que extraña, pues es sabido que la matemática aplicada no era de mucho interés para Fermat) y ciertos ``errores'' en los trabajos de Galileo; esto saldría a demostrar la pasión de Fermat para los problemas geométricos. Sus amigos --Carcavi y Mersenne-- le convencerían de divulgar sus métodos en un par de libros que serían de inspiración para los franceses. Esto le valió de gran reputación a pesar de carecer de trabajos publicados (pues no le interesaba pulirles).
+
+Tiempo más tarde, entraría en una polémica tras criticar arduamente un escrito de \textbf{Descartes} respecto a la ley de refracción. Éste se fijaría en las publicaciones de Fermat, las cuales atacaría tratándolo de matemático y pensador inadecuado. Esto generaría profundas heridas en la reputación de Fermat (al ser menos respetado que Descartes).
+
+Desde 1943 a 1954, Fermat se desconectaría del mundo exterior debido a su dedicación por la \textbf{teoría de números}, la guerra que afectaría a Toulouse y la plaga, del cual él sería poseedor.
+
+Fermat debe su fama, principalmente a su conjetura, hoy bajo el nombre del \textbf{Último Teorema de Fermat} sobre el cual escribiría <<\textit{He encontrado una verdaderamente notable prueba que este margen es muy pequeño para contener}>>, lo que muchos matemáticos han concluido como una vaga excusa, debido a que faltarían más de 300 años para que se le encontrara la primera demostración formal, que haría uso de las curvas elípticas. Además, durante sus últimos años de vida, publicaría problemas con la esperanza de motivar una revolución numérica entre europeos que nunca llegaría. Fermat fallece el 12 de enero de 1662.
+
+\section{Carl Friedrich Gauss}
+\begin{wrapfigure}{R}{.3\textwidth}
+\includegraphics[width=.25\textwidth]{Gauss.jpeg}
+\caption{}
+\end{wrapfigure}
+Johann Carl Friedrich Gauss nació el 30 de abril de 1777 en Brunswick, Ducado de Brunswick (actualmente Alemania). Siempre demostró devoción y total obediencia ante su padre, aun que no afecto; por otro lado, cuidaba con suma gentileza de su madre hasta el final de sus días (de ella).
+
+Desde su niñez dio a relucir su genio y habilidad para las matemáticas en la escuela elemental, a pesar de la pobreza de su familia. Pasaría a la posteridad el como lograría deducir de manera innata la formula para sumar los $n$ primeros naturales y entregársela al instante a su profesor. Al notar el talento de su pupilo, él pagaría de su bolsillo el mejor libro de aritmética para Gauss, con el cual el joven --y de forma \textit{independiente}-- demostraría el \textbf{binomio general de Newton}. Además, le ayudarían a entrar a un Gymnasium en 1788, donde aprendería Alto Alemán y Latín.
+
+Gracias a contactos por parte del asistente del profesor de Gauss, el joven pudo conocer al Duque de Brunswick y ganarse su respeto, para 1792 sería admitido en el Brunswick Collegium Carolinum con todos los estudios pagados. Aquí, se dominaría en los trabajos de \textbf{Euler}, \textbf{Lagrange} y, sobretodo, el \textit{Principia} de \textbf{Newton}. También se profundizaría en los estudios de la \textbf{teoría elemental de números} (inventando la notación actual para la aritmética modular), la \textbf{ley de reciprocidad cuadrática} e inclusive conjeturando el \textbf{teorema de número de primos}\footnote{La cantidad de primos menores o iguales a $n$ (para $n$ bastante grande) se asemeja a $\displaystyle\frac{n}{\ln n}$}. No obstante, Gauss aún estaría indeciso entre dedicarse por completo a las matemáticas o a la filología.
+
+En 1795 entraría en la Universidad de Göttingen, donde tomaría la decisión de dedicarse por completo a las matemáticas. En 1798 saldría de dicha universidad, sin graduarse. En 1799 regresaría a Brunswick donde obtendría su diploma y daría una disertación doctoral en la Universidad de Helmstedt sobre el \textbf{teorema fundamental del álgebra}.
+
+Un hecho que marcaría la vida del joven, sería la publicación de su obra \textit{Disquisitiones Arithmeticae} en 1801 dividida en siete secciones, todas dedicadas a la \textbf{teoría de números}, a excepción del último, que trataría su construcción a regla y compás del 17-ágono regular. Esta sería la última vez que Gauss trabajaría con matemática teórica pura.
+
+Ese mismo año, habría conmoción en el mundo de la astronomía tras lo que era el hallazgo de un ``nuevo planeta'', Ceres, y en base a las observaciones, Gauss daría sus predicciones sobre su posición que serían luego verificadas, dándole cierto reconocimiento como astrofísico. El año siguiente se le pidiría que asumiera como director del observatorio de Göttingen, pero Gauss asumiría dicho rol en 1807.
+
+En 1809 publicaría su segunda obra maestra, \textit{Theoria motus corporum coelestium in sectionibus conicis Solem ambientium} (Teoría del Movimiento de los Cuerpos Celestes en torno al Sol en Secciones Cónicas). Un trabajo enfocado al análisis práctico de las \textbf{ecuaciones diferenciales} y la \textbf{geometría analítica} a la información y registros compilados respecto a las órbitas planetarias.
+
+\begin{flushright}
+<<\textit{Son problemas cuya solución me parece de mucho mayor importancia que la de los problemas matemáticos; por ejemplo, los que se refieren a la ética, a nuestra relación con Dios, o a nuestro destino y nuestro futuro; pero su solución se halla más allá de nosotros, y completamente fuera de los límites de la ciencia}.>>\\
+<<\textit{Los descubrimientos matemáticos, como las violetas primaverales en el bosque, tienen su temporada la que ningún humano puede apurar ni retrasar.}>>
+\end{flushright}
+
+\section{Évariste Galois}
+\begin{wrapfigure}{R}{.3\textwidth}
+\includegraphics[width=.25\textwidth]{Galois.jpeg}
+\caption{}
+\end{wrapfigure}
+Évariste Galois nació el 25 de octubre de 1811 en Bourg La Reine (cerca de París), Francia. Su familia no ha mostrado señales de interés por las matemáticas, a parte de él, pero sus padres le enseñaron sobre filosofía, literatura clásica, religión y lo inculcaron a ser de carácter republicano.
+
+Él paso su infancia durante un contexto de tensión política de la que no tuvo parte afortunadamente, en el colegio tenía un buen rendimiento e inclusive un par de premios. No obstante, sería en 1927, que gracias a las clases de uno de sus profesores, se volvería completamente inmerso en las matemáticas, mostrando cierta irresponsabilidad en otras materias. Su director convencería a sus padres de dejarle estudiar de forma autónoma.
+
+Desde infante mostró arduo interés por las matemáticas más avanzadas de su tiempo y entre abril y mayo de 1929 publicaría artículos relacionados a las fracciones continuas y solución de ecuaciones que captaría la atención de \textbf{Cauchy}. No obstante, ese año sería bastante duro para el joven Galois, principalmente debido al suicidio de su padre, el cual afectaría su rendimiento en los exámenes de admisión --los que fallaría-- y su vida en general.
+
+En los próximos años, Galois demostraría tener un espíritu inquiebrantable respecto a su investigación, al escribir de temas como lo serían la teoría de funciones elípticas e integrales abelianas. Sin embargo, también entraría en un periodo de absoluta desesperación al intentar atender una revolución en el Politécnico École, tras lo cual, \textbf{Sophie Germain} describiría adecuadamente la situación de Galois con temor de que se vuelva loco. En una reunión de republicanos, Galois sacaría una daga y amenazaría contra el rey Louis-Phillipe.
+
+Tras salir de prisión luego de tal inesperado acto de violencia, volvería a ser arrestado llevando un uniforme de la Guardia Nacional de Artillería además de varias pistolas y un rifle cargado. Ebrio en su celda declararía <<\textit{¿Sabes lo que me falta, mi amigo? Te lo confío sólo a tí: es alguien a quien amar sólo en espíritu. He perdido a mi padre y nadie le ha podido reemplazar, ¿me escuchas...?}>>
+
+En marzo de 1932, los prisioneros (Galois incluido) son trasladados a la pensión Sieur Faultrier, dónde conoce a Stephanie-Felice du Motel de quién se enamora. Al parecer, su inesperado romance le ocasiona problemas induciéndolo a un duelo. Se dice que la noche anterior transcribe todos sus conocimientos de teoría de grupos (hoy bajo el nombre de \textbf{Teoría de Galois}) y al día siguiente adquiere grabes heridas producto de su enfrentamiento, lo que le dejan hospitalizado hasta su eventual muerte en el 31 de mayo de ese mismo año.
+
+\section{Emmy Noether}
+\begin{wrapfigure}{R}{.3\textwidth}
+\includegraphics[width=.25\textwidth]{Noether.jpeg}
+\caption{}
+\end{wrapfigure}
+Emmy Amalie Noether nació el 23 de marzo de 1882 en Erlangen, Bavaria, Alemania. Su padre, Max Noether, era un reconocido profesor de matemáticas en Erlangen; mientras que su madre, Ida Amalia Kaufmann, venía de una familia exitosa de Colonia, Alemania; ambos judíos. La familia por parte de su padre tenía una industria de venta al por mayor de hierro, que habían comandado por más de cien años, hasta que en 1937, el régimen Nazi les sacaría de su negocio.
+
+Emmy era la mayor entre los cuatro hijos, los otros tres eran hombres, todos estaban interesados en las matemáticas y ciencias naturales, a excepción del menor que tenía serios problemas de salud, entre ellos mentales. Emmy no demostró ser excepcional de niña, se le describe como una persona social y amigable.
+
+Durante su educación media, demostró interés en los idiomas --en particular, Inglés y Francés--, además de recibir clases de aritmética y lecciones de piano. Se dice que quería ser profesora de lenguas, no obstante, más tarde tomaría la difícil decisión de estudiar matemáticas.
+
+En un principio se le negó la completa inclusión a la Universidad de Erlangen debido a su cualidad de mujer, por lo que tuvo que pedir permisos para estar en las clases desde 1900 a 1902. Al mismo tiempo se preparaba para los exámenes de admisión que le permitieron atender a las lecturas en la \textbf{Universidad de Göttingen} donde conoció los trabajos de \textbf{Karl Schwarzschild}, \textbf{Otto Blumenthal}, \textbf{David Hilbert}, \textbf{Felix Klein} y \textbf{Hermann Minkowski}. Tras un semestre, volvió a tomar exámenes para ser por fin matriculada en la Universidad de Erlangen donde obtuvo su doctorado.
+
+Los años siguientes los paso ayudando a su padre, profundizando en sus temas de estudio bajo la influencia de \textbf{Fischer} y Hilbert, y más tarde dando lecturas en Viena.
+
+Un punto importante en la vida de Noether fue cuando Hilbert comenzó a trabajar investigando la Teoría de la Relatividad, por lo que, junto a Klein, invitaron a la señora a Göttingen en 1915, en donde formulo su famoso \textbf{teorema de Noether} sobre las cantidades conservadas debido a simetrías físicas. En vista de sus capacidades, las que serían alabadas incluso por \textbf{Einstein}; Hilbert y Klein se metieron en batallas legales para incluirla oficialmente a la institución. Mientras tanto, Noether daba lecturas en la universidad bajo el nombre de Hilbert (aparece como su ``ayudante'') y comienza a investigar en la \textbf{teoría de los anillos}.
+
+Más tarde, sus trabajos serían recopilados, junto a otros avances, por \textbf{B L van der Waerden} en sus dos volúmenes de \textit{Moderne Algebra}. También, después de 1927 colaboraría con \textbf{Helmut Hasse} y \textbf{Richard Brauer} en álgebras no-conmutativas.
+
+En 1933, los Nazis lograrían sacarla de la Universidad de Göttingen y si bien no recibió pensión, ella se consideró bastante afortunada. Tras lo cual fue invitada a enseñar en el Bryn Mawr College en EEUU, ella acepto el viaje en octubre de ese año, dando lecturas semanales sobre la matemática en el libro de van der Waerden. También en febrero de 1934 estuvo dando lecturas en el Instituto de Estudios Avanzados de Princeton, el verano de ese año viajó a Alemania a ver a su hermano por última vez y más tarde volvería a EEUU para extender un año su oficio como profesora.
+
+Sin embargo, en 1935 y de manera muy repentina e inoportuna, se le encontró un tumor con el que pocos días después fallece, la fecha del 14 de abril.
+
+\printindex
+\printnomenclature
+
+\nocite{*}
+\printbibliography[heading=bibintoc]
+
+\end{document}
