@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
 \usepackage{xcolor, multicol, multirow, longtable, graphicx}
-\usepackage{amsmath, amssymb, mathrsfs}
+\usepackage{amsmath, amssymb, amsthm}
 \usepackage{tikz}
 \usetikzlibrary{babel, cd}
 
@@ -22,6 +22,10 @@
 \definecolor{sample}{HTML}{00c89c}
 \DeclareMathOperator{\mcd}{mcd}
 \DeclareMathOperator*{\dom}{dom}
+\newtheorem{thm}{Teorema}
+\newtheorem{mydef}{Definición}[section]
+\newtheorem{cor}[mydef]{Corolario}
+\newtheorem*{note}{Observación}
 
 \usepackage{textcomp}
 \newenvironment{demo}[1][$\bullet$]{#1 {\scshape Demostración:} }{\par\noindent}
@@ -574,6 +578,7 @@ Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo,
 Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \href{https://www.ctan.org/tex-archive/info/lshort/spanish}{La introducción no-tan-corta a \LaTeXe{}} y \href{https://www.academia.edu/35478409/Edici%C3%B3n_de_Textos_Cient%C3%ADficos_con_LaTeX_Composici%C3%B3n_Gr%C3%A1ficos_Inkscape_y_Presentaciones_Beamer}{el libro de Alexánder Borbón y Walter Mora} que es muy completo y recomendado.
 
 \section{Escribir matemáticas}
+\label{sec:maths}
 \subsection{Básico}
 \LaTeX{} admite dos formas de denotar matemáticas, en modo \textit{entre líneas} y modo \textit{display}. El primero se escribe así \lstinline|$1+1=2$| $1+1=2$, mientras que el segundo se escribe así:
 \begin{lstlisting}
@@ -902,6 +907,46 @@ Por defecto, el entorno no posee delimitadores, pero existen variaciones de él 
 		\hline \hline
 	\end{tabular}
 \end{center}
+
+\textbf{Teoremas.} Los teoremas en \LaTeX{} se importan con el paquete \texttt{amsthm}, funcionan como entornos que se numeran automáticamente y poseen otras cualidades, se definen en la cabecera así:
+\begin{lstlisting}
+\newtheorem{thm}{Teorema}
+---------------------------------------------------
+\begin{thm}
+	La suma en $\mathbb{R}$ conmuta.
+\end{thm}
+\end{lstlisting}
+\begin{thm}
+	La suma en $\mathbb{R}$ conmuta.
+\end{thm}
+En este caso el teorema se enumeró sólo, podemos desactivar la numeración con \lstinline|\newtheorem*|. También el teorema partió desde el 1, pero podría haber iniciado ``\ref{sec:maths}.1'' donde el \ref{sec:maths} es el número de sección, o podría usar el número del capítulo en un libro, para ello le agregamos al final un campo opcional diciendo \texttt{section} o \texttt{chapter} lo que indica que la numeración se da en dicho formato. Algo interesante es que varios teoremas pueden compartir la misma numeración:
+\begin{lstlisting}
+\newtheorem{mydef}{Definición}[section]
+\newtheorem{cor}[mydef]{Corolario}
+\newtheorem*{note}{Observación}
+---------------------------------------------------
+\begin{mydef}[Hipotenusa y catetos]
+	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
+\end{mydef}
+\begin{note}
+	Creo que recuerdo un teorema acerca de eso...
+\end{note}
+\begin{cor}
+	La hipotenusa es mayor que los catetos.
+\end{cor}
+\end{lstlisting}
+\begin{mydef}[Hipotenusa y catetos]
+	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
+\end{mydef}
+\begin{note}
+	Creo que recuerdo un teorema acerca de eso...
+\end{note}
+\begin{cor}
+	La hipotenusa es mayor que los catetos.
+\end{cor}
+\textbf{¡Precaución!} El paquete ya introduce un entorno para definiciones, así que no puede definir otro teorema también de tag \texttt{def}, por eso se usa \texttt{mydef}.
+
+Por último cabe mencionar que los teoremas también permiten el uso de referencias cruzadas.
 
 \subsection{Diagramas (básico)}
 \textbf{¿Por qué?} Habiendo programas como GeoGebra, Photoshop y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código? La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
