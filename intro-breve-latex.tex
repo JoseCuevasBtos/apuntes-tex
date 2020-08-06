@@ -5,14 +5,23 @@
 \usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
 \usepackage{xcolor, multicol, multirow, longtable, graphicx}
 \usepackage{amsmath, amssymb, mathrsfs}
+\usepackage{tikz}
+\usetikzlibrary{babel, cd}
 
+\usepackage{pgfplots}
+\pgfplotsset{
+	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
+}
+
+% Colores extra para el documento
 \definecolor{newblue}{HTML}{4b80b7}
+\definecolor{newgreen}{HTML}{69be28}
+\definecolor{newred}{HTML}{ce1a1a}
 
 % Comandos definidos en los ejemplos
 \definecolor{sample}{HTML}{00c89c}
 \DeclareMathOperator{\mcd}{mcd}
 \DeclareMathOperator*{\dom}{dom}
-\newcommand{\licencia}[2][2020]{Éste documento está bajo la licencia #2 (#1).}
 
 \usepackage{textcomp}
 \newenvironment{demo}[1][$\bullet$]{#1 {\scshape Demostración:} }{\par\noindent}
@@ -31,10 +40,11 @@
 	                  \textcolor, \colorbox},
 	keywordstyle    = \color{newblue},
 	showspaces      = false,
+	tabsize         = 4,
 	classoffset     = 1,
 	morekeywords    = {\nexists, \varnothing, \complement, \beth, \gimel, \square, \blacksquare, \dfrac, \tfrac, \binom,
 			  \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref,
-			  \operatorname, \text},
+			  \operatorname, \text, \addplot, \addlegendentry},
 	keywordstyle    = \color{violet},
 	classoffset     = 0,
 	literate        = {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
@@ -52,6 +62,11 @@
 
 \maketitle
 \tableofcontents
+
+\section{Introducción}
+Este texto pretende ser introductorio y en general sólo abarca cosas que creo que un lector cualquiera podría necesitar a la hora de usar \LaTeX{}. Por su naturaleza, sólo se roza la superficie de lo que es posible en este lenguaje, si lo que busca es una documentación más detallada revise el párrafo de \textbf{Más allá...} al final de la sección~\S\ref{sec:setup}.
+
+Respecto de la instalación de \LaTeX{}, para ello están los compiladores de Mik\TeX{} en Windows, Mac\TeX{} en Mac OS y \TeX{}Live en Linux. Los editores recomendados son \TeX{}Maker y \href{https://www.overleaf.com/}{\sffamily\color{newgreen}overleaf} (en línea). Para usuarios de Vim, recomiendo usar el plugin \href{https://github.com/lervag/vimtex}{\ttfamily vimtex}.
 
 \section{Haciendo un documento básico desde cero}
 En primera vamos a ver la estructura y características generales de \LaTeX{}. A diferencia de MS Word, \LaTeX{} no es un generador WYSIWYG\footnote{en. \textit{what you see is what you get}; lo que ves es lo que obtienes.}, sino que se escribe mediante texto en un archivo de texto y un lenguaje de marcado. No os confundas, \LaTeX{} \textbf{no} es un lenguaje de programación, y no se parece a uno, sino que es como escribir texto común con comandos entre medio.
@@ -405,7 +420,7 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 	\centering
 	\begin{tabular}{|l|lcc|}
 		\cline{2-4}
-		\multicolumn{1}{c|}{}     & País   & Contagios totales & Nuevos contagios \\
+		\multicolumn{1}{c|}{}    & País   & Contagios totales & Nuevos contagios \\
 		\hline
 		\multirow{2}{*}{América} & EEUU   & 4,851,407         & +38,379 \\
 		\cline{2-4}
@@ -418,7 +433,7 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 	\centering
 	\begin{tabular}{|l|lcc|}
 		\cline{2-4}
-		\multicolumn{1}{c|}{}     & País   & Contagios totales & Nuevos contagios \\
+		\multicolumn{1}{c|}{}    & País   & Contagios totales & Nuevos contagios \\
 		\hline
 		\multirow{2}{*}{América} & EEUU   & 4,851,407         & +38,379 \\
 		\cline{2-4}
@@ -426,9 +441,10 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 		\hline
 	\end{tabular}
 \end{table}
-\textbf{Tablas entre páginas.} Por defecto \LaTeX{} no rompe una tabla entre páginas, sin importar cuan larga sea, para poder usar un \textit{tabla larga}
+\textbf{Tablas entre páginas.} Por defecto \LaTeX{} no rompe una tabla entre páginas, sin importar cuan larga sea, para poder usar un \textit{tabla larga} se debe importar el paquete \texttt{longtable} que provee el entorno homónimo que funciona exactamente igual que \texttt{tabular}.
 
-\subsection{Bibliografías}
+\subsection{Bibliografías, referencias cruzadas e índices}
+\label{sec:crossref}
 \LaTeX{} es bastante popular por su forma de tratar bibliografías, por lo cual vamos a enseñar como: En primer lugar, todas las referencias bibliográficas se guardan en otro archivo externo de extensión \texttt{.bib}. Para incluir una bibliografía debemos añadir el siguiente comando:
 \begin{lstlisting}
 \usepackage[backend=biber]{biblatex}
@@ -467,7 +483,31 @@ Dentro de la definición de libros en Bib\TeX{} se añade la categoría \texttt{
 \end{lstlisting}
 Imprimirá sólo dichos artículos. Para el problema de las sub-bibliografías añada la opción de \texttt{subbibintoc}. Y para cambiarle el nombre puede usar la opción, \lstinline|heading={¬mi título¬}|.
 
+\textbf{Referencias cruzadas.} Una de las ventajas de \LaTeX{} es que como genera automáticamente la numeración para las secciones, figuras y ecuaciones, se pueden referenciar de forma bastante sencilla, junto a uno de esos entornos se agrega el comando \lstinline|\label{¬etiqueta¬}| y luego se llama con \lstinline|\ref{¬etiqueta¬}| (puede requerir una compilación doble para funcionar adecuadamente), e.g:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\subsection{Bibliografías, referencias cruzadas e índices}
+\label{sec:crossref}
+---------------------------------------------------
+...similar a lo dicho en la sección \ref{sec:crossref}.
+\end{lstlisting}
+...similar a lo dicho en la sección \ref{sec:crossref}.
+
+La parte de \texttt{sec:} es una costumbre decorativa, así como se suele usar \texttt{eq:} como prefijo para las ecuaciones, \texttt{fig:} para las figuras, etc. No es necesaria pero puede servir para ordenarse en el código fuente.
+
+\textbf{Tablas de contenidos.} La tabla de contenidos no puede ser más fácil de implementar, sólo basta con el comando:
+\begin{lstlisting}
+\tableofcontents
+\end{lstlisting}
+Además se pueden usar \lstinline|\listoftables| y \lstinline|\listoffigures| para imprimir índices de las tablas y las figuras del documento (sólo ocupa las entradas  con descripciones, puedes hacer descripciones vacías para que esten numeradas).
+
+\textbf{Hipervínculos.} Si ha descargado este documento notará que puede \textit{hacer click} en la referencia cruzada anterior que lo lleva a la página de inicio de la sección, lo mismo ocurre con todas las entradas de la tabla de contenidos y con los enlaces web, para ello es tan sencillo como agregar el siguiente paquete:
+\begin{lstlisting}
+\usepackage{hyperref}
+\end{lstlisting}
+Para añadir las entradas de las secciones al índice del pdf, agrega las opciones \texttt{bookmarks=true} y \texttt{bookmarksnumbered=true}. Aquí puedes añadir urls con el comando \lstinline|\url{¬url¬}| y \lstinline|\href{¬url¬}{¬texto¬}|; y referencias cruzadas extra con \lstinline|\hyperref{¬etiqueta¬}{¬texto¬}|.
+
 \subsection{Configurar mi documento}
+\label{sec:setup}
 Esta sección es opcional, pero se recomienda bastante para mejorar su experiencia y efeciencia con \LaTeX{}:
 
 \textbf{(Re) definir comandos.} Además de los comandos actuales, se pueden definir nuevos con \lstinline|\newcommand|, este va seguido del nombre del comando y luego del uso, e.g:
@@ -476,7 +516,10 @@ Esta sección es opcional, pero se recomienda bastante para mejorar su experienc
 ---------------------------------------------------
 \licencia
 \end{lstlisting}
-\licencia{xyz}
+\begingroup
+\newcommand{\licencia}{Éste documento está bajo la licencia xyz (2020).}
+\licencia
+\endgroup
 
 Si quiere añadirle opciones al comando entonces debe poner un campo opcional con el número de opciones y luego referirse a ellas dentro de la definición como \lstinline|#1|, \lstinline|#2| y así:
 \begin{lstlisting}
@@ -484,7 +527,10 @@ Si quiere añadirle opciones al comando entonces debe poner un campo opcional co
 ---------------------------------------------------
 \licencia{2019}{uvw}
 \end{lstlisting}
-\licencia[2019]{uvw}
+\begingroup
+\newcommand{\licencia}[2]{Éste documento está bajo la licencia #2 (#1).}
+\licencia{2019}{uvw}
+\endgroup
 
 Además también puedes pasar argumentos opcionales, que toman el lugar del primer argumento si están dados y cuyo valor por defecto queda definido en el segundo campo opcional:
 \begin{lstlisting}
@@ -493,8 +539,11 @@ Además también puedes pasar argumentos opcionales, que toman el lugar del prim
 \licencia{abc}\\
 \licencia[1995]{def}
 \end{lstlisting}
+\begingroup
+\newcommand{\licencia}[2][2020]{Éste documento está bajo la licencia #2 (#1).}
 \licencia{abc}\\
 \licencia[1995]{def}
+\endgroup
 
 Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo, para poder hacerlo debes usar \lstinline|\renewcommand|, que funciona exactamente igual. Éste último también tira error si se trata de redefinir un comando que no ha sido definido antes.
 
@@ -519,6 +568,10 @@ Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo,
 \begin{lstlisting}
 \input{template.tex}
 \end{lstlisting}
+
+\textbf{Más allá...} Si quiere saber más información acerca de \LaTeX{} le recomiendo, con absoluta seriedad, \textbf{leer los manuales} de los paquetes aquí mencionados, en ellos se suele documentar de buena manera como usarlos y configurarlos de maneras más avanzadas que he omitido para acotar un texto que ya es bastante largo. Además varia de la información la saqué de \href{https://www.overleaf.com/learn/latex/Main_Page}{\ttfamily\color{newgreen}overleaf}, \href{https://en.wikibooks.org/wiki/LaTeX}{\ttfamily\color{newblue}wikibooks} y de preguntas en el foro de \href{https://tex.stackexchange.com/}{\ttfamily\color{newred}stack exchange}.
+
+Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \href{https://www.ctan.org/tex-archive/info/lshort/spanish}{La introducción no-tan-corta a \LaTeXe{}} y \href{https://www.academia.edu/35478409/Edici%C3%B3n_de_Textos_Cient%C3%ADficos_con_LaTeX_Composici%C3%B3n_Gr%C3%A1ficos_Inkscape_y_Presentaciones_Beamer}{el libro de Alexánder Borbón y Walter Mora} que es muy completo y recomendado.
 
 \section{Escribir matemáticas}
 \subsection{Básico}
@@ -719,7 +772,7 @@ Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 		\lstinline|\mathbb|   & $\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
 		\lstinline|\mathcal|  & $\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
 		\lstinline|\mathfrak| & $\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathfrak{abcdefghijklmnopqrstuvwxyz}$ $\mathfrak{1234567890}$ \\
-		\lstinline|\mathscr|  & $\mathscr{ABCDEFGHIJKLM}$ $\mathscr{NOPQRSTUVWXYZ}$ \\
+		% \lstinline|\mathscr|  & $\mathscr{ABCDEFGHIJKLM}$ $\mathscr{NOPQRSTUVWXYZ}$ \\
 		\hline \hline
 	\end{longtable}
 \end{center}
@@ -731,7 +784,7 @@ Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstin
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \end{lstlisting}
-\textbf{Texto en ecuaciones.} Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$| generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g. \lstinline|$x=2, \text{ mientras que } y=3$| $x=2, \text{ mientras que } y=3$. Esto es más útil en ecuaciones en modo \textit{display}.
+\textbf{Texto en ecuaciones.} Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$| generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g. \lstinline|$x=2,\text{ mientras que }y=3$| $x=2,\text{ mientras que }y=3$. Esto es más útil en ecuaciones en modo \textit{display}.
 
 \subsection{Ecuaciones numeradas, alineadas, matrices y más}
 \textbf{Ecuaciones numeradas.} Hasta ahora nuestras ecuaciones no están numeradas, ni poseen un número para añadirlas, para hacerlo debes usar el entorno \texttt{equation}. Dentro de él se permiten el uso de referencias cruzadas, respecto a esto se recomienda usar \lstinline|\eqref| en lugar de \lstinline|\ref| por estética, aunque sus usos son iguales, e.g:
@@ -840,46 +893,221 @@ $$ \mathbf{Id} :=
 		0 & 1
 	\end{matrix} \right] $$
 Por defecto, el entorno no posee delimitadores, pero existen variaciones de él que sí:
-\begingroup
 \begin{center}
 	\begin{tabular}{lc|lc}
 		\hline \hline
-		\texttt{matrix}  & {$\begin{matrix} 1  & 0 \\ 0 & 1 \end{matrix}$}  & \texttt{pmatrix} & {$\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$} \\[1.2em]
+		\texttt{matrix}  & {$\begin{matrix}  1 & 0 \\ 0 & 1 \end{matrix}$}  & \texttt{pmatrix} & {$\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$} \\[1.2em]
 		\texttt{bmatrix} & {$\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$} & \texttt{Bmatrix} & {$\begin{Bmatrix} 1 & 0 \\ 0 & 1 \end{Bmatrix}$} \\[1.2em]
 		\texttt{vmatrix} & {$\begin{vmatrix} 1 & 0 \\ 0 & 1 \end{vmatrix}$} & \texttt{Vmatrix} & {$\begin{Vmatrix} 1 & 0 \\ 0 & 1 \end{Vmatrix}$} \\
 		\hline \hline
 	\end{tabular}
 \end{center}
-\endgroup
 
-%\appendix
-%\section{Instalación, compilación y otros}
-%Esencialmente \LaTeX{} es el lenguaje, y se puede escribir desde cualquier máquina sin complicaciones, lo que se suele descargar es un compilador que transforme nuestro texto en un pdf. En Windows el compilador es Mik\TeX{}, se recomienda descargar la versión completa (el grado de complitud en \LaTeX{} incluye más o menos paquetes, más es mejor pues instalar paquetes post-instalación puede ser tedioso), para esto el instalador debe realizar por separado las operaciones de descargar e instalar los componentes.
-%En GNU/Linux es más sencillo y sólo se debe escribir lo siguiente en la terminal:
-%\begin{lstlisting}[language=sh, morekeywords={apt, dnf, pacman, zypper}, classoffset=1, morekeywords={sudo}, keywordstyle=\color{violet}, classoffset=0]
-%Ubuntu/Debian:
-%$ sudo apt-get install texlive
-%Fedora:
-%$ dnf install texlive
-%Arch:
-%$ sudo pacman -S texlive-most
-%\end{lstlisting}
-%Para compilar luego un archivo debería ser tan fácil como:
-%\begin{lstlisting}[morekeywords={pdflatex}]
-%$ pdflatex ¬ejemplo¬.tex
-%\end{lstlisting}
-%También puedes añadir la opción \lstinline|-interaction nonstopmode| para que el programa siga compilando incluso si ha pillado un error, y añadir un \lstinline|>/dev/null| al final para evitar completamente cualquier tipo de output. Para poder simplificar todavía más el proceso de compilación en \LaTeX{}, hay un paquete en GNU/Linux de nombre \texttt{rubber} que identifica como ejecutar correcta y recursivamente los comandos de un archivo. Para ello solo basta escribir:
-%\begin{lstlisting}[morekeywords={rubber}]
-%$ rubber --pdf -s ¬ejemplo¬.tex
-%\end{lstlisting}
-%Con ello puede hacer un sencillo archivo \texttt{make} que diga así:
-%\begin{lstlisting}[language={[gnu]make}]
-%%.pdf: %.tex
-%	rubber -f --pdf -s $<
+\subsection{Diagramas (básico)}
+\textbf{¿Por qué?} Habiendo programas como GeoGebra, Photoshop y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código? La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
+Las imágenes en \LaTeX{} comparten esa misma cualidad y en ciertos casos, su facilidad de uso es comparable a la de un editor gráfico, y si no, hay editores que permiten exportar sus diagramas a \LaTeX{} (GeoGebra exporta a Ti$k$Z). Sin contar el que reduce el espacio utilizado en el archivo final y que puede resultar satisfactorio poder hacer figuras sin salir de \LaTeX{}.
 
-%clean:
-%	rm -rf *.aux *.tex.bak *.bbl *.blg *.bcf *.log *.toc *.snm *.out *.nav *.run.xml
-%\end{lstlisting}
-%De forma que compilar el archivo \texttt{sample.tex} se vuelve tan simple como \lstinline|$ make sample.pdf| y luego \lstinline|$ make clean|.
+\textbf{Diagramas conmutativos.} Creo que la manera más fácil de hacerlos es mediante una librería de Ti$k$Z, que es un muy potente y recomendado paquete para el dibujo de diagramas nativos en \LaTeX{}. Así que añadimos:
+\begin{lstlisting}
+\usepackage{tikz}
+\end{lstlisting}
+En ciertos casos usar \texttt{babel} y Ti$k$Z puede generar errores, para resolverlos basta añadir la librería homónima y para hacer diagramas conmutativos usaremos la librería \texttt{cd} así que en una sóla línea es:
+\begin{lstlisting}
+\usetikzlibrary{babel, cd}
+\end{lstlisting}
+Éste provee el entorno \texttt{tikzcd} que admite argumentos opcionales. En él, los símbolos se muestran automáticamente en modo matemático y se ordenan en forma de tabla con celdas (separados por \texttt{\&}). Para dibujar flechas se usa el comando \lstinline|\arrow| o \lstinline|\ar| para acortar. Toda la información va en un campo opcionar, comenzando por la dirección de la flecha (\texttt{l} izquierda, \texttt{r} derecha, \texttt{u} arriba, \texttt{d} abajo), luego una coma y entre comillas el contenido de la flecha.
+
+Entre las comas, puedes poner el color de la flecha si así se quiere. Si las comillas terminan en un apostrofe entonces el contenido saldrá al otro lado de lo esperado y si se utiliza la opción \texttt{description} entonces aparece en el medio.
+\begin{lstlisting}
+\begin{tikzcd}
+	A \ar[r, "f"] \ar[rd, "f\circ g"'] & B \ar[d, "g"]\\
+	                                   & C
+\end{tikzcd}
+\end{lstlisting}
+\begin{center}
+	\begin{tikzcd}
+		A \ar[r, "f"] \ar[rd, "f\circ g"'] & B \ar[d, "g"]\\
+		                                   & C
+	\end{tikzcd}
+\end{center}
+Además se pueden abreviar los movimientos anteponiendo el movimiento en el nombre del comando, e.g., \lstinline|\rar| reemplaza a \lstinline|\ar[r]|. En caso de los movimientos diagonales, la componente vertical va primero, e.g., \lstinline|\rdar| no se admite, pero \lstinline|\drar| sí. No obstante movimientos más complicados deben ser declarados: no existe \lstinline|\rrar|, ni \lstinline|\ddlar| por ejemplo.
+
+Para cambiar la separación de columnas y filas están las opciones de \texttt{col sep} y \texttt{row sep} respectivamente que pueden igualar a uno de los siguientes tamaños (de menor a mayor):
+\begin{center}
+	\ttfamily tiny, small, scriptsize, normal, large, huge.
+\end{center}
+Y los tipos de flechas son:
+\begin{center}
+	\begin{tabular}{ll|ll}
+		\hline \hline
+		\texttt{to head}    & \begin{tikzcd}\rar[to head]&{}\end{tikzcd} & \texttt{Rightarrow} & \begin{tikzcd}\rar[Rightarrow]&{}\end{tikzcd} \\
+		\texttt{maps to}    & \begin{tikzcd}\rar[maps to]&{}\end{tikzcd} & \texttt{Mapsto}     & \begin{tikzcd}\rar[Mapsto]&{}\end{tikzcd} \\
+		\texttt{hook}       & \begin{tikzcd}\rar[hook]&{}\end{tikzcd}    & \texttt{hook'}      & \begin{tikzcd}\rar[hook']&{}\end{tikzcd} \\
+		\texttt{tail}       & \begin{tikzcd}\rar[tail]&{}\end{tikzcd}    & \texttt{two heads}  & \begin{tikzcd}\rar[two heads]&{}\end{tikzcd} \\
+		\texttt{dashed}     & \begin{tikzcd}\rar[dashed]&{}\end{tikzcd}  & \texttt{squiggly}   & \begin{tikzcd}\rar[squiggly]&{}\end{tikzcd} \\
+		\texttt{harpoon}    & \begin{tikzcd}\rar[harpoon]&{}\end{tikzcd} & \texttt{harpoon'}   & \begin{tikzcd}\rar[harpoon']&{}\end{tikzcd} \\
+		\hline \hline
+	\end{tabular}
+\end{center}
+Un programa muy útil para hacer diagramas conmutativos y que genera el código para copiar y pegar es \url{https://tikzcd.yichuanshen.de/}.
+
+\textbf{Gráficos de funciones.} Para esto se requiere el paquete \textsc{pgfplots}, el cual está lleno de opciones y posibles configuraciones, pero a la hora de ser aplicado es simple y elegante:
+\begin{lstlisting}
+\begin{tikzpicture}
+\begin{axis}[
+		width   = 8cm,
+		title   = {Cuadrática vs cúbica},
+		xlabel  = {$x$},
+		ylabel  = {$y$},
+		samples = 100]
+	\addplot[red, very thick, domain=-10:10]{x^2 - 3*x + 1};
+	\addlegendentry{$f(x)$}
+	\addplot[blue, dashed, domain=-10:10]{x^3 - 2*x^2 + 3};
+	\addlegendentry{$g(x)$}
+\end{axis}
+\end{tikzpicture}
+\end{lstlisting}
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				width   = 8cm,
+				title   = {Cuadrática vs cúbica},
+				xlabel  = {$x$},
+				ylabel  = {$y$},
+				samples = 100
+			]
+			\addplot[red, very thick, domain=-10:10]{x^2 - 3*x + 1};
+			\addlegendentry{$f(x)$}
+			\addplot[blue, dashed, domain=-10:10]{x^3 - 2*x^2 + 3};
+			\addlegendentry{$g(x)$}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+Aquí, \texttt{width} determina el tamaño del gráfico (sin contar aquel espacio extra que ocupen los números, las etiquetas de los ejes y el título del gráfico). \texttt{samples} determina cuantos puntos de ejemplo tomar (más es mejor, pero puede retrasar la compilación, 100 es recomendable). El comando \lstinline|\addplot| añade un gráfico y en las opciones vimos que el dominio se determina por \lstinline|domain=¬i:f¬|. Además añadimos entradas por \lstinline|\addlegendentry|.
+
+Para cambiar el grosor de cada gráfico se ocupan las siguientes opciones: \texttt{very thin}, \texttt{thin}, \texttt{thick} y \texttt{very thick}. Además se puede usar la opción \texttt{dashed} para que sea discontinua, \texttt{dotted} para que sea punteada. 
+
+Algo que hay que notar inmediatamente es que hay opciones para el entorno y para cada gráfico individualmente, las del entorno les diremos \textit{globales}, mientras que las de cada gráfico son \textit{locales}. Opciones globales son las etiquetas, título y otras: por ejemplo, podemos ver que el gráfico es más largo que el dominio y rango de las funciones, esto se hace mediante la opción global \texttt{enlargelimits}, si no se quiere déjela en 0. Podemos configurar el tamaño en el eje $x$ y $y$ de forma manual con \texttt{xmin, xmax, ymin, ymax}. Los números en los ejes se dicen \textit{ticks} y también son configurables, los numerados son los \textit{ticks mayores} y los otros los \textit{menores}; se pueden configurar con la opción global \texttt{minor tick x/y num} y \texttt{x/ytick distance}. Puedes agregar también el grid con \texttt{grid=minor/major/both/none}, y cambiar las líneas de los ejes con \texttt{axis lines=box/left/middle/center/right/none}.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\newcommand{\PI}{3.141592}
+\begin{axis}[
+		width = 10cm,
+		title = {Funciones trigonométricas},
+		enlargelimits = 0,
+		ymin = -1.5, ymax = 1.5,
+		axis lines = middle,
+		grid = both,
+		xtick distance = {\PI},
+		ytick distance = 1,
+		minor x tick num = 3,
+		minor y tick num = 3,
+		domain = -2*\PI:2*\PI,
+		xticklabels = {
+			\empty,
+			$-2\pi$,
+			$-\pi$,
+			\empty,
+			$\pi$,
+			$2\pi$},
+		samples = 100
+	]
+	\addplot[red,  thick]{sin(deg(x))};
+	\addlegendentry{$\sin x$}
+	\addplot[blue, thick]{cos(deg(x))};
+	\addlegendentry{$\cos x$}
+\end{axis}
+\end{lstlisting}
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\newcommand{\PI}{3.141592}
+		\begin{axis}[
+				width = 10cm,
+				title = {Funciones trigonométricas},
+				enlargelimits = 0,
+				ymin = -1.5, ymax = 1.5,
+				axis lines = middle,
+				grid = both,
+				ytick distance = 1,
+				minor y tick num = 3,
+				xtick distance = {\PI},
+				minor x tick num = 3,
+				xticklabels = {
+					\empty,
+					$-2\pi$,
+					$-\pi$,
+					\empty,
+					$\pi$,
+					$2\pi$},
+				samples = 100
+			]
+			\addplot[red,  thick, domain=-2*\PI:2*\PI]{sin(deg(x))};
+			\addlegendentry{$\sin x$}
+			\addplot[blue, thick, domain=-2*\PI:2*\PI]{cos(deg(x))};
+			\addlegendentry{$\cos x$}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+Otra razón para usar \textsc{pgfplots} es que admite gráficos en 3d y funciona de manera muy similar:
+\begin{lstlisting}
+\begin{axis}[
+		width=8cm, samples=25,
+		domain=-6:6, domain y=-6:6,
+		colorbar, colormap/viridis
+	]
+	\addplot3[surf]{exp(-(x^2 + y^2)/25) * cos(deg(sqrt(x^2 + y^2)))};
+\end{axis}
+\end{lstlisting}
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				width=8cm, samples=25,
+				domain=-6:6, domain y=-6:6,
+				colorbar, colormap/viridis
+			]
+			\addplot3[surf]{exp(-(x^2 + y^2)/25) * cos(deg(sqrt(x^2 + y^2)))};
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+Aquí, \texttt{surf} es un tipo de gráfico, otro tipo es \texttt{mesh} que sólo dibuja las líneas. \texttt{colormap/viridis} determina el mapa de colores del gráfico (también hay \texttt{hot}, \texttt{cool}, \texttt{violet}, \texttt{jet} y otros). Puedes definir tu propio mapa de colores con ésta línea en la cabecera:
+\begin{lstlisting}
+\pgfplotsset{
+	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
+}
+--------------------------------------------------------
+\begin{axis}[
+		width = 6cm, hide axis, domain=-3.14:3.14,
+		colormap/ice, samples = 50
+	]
+	\addplot[mesh, very thick]{sin(deg(x))};
+\end{axis}
+\end{lstlisting}
+\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				width = 6cm, hide axis,
+				colormap/ice, samples = 50
+			]
+			\addplot[mesh, very thick, domain=-3.14:3.14]{sin(deg(x))};
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+Los colores del mapa anterior vienen de \url{https://www.color-hex.com/color-palette/96010}, así que corrobora que concuerdan.
+
+En gráficos 3d también puedes usar \lstinline|view={¬theta¬}{¬phi¬}| donde \textit{theta} y \textit{phi} representan ángulos para la perspectiva del gráfico. Puede encontrar más ejemplos con más opciones aquí: \url{http://pgfplots.net/tikz/examples/all/}.
+
+\subsection{Consideraciones finales}
+Se recomienda chequear los manuales de \href{http://mirrors.ctan.org/graphics/pgf/base/doc/pgfmanual.pdf}{Ti$k$Z} y \href{https://ctan.dcc.uchile.cl/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\textsc{pgfplots}} para buscar más información sobre como usarlos de manera avanzada, estoy consciente de que son manuales muy largos, pero la verdad es que entenderás bien la dinámica básica en el primer o el segundo capítulo donde todo está bien ilustrado y documentado. El resto de páginas es para ver cosas más avanzadas. Además existe un papel introductorio a Ti$k$Z muy completo: \url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
+
+Además, como puede presumir, hay un montón de paquetes y contenido que no se trató en este trabajo, y lo más probable es que si quiere una herramienta específica para su área de investigación, entonces existe un paquete que simplifica su implementación, por ejemplo sé que hay librerías para facilitar el diseño de circuitos eléctricos y diagramas de Feynman.
+
+Las partes que poseen código en el documento fueron hechas con el paquete de \href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{\ttfamily listings}, el resto ocupa puras cosas que este documento ya enseña, revisa \href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{\textcolor{newblue}{aquí} el código fuente} para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin lugar a dudas una de las mejores herramientas para los matemáticos y físicos hoy en día.
 
 \end{document}
