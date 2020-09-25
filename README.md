@@ -6,7 +6,7 @@ Para poder leer a través de ellos debe tener ciertas consideraciones:
   - Los textos se dividen en dos: libros y guías. Los libros son más grandes y tienen un cierto orden. Las guías no tienen orden y son relativamente cortas.
   - Todo mi contenido está en español y está escrito en LaTeX puro.
   - Ocupo esta página para actualizar mis libros, estando completos o no,
-  por ende el material aquí se puede considerar "inestable", pues podría (y lo voy) reescribirlo con el tiempo.
+  por ende el material aquí se puede considerar "inestable", pues podría (y lo voy) reescribiendo con el tiempo.
 
 ## Orden de lectura
 Me gustan las matemáticas formales y por ende todos los libros tienen cierta base axiomática explicada.
