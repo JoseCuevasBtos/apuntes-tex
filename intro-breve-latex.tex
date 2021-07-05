@@ -1,13 +1,13 @@
-\documentclass[11pt]{article}
+\documentclass[11pt, oneside]{book}
 
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
 \usepackage{xcolor, multicol, multirow, longtable, graphicx}
 \usepackage{amsmath, amssymb, amsthm}
+
 \usepackage{tikz}
 \usetikzlibrary{babel, cd}
-
 \usepackage{pgfplots}
 \pgfplotsset{
 	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
@@ -67,15 +67,23 @@
 \maketitle
 \tableofcontents
 
-\section{Introducción}
+\chapter{Introducción}
 Este texto pretende ser introductorio y en general sólo abarca cosas que creo que un lector cualquiera podría necesitar a la hora de usar \LaTeX{}. Por su naturaleza, sólo se roza la superficie de lo que es posible en este lenguaje, si lo que busca es una documentación más detallada revise el párrafo de \textbf{Más allá...} al final de la sección~\S\ref{sec:setup}.
 
 Respecto de la instalación de \LaTeX{}, para ello están los compiladores de Mik\TeX{} en Windows, Mac\TeX{} en Mac OS y \TeX{}Live en Linux. Los editores recomendados son \TeX{}Maker y \href{https://www.overleaf.com/}{\sffamily\color{newgreen}overleaf} (en línea). Para usuarios de Vim, recomiendo usar el plugin \href{https://github.com/lervag/vimtex}{\ttfamily vimtex}.
 
-\section{Haciendo un documento básico desde cero}
+\section*{Historial de versiones}
+Fechas en formato \textsc{dd-mm-aa}. 
+\begin{description}
+	\item[06-08-20] Publicación original como artículo.
+	\item[20-10-20] Corrección de errores ortográficos.
+	\item[26-06-21] Actualización a formato libro.
+\end{description}
+
+\chapter{Haciendo un documento básico desde cero}
 En primera vamos a ver la estructura y características generales de \LaTeX{}. A diferencia de MS Word, \LaTeX{} no es un generador WYSIWYG\footnote{en. \textit{what you see is what you get}; lo que ves es lo que obtienes.}, sino que se escribe mediante texto en un archivo de texto y un lenguaje de marcado. No os confundas, \LaTeX{} \textbf{no} es un lenguaje de programación, y no se parece a uno, sino que es como escribir texto común con comandos entre medio.
 
-\subsection{``Hola mundo''}
+\section{``Hola mundo''}
 Los comandos suelen tener esta estructura \lstinline|\comando{¬opciones¬}| donde la información obligatoria para el comando suele ir entre llaves \texttt{\{\}} a los que llamaremos \textit{campos obligatorios}, mientras que la información opcional suele ir entre corchetes \texttt{[]}. Todo documento comienza así:
 \begin{lstlisting}
 \documentclass[¬opciones¬]{¬tipo de documento¬}
@@ -110,8 +118,8 @@ Nótese que en la fecha utilice el comando \lstinline|\today|, este lee la fecha
 
 \textbf{Secciones.} Todo texto suele dividirse en secciones. \LaTeX{} también, y además las enumera automáticamente. En un artículo la mayor división es una sección, luego una subsección y luego una sub-subsección:
 \begin{lstlisting}
-\section{Esta es mi sección}
-\subsection{Esta mi subsección}
+\chapter{Esta es mi sección}
+\section{Esta mi subsección}
 \subsubsection{Esta mi sub-subsección}
 \end{lstlisting}
 Un libro también admite todos los comandos anteriores, pero la mayor distinción es un capítulo \lstinline|\chapter{...}| y se pueden agrupar los capítulos en partes \lstinline|\part{...}|, donde las últimas se enumeran con números romanos; pero a diferencia de los capítulos no son obligatorios.
@@ -146,7 +154,7 @@ Texto de ejemplo.
 
 Además debe tener en consideración que las comillas en \LaTeX{} son también distintas para escribir algo ``así'' se requiere \lstinline|``así''|. Donde las dos primeras son tildes graves y las últimas son apostrofes.
 
-\subsection{Formato de texto}
+\section{Formato de texto}
 \textbf{Estilos.} Uno suele cambiar el formato, e.g. a \textbf{negritas}, o \textit{cursivas}, para ello \LaTeX{} ocupa:
 \begin{figure}[!h]
 	\centering
@@ -248,7 +256,7 @@ y luego usar el entorno \texttt{multicols} seguido del número de columnas:
 	Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella tarde remota en que su padre lo llevó a conocer el hielo. Macondo era entonces una aldea de veinte casas de barro y cañabrava construidas a la orilla de un río de aguas diáfanas que se precipitaban por un lecho de piedras pulidas, blancas y enormes como huevos prehistóricos.
 \end{multicols}
 
-\subsection{Notas, listas, figuras y tablas}
+\section{Notas, listas, figuras y tablas}
 \textbf{Notas.} \LaTeX{} admite dos tipos comúnes de notas: al pie de la página y al margen de ella. La primera se especifica con el comando \lstinline|\footnote{Esta es una nota al pie de página.}|\footnote{Esta es una nota al pie de página.} mientras que las notas de margen se hacen con \lstinline|\marginpar{Y ésta, una nota al margen.}|\marginpar{Y ésta, una nota al margen.}. Para revertir el lugar se puede usar \lstinline|\reversemarginpar{...}|.
 
 Para más información y mejor manejo de las notas al margen se recomienda revisar el paquete \texttt{marginnote}.
@@ -447,7 +455,7 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 \end{table}
 \textbf{Tablas entre páginas.} Por defecto \LaTeX{} no rompe una tabla entre páginas, sin importar cuan larga sea, para poder usar un \textit{tabla larga} se debe importar el paquete \texttt{longtable} que provee el entorno homónimo que funciona exactamente igual que \texttt{tabular}.
 
-\subsection{Bibliografías, referencias cruzadas e índices}
+\section{Bibliografías, referencias cruzadas e índices}
 \label{sec:crossref}
 \LaTeX{} es bastante popular por su forma de tratar bibliografías, por lo cual vamos a enseñar como: En primer lugar, todas las referencias bibliográficas se guardan en otro archivo externo de extensión \texttt{.bib}. Para incluir una bibliografía debemos añadir el siguiente comando:
 \begin{lstlisting}
@@ -489,7 +497,7 @@ Imprimirá sólo dichos artículos. Para el problema de las sub-bibliografías a
 
 \textbf{Referencias cruzadas.} Una de las ventajas de \LaTeX{} es que como genera automáticamente la numeración para las secciones, figuras y ecuaciones, se pueden referenciar de forma bastante sencilla, junto a uno de esos entornos se agrega el comando \lstinline|\label{¬etiqueta¬}| y luego se llama con \lstinline|\ref{¬etiqueta¬}| (puede requerir una compilación doble para funcionar adecuadamente), e.g:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
-\subsection{Bibliografías, referencias cruzadas e índices}
+\section{Bibliografías, referencias cruzadas e índices}
 \label{sec:crossref}
 ---------------------------------------------------
 ...similar a lo dicho en la sección \ref{sec:crossref}.
@@ -510,7 +518,7 @@ Además se pueden usar \lstinline|\listoftables| y \lstinline|\listoffigures| pa
 \end{lstlisting}
 Para añadir las entradas de las secciones al índice del pdf, agrega las opciones \texttt{bookmarks=true} y \texttt{bookmarksnumbered=true}. Aquí puedes añadir urls con el comando \lstinline|\url{¬url¬}| y \lstinline|\href{¬url¬}{¬texto¬}|; y referencias cruzadas extra con \lstinline|\hyperref{¬etiqueta¬}{¬texto¬}|.
 
-\subsection{Configurar mi documento}
+\section{Configurar mi documento}
 \label{sec:setup}
 Esta sección es opcional, pero se recomienda bastante para mejorar su experiencia y efeciencia con \LaTeX{}:
 
@@ -577,9 +585,9 @@ Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo,
 
 Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \href{https://www.ctan.org/tex-archive/info/lshort/spanish}{La introducción no-tan-corta a \LaTeXe{}} y \href{https://www.academia.edu/35478409/Edici%C3%B3n_de_Textos_Cient%C3%ADficos_con_LaTeX_Composici%C3%B3n_Gr%C3%A1ficos_Inkscape_y_Presentaciones_Beamer}{el libro de Alexánder Borbón y Walter Mora} que es muy completo y recomendado.
 
-\section{Escribir matemáticas}
+\chapter{Escribir matemáticas}
 \label{sec:maths}
-\subsection{Básico}
+\section{Básico}
 \LaTeX{} admite dos formas de denotar matemáticas, en modo \textit{entre líneas} y modo \textit{display}. El primero se escribe así \lstinline|$1+1=2$| $1+1=2$, mientras que el segundo se escribe así:
 \begin{lstlisting}
 $$1+1=2$$
@@ -658,7 +666,7 @@ Nótese que al estar separados por coma, \LaTeX{} entiende que son dos paquetes 
 Otra observación es que si bien \lstinline!|! sirve y genera el mismo efecto en modo matemático que \lstinline|\mid|, el primero se recomienda como \textit{envoltura} (similar a los paréntesis), mientras que el segundo genera espacios como para el ``divide a'', e.g., \lstinline!$|x|; 2\mid 4$! $|x|; 2\mid 4$.
 Esta distinción aplica para el resto de delimitadores.
 
-\textbf{Puntos.} Pese a que no sea obvio, en \LaTeX{} uno posee varios tipos de puntos: centrados, bajos, verticales y diagonales (del tipo $\ddots$). Para ello se escribe el punto centrado solo como \lstinline|$\cdot$| como hemos visto, pero los tres juntos se escriben \lstinline|$\cdots, \dots, \vdots, \ddots$| $\cdots, \dots, \vdots, \ddots$ respectivamente.
+\textbf{Puntos.} Pese a que no sea obvio, en \LaTeX{} uno posee varios tipos de puntos: centrados, bajos, verticales y diagonales (del tipo \smash{$\ddots$}). Para ello se escribe el punto centrado solo como \lstinline|$\cdot$| como hemos visto, pero los tres juntos se escriben \lstinline|$\cdots, \dots, \vdots, \ddots$| \smash{$\cdots, \dots, \vdots, \ddots$} respectivamente.
 
 Como recomendación se usa los puntos centrados para operaciones, e.g., \lstinline|$1+2+\cdots+99+100$| $1+2+\cdots+99+100$, y los bajos para listas \lstinline|$\{1,2,\dots,100\}$| $\{1,2,\dots,100\}$.
 
@@ -791,7 +799,7 @@ Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstin
 \end{lstlisting}
 \textbf{Texto en ecuaciones.} Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$| generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g. \lstinline|$x=2,\text{ mientras que }y=3$| $x=2,\text{ mientras que }y=3$. Esto es más útil en ecuaciones en modo \textit{display}.
 
-\subsection{Ecuaciones numeradas, alineadas, matrices y más}
+\section{Ecuaciones numeradas, alineadas, matrices y más}
 \textbf{Ecuaciones numeradas.} Hasta ahora nuestras ecuaciones no están numeradas, ni poseen un número para añadirlas, para hacerlo debes usar el entorno \texttt{equation}. Dentro de él se permiten el uso de referencias cruzadas, respecto a esto se recomienda usar \lstinline|\eqref| en lugar de \lstinline|\ref| por estética, aunque sus usos son iguales, e.g:
 \begin{lstlisting}
 ...y así se deduce el llamado \textit{teorema de Pitágoras} \eqref{eq:pitagoras}:
@@ -803,6 +811,7 @@ Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstin
 \begin{equation} \label{eq:pitagoras}
 	a^2 + b^2 = c^2
 \end{equation}
+
 Como se ve, \LaTeX{} automáticamente enumera la ecuación como \ref{eq:pitagoras}, si se quiere cambiar dicho tag se puede mediante el comando \lstinline|\tag|, e.g:
 \begin{lstlisting}
 \begin{equation}
@@ -948,7 +957,7 @@ En este caso el teorema se enumeró sólo, podemos desactivar la numeración con
 
 Por último cabe mencionar que los teoremas también permiten el uso de referencias cruzadas.
 
-\subsection{Diagramas (básico)}
+\section{Diagramas (básico)}
 \textbf{¿Por qué?} Habiendo programas como GeoGebra, Photoshop y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código? La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
 Las imágenes en \LaTeX{} comparten esa misma cualidad y en ciertos casos, su facilidad de uso es comparable a la de un editor gráfico, y si no, hay editores que permiten exportar sus diagramas a \LaTeX{} (GeoGebra exporta a Ti$k$Z). Sin contar el que reduce el espacio utilizado en el archivo final y que puede resultar satisfactorio poder hacer figuras sin salir de \LaTeX{}.
 
@@ -1148,11 +1157,62 @@ Los colores del mapa anterior vienen de \url{https://www.color-hex.com/color-pal
 
 En gráficos 3d también puedes usar \lstinline|view={¬theta¬}{¬phi¬}| donde \textit{theta} y \textit{phi} representan ángulos para la perspectiva del gráfico. Puede encontrar más ejemplos con más opciones aquí: \url{http://pgfplots.net/tikz/examples/all/}.
 
-\subsection{Consideraciones finales}
+\section{Consideraciones finales}
 Se recomienda chequear los manuales de \href{http://mirrors.ctan.org/graphics/pgf/base/doc/pgfmanual.pdf}{Ti$k$Z} y \href{https://ctan.dcc.uchile.cl/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\textsc{pgfplots}} para buscar más información sobre como usarlos de manera avanzada, estoy consciente de que son manuales muy largos, pero la verdad es que entenderás bien la dinámica básica en el primer o el segundo capítulo donde todo está bien ilustrado y documentado. El resto de páginas es para ver cosas más avanzadas. Además existe un papel introductorio a Ti$k$Z muy completo: \url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
 
 Además, como puede presumir, hay un montón de paquetes y contenido que no se trató en este trabajo, y lo más probable es que si quiere una herramienta específica para su área de investigación, entonces existe un paquete que simplifica su implementación, por ejemplo sé que hay librerías para facilitar el diseño de circuitos eléctricos y diagramas de Feynman.
 
 Las partes que poseen código en el documento fueron hechas con el paquete de \href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{\ttfamily listings}, el resto ocupa puras cosas que este documento ya enseña, revisa \href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{\textcolor{newblue}{aquí} el código fuente} para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin lugar a dudas una de las mejores herramientas para los matemáticos y físicos hoy en día.
+
+\chapter{Identificación de errores}
+Como \LaTeX{} debe ser compilado está expuesto a errores de escritura.
+El objetivo de los errores es advertir al usuario de mala sintaxis, no debe reaccionarse con miedo sino que debe leerse con detenimiento;
+usualmente un error indica también la línea que causa el error.
+
+\begin{enumerate}
+	% \item \texttt{Overfull \lstinline|\hbox| (...pt too wide):} \\
+	% 	Significa que tienes una línea más larga de lo que debería.
+	% 	Como \LaTeX{} ocupa la alineación ``justificada'' trata de que todas las líneas midan lo mismo, pero
+	% 	basta poner una ecuación al final de la línea para excederse.
+	% 	Ésto no es un error sino más bien una advertencia: mi recomendación es arreglarlo con \lstinline|\break|.
+
+	% \item \texttt{Missing \lstinline|\begin{document}|:} \\
+	% 	Significa que no ocupaste el commando \lstinline|\begin{document}|.
+
+	\item \texttt{\lstinline|\¬comando¬| before \lstinline|\documentclass|:} \\
+		Significa que no ocupaste el comando \lstinline|\documentclass| u ocupaste otro comando ántes.
+
+	\item \texttt{File `\textit{type}.cls' not found:} \\
+		Significa que intentaste escribir \lstinline|\documentclass{¬type¬}| con un formato inexistente o probablemente te equivocaste al escribir.
+
+	\item \texttt{File `\textit{paquete}.sty' not found:} \\
+		Significa que trataste de importar dicho paquete que no existe.
+
+	\item \texttt{Option clash for package \textit{paquete}:} \\
+		Significa que usaste una opción inexistente para dicho paquete.
+
+	\item \texttt{Missing \$ inserted:} \\
+		Significa que intentaste escribir una ecuación matemática sin usar \$ o \$\$.
+
+	% \item \texttt{\lstinline|\begin{¬entorno¬}| on input line 13 ended by \lstinline|\end{document}|:} \\
+	% 	Significa que abriste un entorno sin cerrarlo con \lstinline|\end{¬entorno¬}|.
+
+	% \item \texttt{\lstinline|\begin{document}| ended by \lstinline|\end{¬entorno¬}|:} \\
+	% 	Lo contrario al anterior, se te olvido abrir el entorno con \lstinline|\begin{¬entorno¬}|.
+
+	\item \texttt{Undefined control sequence:} \\
+		Significa que usaste un comando que no existe, o probablemente que escribiste mal.
+		Otra posibilidad común es que usaste un comando de un paquete sin importarlo primero como escribir matemáticas sin \texttt{amsmath}
+		o importar una foto sin \texttt{graphicx}. 
+
+	\item \texttt{File ended while scanning use of \lstinline|\¬comando¬|:} \\
+		Significa que abriste un comando como \lstinline|\textit{...| sin cerrarlo con la llave \lstinline|}| faltante.
+
+	\item \texttt{Misplaced alignment tab character \&:} \\
+		Significa que usaste \& fuera de un entorno apropiado, como una tabla fuera del entorno \texttt{tabular} o \texttt{align}.
+
+	\item \texttt{File `\textit{foto.jpg}' not found: using draft setting:} \\
+		Significa que intentaste incluir un archivo de una foto que no existe.
+\end{enumerate}
 
 \end{document}
