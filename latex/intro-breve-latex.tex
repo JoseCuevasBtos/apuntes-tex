@@ -1,0 +1,114 @@
+\documentclass[11pt, oneside]{book}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
+\usepackage{xcolor, multicol, multirow, longtable, graphicx, enumerate}
+\usepackage{amsmath, amssymb, amsthm}
+
+\usepackage{tikz}
+\usetikzlibrary{babel, calc, cd}
+\usepackage{pgfplots}
+\pgfplotsset{
+	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
+}
+\pgfplotsset{
+	width = 10cm,
+	compat = 1.15, % compatibilidad para compilación
+	enlargelimits = false, % no extender los límites del gráfico
+	grid = both, % cuadrícula
+	minor tick num = 3,
+	axis line style = {->}, % flechas de los ejes
+	axis lines = middle, % centrar flechas en (0, 0)
+	demo/.style={
+		enlargelimits = true,
+		grid = none,
+		ticks = none
+	} % demostraciones
+}
+
+% Colores extra para el documento
+\definecolor{newblue}{HTML}{4b80b7}
+\definecolor{newgreen}{HTML}{69be28}
+\definecolor{newred}{HTML}{ce1a1a}
+
+% Comandos definidos en los ejemplos
+\definecolor{sample}{HTML}{00c89c}
+\DeclareMathOperator{\mcd}{mcd}
+\DeclareMathOperator*{\dom}{dom}
+\newtheorem{thm}{Teorema}
+\newtheorem{mydef}{Definición}[section]
+\newtheorem{cor}[mydef]{Corolario}
+\newtheorem*{note}{Observación}
+
+\usepackage{textcomp}
+\newenvironment{demo}[1][$\bullet$]{#1 {\scshape Demostración:} }{\par\noindent}
+\DeclareMathOperator{\coker}{coker}
+\newcommand{\Href}[2]{\href{#1}{\color{teal}\underline{#2}}}
+
+\newenvironment{ltabular}[1]{
+\begin{center}
+	\begin{longtable}{#1}
+		\hline
+		\endhead
+
+		\hline \hline
+		\endfirsthead
+
+		\hline
+		\endfoot
+
+		\hline\hline
+		\endlastfoot
+}{
+	\end{longtable}
+\end{center}
+}
+
+% Comandos para escribir código entre párrafos
+\usepackage{listings}
+\lstset{
+	language        = {[LaTeX]TeX},
+	backgroundcolor = \color{black!17},
+	basicstyle      = \small\ttfamily,
+	breaklines      = true,
+	commentstyle    = \itshape\color{gray},
+	frame           = tb,
+	moredelim       = **[is][\itshape]{¬}{¬},
+	morekeywords    = {@book, \maketitle, \chapter, \part, \subsection, \subsubsection, \color, \definecolor,
+	                  \textcolor, \colorbox},
+	keywordstyle    = \color{newblue},
+	showspaces      = false,
+	tabsize         = 4,
+	classoffset     = 1,
+	morekeywords    = {\nexists, \varnothing, \complement, \beth, \gimel, \square, \blacksquare, \dfrac, \tfrac, \binom, \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref, \operatorname, \text, \addplot, \addlegendentry},
+	keywordstyle    = \color{violet},
+	classoffset     = 0,
+	literate        = {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
+	                  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ñ}{{\~N}}1,
+}
+
+\title{Introducción breve a \LaTeX}
+\author{
+	José Cuevas Barrientos\\
+	\small\color{teal}\url{https://github.com/JoseCuevasBtos/apuntes-tex}
+}
+\date\today
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\input{intro.tex}
+
+\input{basic-writing.tex}
+
+\input{mates.tex}
+
+\input{diagrams.tex}
+
+\appendix
+\input{error.tex}
+
+\end{document}

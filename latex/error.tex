@@ -1,0 +1,50 @@
+\chapter{Identificación de errores}
+Como \LaTeX{} debe ser compilado está expuesto a errores de escritura.
+El objetivo de los errores es advertir al usuario de mala sintaxis, no debe reaccionarse con miedo sino que debe leerse con detenimiento;
+usualmente un error indica también la línea que causa el error.
+
+\begin{enumerate}
+	\item \verb|Overfull \hbox (...pt too wide):| \\
+		Significa que tienes una línea más larga de lo que debería.
+		Como \LaTeX{} ocupa la alineación ``justificada'' trata de que todas las líneas midan lo mismo, pero
+		basta poner una ecuación al final de la línea para excederse.
+		Ésto no es un error sino más bien una advertencia: mi recomendación es arreglarlo con \lstinline|\break|.
+
+	\item \verb|Missing \begin{document}:| \\
+		Significa que no ocupaste el commando \verb|\begin{document}|.
+
+	\item \verb|\comando before \documentclass:| \\
+		Significa que no ocupaste el comando \verb|\documentclass| u ocupaste otro comando ántes.
+
+	\item \texttt{File `\textit{type}.cls' not found:} \\
+		Significa que intentaste escribir \lstinline|\documentclass{¬type¬}| con un formato inexistente o probablemente te equivocaste al escribir.
+
+	\item \texttt{File `\textit{paquete}.sty' not found:} \\
+		Significa que trataste de importar dicho paquete que no existe.
+
+	\item \texttt{Option clash for package \textit{paquete}:} \\
+		Significa que usaste una opción inexistente para dicho paquete.
+
+	\item \texttt{Missing \$ inserted:} \\
+		Significa que intentaste escribir una ecuación matemática sin usar \$ o \$\$.
+
+	\item \verb|\begin{entorno} on input line ... ended by \end{document}|: \\
+		Significa que abriste un entorno sin cerrarlo con \verb|\end{entorno}|.
+
+	\item \verb|\begin{document} ended by \end{entorno}:| \\
+		Lo contrario al anterior, se te olvido abrir el entorno con \verb|\begin{entorno}|.
+
+	\item \texttt{Undefined control sequence:} \\
+		Significa que usaste un comando que no existe, o probablemente que escribiste mal.
+		Otra posibilidad común es que usaste un comando de un paquete sin importarlo primero como escribir matemáticas sin \texttt{amsmath}
+		o importar una foto sin \texttt{graphicx}. 
+
+	\item \texttt{File ended while scanning use of \lstinline|\¬comando¬|:} \\
+		Significa que abriste un comando como \lstinline|\¬comando¬{...| sin cerrarlo con la llave \lstinline|}| faltante.
+
+	\item \texttt{Misplaced alignment tab character \&:} \\
+		Significa que usaste \& fuera de un entorno apropiado, como una tabla fuera del entorno \texttt{tabular} o \texttt{align}.
+
+	\item \texttt{File `\textit{foto.jpg}' not found: using draft setting:} \\
+		Significa que intentaste incluir un archivo de una foto que no existe.
+\end{enumerate}
