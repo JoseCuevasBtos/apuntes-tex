@@ -116,6 +116,16 @@ $$ \frac{2}{5} + \frac{39}{45} = \frac{57}{45} = 1\tfrac{12}{45} $$
 $$ \frac{2}{5} + \frac{39}{45} = \frac{57}{45} = 1\tfrac{12}{45} $$
 Un comando similar es \lstinline|\binom| que genera coeficientes binomiales, e.g.,\break
 \lstinline|$\binom{3}{2}$| $\binom{3}{2}$.
+Al igual que \lstinline|\frac| admite las variaciones \lstinline|\dbinom| y \lstinline|\tbinom|.
+
+\textbf{Congruencias modulares.} Para módulos hay una serie de comandos distintos:
+\begin{lstlisting}
+$$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
+\quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
+\end{lstlisting}
+$$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
+\quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
+Nótese que \lstinline|\bmod| no genera espacios anteriores, en cambio \lstinline|\mod| sí.
 
 \textbf{Raíces.} Este es muy sencillo, así se describe una raíz cuadrada \lstinline|$\sqrt{17}$| $\sqrt{17}$, y así una raíz $n$-ésima \lstinline|$\sqrt[3]{8} = 2$| $\sqrt[3]{8} = 2$.
 
@@ -136,30 +146,38 @@ $$ \sum_{i=0}^n i = \frac{n(n+1)}{2}, \int_a^b f(x) dx. $$
 Cabe notar que dicha característica de los operadores grande se pierde en el modo entre líneas, e.g., \lstinline|$\prod_{k=1}^n i = n!$| $\prod_{k=1}^n i = n!$
 \begin{longtable}{llll}
 	\hline \hline
-	\lstinline|$\cos$|    & $\cos$    & \lstinline|$\csc$|    & $\csc$ \\
-	\lstinline|$\exp$|    & $\exp$    & \lstinline|$\ker$|    & $\ker$ \\
-	\lstinline|$\sinh$|   & $\sinh$   & \lstinline|$\arcsin$| & $\arcsin$ \\
-	\lstinline|$\cosh$|   & $\cosh$   & \lstinline|$\deg$|    & $\deg$ \\
-	\lstinline|$\lg$|     & $\lg$     & \lstinline|$\ln$|     & $\ln$ \\
-	\lstinline|$\arctan$| & $\arctan$ & \lstinline|$\cot$|    & $\cot$ \\
-	\lstinline|$\hom$|    & $\hom$    & \lstinline|$\log$|    & $\log$ \\
-	\lstinline|$\sec$|    & $\sec$    & \lstinline|$\tan$|    & $\tan$ \\
-	\lstinline|$\arg$|    & $\arg$    & \lstinline|$\coth$|   & $\coth$ \\
-	\lstinline|$\dim$|    & $\dim$    & \lstinline|$\sin$|    & $\sin$ \\
-	\lstinline|$\tanh$|   & $\tanh$ \\
-	\hline
-	\lstinline|$\liminf$|   & $\liminf$   & \lstinline|$\limsup$|   & $\limsup$ \\
-	\lstinline|$\inf$|      & $\inf$      & \lstinline|$\sup$|      & $\sup$ \\
-	\lstinline|$\min$|      & $\min$      & \lstinline|$\max$|      & $\max$ \\
-	\lstinline|$\lim$|      & $\lim$      & \lstinline|$\gcd$|      & $\gcd$ \\
-	\lstinline|$\Pr$|       & $\Pr$       & \lstinline|$\det$|      & $\det$ \\
-	\lstinline|$\int$|      & $\int$      & \lstinline|$\iint$|     & $\iint$ \\
-	\lstinline|$\iiint$|    & $\iiint$    & \lstinline|$\idotsint$| & $\idotsint$ \\
-	\lstinline|$\oint$|     & $\oint$     & \lstinline|$\coprod$|   & $\coprod$ \\
-	\lstinline|$\sum$|      & $\sum$      & \lstinline|$\prod$|     & $\prod$ \\
-	\lstinline|$\bigcup$|   & $\bigcup$   & \lstinline|$\bigcap$|   & $\bigcap$ \\
-	\lstinline|$\bigvee$|   & $\bigvee$   & \lstinline|$\bigwedge$| & $\bigwedge$ \\
+	\endhead
 	\hline \hline
+	\endfoot
+
+	\lstinline|$\sin$|    & $\sin$    & \lstinline|$\sinh$|   & $\sinh$ \\
+	\lstinline|$\cos$|    & $\cos$    & \lstinline|$\cosh$|   & $\cosh$ \\
+	\lstinline|$\tan$|    & $\tan$    & \lstinline|$\tanh$|   & $\tanh$ \\
+	\lstinline|$\arcsin$| & $\arcsin$ & \lstinline|$\csc$|    & $\csc$  \\
+	\lstinline|$\arccos$| & $\arccos$ & \lstinline|$\sec$|    & $\sec$  \\
+	\lstinline|$\arctan$| & $\arctan$ & \lstinline|$\cot$|    & $\cot$  \\
+
+	\lstinline|$\deg$|    & $\deg$    & \lstinline|$\dim$|    & $\dim$ \\
+	\lstinline|$\arg$|    & $\arg$    & \lstinline|$\exp$|    & $\exp$ \\
+	\lstinline|$\hom$|    & $\hom$    & \lstinline|$\ker$|    & $\ker$ \\
+	\lstinline|$\lg$|     & $\lg$     & \lstinline|$\ln$|     & $\ln$ \\
+	\lstinline|$\log$|    & $\log$    &  \\
+	\hline
+	\lstinline|$\liminf$|    & $\liminf$    & \lstinline|$\limsup$|     & $\limsup$ \\
+	\lstinline|$\varliminf$| & $\varliminf$ & \lstinline|$\varlimsup$|  & $\varlimsup$ \\
+	\lstinline|$\injlim$|    & $\injlim$    & \lstinline|$\projlim$|    & $\projlim$ \\
+	\lstinline|$\varinjlim$| & $\varinjlim$ & \lstinline|$\varprojlim$| & $\varprojlim$ \\
+
+	\lstinline|$\inf$|       & $\inf$       & \lstinline|$\sup$|        & $\sup$ \\
+	\lstinline|$\min$|       & $\min$       & \lstinline|$\max$|        & $\max$ \\
+	\lstinline|$\lim$|       & $\lim$       & \lstinline|$\gcd$|        & $\gcd$ \\
+	\lstinline|$\Pr$|        & $\Pr$        & \lstinline|$\det$|        & $\det$ \\
+	\lstinline|$\int$|       & $\int$       & \lstinline|$\iint$|       & $\iint$ \\
+	\lstinline|$\iiint$|     & $\iiint$     & \lstinline|$\idotsint$|   & $\idotsint$ \\
+	\lstinline|$\oint$|      & $\oint$      & \lstinline|$\coprod$|     & $\coprod$ \\
+	\lstinline|$\sum$|       & $\sum$       & \lstinline|$\prod$|       & $\prod$ \\
+	\lstinline|$\bigcup$|    & $\bigcup$    & \lstinline|$\bigcap$|     & $\bigcap$ \\
+	\lstinline|$\bigvee$|    & $\bigvee$    & \lstinline|$\bigwedge$|   & $\bigwedge$ \\
 \end{longtable}
 
 En la lista los primeros son los pequeños y los segundos los grandes.
@@ -187,8 +205,12 @@ Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 \textbf{Espacios.} El ejemplo anterior también sirve para ilustrar una característica del modo matemático, la cual es que no lee los espacios singulares del código, e.g., \lstinline|$a     b$| genera $a     b$. Para añadir espacios también hay comandos singulares:
 \begin{figure}[!h]
 	\centering
-	\begin{tabular}{ll}
+	\begin{longtable}{ll}
 		\hline \hline
+		\endhead
+		\hline \hline
+		\endfoot
+
 		\lstinline|$a\!b$|      & $a\!b$ \\
 		\lstinline|$ab$|        & $ab$ \\
 		\lstinline|$a\,b$|      & $a\,b$ \\
@@ -196,14 +218,17 @@ Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 		\lstinline|$a\ b$|      & $a\ b$ \\
 		\lstinline|$a\quad b$|  & $a\quad b$ \\
 		\lstinline|$a\qquad b$| & $a\qquad b$ \\
-		\hline \hline
-	\end{tabular}
+	\end{longtable}
 \end{figure}
 
 \textbf{Fuentes de letras.} Para el modo matemático también hay fuentes de letras:
 \begin{center}
 	\begin{longtable}{lp{8cm}}
 		\hline \hline
+		\endhead
+		\hline \hline
+		\endfoot
+
 		\lstinline|\mathrm|   & $\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathrm{abcdefghijklmnopqrstuvwxyz}$ $\mathrm{1234567890}$ \\
 		\lstinline|\mathbf|   & $\mathbf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathbf{abcdefghijklmnopqrstuvwxyz}$ $\mathbf{1234567890}$ \\
 		\lstinline|\mathsf|   & $\mathsf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathsf{abcdefghijklmnopqrstuvwxyz}$ $\mathsf{1234567890}$ \\
@@ -211,7 +236,6 @@ Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 		\lstinline|\mathcal|  & $\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
 		\lstinline|\mathfrak| & $\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathfrak{abcdefghijklmnopqrstuvwxyz}$ $\mathfrak{1234567890}$ \\
 		% \lstinline|\mathscr|  & $\mathscr{ABCDEFGHIJKLM}$ $\mathscr{NOPQRSTUVWXYZ}$ \\
-		\hline \hline
 	\end{longtable}
 \end{center}
 Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstinline|$\mathbb{N}$| $\mathbb{N}$. A veces, éstos suelen ser tan comúnes y conocidos, que suele ser útil definir un comando para ellos:
@@ -382,6 +406,26 @@ En este caso el teorema se enumeró sólo, podemos desactivar la numeración con
 \textbf{¡Precaución!} El paquete ya introduce un entorno para definiciones, así que no puede definir otro teorema también de tag \texttt{def}, por eso se usa \texttt{mydef}.
 
 Por último cabe mencionar que los teoremas también permiten el uso de referencias cruzadas.
+
+Y otros errores comúnes:
+\begin{longtable}{|ll|ll|}
+	\hline
+	Código & Peor & Código & Mejor \\
+	\hline
+	\endhead
+
+	\hline
+	\endfoot
+
+	\lstinline|$sin x$| & $sin x$ & \lstinline|$\sin x$| & $\sin x$ \\
+	\lstinline?$||\vec v||$? & $||\vec v||$ & \lstinline?$\|\vec v\|$? & $\|\vec v\|$ \\
+	\lstinline?$<x, y>$? & $<x, y>$ & \lstinline?$\langle x, y\rangle$? & $\langle x, y\rangle$ \\
+	\lstinline?$(\frac{1}{2})$? & $\displaystyle (\frac{1}{2}) $ & \lstinline|$\left(\frac{1}{2}\right)$| & $\displaystyle \left(\frac{1}{2}\right) $ \\
+	\lstinline?$2 | 6$? & $2 | 6$ & \lstinline|$2 \mid 6$| & $2 \mid 6$ \\
+	\lstinline?$r \| s$? & $r \| s$ & \lstinline|$r \parallel s$| & $r \parallel s$ \\
+	\lstinline|$\int x dx$| & $\int x dx$ & \lstinline|$\int x\, dx$| & $\int x\, dx$ \\
+	\lstinline|$f: A\to B$| & $f: A\to B$ & \lstinline|$f\colon A\to B$| & $f\colon A\to B$ \\
+\end{longtable}
 
 \section{Diagramas (básico)}
 \textbf{¿Por qué?} Habiendo programas como GeoGebra, Photoshop y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código? La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
