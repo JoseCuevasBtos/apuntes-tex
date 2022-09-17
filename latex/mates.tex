@@ -182,6 +182,18 @@ Cabe notar que dicha característica de los operadores grande se pierde en el mo
 
 En la lista los primeros son los pequeños y los segundos los grandes.
 
+\textbf{Operadores modulares.} Para \LaTeX{} existen cuatro tipos de operadores modulares:
+\begin{lstlisting}
+\begin{align*}
+	3 &\equiv 1 \pmod 2, & 3 &\equiv 1 \pod 2, \\
+	3 &\equiv 1  \mod 2, & \bmod(3, 2) &= 1.
+\end{align*}
+\end{lstlisting}
+\begin{align*}
+	3 &\equiv 1 \pmod 2, & 3 &\equiv 1 \pod 2, \\
+	3 &\equiv 1  \mod 2, & \bmod(3, 2) &= 1.
+\end{align*}
+
 \textbf{Definir operadores.} Para definir operaciones se debe utilizar el comando \lstinline|\DeclareMathOperator{¬com¬}{¬tag¬}| en la cabecera. Si se declara con un \texttt{*} antes de las llaves, entonces se definirá un operador grande, e.g:
 \begin{lstlisting}
 \DeclareMathOperator{\mcd}{mcd}
