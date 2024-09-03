@@ -1,0 +1,303 @@
+\documentclass[11pt]{book}
+
+\usepackage[book, es]{../cuevasthm}
+\input{../template.tex}
+\DeclareMathOperator{\Pol}{\mathscr{F}}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\Reg}{Reg}
+\DeclareMathOperator{\Isol}{Isol}
+
+% \newcommand\CaDiv{\Div_c}
+\DeclareMathOperator{\CaDiv}{CaDiv}
+\DeclareMathOperator{\CaCl}{CaCl}
+
+\DeclareMathOperator{\Num}{Num}
+
+\DeclareMathOperator{\shHom}{\mathscr{H}\!\mathit{om}}
+\DeclareMathOperator{\shEnd}{\mathscr{E}\!\mathit{nd}}
+\DeclareMathOperator{\shTor}{\mathscr{T}\!\mathit{or}}
+\DeclareMathOperator{\shExt}{\mathscr{E}\!\mathit{xt}}
+\DeclareMathOperator{\bfSpec}{\mathbf{Spec}}
+
+\newcommand{\Hilb}{\mathrm{  Hilb}}
+\newcommand{\bfHilb}{\mathbf{Hilb}} % Esquema de Hilbert y otros
+\newcommand{\Quot}{\mathrm{  Quot}}
+\newcommand{\bfQuot}{\mathbf{Quot}}
+\newcommand{\bfPic}{\mathbf{Pic}}
+\newcommand{\bfDiv}{\mathbf{Div}}
+
+\DeclareMathOperator{\opkom}{\mathring{\mathcal{K}}}
+\newcommand{\midsharp}{\mathrel{\olddiv}}
+
+% Bibliografía
+\DeclareBibliographyCategory{geoalg}
+\addtocategory{geoalg}{castillo:GA, cutkosky:geometry, milne:AG, fulton:curves, smith:AG}
+\defbibheading{geoalg}{\section*{Geometría algebraica clásica}}
+
+\DeclareBibliographyCategory{scheme}
+\addtocategory{scheme}{castillo:esquemas, hartshorne:algebraic, liu:algebraic, vakil:rising_sea, stacks}
+\defbibheading{scheme}{\section*{Geometría algebraica moderna}}
+
+\DeclareBibliographyCategory{topics}
+\defbibheading{topics}{\section*{Tópicos en la teoría de esquemas}}
+
+\DeclareBibliographyCategory{groth}
+\addtocategory{groth}{ega-i, ega-iv4}
+\defbibheading{groth}{\section*{Escritos de Grothendieck}}
+
+\DeclareBibliographyCategory{etale}
+\defbibheading{etale}{\section*{Cohomología étale}}
+
+\DeclareBibliographyCategory{other}
+\addtocategory{other}{
+	matsumura:ring, kunz:AG,
+	kleiman76misconceptions,
+	bombieri73counting,
+	hochster1969thesis, banaschewski96ideal, dickmann:spectral,
+}
+\defbibheading{other}{\section*{Otros recursos}}
+
+\DeclareBibliographyCategory{historical}
+\addtocategory{historical}{
+	stepanov69number, weil48courbes,
+	stone37brouwerian, krull32allgemeine, fontana80topological_rings,
+}
+\defbibheading{historical}{\section*{Documentos históricos}}
+
+% \DeclareBibliographyCategory{history}
+% \addtocategory{history}{dieudonne:history}
+% \defbibheading{history}{\section*{Historia}}
+
+\DeclareBibliographyCategory{self}
+\addtocategory{self}{Alg, CatTh, SetTh, Top}
+\defbibheading{self}{\section*{Libros de autoría propia}}
+
+\title{Geometría algebraica}
+\author{José Cuevas Barrientos}
+\date\today
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\tableofcontents
+
+% \input{prologo.tex}
+
+\mainmatter
+\part{Geometría Algebraica Clásica}
+\input{intro_variedades.tex}
+
+\input{variedades-ii.tex}
+
+% \input{divisores.tex}
+
+\part{El lenguage de Esquemas}
+En esta parte introducimos el lenguaje de esquemas y las herramientas fundamentales para su estudio.
+
+La definición de \textit{esquema} es necesaria por varias razones: en primer lugar, permite hacer geometría algebraica sobre cuerpos no algebraicamente cerrados
+(pues a diferenia de la geometría algebraica clásica, no se construye sobre el teorema de ceros de Hilbert), pero mejor aún permite incluso definir objetos
+sobre anillos y, en particular, da una definición suficientemente flexible como para tener aplicaciones aritméticas.
+En segundo lugar, la definición permite que la categoría de esquemas contenga a la categoría de anillos (unitarios conmutativos), de modo que tiene interés
+para el álgebra conmutativa y, de hecho, permite un diálogo entre ambas disciplinas (a diferencia del <<monólogo>> que las teorías predecesoras tenían).
+En tercer lugar, los esquemas están llenos de puntos genéricos, lo que permite que topológicamente haya una correspondencia entre puntos y subvariedades cerradas;
+esta es una ventaja que Grothendieck observó de la teoría de Weil.
+En cuarto lugar, los esquemas representan un objeto unificado que, como ejemplos, incluyen a las variedades afines, proyectivas y algebraicas;
+más aún, su definición es altamente funtorial, de modo que es fácil definir ciertos espacios de moduli, o construcciones como las explosiones, sin tener
+que pasar primero por cálculos concretos.
+En último lugar, los esquemas permiten apropiadamente una noción de extensión y restricción de escalares, y existen teorías adecuadas para medir qué cosas
+se preservan en ascenso y descenso.
+% En último lugar, los esquemas, con su generalidad, son capaces de medir <<deformaciones infinitesimales>>: su flexibilidad es tal que puede captar 
+
+La desventaja es que el reino esquemático es tan vasto que resulta como una jungla amazónica para el lector, y este está obligado a pasar por cientos de páginas
+para ubicarse apropiadamente y reencontrar los objetos que le son familiares.
+Peor aún, es quizá digno de mención el que resulta difícil probar que, de hecho, el mundo esquemático funciona de manera compatible a los casos base para los
+geómetras de siglo \textsc{xix}, es decir, que coinciden con la geometría analítica compleja.
+Así, esta sección resulta extensa, pero finalmente otorga todas las herramientas fundamentales para el resto del libro.
+
+Destacamos ciertos resultados importantes:
+\begin{enumerate}
+	\item Los esquemas extienden a la categoría de anillos conmutativos (cfr., teorema~\ref{thm:hom_aff_sch}).
+\end{enumerate}
+De hecho podemos ser un poco menos ambiguos.
+Uno construirá primero la noción de \textit{esquema afín} asociado a un anillo $A$, llamado su \textit{espectro}, el cual posee toda la información original,
+y luego uno define un esquema como un objeto que puede cubrirse de manera adecuada por esquemas afines.
+Para el lector familiarizado con topología diferencial: los esquemas afines son a los espacios euclídeos $\R^n$ lo que los esquemas
+son a las variedades diferenciales.
+
+En particular, en la primera parte vimos que una variedad algebraica afín viene completamente determinada por su anillo de coordenadas $A$,
+así que tomando $\Spec A$ como su sustituto uno obtiene que:
+\begin{enumerate}[resume]
+	\item Los esquemas extienden a las variedades clásicas (cfr., teorema~\ref{thm:sch_extendend_vars}).
+	% \item Un esquema íntegro posee un punto genérico que, en muchos casos, captura información <<genérica>>.
+\end{enumerate}
+No obstante, las extienden estrictamente, incluso si hablamos de esquemas algebraicos sobre un cuerpo fijo.
+Uno de los fenómenos introducidos por éste lenguaje es el de la (no) reducción.
+
+Dado un esquema $X$ definido sobre un cuerpo $k$ y dada una extensión $L/k$, podemos asociarle un esquema $X_L$ (llamado <<cambio de base>>) definido sobre $L$.
+Están bien estudiadas las propiedades que $X_L$ preserva de $X$, o que propiedades de $X_L$ son reflejadas en $X$.
+% Mejor aún, uno puede definir el cambio de base por cualquier esquema $S$ definido sobre $k$.
+
+% Hay que destacar ciertas definiciones sobre morfismos $f \colon X \to Y$ entre esquemas:
+% \begin{description}
+% 	\item[De tipo finito:] Si todo punto $x \in X$ está contenido en un abierto afín $x \in U = \Spec B \subseteq X$
+% 		y existe un abierto afín $V = \Spec A \subseteq Y$ tal que la restricción $f|_U \colon \Spec B \to \Spec A$ induce un homomorfismo de anillos
+% 		$A \to B$ de tipo finito.
+% 	\item[Propio:] Si es de tipo finito, universalmente cerrado (i.e.\ todo cambio de base es cerrado) y separado.
+% 	\item[Entero:] 
+% \end{description}
+
+% Hay que destacar ciertas definiciones:
+\begin{enumerate}[resume]
+	\item Un esquema separado $X$ es tal que los morfismos $X \dashto Y$ admiten extensiones únicas.
+	\item Un morfismo proyectivo es propio.
+	% \item Un anillo es a un esquema $X$, lo que un módulo es a un $\mathscr{O}_X$-módulo.
+	% 	Los $\mathscr{O}_X$-módulos también reflejan información del esquema, como la amplitud el que tan proyectivo es.
+	\item La categoría de $\mathscr{O}_{\Spec A}$-módulos cuasicoherentes sobre un esquema afín $\Spec A$
+		es equivalente a la categoría de $A$-módulos.
+	\item Un esquema normal $X$ es regular en codimensión 1 y,
+		por tanto, toda aplicación racional $f\colon X \dashto Y$ puede extenderse de modo que $X \setminus \Dom f$ tenga codimensión 2.
+	\item La regularidad se puede verificar mediante el rango de una matriz llamada el jacobiano.
+	% \item Los esquemas normales pueden extender morfismos a 
+\end{enumerate}
+
+\input{esquemas.tex}
+
+\input{morfismos.tex}
+
+\input{haces_cuasicoherentes.tex}
+
+\input{regularidad.tex}
+
+\input{cohomologia.tex}
+
+% \section{La categoría derivada de un esquema}
+% Recordemos las siguientes definiciones de álgebra homológica.
+% Dada una categoría abeliana $\catA$, un \strong{complejo (de cocadenas)} es un diagrama $(A^\bullet, d^\bullet) \colon \Poset(\Z) \to \catA$,
+% generalmente representado como
+% \begin{center}
+% 	\begin{tikzcd}[sep=large]
+% 		\cdots \rar & A^{n-1} \rar["d^{n-1}"] & A^n \rar["d^n"] & A^{n+1} \rar["d^{n+1}"] & \cdots
+% 	\end{tikzcd}
+% \end{center}
+% tal que $d^n \circ d^{n+1} = 0$ para todo $n \in \Z$.
+% Los \strong{morfismos} de complejos son simplemente transformaciones naturales entre los diagramas.
+% Así, los complejos conforman la categoría $\mathsf{Ch}(\catA)$.
+% Se definen los \strong{objetos de cohomología} del complejo $A^\bullet$ como
+% $$ h^p(A^\bullet) := \frac{\ker(d^p)}{\Img(d^{p-1})}. $$
+% Es fácil notar que un morfismo de complejos $f^\bullet \colon A^\bullet \to B^\bullet$ induce flechas en cohomología $h^p(f^\bullet) \colon h^p(A^\bullet)
+% \to h^p(B^\bullet)$, de modo que una flecha se dice un \strong{cuasi-isomorfismo} si induce un isomorfismo en toda la cohomología.
+% Se define la \strong{categoría derivada} de $\catA$, denotada $\dercat(\catA)$, como la localización de $\mathsf{Ch}(\catA)$ respecto a los cuasi-isomorfismos.
+
+\input{diferenciales.tex}
+
+\input{proyectivos.tex}
+
+\part{Geometría de variedades}
+\input{sitio-etale.tex}
+
+\input{hilbert.tex}
+
+\input{esquema_en_grupos.tex}
+
+\input{neron.tex}
+
+\input{curvas.tex}
+
+\input{superficies.tex}
+
+% \part{Cohomología étale}
+% \chapter{El grupo fundamental algebraico de esquemas}
+
+% \section{La teoría de Galois según Grothendieck}
+% \begin{mydef}
+% 	Sea $X$ un esquema.
+% 	Un \strong{entorno étale}\index{entorno!etale@étale} de un punto $k$-valuado $x \in X(k)$, donde $k$ es un cuerpo arbitrario, es un morfismo étale $U \to X$
+% 	con un punto $y \in U_x$ tal que $\kk(y) = k$; equivalentemente es un diagrama conmutativo:
+% 	\begin{center}
+% 		\begin{tikzcd}[column sep=small]
+% 			U \ar[rr, "\text{étale}"] & {}                                                                 & X \\
+% 			{}                        & \Spec k \ular["\langle y \rangle"'] \urar["\langle x \rangle"]
+% 		\end{tikzcd}
+% 	\end{center}
+% 	Un \strong{punto geométrico}\index{punto!geométrico} de $X$ es un morfismo $\Spec\Omega \to X$ tal que $\Omega$ es separablemente cerrado.
+% \end{mydef}
+% En la cohomología étale será útil emplear puntos geométricos y entornos étale.
+
+% Recuérdese que dadas categorías $\catA, \catB$, los funtores covariantes $F \colon \catA \to \catB$ (como objetos) y las transformaciones naturales entre ellos
+% (como flechas) conforman una categoría denotada $\mathsf{Nat}(\catA, \catB)$.
+% \begin{mydef}
+% 	Sea $S$ un esquema y $\overline{s} \in S(\Omega)$ un punto geométrico.
+% 	Denotamos por $F := \mathscr{F}ib_{\overline{s}} \colon \mathsf{FEt}_S \to \mathsf{Set}$ el funtor dado por $- \times_S \overline{s}$.
+% 	Denotamos por $\pi_1(S, \overline{s}) := \Aut_{\mathsf{Nat}}(F)$ al grupo de automorfismos de $F$.
+% \end{mydef}
+% Categorialmente, uno puede probar que para todo funtor $F \colon \catC \to \mathsf{Set}$, se cumple que $G := \Aut_{\mathsf{Nat}}(F)$ es un grupo
+% que actúa en cada $FX$, es decir, puede factorizarse mediante $\catC \to \mathsf{Set}_G$.
+
+% \begin{mydefi}
+% 	Un anillo local $(A, \mathfrak{m}, k)$ se dice \strong{henseliano}\index{anillo!henseliano} si para todo polinomio mónico $f(x) \in A[x]$
+% 	tal que se factoriza como $f(x) \equiv g_0(x) h_0(x) \pmod{\mathfrak{m}}$ para algunos $g_0, h_0 \in k[x]$ mónicos y coprimos,
+% 	se cumple que existen $g(x), h(x) \in A[x]$ tales que $g(x) \mod{\mathfrak{m}} = g_0(x)$ y $h(x) \mod{\mathfrak{m}} = h_0(x)$.
+% \end{mydefi}
+% \begin{thm}
+% 	Sea $A$ un anillo local, sea $X := \Spec A$ su espectro y $s \in X$ su único punto cerrado.
+% 	Son equivalentes:
+% 	\begin{enumerate}
+% 		\item $A$ es henseliano.
+% 		\item Toda $A$-álgebra de tipo finito $B$ es un producto de anillos locales.
+% 		\item Todo $X$-esquema $f \colon Y \to X$ cuasifinito y separado es de la forma $Y \cong Y_0 \amalg \coprod_{j=1}^n Y_j$, donde $f[Y_0]$ no contiene
+% 			a $x$ y donde cada $Y_j$ es un $X$-esquema finito local para $j \ge 1$.
+% 		\item Sea $f\colon Y \to X$ un morfismo étale con un punto $y \in Y_x$ que satisface $\kk(y) = \kk(x)$.
+% 			Entonces $f$ posee una sección $s \colon X \to Y$ (i.e., tal que $s \circ f = \Id_X$).
+% 		\item Sean $f_1, \dots, f_n \in A[x_1, \dots, x_n]$ y sea $\vec a \in k^n$ un punto que es una solución para cada
+% 			$f_i(\vec a) \equiv 0\pmod{\mathfrak{m}}$ y tal que $\det[ (\partial f_i/\partial x_j)(\vec a) ]_{ij} \ne 0$.
+% 			Entonces existe $\vec b \in A^n$ tal que cada $f_i(\vec b) = 0$ y $\vec b \mod{\mathfrak{m}} = \vec a$.
+% 	\end{enumerate}
+% \end{thm}
+
+% \begin{mydef}
+% 	Sea $A$ un anillo local.
+% 	Se le llama \strong{hensalización}\index{hensalización} a un anillo local con un homomorfismo de anillos locales $A \to A^{\rm h}$ tal que para todo
+% 	homomorfismo de anillos locales $A \to H$, donde $H$ es henseliano, ...
+% \end{mydef}
+
+% \begin{mydef}
+% 	Un \strong{cubrimiento étale}\index{cubrimiento!etale@étale} es un morfismo étale suprayectivo $f\colon X \to Y$.
+% 	Se dice que el cubrimiento $f$ es \strong{trivial}\index{cubrimiento!etale@étale!trivial} si $X \cong \coprod_{i\in I} Y$ como $Y$-esquema.
+% \end{mydef}
+% \begin{prop}
+% 	Sea $S$ un esquema conexo y $f \colon X \to S$ un morfismo afín suprayectivo.
+% 	Entonces $f$ es un cubrimiento étale syss existe un morfismo $g \colon Y \to S$ finito localmente libre tal que el cambio de base $X_Y \to Y$
+% 	es un cubrimiento étale trivial.
+% \end{prop}
+
+% \begin{mydef}
+% 	Decimos que un morfismo de esquemas $f \colon X \to Y$ es
+% 	\strong{finito localmente libre}\index{morfismo!finito localmente libre}\index{finito localmente libre (morfismo)}
+% 	si es finito y $f_*\mathscr{O}_X$ es un $\mathscr{O}_Y$-módulo localmente libre de rango finito (constante).
+% \end{mydef}
+
+% Dado un esquema $S$, denotaremos por $\mathsf{F\tilde Et}_S$ la categoría 
+
+% \backmatter
+\appendix
+\input{app_algebraico.tex}
+
+\input{espectrales.tex}
+
+\printnomenclature
+
+\nocite{*}
+\printbibheading[heading=bibintoc]
+Las fechas empleadas son aquellas de la primera publicación o del primer registro de Copyright.
+% \printbibliography[heading=subbibintoc, keyword={algebraic_geometry}, notkeyword={self_published}, nottype={article}, title={Geometría algebraica}]
+% \printbibliography[heading=subbibintoc, keyword={homological_alg, commutative_alg}, nottype={article}, title={Álgebra conmutativa y homológica}]
+% % \printbibliography[heading=subbibintoc, filter={article}, title={Artículos}]
+% \printbibliography[heading=subbibintoc, keyword={self_published}, keyword={algebraic_geometry}, title={Libros de autoría propia}]
+\bibbycategory
+
+\printindex
+
+\listoftodos
+
+\end{document}

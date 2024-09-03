@@ -1,0 +1,563 @@
+\documentclass[teoria-numeros.tex]{subfiles}
+\begin{document}
+
+\chapter{Formas modulares}
+En la sección sobre curvas elípticas complejas se realizó lo siguiente:
+\begin{enumerate}
+	\item Vimos que una curva elíptica $E(\C)$ puede, en ciertos casos, verse como un cociente analítico $\C/\Lambda$,
+		para algún reticulado $\Lambda$.
+	\item A un punto $z \in \C$ con $\Im(z) > 0$ podemos asignarle el reticulado $\Lambda = \Z + \tau\Z$, los cuales son homotéticos a todos los reticulados
+		posibles dentro de $\C$.
+		Bajo esta asociación, podemos asignarle $z \mapsto j(E_{\Z + \tau\Z})$ la función que da el invariante $j$ de la curva elíptica asociada.
+	\item Como el invariante $j$ es efectivamente el mismo para curvas elípticas isomorfas,
+		entonces dados dos $\tau_1, \tau_2$ con $\Im(\tau_1), \Im(\tau_2) > 0$ que generen el mismo reticulado, tenemos que $j(\tau_1) = j(\tau_2)$.
+		Esto induce a que $j$, visto como una función compleja, posea una inusual cantidad de simetrías.
+\end{enumerate}
+El objetivo de éste capítulo es perseguir estas observaciones y construir sobre éste tema.
+Formalmente, éste capítulo no depende de aquél de curvas elípticas, sino que solo se sirve del último como inspiración.
+
+\section{Acciones sobre el semiplano superior}
+% \subsection{Acciones topológicas y analíticas}
+Comenzaremos con ciertas propiedades generales de las acciones topo\-lógicas.
+\nocite{miyake:modular}
+
+\begin{mydef}
+	Sea $G$ un grupo topológico, y sea $X$ un espacio topológico (resp.\ una variedad analítica).
+	Una \strong{acción topológica}\index{acción!topológica} (resp.\ \strong{acción analítica}\index{acción!analítica}) de $G$ sobre $X$
+	es una aplicación
+	\[
+		a \colon X \times G \longrightarrow X, \qquad (x, g) \longmapsto x\cdot g,
+	\]
+	que satisface lo siguiente:
+	\begin{enumerate}[{AT}1., leftmargin=*, ref=AT\arabic*]
+		\item\label{ax:topological_actions_are_top}
+			Para cada $g_0 \in G$, la endofunción $x \mapsto x\cdot g_0$ sobre $X$ es continua (resp.\ holomorfa).
+		\item Para cada $g, h \in G$ y $x \in X$ se cumple que $(x\cdot g)\cdot h = x\cdot(gh)$.
+		\item Para cada $x \in X$ se cumple que $x\cdot 1 = x$.
+	\end{enumerate}
+	También se dice que $G$ \strong{actúa topológicamente} (resp.\ \strong{analíticamente}) sobre $X$.
+	% Es decir, es una acción donde 
+\end{mydef}
+Se siguen las propiedades típicas de acciones como que, por ejemplo, por \ref{ax:topological_actions_are_top}, las traslaciones $x \mapsto x\cdot g_0$
+son homeomorfismos (resp.\ biholomorfismos) cuando $X$ es un espacio topológico (resp.\ variedad analítica).
+También se preservan definiciones como las del estabilizador, órbitas y las definiciones de acción fiel y transitiva.
+Nótese que toda acción analítica es topológica.
+
+La generalización del \textquote{teorema de órbita-estabilizador} en este contexto es el siguiente:
+\begin{thm}\label{thm:topological_orbit_stab}
+	Sea $G \acts X$ una acción topológica transitiva, donde $G$ es un grupo localmente compacto 2AN y $X$ es de Hausdorff localmente compacto.
+	Entonces, para cada punto $x \in X$ la aplicación
+	$$ \Phi\colon (G/\Stab_x)^+ \longrightarrow X, \qquad \Stab_x g \longmapsto x\cdot g $$
+	determina un homeomorfismo entre el espacio topológico cociente de clases laterales derechas $G / \Stab_x$ y $X$.
+\end{thm}
+\begin{proof}
+	Es claro que $\Phi$ es una biyección, por lo que basta probar que es una aplicación continua y abierta.
+	La continuidad es clara, mientras que \textquote{ser abierta} equivale a que para todo abierto $U \subseteq G$ la imagen $xU \subseteq X$ sea abierta:
+	dado un punto $x\cdot g \in xU$, existe un entorno $V \subseteq G$ del $1 \in G$ que tiene clausura compacta $K$, es simétrico (i.e., $K^{-1} = K$)
+	y tal que $K^2 g \subseteq U$.
+	Como $G$ posee una base numerable, existe una sucesión $(g_n)_{n\in\N}$ en $G$ tal que $G = \bigcup_{n\in\N} Kg_n$ y defínase $W_n := xKg_n$,
+	de modo que $X = \bigcup_{n\in\N} W_n$.
+	Como $X$ es de Hausdorff, cada $W_n$ es un subconjunto compacto cerrado.
+	Supongamos, por contradicción, que cada $W_n$ tiene interior vacío.
+	Como $X$ es regular, podemos construir recursivamente abiertos $U_n \subseteq X$ no vacíos de clausura compacta tales que
+	\[
+		\overline{U}_n \subseteq U_{n-1} \setminus W_{n-1}, \qquad n \ge 2.
+	\]
+	En particular, $\overline{U}_1 \supseteq \overline{U}_2 \supseteq \cdots$
+	Nótese que, por compacidad de $\overline{U}_1$, se cumple que $\bigcap_{n\in\N} \overline{U}_n \ne \emptyset$;
+	pero esto es absurdo ya que $\bigcap_{n\in\N} \overline{U}_n$ no corta a ningún $W_m$ y $X = \bigcup_{m\in\N} W_m$.
+	Así, algún $W_n$ tiene interior no vacío y basta con trasladar.
+\end{proof}
+
+\begin{mydef}
+	Sea $a\colon G \acts X$ una acción topológica.
+	Se dice que $a$ es una \strong{acción propiamente discontinua}\index{acción!propiamente discontinua} si todo par de puntos distintos $x \ne y \in X$
+	posee entornos $U, V \subseteq X$ resp., tales que
+	\[
+		|\{ g \in G : U\cdot g \cap V \ne \emptyset \}| < \infty.
+	\]
+\end{mydef}
+\begin{cor}
+	Si $a\colon G \acts X$ es una acción topológica sobre un espacio $X$ localmente compacto,
+	entonces $a$ es propiamente discontinua syss para todo par de subconjuntos compactos $A, B \subseteq X$ se cumple que
+	\[
+		|\{ g \in G : A\cdot g \cap B \ne \emptyset \}| < \infty.
+	\]
+\end{cor}
+\begin{proof}
+	Como todo cubrimiento abierto de un compacto admite un subcubrimiento finito, vemos \textquote{${\implies}$}.
+	El recíproco \textquote{$\impliedby$} es precisamente por definición de \textquote{localmente compacto}.
+\end{proof}
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	Si $G$ es un grupo topológico y $\Gamma \le G$ es un subgrupo discreto (i.e., cuya topología subespacio es la discreta),
+	entonces $\Gamma \le_f G$ es un subgrupo cerrado sin puntos de acumulación.
+\end{slem}
+\begin{proof}
+	Por definición de <<discreto>>, existe un entorno $U \subseteq G$ del $1 \in G$ tal que $U \cap \Gamma = \{ 1 \}$;
+	como $G$ es un grupo topológico, existe un subentorno simétrico $V$ del $1$ tal que $V^{-1}V \subseteq U$.
+	En consecuencia, dados dos elementos distintos $\alpha \ne \beta \in \Gamma$ se cumple que $\alpha V \cap \beta V = \emptyset$.
+	
+	Dado un elemento adherente $g \in \overline{\Gamma}$ y un $\alpha \in gV^{-1} \cap \Gamma$, vemos que $gV^{-1} \cap \Gamma = \{ \alpha \}$,
+	de modo que $g = \alpha \in \Gamma$.
+\end{proof}
+\addtocounter{thmi}{-1}
+
+\begin{thm}\label{thm:proper_discont_action}
+	Sea $G \acts X$ una acción topológica transitiva y sea $\Gamma \le G$ un subgrupo.
+	Supongamos que:
+	\begin{enumerate}[(i)]
+		\item $G$ es un grupo localmente compacto y 2AN.
+		\item $X$ es Hausdorff localmente compacto.
+		\item Todos los estabilizadores de $G$ son subgrupos compactos.
+	\end{enumerate}
+	Entonces son equivalentes:
+	\begin{enumerate}
+		\item El subgrupo $\Gamma$ es discreto.
+		\item La acción (por restricción) $\Gamma \acts X$ es propiamente discontinua.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$1 \implies 2$.
+	Sea $x \in X$ un punto y sean $A, B \subseteq X$ un par de compactos.
+	Sean
+	\[
+		M := \{ g \in G : gx \in A \}, \qquad N := \{ g \in G : gx \in B \},
+	\]
+	los cuales son cerrados (¿por qué?) y, como $G \acts X$ es transitiva, satisfacen $M\cdot x = A$ y $N\cdot x = B$.
+
+	Ya que $G$ es localmente compacto, sea $\{ U_i \}_i$ un cubrimiento por abiertos de $M$ tal que cada $\overline{U}_i$ es compacto;
+	aplicando ${\cdot x}$, vemos que $A = M\cdot x \subseteq \bigcup_{i} U_i\cdot x$ y, por compacidad, debe existir un subcubrimiento finito
+	$\{ U_j \}_{j=1}^n$, de modo que $M \subseteq \bigcup_{j=1}^n \overline{U}_i\cdot\Stab_x$ (esto es aplicando preimágenes mediante $g \mapsto gx$),
+	donde el conjunto de la derecha es compacto.
+	Así, $M$, y análogamente $N$, son compactos.
+	Finalmente $NM^{-1}$ es compacto, por lo que
+	\[
+		\{ \gamma \in \Gamma : \gamma A \cap B \} = \Gamma \cap NM^{-1}
+	\]
+	es compacto y discreto, ergo finito.
+
+	$2 \implies 1$.
+	Sea $1 \in V \subseteq G$ un entorno del neutro con $\overline{V}$ compacto.
+	Para todo punto $x \in X$ se cumple que $\Gamma \cap V \subseteq \{ \gamma \in \Gamma : \gamma x \in \overline{V}x \}$,
+	el cual es finito ya que $\{ x \}, \overline{V}x \subseteq X$ son compactos.
+	Así, podemos achicar $V$ de modo que $\Gamma \cap V = \{ 1 \}$ es un abierto de $\Gamma$.
+\end{proof}
+
+\addtocounter{thmi}{1}
+El siguiente lema es expandir las definiciones correspondientes:
+\begin{slem}\label{thm:lemma_for_Haus_quot}
+	Sea $G \acts X$ una acción topológica.
+	Supongamos que todo par de puntos $x, y \in X$ poseen entornos $x \in U \subseteq X$, $y \in V \subseteq X$ tales que $gU \cap V = \emptyset$
+	para todo $g \in G$ tal que $gx \ne y$.
+	Entonces el espacio topológico cociente $G \coquot X$ es de Hausdorff.
+\end{slem}
+\addtocounter{thmi}{-1}
+
+\begin{prop}\label{thm:prp_disct_Haus_quot}
+	Si $G \acts X$ es una acción propiamente discontinua sobre un espacio de Hausdorff $X$.
+	Entonces $G \coquot X$ es de Hausdorff.
+\end{prop}
+\begin{proof}
+	Sean $x \ne y \in X$ y sean $U_0, V_0$ entornos de $x, y$ resp., tales que el conjunto $\mathcal{G} := \{ g \in \Gamma : gU_0 \cap V_0 \}$ es finito
+	y sean $\{ \gamma_1, \dots, \gamma_m \} = \mathcal{G}$ sus elementos.
+	Cambiando el orden de los índices podemos suponer que existe un índice $\ell$ tal que
+	\[
+		\forall 1 \le i \le \ell < j \le n \quad \gamma_i x = y, \; \gamma_j x \ne y.
+	\]
+	Para cada $j > \ell$ podemos escoger entornos disjuntos $W_j, V_j$ de $\gamma_j x, y$ resp., y definir
+	\[
+		U := U_0 \cap \bigcap_{j=\ell+1}^m \gamma_j^{-1}W_j, \qquad V := V_0 \cap \bigcap_{j=\ell+1}^{m} V_j.
+	\]
+	De éste modo, $U$ y $V$ satisfacen las hipótesis del lema anterior.
+\end{proof}
+
+En éste capítulo, trabajaremos principalmente con dos abiertos distinguidos del plano complejo $\C$ que son el
+\strong{semiplano superior} y el \strong{disco unitario} resp.:
+\[
+	\mathfrak{H} := \{ z \in \C : \Im z > 0 \}, \qquad \D := \{ z \in \C : |z| < 1 \}.
+\]
+Tanto a $\mathfrak{H}$ como $\D$ los vamos a dotar de estructura de variedad analítica.
+
+% \begin{mydef}
+% 	Dada una matriz
+% 	\[
+% 		\gamma :=
+% 		\begin{bmatrix}
+% 			a & b \\
+% 			c & d
+% 		\end{bmatrix}
+% 		\in \GL_2(\R)
+% 	\]
+% 	y un punto $z \in \C$ definiremos temporalmente $j(\gamma, z) := cz + d \in \C$, de modo que se tiene la siguiente relación
+% 	\[
+% 		\gamma\cdot
+% 		\begin{bmatrix}
+% 		z \\ 1
+% 		\end{bmatrix} =
+% 		\begin{bmatrix}
+% 		az + b \\ cz + d
+% 		\end{bmatrix} =:
+% 		j(\gamma, z)
+% 		\begin{bmatrix}
+% 		\gamma\cdot z \\ 1
+% 		\end{bmatrix},
+% 	\]
+% 	donde esto define el símbolo $\gamma\cdot z$, lo cual determina una acción $\GL_2(\R) \acts \C$.
+% \end{mydef}
+\begin{mydef}
+	Sobre la esfera de Riemann $\PP^1(\C)$, podemos considerar las \strong{transformaciones de Möbius} asociadas a matrices inversibles
+	\[
+		\gamma :=
+		\begin{bmatrix}
+			a & b \\
+			c & d
+		\end{bmatrix}
+		\in \GL_2(\R), \qquad \gamma\cdot z := \frac{az + b}{cz + d}.
+	\]
+	Las cuales determinan una acción analítica $\GL_2(\R) \acts \PP^1(\C)$.
+\end{mydef}
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	Dado $\gamma \in \GL_2(\R)$ y un punto $z \in \C$, se satisface que
+	\begin{equation}
+		\Im(\gamma\cdot z) = \frac{\det(\gamma)\Im z}{|cz + d|^2}.
+		\label{eqn:im_part_of_gl2_act}
+	\end{equation}
+	En particular, $\mathfrak{H}$ es $\GL_2^+(\R)$-estable.
+\end{slem}
+
+El teorema del mapeo de Riemann nos dice que:
+\begin{slem}
+	Las variedades $\mathfrak{H}$ y $\D$ son biholomorfas.
+\end{slem}
+\addtocounter{thmi}{-1}
+Recuérdese que
+\[
+	\GL_2^+(\R) := \{ \gamma \in \GL_2(\R) : \det\gamma > 0 \} \supseteq \SL_2(\R).
+\]
+Dentro de $\GL_2^+(\R)$ tenemos a todos los elementos de la forma $\lambda I_2$ para $\lambda \in \R^\times$, donde $I_2$ es la matriz identidad;
+a estos elementos les llamaremos \strong{escalares}\index{escalares (elementos de $\GL_2(\R)$)}
+y esto determina un monomorfismo canónico $\R^\times \hookto \GL_2^+(\R)$.
+También será útil el grupo simétrico especial
+\[
+	\SO_2(\R) := \left\{ 
+		\begin{bmatrix}
+			\phantom{-}\cos\theta & \sin\theta \\
+			-\sin\theta & \cos\theta
+		\end{bmatrix}
+		: 0 \le \theta < 2\pi
+	\right\} \subseteq \SL_2(\R).
+\]
+
+\begin{thm}
+	Se cumplen:
+	\begin{enumerate}
+		\item Para todo $z \in \mathfrak{H}$ existe un $\gamma \in \SL_2(\R)$ tal que $\gamma\cdot\ui = z$.
+		\item El homomorfismo $\iota$ induce un isomorfismo
+			\[
+				\GL_2^+(\R) / \R^\times \cong \SL_2(\R) / \{ \pm 1 \} \cong \Aut_{\mathsf{An}}(\mathfrak{H}).
+			\]
+		\item El grupo simétrico ortogonal $\SO_2(\R) = \{ \gamma \in \SL_2(\R) : \gamma\cdot\ui = \ui \}$ es el estabilizador del $\ui$.
+	\end{enumerate}
+\end{thm}
+De esto extraemos dos consecuencias:
+\begin{cor}
+	El espacio de clases laterales (derechas) $\SL_2(\R)/\SO_2(\R)$ es homeomorfo a $\mathfrak{H}$.
+\end{cor}
+\begin{proof}
+	Se sigue de aplicar el inciso 3 del teorema anterior al\break teorema~\ref{thm:topological_orbit_stab}.
+\end{proof}
+\begin{cor}
+	La acción (canónica) de un subgrupo $\Gamma \le \Aut_{\mathsf{An}}(\mathfrak{H})$ es propiamente discontinua sobre $\mathfrak{H}$
+	syss $\Gamma$ es un subgrupo discreto de $\SL_2(\R)$.
+\end{cor}
+\begin{proof}
+	Se sigue de aplicar el inciso 2 del teorema anterior al\break teorema~\ref{thm:proper_discont_action}.
+\end{proof}
+
+Para la siguiente definición, nótese que si $\gamma \in \GL_2(\R)$ es un elemento escalar, entonces fija a todo $\mathfrak{H}$.
+\begin{mydef}
+	Sea $\gamma
+	% := \begin{bsmallmatrix}
+	% 	a & b \\
+	% 	c & d
+	% \end{bsmallmatrix}
+	\in \GL_2(\R) \setminus \R^\times$ una matriz inversible no escalar, entonces su polinomio característico es
+	\[
+		\psi(t) = \psi_\gamma(t) := t^2 - \tr(\gamma) \, t + \det\gamma \in \R[t].
+	\]
+	el cual tiene discriminante $\delta := \tr(\gamma)^2 - 4\det\gamma$.
+	Decimos que $\gamma$ es un elemento \strong{elíptico}\index{elíptico!(elemento de $\GL_2(\R)$)}
+	(resp.\ \strong{parabólico}\index{parabólico!(elemento de $\GL_2(\R)$)}, \strong{hiperbólico}\index{hiperbólico!(elemento de $\GL_2(\R)$)})
+	si $\delta < 0$ (resp.\ $\delta = 0$, $\delta > 0$).
+
+	Dado un subgrupo $\Gamma \le \GL_2^+(\R)$ y un par de puntos $x, y \in \PP^1(\C)$,
+	denotaremos por $\Gamma_x := \Stab_x \cap \Gamma$ al estabilizador de $x$ respecto a la acción de $\Gamma$
+	y por $\Gamma_{x, y} := \Gamma_x \cap \Gamma_y$.
+	Si $x \in \R \cup \{ \infty \}$, entonces denotaremos por $\Gamma_x^{(p)}$ al subgrupo de estabilizadores parabólicos en $\Gamma_x$.
+\end{mydef}
+Como las raíces del polinomio característico corresponden a valores propios, vemos lo siguiente:
+\begin{cor}
+	Sea $\gamma \in \GL_2(\R) \setminus \R^\times$ no escalar y considere la acción analítica $\GL_2(\R) \acts \PP^1(\C)$.
+	\begin{enumerate}
+		\item $\gamma$ es elíptico syss el endomorfismo de $\gamma$ (sobre $\PP^1(\C)$) tiene exactamente dos puntos fijos $z_0$ y $\overline{z}_0$,
+			con $z_0 \in \mathfrak{H}$.
+		\item $\gamma$ es  parabólico syss $\gamma$ tiene exactamente  un punto fijo      $z \in \R \cup \{ \infty \}$.
+		\item $\gamma$ es hiperbólico syss $\gamma$ tiene exactamente dos punto fijos, ambos en $\R \cup \{ \infty \}$.
+	\end{enumerate}
+\end{cor}
+\begin{ex}
+	En $\SL_2\R$ hay dos matrices distinguidas con las que trabajaremos bastante,
+	llamadas la \strong{matriz de traslación} y \strong{matriz de salto} resp.:
+	\[
+		T :=
+		\begin{bmatrix}
+			1 & 1 \\
+			0 & 1
+		\end{bmatrix}, \qquad
+		S :=
+		\begin{bmatrix}
+			0 & -1 \\
+			1 & 0
+		\end{bmatrix}.
+	\]
+	Calculando el polinomio característico, es fácil comprobar que $T$ es parabólica y que $S$ es elíptica;
+	pero podemos ser más específicos y notar que el único punto fijo de $T$ es $\infty$, mientras que $S$ fija a los puntos $\pm\ui$.
+\end{ex}
+
+\begin{prop}\label{thm:stab_calculations}
+	Se cumplen:
+	\begin{align*}
+		\GL_2^+(\R)_\ui &= \R^\times \cdot \SO_2\R, \\
+		\GL_2^+(\R)_\infty &= \left\{
+			\begin{bmatrix}
+				a & b \\
+				0 & d
+			\end{bmatrix} : a, d \in \R^\times, \; b \in \R, \; ad > 0
+		\right\}, \\
+		\GL_2^+(\R)_\infty^{(p)} &= \left\{
+			\begin{bmatrix}
+				a & b \\
+				0 & a
+			\end{bmatrix} : a \in \R^\times, \; b \in \R
+		\right\}, \\
+		\GL_2^+(\R)_{\infty, 0} &= \left\{
+			\begin{bmatrix}
+				a & 0 \\
+				0 & d
+			\end{bmatrix} : a, d \in \R^\times, \; ad > 0
+		\right\}.
+	\end{align*}
+	Además, dado $z \in \mathfrak{H}$ se cumple que $\GL_2^+(\R)_z$ es conjugado de $\GL_2^+(\R)_\ui$
+	y dados $x, y \in \R\cup\{ \infty \}$ se cumple que $\GL_2^+(\R)_x, \GL_2^+(\R)_x^{(p)}$ y $\GL_2^+(\R)_{x, y}$
+	son conjugados de $\GL_2^+(\R)_\infty, \GL_2^+(\R)_\infty^{(p)}$ y $\GL_2^+(\R)_{\infty, 0}$ resp., por un elemento en $\SL_2\R$.
+\end{prop}
+\begin{proof}
+	Las primeras igualdades son un mero ejercicio.
+	La conjugación se deduce de que, dado $z \in \mathfrak{H}$, existe $\gamma \in \SL_2\R$ tal que $\gamma\cdot z = \ui$;
+	y dados $x, y \in \R \cup \{ \infty \}$, existe $\alpha \in \SL_2\R$ tal que $\alpha\cdot x = \infty$ y $\alpha\cdot y = 0$.
+\end{proof}
+
+\begin{mydefi}
+	Un \strong{grupo fuchsiano}\index{grupo!fuchsiano} $\Gamma$ es un subgrupo discreto de $\SL_2(\R)$,
+	siempre dotado de su acción canónica $\Gamma \acts \mathfrak{H}$; se denota
+	$$ Z(\Gamma) := \Gamma \cap \{ \pm 1 \}. $$
+	Un punto $z \in \mathfrak{H} \cup \R \cup \{ \infty \}$ se dice \strong{elíptico}\index{elíptico!(elemento de $\mathfrak{H}^*$)}
+	(resp.\ \strong{parabólico}\index{parabólico!(elemento de $\mathfrak{H}^*$)}, \strong{hiperbólico}\index{hiperbólico!(elemento de $\mathfrak{H}^*$)})
+	relativo a $\Gamma$ si existe un elemento $\gamma$ elíptico (resp.\ parabólico, hiperbólico) de $\Gamma$ tal que $z$ es un punto fijo de $\gamma$.
+	Los puntos parabólicos respecto a $\Gamma$ se dicen \strong{cúspides}\index{cúspide (grupo fuchsiano)} de $\Gamma$.
+	% Dados dos puntos $z, w \in \mathfrak{H} \cup \R \cup \{ \infty \}$, denotaremos por $\Gamma_z$ el estabilizador de $z$ por $\Gamma \acts \mathfrak{H}$
+	% y por $\Gamma_{z, w} := \Gamma_z \cap \Gamma_w$.
+\end{mydefi}
+El siguiente ejemplo es central en la teoría:
+\begin{ex}
+	$\SL_2\Z$ es un grupo fuchsiano.
+	Esto se puede comprobar, por ejemplo, así:
+	la topología de $\SL_2(\R)$ es la subespacio de $\Mat_2(\R) \approx \R^4$ y
+	$\SL_2\Z$ es un subespacio del subgrupo discreto $\Z^4 \le_f \R^4$.
+\end{ex}
+
+\begin{thm}
+	Sea $\Gamma$ un grupo fuchsiano.
+	\begin{enumerate}
+		\item Dado un punto elíptico $z \in \mathfrak{H}$   de $\Gamma$, entonces $\Gamma_z$ es un grupo cíclico finito.
+		\item Dada una cúspide $x \in \R \cup \{ \infty \}$ de $\Gamma$, entonces $\Gamma_x \subseteq \SL_2(\R)_x^{(p)}$ y
+			\[
+				\Gamma_x / Z(\Gamma) \cong \Z.
+			\]
+			Además, dado $\sigma \in \SL_2(\R)$ tal que $\sigma \cdot x = \infty$, se cumple que
+			\[
+				\sigma \Gamma_x \sigma^{-1}\cdot \{ \pm 1 \} = \left\{ \pm
+					\begin{bmatrix}
+						1 & h \\
+						0 & 1
+					\end{bmatrix}^m : m \in \Z, h > 0
+				\right\}.
+			\]
+		\item Si $\Gamma_{x, y} \ne Z(\Gamma)$ para $x \ne y \in \R \cup \{ \infty \}$, se verifica que
+			\[
+				\Gamma_{x,y} / Z(\Gamma) \cong \Z.
+			\]
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Como $\SL_2\R$ actúa transitivamente en $\mathfrak{H}$,
+			vemos que $\SL_2(\R)_z$ es conjugado al estabilizador $\SL_2(\R)_\ui = \SO_2(\R)$, el cual es un grupo abeliano compacto
+			ya que es topológicamente isomorfo a $\SS^1 \le \C^\times$.
+			Luego $\Gamma_z = \Gamma \cap \SL_2(\R)_z$ es compacto y discreto, ergo, finito y todo subgrupo finito de $\SS^1$ es cíclico.
+		\item Tomando conjugados podemos suponer que $x = \infty$ es una cúspide de $\Gamma$.
+			Así, debe existir $\gamma =
+			\begin{bsmallmatrix}
+				1 & h \\
+				0 & 1
+			\end{bsmallmatrix} \in \Gamma_\infty$ con $h \ne 0$ (por la prop.~\ref{thm:stab_calculations}).
+
+			Supongamos que existe $\alpha \in \Gamma_x$ que no es ni escalar ni parabólico,
+			entonces es de la forma $\alpha = 
+			\begin{bsmallmatrix}
+				a & b \\
+				0 & a^{-1}
+			\end{bsmallmatrix}$ con $a \ne \pm 1$.
+			Sustituyendo quizá $\alpha$ por $\alpha^{-1}$ podemos suponer que $|a| < 1$ y, por lo tanto,
+			\[
+				\alpha^n \gamma \alpha^{-n} =
+				\begin{bmatrix}
+					1 & a^{2n}h \\
+					0 & 1
+				\end{bmatrix} \in \Gamma
+			\]
+			para todo $n \in \N$, pero estos se acumulan en $I_2 \in \Gamma$, lo que contradice que $\Gamma$ sea discreto.
+
+			Finalmente, tenemos que
+			\[
+				\Gamma_\infty \le \SL_2(\R)^{(p)}_\infty = \left\{ \pm
+					\begin{bmatrix}
+						1 & b \\
+						0 & 1
+					\end{bmatrix} : b \in \R 
+				\right\},
+			\]
+			y los únicos subgrupos discretos de $\SL_2(\R)^{(p)}_\infty$ son los de la forma del enunciado.
+
+		\item Tras conjugar nos reducimos al caso de $\Gamma_{\infty, 0}$ y notamos que
+			\[
+				\Gamma_{\infty, 0} \le \SL_2(\R)_{\infty, 0} = \left\{
+					\begin{bmatrix}
+						a & 0 \\
+						0 & a^{-1}
+					\end{bmatrix} : a \in \R^\times
+				\right\},
+			\]
+			donde el grupo de la derecha es topológicamente isomorfo a $\R^\times$.
+			Luego, notamos que los únicos subgrupos discretos no triviales de $\R^\times / \{ \pm 1 \}$ son
+			los cíclicos infinitos $\{ a^m : m \in \Z \}$.
+			\qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{cor}
+	Si $\Gamma$ es un grupo fuchsiano y $\Gamma' \le \Gamma$ es un subgrupo de índice finito,
+	entonces las cúspides de $\Gamma'$ son exactamente las misma de $\Gamma$.
+\end{cor}
+\begin{proof}
+	En el teorema anterior concluimos que $x \in \R\cup\{ \infty \}$ es una cúspide syss su estabilizador $\Gamma_x$ es infinito,
+	lo cual no cambia pasando a un subgrupo de índice finito.
+\end{proof}
+
+\begin{mydef}
+	Sea $\Gamma$ un grupo fuchsiano.
+	El conjunto de cúspides de $\Gamma$ lo denotaremos $P_\Gamma$ y denotaremos también:
+	\[
+		\mathfrak{H}^* = \mathfrak{H}^*_\Gamma := \mathfrak{H} \cup P_\Gamma.
+	\]
+	Dado $r > 0$ real, definimos
+	\[
+		U_r := \{ z \in \mathfrak{H} : \Im z > r \}, \qquad U_r^* := U_r \cup \{ \infty \}.
+	\]
+	Dotamos a $\mathfrak{H}^*$ de la siguiente topología: para un punto $z \in \mathfrak{H}$ consideramos una base de entornos usual de $\mathfrak{H}$
+	y para una cúspide $x \in P_\Gamma$ consideramos la base de entornos de la forma $\sigma^{-1}U_r^*$, donde $r > 0$ y $\sigma$ recorre los elementos
+	de $\SL_2(\R)$ tales que $\sigma\cdot x = \infty$.
+\end{mydef}
+\begin{prop}
+	Para todo grupo fuchsiano $\Gamma$, el espacio $\Gamma \coquot \mathfrak{H}^*$ es de Hausdorff.
+\end{prop}
+
+\begin{mydef}
+	% Denotemos por $\pi \colon \mathfrak{H}^* \epicto \Gamma \coquot \mathfrak{H}^*$ la identificación.
+	Un elemento de $\Gamma \coquot \mathfrak{H}^*$ se dice un \strong{punto elíptico} (resp.\ una \strong{cúspide})
+	si es la imagen de un punto elíptico (resp.\ una cúspide).
+	Los puntos que no son ni elípticos ni cúspides se dicen \strong{ordinarios}\index{punto!ordinario}\index{ordinario (punto)}.
+
+	Un grupo fuchsiano $\Gamma$ se dice \strong{de primer tipo}\index{grupo!fuchsiano!de primer tipo} si $\Gamma \coquot \mathfrak{H}^*$ es compacto.
+\end{mydef}
+\begin{thm}
+	Si $\Gamma$ es un grupo fuchsiano de primer tipo, entonces $\Gamma \coquot \mathfrak{H}^*$ contiene solo finitos puntos elípticos y cúspides.
+\end{thm}
+
+\subsection*{$\Gamma \coquot \mathfrak{H}^*$ como superficie de Riemann}
+Recuérdese que una \strong{variedad analítica} de dimensión $n$ (sobre $\C$) es una variedad topológica de dimensión $2n$
+dotada de una \emph{estructura analítica}, vale decir, de un atlas maximal cuyos mapas de transición son biholomorfos.
+Una \emph{superficie de Riemann} es una curva analítica compacta.
+
+Que $\Gamma \coquot \mathfrak{H}^*$ sea una variedad topológica de dimensión 2 es un ejercicio para el lector, de modo que nos preocuparemos
+de explicitar un atlas (que se extenderá a una estructura analítica).
+Denotemos por $\varphi \colon \mathfrak{H}^* \epicto \Gamma \coquot \mathfrak{H}^*$ la proyección canónica,
+para un punto $z \in \mathfrak{H}^*$ fijo denotaremos por $U_z \subseteq \mathfrak{H}^*$ un entorno abierto tal que
+\[
+	\Gamma_z = \{ \gamma \in \Gamma : \gamma\cdot U \cap U = \emptyset \}.
+\]
+Esto induce una inyección canónica $\Gamma_z \coquot U_z \hookto \Gamma \coquot \mathfrak{H}^*$,
+mediante la cual $\Gamma_z \coquot U_z$ es un entorno abierto de $z$.
+\begin{itemize}
+	\item Si $z$ es un punto ordinario, entonces $\Gamma_z = Z(\Gamma)$ y $U_z \epicto \Gamma_z \coquot U_z$ es un homeomorfismo;
+		de modo que declaramos que $(\Gamma_z \coquot U_z, \varphi^{-1})$ es una carta de $z$.
+	\item Si $z$ es un punto elíptico...
+\end{itemize}
+
+\section{Formas automorfas}
+\begin{mydef}
+	Sea $f \colon \mathfrak{H} \to \PP^1(\C)$ una función meromorfa y sea $k \in \Z$ un entero.
+	Dado $\gamma :=
+	\begin{bsmallmatrix}
+		a & b \\
+		c & d
+	\end{bsmallmatrix} \in \GL_2^+(\R)$, se define
+	\[
+		(f|_k \gamma)(z) := \frac{\det(\gamma)^{k/2} f(\gamma\cdot z)}{cz + d}.
+	\]
+\end{mydef}
+\begin{cor}
+	Sea $f \colon \mathfrak{H} \to \PP^1(\C)$ una función meromorfa y sea $k \in \Z$ un entero. Entonces:
+	\begin{enumerate}
+		\item Para todo $\alpha, \beta \in \GL_2^+(\R)$ se cumple que $f|_k \alpha \beta = (f|_k \alpha)|_k \beta$.
+		\item Para una matriz escalar $\gamma = \lambda I_2 \in \GL_2^+(\R)$ (con $\lambda \in \R^\times$),
+			se cumple que $f|_k \gamma = (\sign\gamma)^k f$.
+	\end{enumerate}
+\end{cor}
+
+\begin{mydefi}
+	Sea $\Gamma$ un grupo fuchsiano.
+	Se dice que una función meromorfa $f \colon \mathfrak{H} \to \PP^1(\C)$ es una \strong{forma automorfa}\index{forma!automorfa} de peso $k$
+	con respecto a $\Gamma$ o una \strong{$\Gamma$-forma automorfa} de peso $k$ si
+	$$ \forall \gamma \in \Gamma \qquad f|_k \gamma = f. $$
+	Denotaremos por $\Omega_k(\Gamma)$ al conjunto de $\Gamma$-formas automorfas de peso $k$.
+\end{mydefi}
+\begin{cor}
+	Sea $\Gamma$ un grupo fuchsiano y sea $k \in \Z$. Entonces:
+	\begin{enumerate}
+		\item $\Omega_k(\Gamma)$ es un $\C$-subespacio vectorial de $C^{\rm an}(\mathfrak{H}, \PP^1(\C))$.
+		\item Si $\Gamma' \subseteq \Gamma$ es otro grupo fuchsiano, entonces $\Omega_k(\Gamma') \supseteq \Omega_k(\Gamma)$.
+		\item Dados $f \in \Omega_k(\Gamma)$ y $g \in \Omega_l(\Gamma)$ (con $l \in \Z$),
+			entonces $f\cdot g \in \Omega_{k+l}(\Gamma)$.
+		\item Si $k$ es impar y $-1 \in \Gamma$, entonces $\Omega_k(\Gamma) = \{ 0 \}$.
+	\end{enumerate}
+\end{cor}
+
+\printbibliography[segment=\therefsegment, check=onlynew, notcategory=historical]
+% \bibbycategory[segment=\therefsegment, check=onlynew]
+
+\end{document}

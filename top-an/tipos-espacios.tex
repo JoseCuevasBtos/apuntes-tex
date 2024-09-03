@@ -1,0 +1,1967 @@
+\documentclass[topologia-analisis.tex]{subfiles}
+\begin{document}
+
+\chapter{Espacios topológicos con estructura}
+
+\section{Espacios (pseudo)métricos}
+\begin{mydefi}[Espacio métrico]\index{espacio!métrico}
+	Sea $X$ un espacio y $d : X\times X \to [0, +\infty)$ una función tal que para todos $x,y\in X$ satisfaga:
+	\begin{enumerate}
+		\item $d(x, x) = 0$.
+		\item $d(x, y) = d(y, x)$ (simetría).
+		\item $d(x, z) \le d(x, y) + d(y, z)$ (desigualdad triangular).
+	\end{enumerate}
+	Entonces $d$ se dice una \strong{pseudométrica}.
+	Si $x \ne y$, pero $d(x, y) = 0$, entonces decimos que $x,y$ son \strong{indistinguibles}.
+	Una pseudométrica es una \strong{métrica} si no posee puntos indistinguibles.
+	Un par $(X, d)$ donde $d$ es una (pseudo)métrica se dice un espacio (pseudo)métrico.
+
+	Se definen:
+	$$ B_r(x) := \{ y\in X : d(x, y) < r \}, \quad \overline B_r(x) := \{ y\in X : d(x, y) \le r \} $$
+	donde a la primera se le dice \strong{bola abierta} centrada en $x$ de radio $r$ y a la segunda \strong{bola cerrada}.
+	La topología estandar a la que dotaremos a un espacio pseudométrico, es aquella que tiene por subbase a las bolas abiertas.
+\end{mydefi}
+
+Bajo ésta definición es claro que las bolas abiertas son abiertas.
+Veamos más:
+\begin{prop}
+	En un espacio pseudométrico, las bolas cerradas son efectivamente conjuntos cerrados.
+\end{prop}
+\begin{proof}
+	Vamos a probar que $\overline B_r(x) =: F$ es cerrado.
+	Para ello hay que ver que $F^c$ sea abierto.
+	Sea $y \in F^c$, esto quiere decir que $d(x, y) > r$, luego sea $s := d(x, y) - r > 0$, entonces veremos que $B_s(y) \subseteq F^c$.
+	Sea $z \in B_s(y)$, por definición se cumple que $d(y, z) < s$, luego:
+	\begin{equation}
+		d(x, z) \ge d(x, y) - d(y, z) > r - s = d(x, y) - ( d(x, y) - r ) = r. \tqedhere
+	\end{equation}
+\end{proof}
+Estaríamos tentados a decir que $ \overline{ B_r(x) } = \overline B_r(x) $, pero ésta igualdad no siempre se da.
+
+\begin{exn}[$D_2$]
+	\addnamedexample{$D_2$}{Un espacio donde $\overline{ B_1(x) } \ne \overline B_1(x)$}
+	Consideremos a $D_2 = \{a, b\}$ [el espacio discreto de dos elementos], cuya topología viene inducida por la métrica discreta
+	$$ d(x, y) =
+	\begin{cases}
+		0, &x=y \\
+		1, &x\ne y
+	\end{cases} $$
+	Luego sea $B_1(a) = \{ y : d(a, y) < 1 \} = \{a\}$ y notemos que $B_1(a)$ es cerrado en éste espacio (pues todo conjunto es abierto y cerrado en el
+	espacio discreto), luego
+	$$ \overline{B_1(a)} = \{a\} \ne \{a, b\} = \overline B_1(a). $$
+\end{exn}
+
+\begin{mydef}
+	Se dice que un espacio pseudométrico es \strong{métricamente denso} si para todo par de puntos distintos y distinguibles $x, y$ con $r := d(x, y)$,
+	y para todo real $s > 0$ existe un tercer punto $z$ tal que $0 < d(x, z) < s$ y $d(z, y) < r$ (ver fig.~\ref{fig:metrically-dense}).
+\end{mydef}
+\begin{figure}[!hbt]
+	\centering
+	\includegraphics[scale=1]{metrically-dense.pdf}
+	\caption{Representación de ser métricamente denso.}%
+	\label{fig:metrically-dense}
+\end{figure}
+
+\begin{thm}
+	Dado un espacio pseudiométrico $X$, son equivalentes:
+	\begin{enumerate}
+		\item $X$ es métricamente denso.
+		\item $\overline{ B_r(x) } = \overline B_r(x)$ para todo $x\in X$ y todo $r > 0$.
+		\item $\Fr B_r(x) = \{ y : d(x, y) = r \}$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Es claro que $(2) \iff (3)$.
+	\par
+	$(1) \implies (2)$.
+	Ya vimos que $F := \overline B_r(x)$ es cerrado, así que basta ver que todo punto de $F$ es adherente a $B_r(x)$.
+	Sea $y \in F$, si $x,y$ son indistinguibles entonces es claro que $y$ es adherente, sino sea $s > 0$,
+	por definición de métricamente denso existe $z$ tal que $z \in B_s(y) \cap B_r(x)$, es decir, $y$ es adherente a $B_r(x)$.
+	\par
+	El recíproco queda de ejercicio al lector.
+\end{proof}
+
+\begin{thmi}
+	Sean $X, Y$ espacios pseudométricos, entonces son equivalentes:
+	\begin{enumerate}
+		\item $f \colon X \to Y$ es continua.
+		\item Para todo $x \in X$ y todo $\epsilon > 0$ existe un $\delta > 0$ tal que $0 < d(x, y) < \delta \implies d( f(x), f(y) ) < \epsilon$.
+	\end{enumerate}
+\end{thmi}
+\begin{hint}
+	Basta notar que los abiertos básicos son bolas abiertas.
+\end{hint}
+
+\begin{lem}
+	Dado $X$ un espacio pseudométrico, $x,y\in X$ y $A \subseteq X$ no vacío, entonces se satisface:
+	$$ | d(x, A) - d(y, A) | \le d(x, y) $$
+\end{lem}
+\begin{proof}
+	Sea $a \in A$, por definición y por desigualdad triangular se cumple
+	$$ d(x, A) \le d(x, a) \le d(x, y) + d(y, a) $$
+	y como la desigualdad de los extremos se cumple para todo $a\in A$ se tiene que $d(x, A) - d(x, y)$ es una cota inferior de $d(y, a)$, por lo que,
+	por definición de ínfimo se tiene que
+	$$ d(x, A) - d(x, y) \le d(y, A) \iff d(x, A) - d(y, A) \le d(x, y) $$
+	y análogamente se prueba que $d(y, A) - d(x, A) \le d(x, y)$.
+\end{proof}
+\begin{thm}
+	Sea $X$ un espacio pseudométrico y $A \subseteq X$ no vacío, entonces la función $d(-, A) \colon X \to [0, \infty)$ es continua.
+\end{thm}
+
+Sin embargo, nótese que la propiedad de <<ser métrico>> no es estrictamente topológica, ya que no es intrínseca a la topología misma del espacio,
+por ello se introducen las dos siguientes definiciones:
+\begin{mydefi}
+	Un espacio topológico $X$ se dice \strong{metrizable} si existe una métrica $d$ tal que induce la misma topología.
+	% Además, $X$ se dice \strong{topológicamente completo}\index{completo (topológicamente)} si es metrizable, y existe una métrica $d$
+	% que es completa e induce su topología
+\end{mydefi}
+
+\begin{thm}
+	Todo espacio metrizable es perfectamente normal.
+\end{thm}
+
+\begin{prop}
+	Si un espacio es metrizable, entonces su topología está inducida por una métrica acotada.
+\end{prop}
+\begin{proof}
+	Sea $X$ un espacio topológico y $d$ la métrica que induce su topología.
+	Denótese $\underline{d}$ a la métrica dada por:
+	$$ \underline{d}(x, y) := \min\{1, d(x, y)\}. $$
+	Es fácil notar que efectivamente es una métrica, y $ \mathcal{B} := \{ B(x, 1/n) : x\in X, n\in\N_{\ne 0} \} $ es una base para ambas topologías,
+	como las bases inducen una única topología se concluye que concuerdan.
+\end{proof}
+En general denotaremos $\underline{d}$ a la métrica dada en la demostración.
+
+\begin{thm}
+	La suma de espacios métricos es métrico.
+\end{thm}
+\begin{proof}
+	Sea $Y := \bigoplus_{i\in I} X_i$ y sea $d_i$ la métrica sobre $X_i$ resp.
+	Entonces definimos $d$ sobre $Y$ como:
+	$$ d(x, y) :=
+	\begin{cases}
+		\underline{d}_i(x, y) & \exists i\in I : x,y\in X_i \\
+		1		     & \text{en otro caso}
+	\end{cases} $$
+	Luego es claro que la base inducida por $d$ son abiertos de cada $X_i$ o $Y$ entero, lo que induce la topología de la suma.
+\end{proof}
+
+\begin{thm}
+	El producto a lo más numerable de espacios métricos es métrico.
+\end{thm}
+\begin{proof}
+	Sean $(X_i, d)$ espacios métricos e $Y$ su producto, veamos dos casos:
+	\begin{enumerate}[a)]
+		\item \underline{Producto finito:}
+			Es claro que
+			$$ d(\vec x, \vec y) := \sum_{i=1}^n d_i(x_i, y_i) $$
+			es una métrica que induce la topología producto.
+
+		\item \underline{Producto numerable:}
+			Acá hacemos algo parecido y definimos
+			$$ d(\vec x, \vec y) := \sum_{i=1}^n \frac{1}{2^i} \underline{d}_i(x_i, y_i) $$
+			que notemos está acotada por $ \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots = 1 $ e induce la topología producto. \qedhere
+	\end{enumerate}
+\end{proof}
+Cabe destacar que el caso infinito y general de la suma y producto de espacios metrizables depende del AE para elegir una métrica,
+pero usualmente trabajaremos con espacios donde la métrica venga elegida de antemano de modo que no habrá necesidad de invocarlo.
+
+\begin{cor}
+	El cubo de Hilbert $[0,1]^{\N}$ es metrizable.
+\end{cor}
+
+\thmdep{DE}
+\begin{thmi}[Teorema de metrización de Urysohn]\index{teorema!de metrización de Urysohn}
+	% Todo espacio regular 2AN es metrizable.
+	Un espacio 2AN es metrizable syss es regular.
+\end{thmi}
+\begin{proof}
+	$\implies$. Nótese que
+	$$ \rm metrizable \implies \text{perfectamente normal} \implies regular. $$
+	$\impliedby$. Se cumple que
+	$$ \rm regular + 2AN \overset{ \text{(\ref{thm:regular-2AN-normal})} }{ \implies } normal \implies Tychonoff $$
+	Y sabemos que todo espacio de Tychonoff 2AN está encajado en el cubo de Hilbert (\ref{thm:tychonoff-universal}) que es metrizable.
+\end{proof}
+
+\begin{thm}
+	Un espacio de Hausdorff compacto es metrizable syss es 2AN.
+\end{thm}
+\begin{proof}
+	$\impliedby$. Se cumple que
+	$$ \rm Hausdorff + compacto \overset{ \text{(\ref{thm:hausdorff-compact-normal})} }{ \implies } normal \implies regular $$
+	y todo espacio regular 2AN es metrizable por el teorema de metrización de Urysohn.
+	\par
+	$\implies$. Si $X$ es compacto entonces es de Lindelöf y si es de Lindelöf y métrico entonces es 2AN.
+\end{proof}
+\thmdep{}
+
+Y un teorema curioso:
+\begin{thm}[Alexandroff-Hausdorff]\index{teorema!de Alexandroff-Hausdorff}
+	Sea $X$ un espacio metrizable compacto.
+	Entonces existe una función $f\colon C \to X$, donde $C$ es el conjunto de Cantor, que es continua y suprayectiva.
+\end{thm}
+\begin{proof}
+	En primer lugar, recuerde que $C := \{ 0, 1 \}^\N$, de modo que se comprueba que $C$ es homeomorfo a $C^n$ para todo $n \in \N_{\ne 0}$
+	y $C^{\aleph_0}$.
+	Comencemos por probar algo más débil: hay una función continua suprayectiva $g\colon C \to [0, 1]$.
+	Los elementos de $C$ pueden verse como sucesiones $\vec x := (x_1, x_2, x_3, \dots) \in C$ donde $x_i \in \{ 0, 1 \}$, luego construimos
+	$$ g(\vec x) := \sum_{i=1}^{\infty} \frac{x_i}{2^i}, $$
+	y notamos que, por representación en base 2, se cumple que es suprayectiva.
+	Para la continuidad, notemos que todo $y \in [0, 1]$ está contenido en algún intervalo de la forma $\left( \frac{k}{2^m}, \frac{k+1}{2^{m+1}} \right)$.
+	Existe alguna representación $\vec x = (x_1, x_2, \dots, x_n, 0, 0, \dots)$ tal que $g(\vec x) = \frac{k}{2^m}$.
+	Luego la preimagen corresponde al conjunto
+	$$ \{ (x_1, x_2, \dots, x_n) \} \times \{ 0, 1 \}^\N \setminus \{ (x_1, x_2, \dots, x_n, 1, 1, \dots) \}, $$
+	el cual sí es abierto (el primer conjunto es claramente abierto y los puntos son cerrados en $C$ pues es Hausdorff).
+
+	Luego, consideramos la función $g\times g\colon C^2 \to [0, 1]^2$ la cual es continua y suprayectiva, y recordamos que $C^2 \approx C$.
+	Y así, podemos construir en general una función $h := g^{\aleph_0} \colon C \to [0, 1]^{\aleph_0} =: H$ el cual es cubo de Hilbert.
+	Todo espacio métrico compacto es de Tychonoff y 2AN, luego está encajado en el cubo de Hilbert digamos por $\iota\colon X \to H$.
+	Como $X$ es compacto, entonces $\iota[X]$ es cerrado en $H$.
+
+	Ahora probaremos que para todo $A \subseteq C$ cerrado se cumple que existe $f\colon C \to A$ continua con $f|_A = \Id_A$.
+	Construiremos $f_n\colon C \to \{ 0, 1 \}^n$ por recursión como prosigue:
+	Sea $\vec x \in C$, definimos $f_1(\vec x) := x_1$ si existe $\vec a \in A$ con $a_1 = x_1$, y definimos $f_1(\vec x) := 1 - x_1$ en otro caso.
+	Si tenemos definido $f_n(\vec x)$ definiremos $f_{n+1}(\vec x) := (f_n(\vec x), x_{n+1})$ si existe $\vec a \in A$ tal que
+	$(a_1, a_2, \dots, a_{n+1}) = (f_n(\vec x), x_{n+1})$ y $f_{n+1}(\vec x) := (f_n(\vec x), 1 - x_{n+1})$ en otro caso.
+
+	Así, podemos ver que para todo $n$ y todo $\vec x$ se cumple que $f_n(\vec x)$ coincide con las primeras $n$-ésimas coordenadas
+	de algún $\vec a \in A$.
+	Definimos $f(\vec x) := (\pi_1 f_1(\vec x), \pi_2 f_2(\vec x), \dots)$ y vemos que es una función $f\colon C \to A$ tal que $f|_A = \Id_A$;
+	falta comprobar la continuidad de $f$.
+	Para ello nótese que $f$ es continua syss $f\circ\pi_n\colon C \to \{ 0, 1 \}$ lo es para todo $n\in\N_{\ne 0}$,
+	pero $\pi_n(f(\vec x)) = \pi_n(f_n(\vec x))$, el cual sólo depende de las $n$-ésimas primeras coordenadas $(x_1, \dots, x_n)$,
+	luego es claro ver que es continua.
+
+	Finalmente definamos $A := h^{-1}[ \iota X ]$ el cual es un cerrado en $C$ por continuidad de $h$ y se cumple que existe
+	$f\colon C \to A$ continua y suprayectiva, así que $f\circ h\circ\iota^{-1} \colon C \to X$ es continua y suprayectiva.
+\end{proof}
+
+% \begin{mydef}
+%	 Un espacio es \strong{de Peano}\index{espacio!de Peano} si es metrizable, compacto, conexo y localmente conexo.
+% \end{mydef}
+% \begin{thm}
+%	 Todo espacio de Peano es arcoconexo.
+% \end{thm}
+% \begin{proof}
+
+% \end{proof}
+
+\begin{lem}
+	Sea $X, Y$ un par de espacios métricos con $Y$ completo, sea $A \subseteq X$ un subconjunto y $f \colon A \to Y$ una función continua.
+	Existe $A \subseteq A^* \subseteq X$ que es un conjunto $G_\delta$ y existe una extensión continua $f^* \colon A^* \to Y$ de $f$.
+\end{lem}
+\begin{proof}
+	Definamos la \emph{oscilación} de una función $g \colon A \to Y$ cualquiera en un abierto $U \subseteq X$ que corta a $A$ como
+	\[
+		\operatorname{osc}(g, U) := \diam g[U\cap A] = \sup\{ d(g(x), g(y)) : x, y \in U \cap A \} \le \infty.
+	\]
+	Para $x \in \overline{A}$ definamos
+	\[
+		\operatorname{osc}(g, x) := \inf\{ \operatorname{osc}(g, U) : U \text{ es un entorno de } x \}.
+	\]
+	Así, $A^* := \{ x \in \overline{A} : \operatorname{osc}(f, x) = 0 \}$ es un conjunto $G_\delta$, ya que
+	\[
+		B_n := \{ x \in \overline{A} : \operatorname{osc}(g, x) < 1/n \}
+	\]
+	es un abierto (¿por qué?) y claramente $A^* = \bigcap_{n=1}^\infty B_n$.
+	Más aún, es fácil probar que una función $g$ es continua syss $\operatorname{osc}(g, x) = 0$ para todo $x \in A$,
+	por lo que $A^* \supseteq A$ es un $G_\delta$ y $f$ se extiende continuamente a $A^*$.
+	La completitud es necesaria para construir dicha extensión.
+\end{proof}
+\begin{thm}[Lavrentieff]
+	Sean $X, Y$ un par de espacios métricos completos, sean $A \subseteq X, B \subseteq Y$ un par de subespacios y sea $f \colon A \to B$ un homeomorfismo.
+	Entonces existen $A \subseteq A^* \subseteq X, B \subseteq B^* \subseteq Y$ subconjuntos $G_\delta$ tal que $f$ se extiende
+	a un homeomorfismo $f^* \colon A^* \to B^*$.
+\end{thm}
+\begin{proof}
+	Por el lema anterior, existen extensiones continuas $f^* \colon A_0 \to Y$ y $(f^{-1})^* \colon B_0 \to X$,
+	donde $A \subseteq A_0 \subseteq X$ y $B \subseteq B_0 \subseteq Y$ son subconjuntos $G_\delta$.
+	Definamos
+	\[
+		A^* = (f^*)^{-1}[B_0] = \{ x \in A_0 : f^*(x) \in B_0 \},
+		\quad B^* = \{ y \in B_0 : (f^{-1})^*(y) \in A_0 \}
+	\]
+	los cuales son $G_\delta$ por ser preimágenes continuas de $G_\delta$.
+
+	Veamos que $f^*[A^*] = B^*$ y que es un homeomorfismo.
+	Para ello, nótese que la composición $f^* \circ (f^{-1})^* \colon A^* \to X$ es continua y se restringe a la identidad en el denso $A$,
+	de modo que ha de ser la función identidad $\Id_{A^*} \colon A^* \to A^*$ como se quiere ver.
+	Análogamente, $(f^{-1})^* \circ f^* = \Id_{B^*}$.
+\end{proof}
+
+\begin{thm}
+	Todo $G_\delta$ en un espacio métrico $X$ es homeomorfo a un cerrado de $X \times \R^\omega$.
+\end{thm}
+\begin{cor}\label{thm:Gd_sub_compl_is_compl}
+	Sea $X$ un espacio métrico y $A \subseteq X$.
+	\begin{enumerate}
+		\item Si $X$ es completamente metrizable y $A$ es un $G_\delta$, entonces $A$ también es completamente metrizable.
+		\item Si $A$ es completamente metrizable, entonces es un $G_\delta$ de $X$.
+	\end{enumerate}
+\end{cor}
+
+\section{Espacios de Baire y espacios \v Cech-completos}\label{sec:cech_complete}
+\begin{mydefi}
+	Un espacio $X$ se dice \strong{completamente metrizable} si existe una métrica $d$ sobre $X$ que es completa y que induce su topología.
+\end{mydefi}
+Ojo que inicialmente el lector pensará que un espacio métrico, como $\Q$, no es topológicamente completo puesto que su métrica no lo es;
+sin embargo, la definición implica que \textit{alguna} métrica sea completa, así que el argumento no es tan directo.
+Aún así, $\Q$ no es completamente metrizable, pero necesitamos caracterizar mejor la noción de lo que significa \textit{topológicamente}
+la cualidad de ser <<completamente metrizable>>.
+
+Un ejemplo es que el intervalo $(0, 1)$ no es completo con la métrica usual, sin embargo, si es completamente metrizable puesto que es homeomorfo a $\R$.
+
+\begin{prop}
+	Todo espacio compacto y metrizable es completamente metrizable.
+\end{prop}
+El recíproco no es cierto, basta notar que $\R$ es completamente metrizable y no compacto.
+
+\begin{mydef}
+	Sea $A \subseteq X$, se le dice un conjunto:
+	\begin{description}
+		\item[Diseminado]\index{diseminado (conjunto)} Si $\Int(\overline A) = \emptyset$.
+		\item[Primera categoría] Si es la unión numerable de diseminados.
+		\item[Segunda categoría] Si no es de primera categoría.
+	\end{description}
+\end{mydef}
+La idea es que los conjuntos diseminados son <<pequeños>>, por ejemplo, en $\R$ los conjuntos diseminados son cosas como los conjuntos finitos,
+$\Z$, $\{1/n : n>0\}$, etc. Un conjunto abierto no vacío nunca es diseminado.
+$\Q$ no es diseminado, pero sí es de primera categoría y además también tiene interior vacío.
+
+\begin{prop}
+	Sea $A \subseteq X$, entonces son equivalentes:
+	\begin{enumerate}
+		\item Ser diseminado.
+		\item $X \setminus \overline A$ es un abierto denso.
+		\item Existe $F$ cerrado tal que $A \subseteq F$ y $\Int F = \emptyset$.
+		\item Todo abierto no vacío $U$ de $X$ contiene otro abierto no vacío $V$ tal que $A \cap V = \emptyset$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Es claro que $1 \iff 2 \iff 3$.
+
+	$1\implies 4$. Sea $U$, como $X \setminus \overline A$ es un abierto denso, entonces $V := U\cap(X\setminus\overline A)$ es un abierto
+	no vacío tal que $A\cap V = \emptyset$.
+
+	$4\implies 2$. Nótese que si $V \subseteq U$ satisface que $A\cap V = \emptyset$, entonces
+	\[
+		\overline{A} \cap V \subseteq \overline{A\cap V} = \overline\emptyset = \emptyset.
+	\]
+	Luego $\emptyset \ne V \subseteq U \cap (X \setminus \overline A)$, por lo que $X \setminus \overline A$ es denso y es claramente abierto.
+\end{proof}
+
+\begin{prop}
+	Se cumplen las siguientes:
+	\begin{enumerate}
+		\item Todo abierto no vacío es no diseminado.
+		\item $\emptyset$ es de primera categoría.
+		\item Todo subconjunto de un conjunto de primera categoría es también de primera categoría.
+		\item La unión numerable de conjuntos de primera categoría es también de primera categoría.
+	\end{enumerate}
+\end{prop}
+Sin embargo, nos gustaría extender la condición 1 por <<Todo abierto no vacío es de segunda categoría>>, ésto es la base de la noción de ésta sección:
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	En un espacio topológico son equivalentes:
+	\begin{enumerate}
+		\item Todo abierto no vacío es de segunda categoría.
+		\item Todo conjunto de primera categoría tiene interior vacío.
+		\item Toda unión numerable de cerrados de interior vacío tiene interior vacío.
+		\item Toda intersección numerable de abiertos densos es también densa.
+	\end{enumerate}
+\end{slem}
+% \begin{proof}
+%	 Es claro que $1\iff 2\implies 3\iff 4$.
+% \end{proof}
+\addtocounter{thmi}{-1}
+
+\begin{mydefi}
+	Un espacio se dice \strong{de Baire}\index{espacio!de Baire} si cumple cualquiera de las condiciones del lema anterior.
+\end{mydefi}
+Claramente todo espacio de Baire es de segunda categoría, pero el converso no es cierto:
+
+\begin{exn}
+	\addnamedexample{$\R \amalg \Q$}{Un espacio de segunda categoría que no es de Baire}
+	Consideremos a $X := \R \amalg \Q = (\R\times\{0\}) \cup (\Q\times\{1\})$.
+	\par
+	Nótese que $X$ es de segunda categoría ya que $\R\times\{0\} \subseteq X$ es de segunda categoría.
+	Sin embargo, $X$ no es de Baire:
+	Nótese que $X \setminus \{(q, 1)\}$ es un abierto denso para todo $q \in \Q$, sin embargo,
+	$ \R\times\{0\} = \bigcap_{q \in \Q} X \setminus \{(q, 1)\} $ es un abierto en $X$ que no es denso.
+\end{exn}
+
+\subsection{Teorema de categorías de Baire y elección}
+Al igual que en la sección \S\ref{sec:compactness-choice} aquí nos dedicaremos a enunciar equivalencias fuertes con el axioma de elección.
+Si al lector le desinteresa le basta con revisar el teorema~\ref{thm:baire_cat_thm}.
+La ventaja es que todos los teoremas tienen más o menos la misma demostración, pero con consciencia de los distintos grados de AE admitidos en cada caso.
+
+\begin{thm}
+	Todo espacio completamente pseudometrizable y separable es de Baire.
+\end{thm}
+\begin{proof}
+	Sea $d$ una métrica completa que induce la topología sobre $X$.
+	Sea $\{p_n : n\in\N\}$ un conjunto denso de $X$, $\{D_n\}_{n\in\N}$ una familia de abiertos densos y $U_0$ un abierto no vacío de $X$.
+	Como cada $D_n$ es abierto y denso, $U_0\cap D_n$ es abierto y no vacío.
+
+	Construiremos la siguiente sucesión por recursión:
+	Sea $y_1$ el $x_i$ de menor índice tal que $y_1 \in U_0\cap D_0$ y $\epsilon_1 := 1/m$, donde $m$ es el menor índice tal que
+	$$ y_1 \in U_1 := B_{\epsilon_0}(y_0) \subseteq \overline{ B_{\epsilon_0}(y_0) } \subseteq U_0\cap D_0. $$
+	Y sea $y_{n+1}$ el $x_i$ de menor índice tal que $y_{n+1} \in U_n\cap D_n$ y $\epsilon_{n+1} := 1/m$, donde $m$ es el menor índice tal que
+	$\epsilon_{n+1} < \epsilon_n$ e $y_{n+1} \in U_{n+1} := B_{\epsilon_n}(y_0) \subseteq \overline{U}_{n+1} \subseteq U_n\cap D_n$.
+
+	Finalmente, $(y_n)_{n=1}^\infty$ es de Cauchy y, por completitud, converge a un límite $L$ tal que
+	\begin{equation}
+		L\in \bigcap_{n=1}^\infty \overline{U_n} \subseteq U_0 \cap \bigcap_{n\in\N} D_n. \tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{ex}[Un espacio metrizable que no es completamente metrizable]
+	Nótese que $\Q$ es metrizable, pero es un espacio de primera categoría, así que no es de Baire, luego no es completamente metrizable.
+\end{ex}
+
+Como señalé, casi todas las demostraciones son idénticas salvo los detalles que admiten modificaciones:
+\begin{thm}\label{thm:easy_baire}
+	Todo espacio numerablemente compacto y pseudometrizable es de Baire.
+\end{thm}
+\begin{proof}
+	Sea $d$ una métrica compatible para $X$, $\{D_n\}_{n\in\N}$ y $U_0$ como en el teorema anterior.
+
+	Ahora la sucesión no es de puntos sino sólo de abiertos y de índices:
+	Sea $k_0$ el menor índice $m$ tal que existe $x$ tal que $\overline{B(x, 1/m)} \subseteq U_0 \cap D_0$ y sea
+	$$ U_1 := \bigcup \{ B_{1/k_0}(x) : \overline{B(x, 1/k)} \subseteq U_0\cap D_0 \}, $$
+	y así sucesivamente.
+
+	Ésta sucesión es $\subseteq$-decreciente, luego notamos que si $\bigcap_{n=1}^\infty U_n = \emptyset$, entonces
+	$ \bigcup_{n=1}^\infty \overline{U_n}^c = X $, es decir, se tiene un cubrimiento numerable por abiertos de $X$,
+	pero como es numerablemente compacto se daría que algún $\overline{U_N}^c = X$, es decir, que $\overline{U_N} = \emptyset$,
+	lo que es absurdo.
+\end{proof}
+
+\begin{thm}
+	Son equivalentes:
+	\begin{enumerate}
+		\item \textbf{El axioma de elecciones numerables}.
+		\item Todo espacio completamente metrizable y totalmente acotado es de Baire.
+		\item Todo espacio completamente metrizable y 2AN es de Baire.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$1\implies 2$. Basta notar que AEN implica que totalmente acotado y completo sea equivalente a compacto.
+
+	$2\implies 3$. Basta comprobar que todo espacio 2AN es totalmente acotado.
+
+	$3\implies 1$. ...
+	\todo{Completar demostración.}
+\end{proof}
+
+\begin{thmi}\label{thm:baire_cat_thm}
+	Son equivalentes:
+	\begin{enumerate}
+		\item \textbf{El axioma de dependientes elecciones}.
+		\item \textbf{El teorema de Baire:}\index{teorema!de Baire} Todo espacio completamente pseudometrizable es de Baire.
+		\item Las dos condiciones:
+			\begin{enumerate}[(a)]
+				\item Todo espacio compacto de Hausdorff es de Baire.
+				\item El producto numerable de espacios compactos de Hausdorff es compacto.
+			\end{enumerate}
+		\item El producto numerable de espacios compactos de Hausdorff es de Baire.
+		\item El producto numerable de espacios discretos es de Baire.
+		\item $X^\N$ es de Baire para todo espacio discreto $X$.
+		\item $(\alpha X)^\N$ es de Baire para todo espacio discreto $X$.
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	$1\implies 2$. Ejercicio para el lector (\textsc{Pista:} Vea el teorema~\ref{thm:easy_baire}).
+	\par
+	$1\implies 3$. La condición (b) es el teorema~\ref{thm:countable_prod_compact}.
+	% \todoref{Insertar referencia.}
+	La condición (a) es el teorema de pseudometrizable numerablemente compacto, pero empleando el DE para elegir correctamente los abiertos
+	de la sucesión.
+
+	$2\implies 5$. Sean $\vec x := (x_n)_{n\in\N}, \vec y := (y_n)_{n\in\N} \in \prod_{i\in I} X_i$, entonces la métrica
+	$$ d( \vec x, \vec y ) :=
+	\begin{cases}
+		0, & \vec x = \vec y \\
+		2^{-\{\min n : x_n \ne y_n\}}, & \vec x \ne \vec y \\
+	\end{cases} $$
+	induce la topología producto en dicho espacio y es Cauchy completa (¿por qué?).
+
+	$5 \implies 6$. Trivial.
+	\par
+	$6 \implies 1$. Sea $(X, \rho)$ tal que para todo $x \in X$ el conjunto $\{ y : x\orho y \}$ es no vacío.
+	Considere $Y := X^\N$ como el producto de $X$ tomado como espacio discreto y definamos:
+	$$ D_n := \{ (x_n)_n \in Y : \exists m\in\N x_n\orho x_m \}, $$
+	queremos ver que los $D_n$'s son densos y abiertos.
+	Primero definamos $Z := \{ z\in X : \exists x \; x\orho z \}$ (nótese que $Z$ no es el espacio entero \textit{a priori}).
+	Entonces
+	$$ \vec x \in \prod_{i\in\N} W_i \subseteq D_n, \quad
+	W_i :=
+	\begin{cases}
+		Z\cup\{x_n\}, &i = n \\
+		X, &i \ne n
+	\end{cases} $$
+	Y por la definición de $\orho$ es claro que todo $D_n$ corta a todo abierto.
+
+	Ahora, como $Y$ es de Baire, existe $\vec x \in \bigcap_{n\in\N} D_n$, es decir,
+	$$ \forall n\in\N\; \exists m\in\N \; x_n \orho x_m $$
+	luego podemos construir $y_n$ por recursión de tal manera que $y_0\orho y_1\orho y_2\orho\dots$,
+	empleando la minimalidad del índice sobre la sucesión $\vec x$.
+
+	$3\implies 4\implies 7$. Trivial.
+	\par
+	$7\implies 1$. Sigua la misma demostración que $6\implies 1$.
+\end{proof}
+
+% \thmdep{DE}
+% \begin{thmi}[Teorema de Baire]\label{thm:baire_cat_thm}\index{teorema!de Baire}
+%	 Todo espacio completamente metrizable es un espacio de Baire.
+% \end{thmi}
+% \begin{proof}
+%	 Elijamos una métrica completa sobre $X$, vamos a probar que la intersección numerable de abiertos densos es también densa;
+%	 así pues, sean $\{D_n\}_{n\in\N}$ abiertos densos y sea $U_0$ un abierto no vacío arbitrario en $X$.
+%	 Queremos ver que $U_0$ y la intersección de los $D_n$'s se cortan, es decir, que $U_0$ corta a todo $D_n$.
+
+%	 Como $D_0$ es abierto y denso, $U_0\cap D_0$ es abierto no vacío;
+%	 elijamos $x_1 \in U_0\cap D_0$ y $\epsilon_1 < 1$ tal que $U_1 := B_{\epsilon_1}(x) \subseteq \overline{ B_{\epsilon_1}(x) } \subseteq U_0\cap D_0$.
+%	 Luego procedemos recursivamente eligiendo $x_n \in U_n\cap D_n$ y $\epsilon_n < 1/n$ tales que
+%	 $$ U_{n+1} := B_{\epsilon_n}(x) \subseteq \overline{ B_{\epsilon_n}(x) } \subseteq U_n\cap D_n \subseteq U_0\cap D_n. $$
+%	 Así pues, $(x_n)_{n=1}^\infty$ es una sucesión de Cauchy, luego converge a $L$ y claramente
+%	 \begin{equation}
+%		 L \in \bigcap_{n=1}^\infty \overline{ U_n } \subseteq U_0\cap \bigcap_{n\in\N} D_n. \tqedhere
+%	 \end{equation}
+% \end{proof}
+% \thmdep{}
+
+\subsection{Consecuencias del teorema de Baire}
+\thmdep{DE}
+\begin{thm}[de Banach-Steinhaus]\index{teorema!de Banach-Steinhaus}
+	Sea $X$ un espacio de Banach e $Y$ un espacio normado.
+	Sea $\{T_i \colon X \to Y\}_{i\in I}$ una familia de operadores continuos, son equivalentes:
+	\begin{enumerate}
+		\item Para todo $\vec x \in X$ el conjunto $\{T_i\vec x : i\in I\}$ está acotado.
+		\item El conjunto $\{ \|T_i\| : i\in I\}$ está acotado.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$2 \implies 1$. Trivial.
+	\par
+	$1 \implies 2$. Definamos los conjuntos
+	$$ E_n := \{ \vec x \in X : \forall i\in I \quad \|T_i\vec x\| \le n \} $$
+	los cuales son claramente cerrados.
+	Por hipótesis de 1 se satisface que $X = \bigcup_{n\in\N} E_n$.
+	Luego, por el teorema de categorías de Baire, algún $E_n$ debe de tener interior no vacío.
+	Es fácil ver que $E_n - E_n \subseteq E_{2n}$, luego $E_{2n}$ debe de contener alguna bola centrada en $\Vec 0$.
+	Finalmente por principio arquimediano, algún $E_N$ debe contener a la bola $\overline B_1(\Vec 0)$, por ende, el conjunto de las normas está acotado
+	por dicho $N$ como se quería probar.
+\end{proof}
+\begin{cor}
+	Sea $E$ un espacio de Banach y sea $S \subseteq E$.
+	Supongamos que para todo $f \in E^*$, el conjunto $f[S] \subseteq \R$ es acotado, entonces $S$ es acotado.
+\end{cor}
+
+\begin{thmi}[Teorema de la función abierta]
+	Sean $E, F$ un par de espacios de Banach y sea $T \colon E \to F$ una función lineal continua.
+	Son equivalentes:
+	\begin{enumerate}
+		\item $T$ es sobreyectiva.
+		\item $T$ es una aplicación abierta.
+		\item Para todo $f \in F$ existe $u \in U$ tal que $Tu = f$.
+		\item Existe una constante $C > 0$ tal que para todo $f \in F$ existe $u \in U$ con $Tu = f$ y $\|u\|_E \le C\,\|f\|_F$.
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	Es claro que $4 \implies 3 \iff 1$.
+
+	$2 \implies 4$. Sea $V := T[B_1^E(\Vec 0)]$ el cual es un entorno del origen $\Vec 0 \in F$, por lo que existe $\delta > 0$
+	tal que $V \supseteq B_{2\delta}^F(\Vec 0) \supseteq \overline{B}_\delta^F(\Vec 0)$.
+	Luego para todo $f \in F$ no nulo, vemos que $\tilde f := \delta/\|f\| \cdot f \in V$, por lo que existe $\tilde u \in E$ con $\|\tilde u\| < 1$
+	tal que $T\tilde u = \tilde f$ o equivalentemente
+	\[
+		u := \frac{\|f\|}{\delta}\cdot\tilde u \qquad Tu = f, \quad \|u\| \le \frac{1}{\delta}\|f\|.
+	\]
+	$4 \implies 2$. Sea $U \subseteq E$ abierto.
+	Para $f_0 \in T[U]$ existe $u_0 \in U$ con $Tu_0 = f_0$.
+	Por continuidad, para todo $r > 0$ se cumple que
+	\[
+		\forall y \in B_r^F(\Vec 0) \quad \exists u \in B_{Cr}^E(\Vec 0) : Tu = y.
+	\]
+	Como $U$ es abierto y $T$ es lineal, existe $r$ suficientemente pequeño tal que $u_0 \in B_{Cr}^E(\Vec 0) \subseteq U$
+	de modo que $T[U] \supseteq B_r^F(\Vec 0)$.
+
+	$3 \implies 4$. Sean
+	\[
+		F_n := \{ f \in F : \exists u : Tu = f, \; \|u\|_E \le n\|f\|_F \}.
+	\]
+	Por hipótesis, $F = \bigcup_{n\in\N} F_n$ y, como $F$ es de Banach, entonces es un espacio de Baire, por lo que los $F_n$'s no pueden
+	ser diseminados, vale decir, $\Int(\overline{F}_N) \ne \emptyset$ para algún $N$.
+	Así, para todo $f_0 \in F$, para todo $\delta$ suficientemente pequeño, $\epsilon \in (0, 1)$ y todo $f \in B_\delta(f_0)$
+	existe $u \in E$ tal que
+	\[
+		\|u\| \le N\|Tu\|, \qquad \|f - Tu\| < \epsilon.
+	\]
+	En particular, para $f = f_0$ y $\epsilon = 1$ existe $u_0$ tal que
+	\[
+		\|u_0\| \le N\|Tu_0\| \le N(\epsilon + \delta + \|f_0\|) \qquad \|f_0 - Tu_0\| < 1.
+	\]
+	Por linealidad, podemos recursivamente construir $u_m$ con $\delta = 1/m$ y $\epsilon = 1/m2^n$ tal que
+	\begin{align*}
+		\|u_{n+1}\| &\le N\left( \frac{1/m}{2^n} + \frac{1}{m} + \| {\textstyle f_0 - T\left( \sum_{i=0}^{n} u_n \right)} \|\right), \\
+		\|({\textstyle f_0 - T\left( \sum_{i=0}^{n} u_n \right)}) - Tu_{n+1} \| &< \frac{1}{m2^{n+1}}.
+	\end{align*}
+	Luego $\bar u := \sum_{n=1}^{\infty} u_n$ converge por completitud, $\|\bar u\| \le N\|T\bar u\|$ y $T\bar u = f_0$ por continuidad de $T$.
+\end{proof}
+\begin{cor}
+	Toda isomorfismo lineal continuo entre espacios de Banach es un homeomorfismo.
+\end{cor}
+\begin{cor}
+	Sea $E$ un espacio vectorial y sean $\|\,\|_1, \|\,\|_2$ un par de normas sobre $E$ con las cuales es completo.
+	Si existe $C > 0$ tal que
+	\[
+		\forall \vec x \in E \qquad \|\vec x\|_1 \le C\|\vec x\|_2,
+	\]
+	entonces las normas son equivalentes.
+\end{cor}
+
+\begin{thmi}[Teorema del gráfico cerrado]\index{teorema!del gráfico cerrado}
+	Sean $E, F$ un par de espacios de Banach y sea $T \colon E \to F$ una función lineal.
+	Si su gráfico
+	\[
+		\Gamma(T) = \{ (\vec x, T(\vec x)) : \vec x \in E \} \subseteq E\times F
+	\]
+	es cerrado, entonces $T$ es continuo.
+\end{thmi}
+\begin{proof}
+	Denotaremos por $\|\,\|_E, \|\,\|_F$ las normas de $E, F$ resp.
+	Mediante la biyección del gráfico $\vec x \mapsto (\vec x, T\vec x)$ tenemos un isomorfismo lineal $E \simeq \Gamma(T)$,
+	y la norma que define la topología subespacio de $\Gamma(T)$ es $\|\vec x\|_{\Gamma(T)} := \|\vec x\|_E + \|T\vec x\|_F$.
+	Como $\Gamma(T)$ es cerrado, esta es una norma con la cual $E$ también es completo.
+	Finalmente, como claramente $\|\,\|_E \le \|\,\|_{\Gamma(T)}$ concluimos por el corolario anterior.
+\end{proof}
+\thmdep{}
+
+\begin{advanced}
+\subsection{Espacios \v Cech-completos}
+La siguiente es una noción puramente topológica que generaliza a los espacios completamente metrizables.
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	En un espacio de Tychonoff $X$ son equivalentes:
+	\begin{enumerate}
+		\item En toda compactificación $cX$ el resto $cX \setminus c[X]$ es un conjunto $F_\sigma$.
+		\item En la compactificación de \v Cech-Stone el resto es un conjunto $F_\sigma$.
+		\item En alguna compactificación el resto es un conjunto $F_\sigma$.
+	\end{enumerate}
+\end{slem}
+\begin{proof}
+	Es claro que $1 \implies 2\implies 3$.
+
+	$3\implies 2$. Sea $cX$ una compactificación donde el resto $R := cX \setminus c[X]$ es un $F_\sigma$.
+	Luego, por maximalidad sea $f\colon \beta X \to cX$ tal que $\beta\circ f = c$.
+	Nótese que $f^{-1}[ R^c ] = f^{-1}[ c[X] ] = \beta[X] \subseteq \beta X$, de modo que $f^{-1}[R] = \beta X \setminus \beta[X]$
+	que es un $F_\sigma$ por ser la preimagen continua de un $F_\sigma$.
+
+	$2\implies 1$.
+	Sea $cX$ una compactificación arbitraria. Por maximalidad existe $f\colon \beta X \to cX$ tal que $\beta\circ f = c$.
+	Sea $\beta X \setminus \beta[X] = \bigcup_{n\in\N} F_n$, con $F_n$ cerrados.
+	Luego, como $cX \setminus c[X] = f[ \beta X \setminus \beta[X] ] = \bigcup_{n\in\N} f[ F_n ]$ y $f[ F_n ]$ es cerrado,
+	entonces $cX \setminus c[X]$ es un conjunto $F_\sigma$.
+\end{proof}
+\addtocounter{thmi}{-1}
+
+\begin{mydef}
+	Un espacio $X$ es \strong{\v Cech-completo}\index{espacio!Cech-completo@\v Cech-completo} si es de Tychonoff y satisface cualquiera
+	de las condiciones del lema anterior.
+\end{mydef}
+\begin{cor}
+	Todo espacio localmente compacto de Tychonoff es \v Cech-completo.
+\end{cor}
+\begin{cor}
+	Todo subespacio cerrado o $G_\delta$ de un espacio \v Cech-completo es también \v Cech-completo.
+\end{cor}
+
+\begin{thm}
+	En un espacio $X$ de Tychonoff, son equivalentes:
+	\begin{enumerate}
+		\item $X$ es \v Cech-completo.
+		\item Existe una familia numerable $\{ \mathcal{C}_i \}_{i\in\N}$ de cubrimientos por abiertos de $X$
+			tal que si $ \mathcal{F} $ es una familia de cerrados con la PIF y tal que para todo $i\in\N$
+			existe un $F_i \in \mathcal{F}$ y un $A_{i, j} \in \mathcal{C}_i$ con $F_i \subseteq A_{i, j}$;
+			entonces $\bigcap \mathcal{F} \ne \emptyset$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$2 \implies 1$.
+	Sea $K$ una compatificación de $X$ y, para cada $U \in \mathcal{C}_i$ sea $U^* \subseteq K$ abierto tal que $U = U^* \cap X$.
+	Claramente
+	\[
+		X \subseteq \bigcap_{i\in\N} \bigcup_{U\in \mathcal{C}_i} U \subseteq \bigcap_{i\in\N} \bigcup_{U\in \mathcal{C}_i} U^* =: G.
+	\]
+	Vamos a probar la inclusión recíproca.
+	Sea $x \in G$ y sea $\mathcal{F}_x = \{ \overline{V} \cap X : V \subseteq X \text{ es entorno de } x \}$.
+	Es claro que $\mathcal{F}_x$ es una familia de cerrados en $X$ con la PIF y que para cada índice $i$, existe $U \in \mathcal{C}_i$ tal que $x \in U^*$.
+	Como $K$ es regular, existe $V$ tal que $x \in V \subseteq \overline{V} \subseteq U^*$, de modo que $\overline{V} \cap X \subseteq U^* \cap X = U$.
+	Así, por hipótesis, $\bigcap \mathcal{F}_x \ne \emptyset \subseteq X$ y, como $\bigcap \mathcal{F}_x = \overline{\{ x \}} = \{ x \}$
+	concluimos que $x \in X$. Así, $X$ es un conjunto $G_\delta$ en $K$.
+
+	$1 \implies 2$.
+	Sea $K$ una compactificación de $X$ y supongamos que $X = \bigcap_{i\in \N} U_i$, donde $U_i \subseteq K$ son abiertos.
+	Sea
+	\[
+		\mathcal{C}_i = \{ V \cap X : V \subseteq K\text{ es abierto y } \overline{V} \subseteq U_i \},
+	\]
+	como $K$ es regular, cada $\mathcal{C}_i$ es un cubrimiento por abiertos de $X$.
+
+	Sea $\mathcal{F}$ una familia de cerrados en $X$ con la PIF con las hipótesis del enunciado.
+	Como $K$ es compacto, existe $x \in \bigcap_{A \in \mathcal{F}} \overline{A}$, donde $\overline{()}$ denota la clausura en $K$.
+	Así, por hipótesis, para cada $i\in \N$ existen $F_i \in \mathcal{F}$ y $V_i \in \mathcal{C}_i$
+	tales que $F_i \subseteq V_i \subseteq \overline{V}_i \subseteq U_i$.
+	Por lo tanto,
+	\[
+		x \in \bigcap_{i\in\N} U_i = X,
+	\]
+	y, luego, $x \in \bigcap_{A \in \mathcal{F}} (\overline{A} \cap X) = \bigcap \mathcal{F}$.
+\end{proof}
+
+Como corolario obtenemos lo siguiente:
+\begin{thm}
+	Un espacio metrizable es \v Cech-completo syss es completamente metrizable.
+\end{thm}
+\begin{proof}
+	$\impliedby$.
+	Si $X$ es métrico y completo, entonces $\mathcal{C}_n := \{ B_{1/n}(x) : x \in X \}$ satisface las hipótesis del teorema anterior.
+	% (ya que, para $n$ suficientemente grande, los elementos).
+
+	$\implies$.
+	Supongamos que $X$ es metrizable y \v Cech-completo, sea $\widehat{X}$ una compleción de $X$ y $c\widehat{X}$ una compactificación.
+	Luego, $c \widehat{X}$ es una compactificación de $X$, por lo que $X$ es un subconjunto $G_\delta$ de $c\widehat{X}$ y,
+	por el corolario~\ref{thm:Gd_sub_compl_is_compl} concluímos.
+\end{proof}
+
+\begin{prop}
+	El producto numerable de espacios \v Cech-completos es también \v Cech-completo.
+\end{prop}
+
+\begin{thmi}[Teorema de categorías de Baire]
+	Todo espacio \v Cech-completo es de Baire.
+\end{thmi}
+\todo{Escribir demostración (ver \cite[196-198]{engelking:top}).}
+\end{advanced}
+
+\section{Espacios uniformes}
+El estudio de los espacios métricos demuestra que conforman una clase extremadamente distinguida de espacios en la topología general (énfasis en lo último,
+nótese que en la topología diferencial se estudian las \textit{variedades diferenciales} y no es difícil ver que todas ellas son espacios métricos, y claramente
+su estudio no es menos difícil por ello). No obstante, es particularmente fuerte exigir, además de una noción de cercanía, un número real asociado.
+Ésto asemeja la teoría de distancias sobre geometrías de Hilbert, en donde, los axiomas no exigen una medida natural entre puntos, sino que sólo exigen
+una manera natural de comparar distancias (contrástese con la geometría de Birkhoff).
+La idea general está en que si exigimos una idea de cercanía global, pero sin necesidad de un real asociado, obtenemos varios de los resultados previos
+y además ampliamos arduamente nuestra clase de espacios topológicos: de hecho, una de las ventajas que ganamos con los espacios uniformes son un lenguaje
+con el cual definir topológicamente ciertos tipos de espacios de funciones e incluso estructuras sobre grupos topológicos.
+
+Volvamos al caso de los espacios métricos, la idea que queremos rescatar es la siguiente:
+En un espacio métrico $X$ dado un radio $r > 0$, se satisface que los conjuntos de la forma $\{ (x, y) \in X\times X : d(x, y) < r \}$ caracterizan la métrica;
+en particular, satisfacen que contienen a la diagonal y son simétricos.
+
+Un subconjunto de $X \times X$ es (al menos formalmente) una relación sobre $X$, de modo que dados $A, B \subseteq X \times X$ entonces --como relaciones--
+poseen inversa y composición, denotaremos:
+\begin{gather*}
+	-A := A^{-1} = \{ (x, y) : (y, x) \in A \}, \\
+	A + B := A\circ B = \{ (x, z) : \exists y\in X \; (x, y) \in A, (y, z) \in B \}.
+\end{gather*}
+Como la composición de relaciones es asociativa, se tiene que $(A + B) + C = A + (B + C)$.
+Ojo que entre subconjuntos arbitrarios de $X\times X$ se satisface que <<$+$>> no es una operación conmutativa.
+Luego podemos definir, por recursión:
+$$ 1\cdot A := A, \qquad (n+1)\cdot A := n\cdot A + A. $$
+\begin{mydef}
+	Se dice que un conjunto $V \subseteq X\times X$ es una \strong{banda}\index{banda} de $X$ si:
+	\begin{enumerate}[{B}1.]
+		\item $\triangle \subseteq V$ (reflexividad).
+		\item $V = -V$ (simetría).
+	\end{enumerate}
+	(Es decir, es una relación reflexiva y simétrica).
+	Denotamos por $\mathcal{D}_X$ la familia de todas las bandas sobre $X$.
+
+	Dados dos puntos $x, y \in X$ y una banda $V$ denotamos $d(x, y) < V$ si $(x, y) \in V$; de lo contrario denotaremos que $d(x, y) \ge V$.
+	Dado un conjunto $A \subseteq X$ decimos que su diámetro es menor que $V$, denotado $d(A) < V$, si
+	$$ \forall x,y \in A \; d(x, y) < V \iff A\times A \subseteq V. $$
+	Finalmente, dado un punto $x \in X$ y una banda $V$, definimos la bola de centro $x$ y radio $V$ como:
+	$$ B_V(x) := \{ y \in X : d(x, y) < V \}, $$
+	en particular $d\big( B_V(x) \big) < 2V$.
+\end{mydef}
+Se pueden comprobar las siguientes propiedades, para $V, V_1, V_2$ bandas:
+\begin{enumerate}
+	\item $d(x, x) < V$.
+	\item $d(x, y) < V$ syss $d(y, x) < V$.
+	\item Si $d(x, y) < V_1$ y $d(y, z) < V_2$, entonces $d(x, z) < V_1 + V_2$.
+\end{enumerate}
+Ésto justifica el paralelo con los espacios métricos.
+
+\begin{mydefi}
+	Una \strong{uniformidad}\index{uniformidad} $\mathcal{U}$ sobre un conjunto $X$ es un subconjunto $\mathcal{U} \subseteq \mathcal{D}_X$ tal que:
+	\begin{enumerate}[{U}1.]
+		\item Si $V \in \mathcal{U}$ y $V \subseteq W \in \mathcal{D}_X$, entonces $W \in \mathcal{U}$.
+		\item Si $V_1, V_2 \in \mathcal{U}$, entonces $V_1\cap V_2 \in \mathcal{U}$.
+		\item Para todo $V \in \mathcal{U}$ existe $W \in \mathcal{U}$ tal que $2W \subseteq V$.
+	\end{enumerate}
+	Más aún, una uniformidad se dice \strong{de Hausdorff}\index{uniformidad!de Hausdorff} si satisface:
+	\begin{enumerate}[{U}4.*]
+		\item $\bigcap \mathcal{U} = \triangle$.
+	\end{enumerate}
+	Un par $(X, \mathcal{U})$, donde $\mathcal{U}$ es una uniformidad sobre $X$, se dice un \strong{espacio uniforme}\index{espacio!uniforme}.
+	Cuando no haya ambigüedad sobre los signos obviaremos la uniformidad.
+	Cuando hablemos de una banda en un espacio uniforme se asumirá que nos referimos a un elemento de su uniformidad.
+\end{mydefi}
+\begin{ex}
+	Sea $X$ un conjunto cualquiera.
+	\begin{itemize}
+		\item $\mathcal{U} := \mathcal{D}_X$ es una uniformidad sobre $X$ conocida como la \strong{uniformidad discreta}.
+		\item $\mathcal{U} := \{X\times X\}$ es una uniformidad sobre $X$ conocida como la \strong{uniformidad indiscreta}.
+	\end{itemize}
+\end{ex}
+
+\begin{prop}
+	Sea $(X, \mathcal{U})$ un espacio uniforme y definamos $\tau \subseteq \P X$ así:
+	Un subconjunto $G \subseteq X$ está en $\tau$ syss para todo $x \in G$ existe una banda $V \in \mathcal{U}$ tal que $B_V(x) \subseteq G$.
+	Entonces $\tau$ es una topología a la que llamamos la \strong{inducida por la uniformidad}.
+\end{prop}
+\begin{proof}
+	Es claro que $\emptyset, X \in \tau$ y que la unión de elementos de $\tau$ está en $\tau$.
+
+	Sean $G_1, G_2 \in \tau$ y sea $x \in G_1\cap G_2$. Existen $V, W \in \mathcal{U}$ tales que $B_V(x) \subseteq G_1$ y $B_W(x) \subseteq G_2$,
+	luego, como $V\cap W \in \mathcal{U}$ por U2., es fácil notar que $B_{V\cap W}(x) \subseteq G_1\cap G_2$.
+\end{proof}
+Desde ahora en adelante, siempre estudiemos los espacios uniformes con su topología inducida.
+Es claro que la unifomidad (in)discreta da lugar a la topología (in)discreta sobre el espacio.
+
+\begin{prop}
+	Sea $X$ un espacio uniforme y sea $A \subseteq X$.
+	Entonces un punto $x \in A$ es interior syss existe una banda $V$ tal que $B_V(x) \subseteq A$.
+\end{prop}
+
+Al igual que con los espacios topológicos, es difícil dar una topología así como así, por lo cual es menester una idea de base:
+\begin{mydef}
+	Una \strong{base}\index{base!(espacio uniforme)} de un espacio uniforme $(X, \mathcal{U})$ es una subfamilia $\mathcal{B} \subseteq \mathcal{U}$
+	tal que para todo $V \in \mathcal{U}$ existe un $W \in \mathcal{B}$ tal que $W \subseteq V$.
+\end{mydef}
+
+\begin{prop}
+	Una familia de bandas $\mathcal{B}$ que es base de un espacio uniforme $X$ satisface:
+	\begin{enumerate}[{BU}1.]
+		\item Si $V_1, V_2 \in \mathcal{B}$ entonces existe $W \in \mathcal{B}$ tal que $W \subseteq V_1\cap V_2$.
+		\item Para todo $V \in \mathcal{B}$ existe $W \in \mathcal{B}$ tal que $2W \subseteq V$.
+	\end{enumerate}
+	Y conversamente, toda familia de bandas que cumple las condiciones anteriores determina una única uniformidad
+	$$ \mathcal{U} = \{ V \in \mathcal{D}_X : \exists W \in \mathcal{B} \; W \subseteq V \} $$
+	de la cual es base.
+	Más aún, la uniformidad es de Hausdorff syss $\bigcap \mathcal{B} = \triangle$.
+\end{prop}
+
+\begin{ex}
+	Todo espacio pseudométrico es uniforme:
+	En efecto, sea $(X, d)$ un espacio pseudométrico, luego para todo $n \in \N_{\ne 0}$ podemos definir:
+	$$ V_n := \left\{ (x, y) \in X\times X : d(x, y) < \tfrac{1}{n} \right\}, $$
+	así pues $\mathcal{B} := \{V_n : n\in \N_{\ne 0}\}$ es una base de una uniformidad $\mathcal{U}$ que llamamos \strong{uniformidad inducida por la métrica}.
+	Se puede demostrar (¡hágalo!) que $\mathcal{U}$ induce la misma topología que la pseudométrica.
+\end{ex}
+
+Consideremos a $\R$ como espacio uniforme con la uniformidad del ejemplo anterior.
+Luego, nótese que el conjunto
+$$ V := \{ (x, y) \in \R\times\R : |x - y| \le 1 \} $$
+es una banda y que $B_V(x) = [x-1, x+1]$.
+Ésto comprueba que dada una banda $V$ arbitraria, puede darse que $B_V(x)$ no sea un abierto, no obstante:
+\begin{prop}
+	Sea $X$ un espacio uniforme.
+	Dada una banda $V$ y un punto $x \in X$, el conjunto $B_V(x)$ es un entorno de $x$ y, en particular, $\Int B_V(x)$ es un abierto que contiene a $x$.
+\end{prop}
+Ésto, sin embargo, puede arreglarse.
+
+\begin{prop}
+	Sea $X$ un espacio uniforme.
+	Dado un conjunto $A$ se cumple que un punto $x$ es adherente a $A$ si para toda banda $V$ se cumple que $A \cap B_V(x) \ne \emptyset$.
+\end{prop}
+\begin{cor}
+	Sea $X$ un espacio uniforme.
+	Sea $A \subseteq X$ y $V$ una banda tales que $d(A) < V$, entonces $d( \overline A ) < 3V$.
+\end{cor}
+
+Ahora, la razón detrás del nombre de uniformidad de Hausdorff:
+\begin{thm}
+	Un espacio uniforme es $T_0$ syss su uniformidad es de Hausdorff, en cuyo caso es un espacio topológico de Hausdorff.
+\end{thm}
+\begin{proof}
+	$\implies$. Sean $x, y \in X$ distintos, luego existe un entorno $A$ de $x$ tal que $y \notin A$.
+	Luego existe una banda $V$ tal que $d(x, y) \ge V$, es decir, para todo par de puntos existe una banda que \textit{no} les contiene, y luego se comprueba
+	que la uniformidad es de Hausdorff.
+	\par
+	$\impliedby$. Si $\bigcap \mathcal{U} = \triangle$, entonces para todo par de puntos distintos $x, y \in X$ existe una banda $V$ tal que
+	$d(x, y) \ge V$; luego por U3. existe una banda $W$ tal que $2W \subseteq V$, por lo que $d(x, y) \ge 2W$ y luego $B_W(x), B_W(y)$ son entornos disjuntos
+	de $x, y$ (pues si $d(x, z) < W$ y $d(y, z) < W$, entonces $d(x, y) < 2W$, contradicción) y el espacio es de Hausdorff.
+\end{proof}
+
+\begin{mydefi}
+	Sean $(X, \mathcal{U})$ e $(Y, \mathcal{V})$ un par de espacios uniformes.
+	Una aplicación $f\colon (X, \mathcal{U}) \to (Y, \mathcal{V})$ se dice \strong{uniformemente continua}\index{uniformemente continua (función)}
+	si para todo $V \in \mathcal{V}$ existe una banda $U \in \mathcal{U}$ tal que $d(x, y) < U$ implica que $d\big( f(x), f(y) \big) < V$.
+\end{mydefi}
+\begin{prop}
+	Dados $X, Y, Z$ espacios uniformes. Entonces:
+	\begin{enumerate}
+		\item $\Id_X \colon X \to X$ es uniformemente continua.
+		\item Si $f \colon X \to Y$ y $g\colon Y \to Z$ son uniformemente continuas, entonces $f\circ g \colon X \to Z$ también lo es.
+			En consecuencia, los espacios uniformes (como objetos) y las funciones uniformemente continuas (como flechas) constituyen
+			una categoría, denotada $\mathsf{Unif}$.
+		\item Toda aplicación uniformemente continua es continua.
+			En consecuencia, $\mathsf{Unif} \subseteq \mathsf{Top}$.
+			% \item Las aplicaciones continuas son uniformemente continuas.
+	\end{enumerate}
+\end{prop}
+Categorialmente, $\mathsf{Unif}$ no es una subcategoría plena; de modo que existen objetos isomorfos en $\mathsf{Top}$ que no son isomorfos en $\mathsf{Unif}$.
+Por ello:
+\begin{mydef}
+	Sean $X, Y$ un par de espacios uniformes.
+	Se dice que una aplicación $f\colon X \to Y$ es un \strong{homeomorfismo uniforme}\index{homeomorfismo!uniforme} si es biyectiva, uniformemente continua
+	y si $f^{-1}$ es uniformemente continua (i.e., es un isomorfismo en $\mathsf{Unif}$).
+	Si existe un homeomorfismo uniforme entre $X, Y$, entonces se dicen \strong{uniformemente homeomorfos}.
+	\par
+	Se dice que una aplicación $f\colon X \to Y$ es un \strong{encaje uniforme} si $f\colon X \to f[X]$ es un homeomorfismo uniforme,
+	en cuyo caso $X$ se dice \strong{uniformemente encajado} en $Y$.
+\end{mydef}
+% En particular, la inclusión $\iota\colon S \to X$ de un subespacio $S \subseteq X$ es un encaje uniforme.
+
+\begin{thm}
+	Sea $X$ un espacio uniforme e $Y \subseteq X$. Entonces:
+	$$ \mathcal{U}_Y := \{ V \cap (Y\times Y) : V \in \mathcal{U} \} $$
+	es una uniformidad sobre $Y$ que induce la topología subespacio.
+	Más aún, la aplicación $\iota\colon (Y, \mathcal{U}_Y) \to (X, \mathcal{U})$ es un encaje uniforme.
+\end{thm}
+
+Una de las grandes (¡y buenas!) diferencias con los espacios métricos, es que con los métricos sólo puedes hacer producto de a lo más numerables y conservar la
+estructura métrica; no obstante, con espacios uniformes el producto se admite arbitrario:
+\begin{thm}
+	Sean $\{ (X_i, \mathcal{U}_i) \}_{i\in I}$ espacios uniformes y denotemos $X := \prod_{i\in I} X_i$.
+	Así pues, sea $\mathcal{B}$ la familia de los conjuntos de la forma
+	$$ \{ (\vec x, \vec y) \in X\times X : \forall i \in J \; d(x_i, y_i) < V_i \} $$
+	donde $J \subseteq I$ es finito, y $V_i \in \mathcal{U}_i$.
+	Entonces $\mathcal{B}$ es base de una uniformidad en $X$ que induce la topología producto.
+\end{thm}
+\begin{proof}
+	Que $\mathcal{B}$ sea base de una uniformidad $\mathcal{U}$ queda de ejericio al lector.
+	Que ambas topologías coinciden lo veremos por doble inclusión:
+	Sea $A$ un entorno de $\vec x \in X$ en el sentido de la topología producto, entonces posee un subentorno básico $B$,
+	es decir, que existe $J \subseteq I$ finito tal que $B = \prod_{i\in I} B_i$ donde $B_i = X_i$ para todo $i\notin J$, y $x_i \in B_i$ para todo $i \in J$;
+	de modo que $B_{V_i}(x_i) \subseteq B_i$ para alguna banda $V_i$ de $X_i$ para todo $i \in J$.
+	Luego, definiendo $V_i := X_i$ para todo $i \notin J$ se cumple que $W := \prod_{i\in I} V_i$ es una banda de la base $\mathcal{B}$ y de que
+	$B_W(\vec x) \subseteq B$, de modo que $B$ es un entorno en la topología dada por la uniformidad.
+	Así mismo es fácil ver que todo abierto en la topología inducida por la uniformidad lo es en la topología producto.
+\end{proof}
+\begin{prop}
+	Sean $(X_i)_{i\in I}$ una familia de espacios uniformes no vacíos. Entonces:
+	\begin{enumerate}
+		\item Las proyecciones $ \pi_j\colon \prod_{i\in I} X_i \to X_j $ son uniformemente continuas.
+		\item Sea $(f_i\colon Y \to X_i)_{i\in I}$ una familia de funciones uniformemente continuas.
+			Entonces la diagonal $f := \Diag_{i\in I} f_i \colon Y \to \prod_{i\in I} X_i$ es la única función uniformemente continua
+			tal que el siguiente diagrama conmuta para todo $j \in I$:
+			\begin{center}
+				\begin{tikzcd}[row sep=large]
+					{}					& \prod_{i\in I} X_i \dar["\pi_j", two heads] \\
+					Y \rar["f_j"'] \urar["\exists!f", dashed] & X_j
+				\end{tikzcd}
+			\end{center}
+			En consecuencia, $\prod_{i\in I} X_i$ es un producto categorial en $\mathsf{Unif}$.
+
+		\item Una aplicación $f\colon Y \to \prod_{i\in I} X_i$ es uniformemente continua syss $f\circ\pi_i$ lo es para todo $i \in I$.
+	\end{enumerate}
+\end{prop}
+
+\begin{prop}
+	Sea $X$ un espacio uniforme, $x \in X$ y $V$ una banda en $X$.
+	Si $V$ es abierto (resp. cerrado) en $X\times X$, entonces $B_V(x)$ es abierto (resp. cerrado).
+\end{prop}
+\begin{proof}
+	Basta notar que $\iota\colon y \mapsto (x, y)$ es continua, luego $B_V(x) = \iota^{-1}[V]$ y se sigue el enunciado.
+\end{proof}
+
+\begin{thm}\label{thm:entourage_neighborhood}
+	Sea $X$ un espacio uniforme y $A \subseteq X\times X$.
+	Si $V$ es una banda de $X$, entonces $V + A + V$ es un entorno de $A$ y
+	$$ \overline A = \bigcap_{V \in \mathcal{U}} (V + A + V). $$
+\end{thm}
+\begin{proof}
+	Sea $(x, y) \in (V + A + V)$. Por definición existen $p, q \in X$ tales que $(x, p) \in V, (p, q) \in A, (q, y) \in V$, o equivalentemente,
+	tales que $(x, y) \in B_V(p) \times B_V(q)$. Nótese que
+	$$ A \subseteq \bigcup_{(p, q) \in A} (B_V(p) \times B_V(q)) \subseteq V + A + V, $$
+	luego $A$ está contenido en la unión de los interiores de $( B_V(p) \times B_V(q) )$ de modo que efectivamente $V + A + V$ es un entorno de $A$.
+	\par
+	Para la segunda parte nótese que $(x, y) \in (V + A + V)$ syss existe $(p, q) \in A \cap \big( B_V(x) \times B_V(y) \big)$,
+	por ende, $(x, y) \in V+A+V$ para todo $V$ syss todo entorno de $(x, y)$ corta a $A$ syss es adherente a $A$.
+\end{proof}
+
+\begin{mydef}
+	Sea $X$ un espacio uniforme, $A \subseteq X$ y $V$ una banda en $X$.
+	Se define el \strong{entorno uniforme} de $A$ como
+	$$ V[A] := \bigcup_{a\in A} B_V(a). $$
+\end{mydef}
+Al igual que con las bolas de radio $V$, los entornos uniformes sí son entornos del conjunto $A$, pero no necesariamente son abiertos.
+
+\begin{prop}
+	Sea $X$ un espacio uniforme y $A \subseteq X$. Entonces
+	$$ \overline A = \bigcap_{V \in \mathcal{U}} V[A]. $$
+\end{prop}
+\begin{proof}
+	Sea $V$ una banda, luego es fácil ver que
+	$$ V + (A\times A) + V = V[A] \times V[A], $$
+	y luego, aplicando el teorema anterior vemos que
+	$$ \overline A \times \overline A = \overline{A \times A} = \bigcap_{V \in \mathcal{U}} (V + (A\times A) + V)
+	= \bigcap_{V \in \mathcal{U}} (V[A] \times V[A]), $$
+	que es lo que se quería probar.
+\end{proof}
+
+\begin{thm}\label{thm:closed_bands_are_base}
+	Sea $X$ un espacio uniforme, los interiores (resp. las clausuras) de las bandas en $X \times X$ son una base de su uniformidad.
+	En particular, las bandas abiertas (resp. cerradas) son una base de su uniformidad.
+\end{thm}
+\begin{proof}
+	Sea $V$ una banda en $X$, luego existe otra banda $W$ tal que $3W \subseteq V$ (¿por qué?).y el teorema~\ref{thm:entourage_neighborhood} nos dice que
+	$W + W + W$ es un entorno de $W$, luego $W \subseteq \Int V \subseteq V$; y de aquí se concluye el caso para los interiores de las bandas.
+	Para las clausuras, la proposición anterior nos da que $\overline W \subseteq W + W + W \subseteq V$.
+\end{proof}
+
+\begin{thm}
+	Todo espacio uniforme de Hausdorff es regular.
+\end{thm}
+\begin{proof}
+	Si $X$ es uniforme de Hausdorff, entonces es un espacio topológico de Hausdorff, luego es $T_1$.
+	Por el teorema~\ref{thm:separation_properties} inciso 6 para probar que $X$ es regular basta probar que todo punto posee una base de entornos cerrados,
+	lo que se sigue pues si $W$ es una banda cerrada, entonces $B_W(x)$ es un entorno cerrado de $X$ y por el teorema anterior, las bolas cerradas centradas
+	en $X$ forman una base de sus entornos.
+\end{proof}
+
+\begin{mydef}
+	Sea $X$ un espacio uniforme.
+	Una función $\rho\colon X \times X \to \R$ se dice una \strong{pseudométrica uniforme}\index{pseudométrica!uniforme} si es una pseudométrica
+	y además es una función uniformemente continua.
+\end{mydef}
+
+\begin{prop}\label{thm:uniform_pseudometric}
+	Sea $X$ un espacio uniforme.
+	Una pseudométrica $\rho\colon X \times X \to \R$ es uniforme syss para todo $\epsilon > 0$ existe una banda $V$ en $X$ tal que
+	$$ d(x, y) < V \implies \rho(x, y) < \epsilon. $$
+\end{prop}
+\begin{proof}
+	$\impliedby$. $\rho$ es una función uniformemente continua syss para todo $\epsilon > 0$ existe una banda $W$ en $X \times X$ tal que
+	$$ d\big( (x, y), (x', y') \big) < W \implies |\rho(x, y) - \rho(x', y')| < \epsilon. $$ 
+	Ahora bien, por hipótesis, sea $V$ una banda en $X$ tal que $d(x, y) < V \implies \rho(x, y) < \epsilon/2$ y definamos $W := V \times V$,
+	que es banda en $X \times X$, luego $d\big( (x, y), (x', y') \big) < V\times V$ syss $d(x, x') < V$ y $d(y, y') < V$, lo que implica que
+	$$ \epsilon = \frac{\epsilon}{2} + \frac{\epsilon}{2} \ge \rho(x, x') + \rho(y, y') \ge |\rho(x, y) - \rho(x', y')|. $$.
+	$\implies$. Si $\rho$ es uniformemente continua, entonces para todo $\epsilon > 0$ existe una banda $V$ en $X$ tal que si $d(x, x') < V$ y
+	$d(y, y') < V$, entonces $|\rho(x, y) - \rho(x', y')| < \epsilon$. En particular, tomando $y = y' = x'$ entonces se obtiene que
+	$d(x, y) < V \implies \rho(x, y) < \epsilon$ como se quería probar.
+\end{proof}
+
+\begin{thm}\label{thm:uniformity_pseudometric}
+	Sea $X$ un espacio uniforme.
+	Dada una sucesión de bandas $(V_n)_{n\in\N}$ tal que $V_0 = X \times X$ y que $3V_{i+1} \subseteq V_i$, entonces existe una pseudométrica
+	$\rho\colon X\times X \to \R$ tal que para todo $i\ge 1$:
+	$$ \left\{ (x, y) : \rho(x, y) < \frac{1}{2^i} \right\} \subseteq V_i \subseteq \left\{ (x, y) : \rho(x, y) \le \frac{1}{2^i} \right\}. $$
+	Más aún, dicha pseudométrica es uniforme.
+\end{thm}
+\begin{proof}
+	Sean $x, y \in X$ y definamos $\rho(x, y)$ como el ínfimo de los valores
+	$$ 1/2^{i_1} + \cdots 1/2^{i_k} < 1/2^i $$
+	donde $d(x_{j-1}, x_j) < V_{i_j}$, $x_0 := x$ y $x_k := y$.
+	Queda al lector comprobar que $\rho$ es efectivamente una pseudométrica sobre $X$ y es claro que $V_i \subseteq \{ (x, y) : \rho(x, y) \le 1/2^i \}$.
+
+	Aún queda probar que si $\rho(x, y) < 1/2^i$, entonces $d(x, y) < V_i$, i.e., si existe
+	$x_0, x_1, \dots, x_k$ con
+	$$ 1/2^{i_1} + \cdots 1/2^{i_k} < 1/2^i, $$
+	$d(x_{j-1}, x_j) < V_{i_j}$, $x_0 := x$ y $x_k := y$; entonces $d(x, y) < V_i$.
+	Procedemos por inducción (fuerte) sobre $k$:
+	El caso base $k = 1$ es claro pues $d(x, y) < V_{i_1}$ con $1/2^{i_1} < 1/2^i$, entonces $i_1 > i$ y $d(x, y) < V_{i_1} < V_i$.
+
+	Para el caso inductivo podemos suponer que $k > 1$ y así tenemos que $1/2^{i_1} < 1/2^{i+1}$ o que $1/2^{i_k} < 1/2^{i+1}$; sin perdida de generalidad
+	suponemos la primera. Definamos $n$ como el mayor natural $\le k-1$ tal que
+	$$ 1/2^{i_1} + 1/2^{i_2} + \cdots + 1/2^{i_n} < 1/2^{i+1}. $$
+	Si $n < k-1$, entonces $1/2^{i_1} + \cdots + 1/2^{i_n} + 1/2^{i_{n+1}} \ge 1/2^{i+1}$, de modo que
+	$$ 1/2^{i_{n+2}} + \cdots + 1/2^{i_k} < 1/2^{i+1}. $$
+	Así pues, por hipótesis inductiva se cumple que $d(x_0, x_n) < V_{i+1}$ y que $d(x_{n+1}, x_k) < V_{i+1}$.
+	Además, como $1/2^{i_{n+1}} < 1/2^i$, entonces $i_{n+1} \ge i+1$, entonces $d(x_{i_n}, x_{i_{n+1}}) < V_{i_{n+1}} \subseteq V_{i+1}$;
+	por lo que $d(x_0, x_k) < 3V_{i+1} \subseteq V_i$ como se quería probar.
+\end{proof}
+
+\thmdep{DE}
+\begin{cor}
+	Sea $X$ un espacio uniforme y $V$ una banda de $X$.
+	Entonces, existe una pseudométrica uniforme $\rho$ sobre $X$ tal que
+	$$ \{ (x, y) : \rho(x, y) < 1 \} \subseteq V. $$
+\end{cor}
+\begin{proof}
+	Basta emplear el teorema anterior considerando una sucesión inducida por $V_0 := X\times X$ y $V_1 := V$.
+\end{proof}
+
+\begin{cor}
+	Todo espacio uniforme $T_0$ es de Tychonoff.
+\end{cor}
+\begin{proof}
+	Sean $x \in X$ un punto que no pertenece a un cerrado $F \subseteq X$ no vacío.
+	Luego existe una banda $V$ tal que $B_V(x) \subseteq F^c$ y por el corolario anterior, existe una métrica $\rho$
+	tal que $\rho(x, y) \ge 1$ si $d(x, y) \ge V$; luego $f(y) := \min\{1, \rho(x, y)\}$ es una función continua que separa a $x$ y a $F$.
+\end{proof}
+% Ejercicio para el lector: ¿dónde se empleó la hipótesis de ser uniformidad \textit{de Hausdorff}?
+\thmdep{}
+
+\begin{thm}
+	Sea $X$ un conjunto y $P$ una familia de pseudométricas sobre $X$. Entonces los conjuntos de la forma:
+	$$ V(F, \epsilon) := \left\{ (x, y) : \max_{\rho \in P} \rho(x, y) < \epsilon \right\}, $$
+	donde $\epsilon > 0$ y $F \subseteq P$ finito, conforman una uniformidad en $X$ bajo la cual todas las pseudométricas de $P$ son uniformes.
+	Ésta uniformidad es de Hausdorff syss para todo par de puntos distinto $x, y$ existe $\rho \in P$ tal que $\rho(x, y) > 0$.
+\end{thm}
+\begin{proof}
+	Es claro que los conjuntos $V(F, \epsilon)$ son (vistos como relaciones sobre $X$) reflexivos y simétricos.
+	La propiedad U2 se cumple pues
+	$$ V\big( F_1 \cup F_2, \min\{ \epsilon_1, \epsilon_2 \} \big) \subseteq V(F_1, \epsilon_1) \cap V(F_2, \epsilon_2). $$
+	Y la propiedad U3 se cumple pues $2V(F, \epsilon/2) \subseteq V(F, \epsilon)$ (por la desigualdad triangular de las pseudométricas).
+\end{proof}
+\begin{mydef}
+	Dado un conjunto $X$ y una familia $P$ de pseudométricas sobre $X$, se le llama la \strong{unifomidad inducida por las pseudométricas $P$}%
+	\index{unifomidad!inducida por las pseudométricas} a la uniformidad definida en el teorema anterior.
+\end{mydef}
+
+\begin{prop}
+	Sea $X$ un espacio topológico y $P$ una familia de pseudométricas continuas sobre $X$ tales que para todo punto $x \in X$ y todo cerrado $F \subseteq X$
+	con $x \notin F$ se cumple que existe $\rho \in P$ tal que $\rho(x, F) > 0$.
+	Entonces la uniformidad inducida por las pseudométricas $P$ induce la misma topología original en $X$.
+\end{prop}
+
+\begin{thmi}
+	Sea $X$ un espacio de Tychonoff. Entonces existe una uniformidad de Hausdorff $\mathcal{U}$ que induce su topología.
+\end{thmi}
+\begin{proof}
+	Sea $f \in C(X)$, i.e., una función $f\colon X \to \R$ continua.
+	Entonces determina una pseudométrica $\rho_f(x, y) := |f(x) - f(y)|$ que es continua (¿por qué?).
+	Luego, sea $P$ la familia de todas las pseudométricas de dicha forma, y también sea $P^* \subseteq P$ la familia de pseudométricas de la forma $\rho_f$,
+	donde $f\colon X \to \R$ es continua y acotada.
+	Finalmente, la proposición anterior nos dice que tanto $P$ como $P^*$ inducen una uniformidad que induce la topología original sobre $X$.
+\end{proof}
+No deja de ser curioso que DE solo sea necesario para ver que el converso se cumple.
+
+\begin{thmi}
+	Un espacio uniforme (resp. uniforme de Hausdorff) $X$ es pseudometrizable (resp. metrizable) syss existe una base de su uniformidad numerable.
+\end{thmi}
+\begin{proof}
+	$\implies$. Ejercicio para el lector.
+
+	$\impliedby$. Sea $\{U_n\}_{n=0}^\infty$ una base numerable de la uniformidad. Luego podemos extraer de la base una sucesión de bandas $(V_n)_{n\in\N}$
+	definiendo $V_0 := X\times X$ tal que $3V_{i+1} \subseteq V_i$ y por ser base eventualmente posee bandas más pequeñas que toda banda de la uniformidad.
+	Luego la pseudométrica del teorema~\ref{thm:uniformity_pseudometric} nos induce la topología.
+
+	Para ver la propiedad de Hausdorff basta notar que si $\rho(x, y) = 0$ debe darse que $d(x, y) < V_n$ para todo $n\in\N$,
+	luego $x = y$ pues $\bigcap_{n\in\N} V_n = \triangle$ dado que la uniformidad es de Hausdorff.
+\end{proof}
+
+\section{Espacios de funciones}
+\label{sec:function_spaces}
+La sección anterior nos otorgó un fuerte y elegante lenguaje con el cual construir nuevos tipos de espacios topológicos. Tal vez una de las mejores razones
+para aprender de espacios uniformes es que permiten aclarar varios detalles sobre los distintos tipos de espacios de funciones en topología.
+En ésta sección nos enfocaremos en tres tipos de espacios, o mejor dicho, de convergencia sobre ellos: la convergencia puntual, la convergencia uniforme
+y la convergencia casi-uniforme; lo que generalizaremos en uno de los espacios más formidables, la topología compacto-abierto.
+\addtocategory{other}{brandsma:functional}
+
+% \begin{mydefi}[Continuidad uniforme]
+%	 Sea $f\colon X\to Y$ con $X,Y$ métricos, entonces se dice que $f$ es \strong{uniformemente continua}\index{uniformemente!continua (función)}
+%	 si para todo $\epsilon > 0$ existe un $\delta > 0$ tal que para todo $x, y \in X$ se cumple que $d(x, y) < \delta \implies d(f(x), f(y)) < \epsilon$.
+% \end{mydefi}
+
+% \begin{prop}
+%	 Se cumple:
+%	 \begin{enumerate}
+%		 \item Toda aplicación uniformemente continua es continua.
+%		 \item Las funciones de Lipschitz son uniformemente continuas. En particular, la identidad lo es.
+%		 \item La composición de uniformemente continuas es uniformemente continua.
+%			 En consecuencia, los espacios topológicos (como objetos) y las funciones uniformemente continuas (como flechas)
+%			 conforman una categoría denotada $\mathsf{UnifTop}$.
+%		 \item Las funciones constantes son uniformemente continuas.
+%	 \end{enumerate}
+% \end{prop}
+
+% Recuérdese que un espacio de Hausdorff es de Tychonoff syss admite alguna compactificación.
+\begin{thm}
+	Un espacio de Hausdorff compacto $K$ posee una única uniformidad que induce su topología y que tiene por base a las
+	bandas abiertas de $K \times K$.
+\end{thm}
+\begin{proof}
+	El que posea (al menos) una se sigue del teorema anterior, así que, sea $\mathcal{U}$ una uniformidad que induce la topología en $K$.
+	Sea $V \subseteq K \times K$ una banda (en el sentido absoluto) que es un subconjunto abierto.
+	El teorema~\ref{thm:closed_bands_are_base} implica que las bandas cerradas $\mathcal{B \subseteq U}$ forman una base y, como $K$ es de Hausdorff,
+	$\bigcap \mathcal{B} = \triangle \subseteq W$.
+	Tomando complementos se comprueba que existen finitas bandas cerradas $V_1, \dots, V_n \in \mathcal{B}$ tales que $\bigcap_{i=1}^{n} V_i \subseteq W$,
+	de modo que $W \in \mathcal{U}$.
+	Así, vemos que todas las bandas abiertas (en sentido absoluto) de $K\times K$ son bandas abiertas de $\mathcal{U}$ y,
+	por el teorema~\ref{thm:closed_bands_are_base}, son base como se quería probar.
+\end{proof}
+
+\begin{cor}
+	Sea $X$ un espacio de Hausdorff compacto e $Y$ un espacio uniforme.
+	Toda función continua $f \colon X \to Y$ es uniformemente continua.
+\end{cor}
+\begin{proof}
+	Sea $V \subseteq Y\times Y$ una banda abierta, entonces $(f\times f)^{-1}[V] \subseteq X\times X$ es una banda abierta de $X$,
+	pero en la prueba del teorema anterior vimos que toda banda abierta pertenece a la uniformidad de $X$, por lo que ganamos.
+\end{proof}
+% \begin{thm}
+%	 Si $X,Y$ son métricos y $X$ es compacto, entonces toda aplicación $f\colon X\to Y$ continua es uniformemente continua.
+% \end{thm}
+% \begin{proof}
+%	 Sea $\epsilon > 0$.
+%	 Nótese que para todo $x \in X$ existe $\delta(x) > 0$ tal que $d(x, y) < \delta \implies d(f(x), f(y)) < \epsilon/2$.
+%	 Supongamos que construimos la el conjunto de pares ordenados $(x, \delta(x))$ que satisfacen la condición anterior, luego
+%	 si a cada par le asociamos con la bola abierta $B_{\delta(x)/2}(x)$, entonces forman un cubrimiento abierto de $X$ y por compacidad
+%	 admite un subcubrimiento finito $\{ B_{\delta_1/2}(x_1), \dots, B_{\delta_n/2}(x_n) \}$.
+
+%	 Definamos $\delta := \min\{ \delta_1,\dots,\delta_n \}/2$.
+%	 Si $d(x, y) < \delta$, entonces existe $i$ tal que $x \in B_{\delta_i/2}(x_i)$, de modo que
+%	 $$ d(y, x_i) \le d(y, x) + d(x, x_i) < \frac{\delta_i}{2} + \frac{\delta_i}{2} = \delta_i $$
+%	 De modo que $x, y \in B_{\delta}(x_i)$ lo que, por construcción significa que
+%	 \begin{equation}
+%		 d(f(x), f(y)) \le d( f(x), f(x_i) ) + d( f(x_i), f(y) ) < \epsilon. \tqedhere
+%	 \end{equation}
+% \end{proof}
+
+\begin{mydef}
+	Sean $X$ un conjunto arbitrario e $Y$ un espacio topológico, entonces se dice que una sucesión de funciones $(f_i\colon X \to Y)_{i\in\N}$
+	converge puntualmente a otra $f$ si para todo $x\in X$ se cumple que $\lim_n f_n(x) = f(x)$, en cuyo caso simplemente escribiremos $f = \lim_n f_n$.
+
+	En particular, este comportamiento se replica en la topología producto $\prod_{x\in X} Y = Y^X$,
+	por ello a éste último le decimos la \strong{topología de convergencia puntual}.
+\end{mydef}
+
+\begin{ex}[Límite puntual de funciones continuas que no es continua]
+	Consideremos $[0,1]^\R$ donde $f_n(x) = x^n$, es fácil probar que el límite puntual $f = \lim_n f_n$ es la función $f(x) = \sfloor{x}$ que es discontinua,
+	es decir, el límite puntual de continuas puede no ser continua.
+	Por éste y muchos otros ejemplos se puede notar que la topología de convergencia puntual otorga poca información en términos de funciones.
+\end{ex}
+
+\begin{mydef}
+	Sean $X$ un conjunto arbitrario y sea $Y$ un espacio uniforme.
+	Se define la \strong{uniformidad de convergencia uniforme}\index{uniformidad!de convergencia uniforme} sobre $Y^X$ como aquella que tiene por base a
+	$$ \widetilde{V} := \{ (f, g) \in Y^X : \forall x\in X \quad d(f(x), g(x)) < V \}, $$
+	donde $V$ recorre todas las bandas de $Y$.
+	Denotaremos por $\Func_u(X, Y)$ al conjunto $Y^X$ con esta uniformidad.
+\end{mydef}
+% \begin{mydefi}\index{convergencia!uniforme}
+%	 Sean $X$ un conjunto arbitrario y sea $Y$ un espacio uniforme, entonces se dice que una sucesión de funciones $(f_i\colon X \to Y)_{i\in\N}$ converge
+%	 \strong{uniformemente} a otra $f$ si para toda banda $U$ sobre $Y$ existe $n_0\in\N$ tal que para todo $n\ge n_0$ y todo $x\in X$ se cumple que
+%	 $d(f(x), f_n(x)) < U$ para todo $x\in X$.
+%	 En cuyo caso denotaremos $f_n \unifto f$.
+% \end{mydefi}
+
+\begin{prop}
+	Sea $X$ un conjunto e $Y$ un espacio métrico.
+	Entonces $\Func_u(X, Y)$ es metrizable.
+\end{prop}
+
+\begin{thmi}[Teorema del límite uniforme]\index{teorema!del límite uniforme}
+	Sean $X$ un espacio topológico e $Y$ un espacio uniforme.
+	El conjunto de funciones $f \in Y^X$ continuas en un punto $x_0 \in X$ es cerrado en $\Func_u(X, Y)$.
+	En consecuencia, $C(X, Y)$ es cerrado en $\Func_u(X, Y)$.
+\end{thmi}
+\begin{proof}
+	...
+\end{proof}
+
+% \begin{thm}
+%	 Sea $X$ un conjunto e $Y$ un espacio uniforme.
+%	 Dado $A \subseteq Y^X$ definimos $c(A)$ como el conjunto de las funciones $f \in Y^X$ tales que existe una sucesión $(f_i)_i$ en $A$
+%	 tal que $f_n \unifto f$.
+%	 \par
+%	 La función $c$ cumple las propiedades de una clausura de Kuratowski,
+%	 luego podemos definir la topología inducida por $c$ como la \strong{topología de la continuidad uniforme en $Y^X$}.
+% \end{thm}
+% \begin{proof}
+%	 Por la definición los dos primeros axiomas de la clausura de Kuratowski se cumplen. También notemos que por definición de $c$ es fácil
+%	 notar que $A \subseteq B$ implica $c(A) \subseteq c(B)$.
+
+%	 Veamos que \underline{$c(A) = c(c(A))$:}
+%	 Como $A \subseteq c(A)$, es claro que $c(A) \subseteq c(c(A))$, luego basta probar la otra contención.
+%	 Sea $f \in c(c(A))$, por definición, existe $(f_k)_{k\in\N}$ en $c(A)$ tal que $f = \lim_k f_k$.
+%	 Vamos a construir una sub-sucesión $f_{n_k}$ tal que para todo $k\in\N_{\ne 0}$ se cumple que $n_k$ es el primer índice tal que
+%	 $$ \forall x\in X\;\left( d(f(x), f_{n_k}(x)) < \frac{1}{2k} \right) $$
+%	 (que se permite por buen orden de $\N$).
+
+%	 Análogamente, cada $f_j = \lim_k g_{j,k}$ con $g_{j,k}\in A$ y definimos $\tau_j$ como la sucesión tal que para todo $k\in\N$ se cumple que
+%	 $$ \forall x\in X\;\left( d(f_j(x), g_{j,\tau_j(k)}(x)) < \frac{1}{2k} \right). $$
+%	 Finalmente definimos la sucesión $h_k := g_{n_k,\tau_{n_k}(k)}$ sobre $A$ y notamos que
+%	 $$ \forall x\in X\;\left( d(f(x), h_k(x)) \le d(f(x), f_{n_k}(x)) + d(f_{n_k}(x), g_{n_k,\tau_{n_k}(k)}(x)) < \frac{1}{k} \right), $$
+%	 y por propiedad arquimediana se cumple que $f = \lim_k h_k$.
+
+%	 Veamos que \underline{$c(A\cup B) = c(A)\cup c(B)$.}
+%	 Por contención es claro que $c(A) \cup c(B) \subseteq c(A\cup B)$, luego basta probar la otra contención.
+%	 Sea $f \in c(A\cup B)$, luego existe una sucesión $(f_i)_{i\in\N}$ en $A\cup B$ tal que $f = \lim_i f_i$,
+%	 luego esta sucesión debe tener infinitos términos en $A$ o $B$, digamos que es en $A$, luego sea $f_{n_i}$ la subsucesión de funciones sobre $A$.
+%	 Como $f = \lim_i f_{n_i}$, entonces $f \in c(A)$.
+% \end{proof}
+% % Como la clausura cumple los criterios de Kuratowski, entonces determina una única topología la que le decimos la \strong{de continuidad uniforme en $M^X$}.
+% Cabe destacar que la topología de convergencia uniforme es más débil que la topología de convergencia puntual.
+
+% \begin{thmi}[Teorema del límite uniforme]\index{teorema!del límite uniforme}
+%	 El conjunto de funciones continuas $C(X, M)$ es cerrado en la topología de convergencia uniforme,
+%	 luego toda sucesión de funciones continuas es uniformemente convergente a una continua.
+%	 % Si una sucesión $(f_i)_{i\in\N}$ de funciones continuas desde $X$ a $M$ es uniformemente continua a $f$, entonces $f$ es continua.
+%	 % De hecho, $C(X, M)$ es un conjunto cerrado.
+% \end{thmi}
+% \begin{proof}
+%	 En concreto se demostrará que toda función adherente a $C(X, M)$ es continua.
+%	 En efecto sea $g$ adherente a $C(X, M)$, para ver que es continua hemos de probar que para todo $x\in X$ y $\epsilon>0$ se cumple que $f^{-1}[B_\epsilon(x)]$ es entorno de $x$.
+%	 Sea $f$ una función continua perteneciente al entorno $B_{\epsilon/3}(g)$ de $g$, luego por definición, $U_x \subseteq f^{-1}[B_{\epsilon/3}(x)]$, probaremos que $U_x \subseteq g^{-1}[B_\epsilon(x)]$, para lo cual, sea $y\in U_x$, luego
+%	 $$ d(g(x), g(y)) \le d(g(x), f(x)) + d(f(x), f(y)) + d(f(y), g(y)) < \epsilon, $$
+%	 que es lo que se quería probar.
+%	 % Por definición, esto significa que para todo $x_0\in X$ se cumple que $f^{-1}[V]$ es un entorno de $x_0$ cuando $V$ es entorno de $f(x_0)$. Notemos que como las bolas abiertas son base de espacios métricos, se cumple que todo entorno $V$ de $f(x_0)$ contiene a un conjunto de la forma $B_\epsilon(f(x_0))$. Es decir, que $f$ sea continua en $x_0$ equivale a decir que para todo $\epsilon > 0$ existe un entorno $U$ de $x_0$ tal que para todo $x\in U$ se cumple que $d(f(x_0), f(x)) < \epsilon$, así que trataremos de probar eso.
+%	 % \par
+%	 % Sea $\epsilon > 0$, por definición de uniformidad continua, existe $N\in\N$ tal que para todo $i\ge N$ se cumple que $d(f(x_0), f_i(x_0)) < \epsilon/3$.
+%	 % Como $f_N$ es continua, existe un entorno $U$ de $x_0$ tal que para todo $x\in U$ se cumple que $d(f_N(x_0), f_N(x)) < \epsilon/3$.
+%	 % Finalmente, para todo $x\in U$ se cumple que
+%	 % $$ d(f(x_0), f(x)) \le d(f(x_0), f_N(x_0)) + d(f_N(x_0), f_N(x)) + d(f_N(x), f(x)) < \epsilon. $$
+%	 % Lo que prueba la continuidad de $f$.
+% \end{proof}
+
+\begin{ex}[Una sucesión de funciones discontinuas que convergen uniformemente a una continua]
+	Sean $f_n \colon \R \to \R$ dada por
+	$$ f_n(x) = \frac{1}{n}\chi_{\Q}(x) =
+	\begin{cases}
+		\frac{1}{n}, & x\in\Q \\
+		0, & x\notin\Q \\
+	\end{cases} $$
+	Claramente éstas funciones son discontinuas y convergen uniformemente a la función nula que es continua.
+\end{ex}
+
+\begin{mydef}
+	Sea $X$ un conjunto, $\Sigma \subseteq \P X$ un cubrimiento de $X$ e $Y$ un espacio uniforme.
+	Se denota por $\Func_\Sigma(X, Y)$ al conjunto $Y^X$ con la uniformidad que tiene por base a las intersecciones finitas de bandas
+	$$ \widetilde{V}_A := \{ (f, g) : \forall x\in A \quad d(f(x), g(x)) < V \}, $$
+	donde $V$ recorre las bandas de $Y$, y $A$ recorre los elementos de $\Sigma$.
+
+	Sea $X$ un espacio topológico y $\Sigma$ es la familia de subconjuntos compactos de $X$, denotamos $\Func_c(X, Y) := \Func_\Sigma(X, Y)$.
+	Esta se conoce como la \strong{uniformidad de convergencia uniforme sobre compactos}\index{uniformidad!de convergencia uniforme sobre compactos}.
+\end{mydef}
+% Nótese que $\Sigma$ siempre incluye los puntos $\{ x \}$, así
+
+\begin{prop}
+	Sea $X$ un conjunto, $\Sigma \subseteq \P X$ un cubrimiento de $X$ e $Y$ un espacio uniforme.
+	Se cumplen:
+	\begin{enumerate}
+		\item Si $A \in \Sigma$, la restricción $\rho_A \colon \Func_\Sigma(X, Y) \to \Func_u(A, Y)$ es uniformemente continua.
+		\item En consecuencia, para todo $x \in X$ la aplicación de evaluación
+			\begin{align*}
+				\ev_x \colon \Func_\Sigma(X, Y) &\longrightarrow Y \\
+				f &\longmapsto f(x)
+			\end{align*}
+			es uniformemente continua.
+		\item Si $Y$ es de Hausdorff, entonces $\Func_\Sigma(X, Y)$ también.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	\begin{enumerate}
+		\item Basta notar que, dada la banda $\widetilde{V}$ sobre $\Func_u(A, Y)$, su preimagen $(\rho_A\times \rho_A)^{-1}[\widetilde{V}]
+			= \widetilde{V}_A$ es una banda de $\Func_\Sigma(A, Y)$.
+		\item Sea $A \in \Sigma$ tal que $x \in A$.
+			Basta notar que el siguiente diagrama conmuta (en $\mathsf{Unif}$):
+			\begin{center}
+				\begin{tikzcd}
+					\Func_\Sigma(X, Y) \dar["\ev_x"'] \rar["\rho_A"] & \Func_u(A, Y) \dar["\ev_x"] \\
+					Y \rar[equals]				   & Y
+				\end{tikzcd}
+			\end{center}
+		\item Ejercicio para el lector. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}
+	Sea $X$ un espacio topológico, e $Y$ un espacio uniforme.
+	La topología de convergencia uniforme en compactos sobre $C_c(X, Y)$ tiene por subbase a los conjuntos
+	$$ T(K; U) := \{ f \in C(X, Y) : f[K] \subseteq U \}, $$
+	donde $K$ recorre los subespacios compactos de $X$ y $U$ recorre los abiertos de $Y$.
+\end{thm}
+
+\begin{mydef}
+	Sea $X, Y$ un par de espacios topológicos.
+	Se denota por $C_c(X, Y)$ al espacio de funciones continuas $C(X, Y)$ con la topología inducida por la subbase de conjuntos
+	$$ T(K; U) := \{ f \in C(X, Y) : f[K] \subseteq U \}, $$
+	donde $K$ recorre los subespacios compactos de $X$ y $U$ recorre los abiertos de $Y$.
+	Esta se llama la \strong{topología compacto-abierto}\index{topología!compacto-abierto}.
+\end{mydef}
+
+\begin{thm}
+	Sea $X, Y, Z$ un trío de espacios topológicos. Se cumplen:
+	\begin{enumerate}
+		\item Si $X$ es de Hausdorff localmente compacto, la aplicación de evaluación
+			\[
+				\ev \colon C_c(X, Y) \times X \longrightarrow Y, \qquad \ev(f, x) := f(x)
+			\]
+			es continua.
+		\item Si $Y$ es de Hausdorff localmente compacto, la composición $-\circ- \colon C_c(X, Y) \times C_c(Y, Z) \to C_c(X, Z)$ es continua.
+	\end{enumerate}
+\end{thm}
+
+\begin{lem}
+	Sean $X, Y$ un par de espacios de Hausdorff, sea $\mathcal{S}$ una subbase de $Y$ y sea $\mathcal{K}$ una familia de subespacios compactos de $X$
+	tal que para todo compacto $K \subseteq X$ y abierto $U \subseteq X$ que satisfagan que $K \subseteq U$ existen $K_1, \dots, K_n \in \mathcal{K}$
+	de modo que $K \subseteq K_1 \cup \cdots \cup K_n \subseteq U$.
+	Entonces la familia de los $T(K; V)$ con $K \in \mathcal{K}, V \in \mathcal{S}$ es una subbase de $C_c(X, Y)$.
+\end{lem}
+\begin{thm}
+	Sean $X, Y, Z$ un trío de espacios de Hausdorff.
+	Entonces la aplicación
+	\begin{center}
+		\begin{tikzcd}[sep=large]
+			C_c(X \times Y, Z) \rar[hook] & C_c(X, C_c(Y, Z))
+		\end{tikzcd}
+	\end{center}
+	dada por $\Phi(f)(x)(y) := f(x, y)$ es continua y es un encaje topológico.
+	Si $Y$ es localmente compacto, entonces $\Phi$ es de hecho un homeomorfismo.
+\end{thm}
+
+\thmdep{DE}
+\begin{lem}
+	Si $X$ es normal, $A\subseteq X$ cerrado y $g \in C(A)$ es tal que $|g(a)| \le c$ para todo $a\in A$, entonces existe $h \in C(X)$ tal que
+	\begin{enumerate}
+		\item $|h(x)| \le \frac{1}{3}c$ para todo $x\in X$.
+		\item $|h(a) - g(a)| \le \frac{2}{3}c$ para todo $a\in A$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	Sean
+	$$ A_+ := \left\{ a\in A: g(a) \ge \frac{1}{3}c \right\},\quad A_- := \left\{ a\in A: g(a) \le -\frac{1}{3}c \right\}. $$
+	que son claramente cerrados y disjuntos en $A$, que es cerrado, luego son cerrados y disjuntos en $X$.
+	Como $X$ es normal, existe una función de Urysohn $h\colon X \to \left[ -\frac{1}{3}c, \frac{1}{3}c \right]$
+	tal que $h[A_+] = \frac{1}{3}c$ y $h[A_-] = -\frac{1}{3}c$.
+	$h$ satisface todos los requerimientos.
+\end{proof}
+
+\begin{thm}[de extensión de Tietze-Urysohn]
+	Si $X$ es normal, $A\subseteq X$ cerrado y $f \in C(A)$, entonces $f$ es continuamente extensible a $X$.
+	Más aún si $|f(a)| \le c$ (resp. $<c$) para todo $a\in A$, entonces la extensión $\bar f$ cumple que $\bar f(x) \le c$ (resp. $<c$) para todo $x\in X$.
+	% Toda función continua $f: C\to\R$ (o a $[0,1]$) con $C$ cerrado en $X$ normal es continuamente extensible a $X$.
+\end{thm}
+\begin{proof}
+	Contemplamos tres casos:
+	\begin{enumerate}[a)]
+		\item \underline{$|f(a)|\le c$ para todo $a\in A$:}
+			\\
+			Por el lema anterior existe $g_0$ tal que $|f(a) - g_0(a)| \le \frac{2}{3}c$ y $|g_0(x)| \le \frac{1}{3}c$.
+			Luego aplicamos el lema anterior sobre $f - g_0$ para obtener $g_1$ tal que $|f(a) - g_0(a) - g_1(a)| \le \frac{2}{3}\cdot \frac{2}{3}c$ y $|g_1(x) \le \frac{1}{3}\cdot \frac{2}{3}c$.
+			Y así, para obtener inductivamente\footnote{Aquí se aplica también DE.} una función $g_{n+1}$ tal que $|f(a) - g_0(a) - \cdots - g_n(a)| \le \frac{2}{3}\cdot \left(\frac{2}{3}\right)^n c$ y que $|g_n(x)| \le \frac{1}{3}\cdot \left(\frac{2}{3}\right)^n c$.
+			\\
+			Ahora se define $F \in C(X)$ tal que
+			$$ F(x) := \sum_{n=0}^\infty g_n(x), $$
+			que por el teorema del sandwich satisface que $F|_A = f$, mientras que
+			$$ |F(x)| \le \sum_{n=0}^\infty |g_n(x)| \le \frac{1}{3}c \cdot \frac{1}{1 - \frac{2}{3}} = c. $$
+			La continuidad se hereda del hecho de que las sumas parciales son continuas y convergen uniformemente a $F$.
+
+		\item \underline{$|f(a)|<c$ para todo $a\in A$:}
+			Aplicando el inciso anterior se construye $F$ tal que $|F(x)| \le c$ para todo $x\in X$, luego sea $B := F^{-1}[\{\pm c\}]$, claramente $B$ es cerrado y disjunto de $A$, luego por el lema de Urysohn existe una función continua $\phi:X \to [0,1]$ tal que $\phi[B] = 0$ y $\phi[A] = 1$, luego $\bar f := F\cdot\phi$ es una extensión continua de $f$ y cumple la desigualdad.
+
+		\item \underline{$f$ no es necesariamente acotado:}
+			Basta notar que $(-c, c)$ es homeomorfo a $(0,1)$ que es homeomorfo a $\R$. \qedhere
+	\end{enumerate}
+\end{proof}
+\thmdep{}
+
+\begin{prop}
+	Si $Y$ es métrico, entonces el conjunto de funciones acotadas $(Y^X)^*$ es métrico con
+	$$ d(f,g) := \sup\{ d(f(x), g(x)) : x\in X\} = \diam(\Img f\cup\Img g), $$
+	a la que llamamos \strong{métrica de Cebyshev}\index{metrica@métrica!de Cebyshev}.
+	En consecuente si $Y$ es de completo, $(Y^X)^*$ también.
+\end{prop}
+Notemos que si $X$ es compacto e $Y$ es métrico, entonces $C(X, Y)^* = C(X, Y)$.
+Si $Y$ es normado, entonces $(Y^X)^*$ también con $\|f\|_\infty := \sup( \Img(\|f\|) )$, a la que usualmente se le dice \strong{norma de Chebyshev}.
+
+En particular, la norma de Chebyshev induce la topología de convergencia uniforme sobre $(Y^X)^*$.
+
+\begin{prop}[teorema de Dini]
+	Sea $X$ compacto y $(f_i)_{i\in I}$ una sucesión de $C(X, \R)$ tal que para todo $i\in\N$ y $x\in X$ se cumpla que $f_i(x) \le f_{i+1}(x)$.
+	Si existe $f\in\Func(X, \R)$ tal que para todo $x\in X$ se da que $f(x) = \lim_i f_i(x)$, entonces la convergencia es uniforme.
+\end{prop}
+\begin{proof}
+	Sea $\epsilon > 0$.
+	Definamos $F_i := \{x : |f(x) - f_i(x)| \ge \epsilon\}$, luego $F_i$ son cerrados pues $F_i^c$ son abiertos (¿por qué?),
+	además $F_0 \supseteq F_1 \supseteq F_2 \supseteq \cdots$.
+	Por construcción se cumple que $\bigcap_{i=0}^n F_i = \emptyset$, luego no pueden tener la PIF,
+	por ende hay algún $F_i$ que es vacío, que es lo que se quería probar.
+\end{proof}
+
+En esta sección usaremos la noción de polinomios funcionales, éstos se asemejan a los comunes pero sus variables son funciones continuas,
+e.g. $ \frac12 f(x)^3 + g(x)\cdot h(x) + 5 $. En general obviaremos el <<$(x)$>>, por comodidad.
+
+\begin{lem}
+	Sea $f \in C\big( X, [0,1] \big)$, entonces existe una sucesión de polinomios funcionales tal que convergen uniformemente a $\sqrt{f}$.
+\end{lem}
+\begin{proof}
+	Vamos a definir recursivamente la sucesión como
+	$$ g_0 := 0, \quad g_{i+1} := g_i + \frac{1}{2}(f - g_i^2). $$
+	Ahora queremos probar convergencia por teorema de Dini, así que hemos de probar que $g_i(x) \le \sqrt{f}(x)$ para todo $i$ y $x$, lo haremos por inducción, el caso $i = 0$ es trivial y
+	$$ \sqrt{f} - g_{i+1} = \sqrt{f} - g_i - \frac{1}{2}(f - g_i^2) = (\sqrt{f} - g_i) \left( 1 - \frac{1}{2}(\sqrt{f} + g_i) \right) $$
+	dado que $g_i \le \sqrt{f} \le 1$, se da que
+	$$ \sqrt{f} - g_{i+1} \ge (\sqrt{f} - g_i)\left( 1 - \frac{1}{2}2\sqrt{f} \right) \ge 0 $$
+	lo que completa la demostración de la desigualdad.
+	Usando que $g_i \le \sqrt{f}$ y la definición de $g_i$ se comprueba que son uniformemente crecientes, luego queda al lector probar que en el límite los $g_i$ se van a $\sqrt{f}$.
+\end{proof}
+
+Vemos que el teorema se aplica para el intervalo $[0,1]$, pero si $f\in C(X, \R)$ como $X$ es compacto, la imagen ha de ser compacta, luego posee un máximo global $M$ y $\frac 1M f(x)$ está en el intervalo $[0,1]$ y así podemos conseguir la raíz en casos generales.
+
+\begin{mydef}
+	Se dice que una familia $\{f_i\}_{i\in I}$ de funciones de dominio $X$ \strong{separa puntos} si para todo par de puntos distintos $x,y\in X$ existe alguna $f_i$ tal que $f_i(x) \ne f_i(y)$.
+\end{mydef}
+
+\begin{thmi}[Teorema de Stone-Weierstrass]\index{teorema!de Stone-Weierstrass}
+	Todo anillo de funciones continuas $A$ que separan puntos y que contiene a las constantes sobre un compacto $X$ es denso en $C(X, \R)$.
+\end{thmi}
+\begin{proof}
+	Probaremos que $\overline{A} = C(X, \R)$.
+	\par
+	Primero notemos que $\min(f, g)(x) := \min(f(x), g(x))$ pertenece a $\overline{A}$, pues
+	$$ \min(f,g) = \frac{1}{2}(f+g-|f-g|),\quad \max(f,g) = \frac{1}{2}(f+g+|f-g|), $$
+	donde $|f| = \sqrt{f^2}$ y vimos que la raíz de toda función positiva-valorada de $A$ pertenece a $\overline{A}$.
+	\par
+	Sea $f\in C(X, \R)$, queremos probar que para todo $\epsilon > 0$ existe $f_\epsilon \in \overline{A}$ tal que para todo $x\in X$ se cumple que
+	$$ |f(x) - f_\epsilon(x)| < \epsilon. $$
+	Por construcción para todo $a,b\in X$ existe $h_{a,b} \in A$ tal que $h_{a,b}(a) \ne h_{a,b}(b)$, luego se define $g_{a,b}(x) := \frac{h(x) - h(a)}{h(b) - h(a)} \in A$ tal que $g_{a,b}(a) = 0$ y $g_{a,b}(b) = 1$. Luego, definimos
+	$$ f_{a,b}(x) := (f(b) - f(a))g_{a,b}(x) + f(a) \in A, $$
+	que cumple que $f_{a,b}(a) = f(a)$ y $f_{a,b}(b) = f(b)$. Luego, definimos
+	$$ U_{a,b} := \{x: f_{a,b}(x) < f(x) + \epsilon\},\quad V_{a,b} := \{x: f_{a,b}(x) > f(x) - \epsilon\}, $$
+	los cuales resultan ser entornos de $a$ y de $b$.
+	Luego $(U_{a,b})_{a\in X}$ es un cubrimiento abierto de $X$, por ende, posee un subcubrimiento abierto finito $(U_{a_i,b})_{i=1}^n$.
+	Notemos que $f_b := \min(f_{a_i,b})_{i=1}^n \in \overline{A}$ que cumple que $ f_b(x) < f(x) + \epsilon $ para todo $x\in X$ y que $f_b(x) > f(x) - \epsilon$ para todo $x \in V_b := \bigcap_{i=1}^n V_{a_i, b}$ donde $V_b$ es entorno de $b$.
+	Por lo tanto $(V_b)_{b\in X}$ es un cubrimiento abierto de $X$, por ende, posee un subcubrimiento abierto finito $(V_{b_i})_{i=1}^m$.
+	Finalmente, $f_\epsilon := \max(f_{b_i})_{i=1}^m$ cumple lo pedido y pertenece a $\overline{A}$.
+	\par
+	Como $\overline{A}$ es cerrado y todo entorno de toda función continua corta a $A$, luego toda función continua es adherente a $\overline{A}$, en conclusión $\overline{A} = C(X,\R)$ como se quería probar.
+\end{proof}
+
+Algunos le agregan a $X$ la condición de ser de Hausdorff, de modo que sea un espacio normal y, en consecuencia de Urysohn. Sin embargo, en el enunciado admitimos que simplemente basta que sepamos que $A$ contiene tales funciones.
+La condición de ser de Hausdorff (sumado a DE) simplemente probaría que tal subanillo propio siempre existe, sin embargo, si nosotros proponemos, por ejemplo, el anillo de polinomios no haría falta elección para aplicar el resultado anterior.
+
+\begin{cor}
+	Toda función $f: [a,b] \to \R$ puede ser uniformemente aproximada por polinomios.
+\end{cor}
+Otro ejemplo interesante es aproximar mediante polinomios de la función exponencial, pues $\exp(x)^n = \exp(nx)$, esto en algún momento se puede generalizar mucho más y en el cuerpo de los números complejos en un resultado conocido como el teorema de Fourier.
+
+\begin{thmi}[Teorema de Stone-Weierstrass]
+	Todo anillo de funciones continuas $A$ que es cerrado por conjugados, que separa puntos y contiene a las constantes sobre un compacto $X$ es denso en $C(X,\C)$.
+\end{thmi}
+\begin{proof}
+	Para ello definimos $A_{\Re} := \{\Re(f) : f\in A\}$ y $A_{\Im} := \{\Im(f) : f\in A\}$ y vemos que cumplan la hipótesis de la versión real.
+	Claramente separan puntos, son cerrados por suma, contienen constantes y para ver que son cerradas por producto vamos a ver que es cerrado bajo producto supongamos que sean $f,g\in A$ y definamos $f_1 := \Re(f)$ y $f_2 := \Im(f)$, y análogo para $g$.
+	Como $A$ es cerrado por conjugados, vemos que $f_1 = \frac{f + \overline f}{2} \in A$, de modo que es fácil ver que $f_1g_1 \in A_{\Re}$.
+	Por un argumento similar es fácil ver que $f_2\in A$, de modo que $f_2g_2\in A$ y luego $\imaginary f_2g_2\in A$ luego $f_2g_2\in A_{\Im}$.
+	\\
+	Finalmente, si $f\in C(X,\C)$, entonces $f_1,f_2\in C(X)$.
+	Luego, por Stone-Weierstrass real se cumple que para todo $\epsilon > 0$ existen $g_\epsilon,h_\epsilon\in\overline{A_{\Re}}$ tales que para todo $x\in X$ se cumple:
+	$$ \max\{ |f_1(x) - g_\epsilon(x)|, |f_2(x) - h_\epsilon(x)| \} < \frac{\epsilon}{2} $$
+	finalmente, por desigualdad triangular $f_\epsilon := g_\epsilon + \imaginary h_\epsilon\in \overline A$ está a menos de $\epsilon$ de $f$, como se quería probar.
+\end{proof}
+
+\begin{cor}
+	Si $\D := \overline{ B_1(0) }$, entonces
+	\nomenclature{$\D$}{$ = \overline{ B_1(0) } = \{ z\in\C : |z| \le 1 \}$}
+	$$ A := \left\{ \sum_{k = -n}^n \alpha_n\exp(inz) : n\in\N\wedge\forall i\;(\alpha_i\in\C) \right\} $$
+	es denso en $C(\D, \C)$.
+\end{cor}
+
+\begin{thm}
+	Sea $X$ un espacio compacto, sea $R := C(X; \R)$ considerado como espacio normado y sea $\mathfrak{a}$ un ideal cerrado en $R$.
+	Denotemos
+	$$ Z := \{ x\in X : \forall f\in \mathfrak{a} \; f(x) = 0 \}, $$
+	si $g \in R$ se anula en $Z$, entonces $g \in \mathfrak{a}$.
+\end{thm}
+\begin{proof}
+	Sea $\epsilon > 0$, definamos $U := g^{-1}\big[ (-1, \epsilon) \big] \subseteq X$ que es abierto y contiene a $Z$,
+	luego $S := U^c$ es cerrado y, por tanto, compacto.
+	Todo $y \in S$ no está en $Z$, luego existe $h_y \in \mathfrak{a}$ tal que $h_y(y) \ne 0$ y de hecho,
+	$f_y$ no se anula en un entorno abierto $V_y$ de $y$.
+	Los conjuntos $V_y$'s forman un cubrimiento abierto de $S$ y como $S$ es compacto posee un subcubrimiento finito:
+	$$ S \subseteq V_{y_1} \cup \cdots \cup V_{y_n}. $$
+	Y a dichos $V_{y_i}$'s tiene un $h_{y_i}$ asociado; luego
+	$$ h := h^2_{y_1} + \cdots + h^2_{y_n} \in \mathfrak{a} $$
+	y además no se anula en $S$.
+	Como $S$ es compacto, $h$ alcanza un mínimo $a > 0$ en $S$.
+	Definamos la función
+	$$ H_n := \frac{nh}{1 + nh}. $$
+	Nótese que $1 + nh$ es estrictamente positiva y continua en $X$, luego posee inversa continua,
+	y $h \in \mathfrak{a}$, así que $H_n \in \mathfrak{a}$ también.
+	Nótese que $fH_n \in \mathfrak{a}$ y que $H_n$ converge a 1 en $S$.
+\end{proof}
+
+\begin{mydef}\index{equicontinuidad}
+	Si $M$ es métrico, se dice que un conjunto $A\subseteq M^X$ es
+	\begin{description}
+		\item[Equicontinuo] Si para todo $x_0\in X$ y $\epsilon > 0$ existe un entorno $U$ de $x_0$ tal que para todo $f\in A$
+			se cumple que $f[U] \subseteq B_\epsilon(f(x_0))$.
+		\item[Uniformemente equicontinuo] Si $X$ es métrico y para todo $\epsilon > 0$ existe un $\delta > 0$ tal que para todo $x_0\in X$
+			y $f\in A$ se cumple que $d(x, x_0) < \delta \implies d(f(x), f(x_0)) < \epsilon$.
+	\end{description}
+\end{mydef}
+Claramente si $X$ es métrico todo conjunto uniformemente equicontinuo es equicontinuo, pero de hecho:
+
+\begin{prop}
+	Si $X$ es métrico compacto, todo conjunto equicontinuo en $M^X$ es uniformemente equicontinuo.
+\end{prop}
+\begin{hint}
+	La demostración ocupa el mismo truco que para probar que continuo $\implies$ uniformemente continuo en dominio compacto.
+\end{hint}
+
+\thmdep{AEN}
+\begin{thmi}[Teorema de Ascoli-Arzelà]\index{teorema!de Ascoli-Arzelà}
+	Sea $X$ métrico compacto e $Y$ métrico completo.
+	$F$ es relativamente compacto en la topología de convergencia uniforme syss cumple las siguientes condiciones:
+	\begin{itemize}
+		\item $F$ es uniformemente equicontinuo.
+		\item Para todo $x\in X$ el conjunto $\{f(x): f\in F\}$ es relativamente compacto.
+	\end{itemize}
+\end{thmi}
+\begin{proof}
+	$\impliedby$. Si $X$ es compacto, entonces es totalmente acotado, por lo que para todo $n\in\N_{\ne 0}$ se puede definir $D_n$ como un conjunto finito $\{x_1,\dots,x_k\}$ tal que $X = \bigcup_{i=1}^k B_{1/n}(x_i)$, y por ende, $D := \bigcup_{n\in\N_{\ne 0}} D_n$.
+	Sea $F$ equicontinuo y uniformemente acotado, vamos a probar que es secuencialmente compacto.
+	\par
+	Sea $(f_i)_{i\in\N}$ una sucesión en $A$, de él se puede extraer una sucesión como $(f_i(d_0))_{i\in\N}$ está contenido en un compacto, entonces posee una subsucesión convergente, sea $(f_{\sigma(0,i)})_{i\in\N}$ dicha subsucesión.
+	Asimismo, de ésta se puede extraer la subsucesión $(f_{\sigma(1,i)})_{i\in\N}$ de modo que $(f_{\sigma(1,i)}(d_1))_{i\in\N}$ converja y así.
+	Defínase $g_i := f_{\sigma(i,i)}$.
+	\par
+	Sea $\epsilon > 0$.
+	Por la equicontinuidad existe $\delta > 0$ tal que para todo $n\in\N$ se cumple que $d(x, y) < \delta$ implica $d(g_n(x), g_n(y)) < \epsilon/3$.
+	Sea $m > 1/\delta$ un natural, por construcción existe $n_0 \in \N_{\ne 0}$ tal que para todo $p,q\ge n_0$ y todo $d\in D_m$ se cumple que $d(g_p(d), g_q(d)) < \epsilon/3$.
+	Finalmente, para todo $x\in X$ existe $d\in D_m$ tal que $d(x, d) < 1/m < \delta$ que cumple que para todo $p,q\ge n_0$ pasa
+	$$ d(g_p(x), g_q(x)) \le d(g_p(x), g_p(d)) + d(g_p(d), g_q(d)) + d(g_q(d), g_q(x)) < \epsilon. $$
+	Como se quería probar.
+	\par
+	$\implies$. Si $F$ es relativamente compacto, entonces es totalmente acotado, por ende, dado $\epsilon > 0$ existen $f_1,\dots,f_k\in F$ tales que $F \subseteq \bigcup_{i=1}^k B_{\epsilon/3}(f_i)$.
+	Luego, dado $x\in X$ se cumple que
+	$$ F(x) := \{f(x): f\in F\} \subseteq \bigcup_{i=1}^k B_{\epsilon/3}(f_i(x)) $$
+	luego $F(x)$ es totalmente acotado, y su clasurura también y es cerrado, ergo es completa, en conclusión $\overline{F(x)}$ ha de ser compacto.
+	\par
+	Sea $\epsilon > 0$, hemos de probar que $F$ es equicontinuo, como $X$ es compacto, los $f_i$s son uniformemente continuos, por ende existe $\delta > 0$ tal que para todo $x,y\in X$ se cumple $d(x,y)<\delta$ implica $d(f_i(x), f_i(y)) < \epsilon/3$.
+	Por el cubrimiento para todo $f\in F$ existe $f_i$ tal que $d(f, f_i) < \epsilon/3$, por lo que
+	\begin{equation}
+		d(f(x), f(y)) \le d(f(x), f_i(x)) + d(f_i(x), f_i(y)) + d(f_i(y), f(y)) < \epsilon. \tqedhere
+	\end{equation}
+\end{proof}
+\thmdep{}
+
+\section{Espacios ordenados}
+\begin{mydefi}
+	Sea $(X, \le)$ un conjunto linealmente ordenado, se define la topología inducida por el orden como la que tiene por base
+	a los intervalos abiertos del conjunto.
+	\par
+	Se dice que $C \subseteq X$ es \strong{convexo}\index{convexo} si para todo $x, y\in C$ se cumple que $[x, y] \subseteq C$.
+\end{mydefi}
+Queremos ver que los espacios ordenados son completamente normales, para ello veremos algo más fuerte.
+
+\begin{mydef}
+	Un espacio $X$ que es $T_1$ se dice \strong{monótonamente normal}\index{espacio!monótonamente normal} si existe una función $G$ que a cada par
+	$(A, B)$ de cerrados disjuntos se cumple que $G(A, B)$ es un abierto tal que
+	\begin{enumerate}
+		\item $A \subseteq G(A, B) \subseteq \overline{G(A, B)} \subseteq B^c$.
+		\item Si $A \subseteq A'$ y $B' \subseteq B$ entonces $G(A, B) \subseteq G(A', B')$ (monotonía).
+	\end{enumerate}
+	En éste caso $G$ se dice un \strong{operador monótono de normalidad}.
+\end{mydef}
+
+\begin{prop}
+	Si $X$ es monótonamente normal entonces posee un operador monótono de normalidad $G_0$ tal que
+	$G_0(A, B) \cap G_0(B, A) = \emptyset$.
+\end{prop}
+\begin{proof}
+	Basta definir $G_0(A, B) := G(A, B) \setminus \overline{G(B, A)}$.
+\end{proof}
+
+\begin{thm}
+	Sea $X$ un espacio que es $T_1$ es monótonamente normal syss existe un operador $H$ tal que para
+	todo par $(p, U)$ donde $p \in U \subseteq X$ y $U$ es abierto se cumple que $H(p, U)$ es un abierto tal que:
+	\begin{enumerate}
+		\item $p \in H(p, U) \subseteq U$.
+		\item Si $H(p, U) \cap H(q, V) \ne \emptyset$, entonces $p \in V$ o $q \in U$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$\implies$.
+	Sea $G$ un operador monótono de normalidad tal que $G(A, B) \cap G(B, A) = \emptyset$.
+	Luego sea $H(p, U) := G(\{p\}, U^c)$, entonces claramente $H$ cumple la propiedad 1.
+	Si $p \notin V$ y $q \notin U$, entonces aplicando la monotonía se cumple
+	$$ H(p, U) \cap H(q, V) = G(\{p\}, U^c) \cap G(\{q\}, V^c) \subseteq G(\{p\}, \{q\}) \cap G(\{q\}, \{p\}) = \emptyset. $$
+
+	$\impliedby$. Sean $A, B$ cerrados disjuntos, entonces definamos
+	$$ G(A, B) := \bigcup \{ H(a, U) : a\in A \wedge U \subseteq B^c \} $$
+	que es abierto por ser unión de abiertos.
+	Nótese que para todo $a\in A$ se cumple que $a \in H(a, B^c) \subseteq G(A, B)$, es decir, $A \subseteq G(A, B)$.
+	Sea $b\in B$, entonces $b \in V := H(b, A^c)$, luego por la propiedad 2. de $H$ se deduce que $V \cap G(A, B) = \emptyset$ y que
+	$$ G(A, B) \subseteq V^c \implies \overline{ G(A, B) } \subseteq V^c $$
+	por minimalidad de la clausura y porque $V^c$ es cerrado.
+	En definitiva $b \notin \overline{ G(A, B) }$ como se quería ver.
+\end{proof}
+
+\begin{prop}
+	Sea $X$ un espacio que es $T_1$ y $H$ un operador como el teorema anterior pero sólo aplicable para $(p, B)$ donde $B$ es un abierto perteneciente
+	a una base $\mathcal{B}$, entonces existe un operador $\overline H$ que funciona para todo par $(p, U)$ y en consecencia $X$ es monótonamente normal.
+\end{prop}
+\begin{proof}
+	Basta definir:
+	$$ \overline H(p, U) := \bigcup \{ H(p, B) : B\subseteq U \} $$
+	que claramente cumple con las hipótesis exigidas.
+\end{proof}
+
+\begin{thmi}
+	Ser monótonamente normal es hereditario.
+	En consecuencia, todo espacio monótonamente normal es completamente normal.
+\end{thmi}
+\begin{proof}
+	Sea $Y \subseteq X$ un subespacio y sea $H$ el operador descrito en el teorema ante-anterior.
+	Para $U$ abierto en $Y$ definamos:
+	$$ U^* := \bigcup\{ V : V\text{ es abierto en }Y \wedge V\cap Y = U \} $$
+	Y definamos $H_Y(p, U) := H(p, U^*) \cap Y$ que cumple con las hipótesis exigidas.
+\end{proof}
+
+\thmdep{AE}
+\begin{thm}
+	Todo espacio ordenado es monótonamente normal y, en consecuencia, es completamente normal.
+\end{thm}
+\begin{proof}
+	Sea $X$ un espacio ordenado y consideremos:
+	$$ X^* := \{ (-n, 0) : n\in\N \} \cup X \times \{1\} \cup \{ (+n, 2) : n\in\N \} $$
+	bajo el orden lexicográfico.
+	Es decir, $X^*$ es también un conjunto ordenado que extiende a $X$, pero que no posee ni máximo ni mínimo.
+	Por AE sea $\preceq$ un buen orden sobre $X^*$ de modo que $E( A ) := \min_\preceq(A)$ es una función de elección sobre $X^*$.
+	Veremos que $X^*$ es monótonamente normal construyendo un operador $H$ sobre una base.
+
+	Para ello consideremos un par $\big( p, (a, b) \big)$ y definamos:
+	$$ x(p, a) :=
+	\begin{cases}
+		a,		   &(a, p) =   \emptyset \\
+		E\big( (a, p) \big), &(a, p) \ne \emptyset
+	\end{cases},
+	\quad y(p, b) :=
+	\begin{cases}
+		b,		   &(p, b) =   \emptyset \\
+		E\big( (p, b) \big), &(p, b) \ne \emptyset
+	\end{cases} $$
+	Luego definimos $H\big(p, (a, b)\big) = \big( x(p, a), y(p, b) \big)$ que es efectivamente abierto.
+	Claramente $p \in H\big(p, (a, b)\big) \subseteq (a, b)$.
+
+	Sean $p,q,(a,b),(c,d)$ tales que se cumpla que $H\big( p, (a, b) \big) \cap H\big( q, (c, d) \big) \ne \emptyset$ que contiene a un elemento $z$.
+	Sin perdida de generalidad supongamos que $x(p, a) \le x(q, c)$.
+	Queremos probar que $p \in (c, d)$ o que $q \in (a, b)$.
+	Vemos dos posibles casos:
+	\begin{enumerate}[a)]
+		\item \underline{$y(q, d) \le y(p, b)$:}
+			Luego $q \in \big( x(q, c), y(q, d) \big) \subseteq \big( x(p, a), y(p, b) \big) \subseteq (a, b)$.
+
+		\item \underline{$y(q, d) > y(p, b)$:}
+			Éste caso se hará por contradicción.
+			Primero recordar que la situación es la siguiente:
+			$$ x(p, a) \le x(q, c) < z < y(p, b) < y(q, d). $$
+			Luego si $p > x(q, c)$, entonces $p \in \big( x(q, c), y(q, d) \big) \subseteq (c, d)$;
+			así que suponemos que $p \le x(q, c)$.
+			Similarmente si $q < y(p, b)$, entonces $q \in \big( x(p, a), y(p, b) \big) \subseteq (a, b)$;
+			así que suponemos que $q \ge y(p, b)$. Es decir:
+
+			Pero si $p = x(q, c)$, considerando que $c \le x(q, c) < z < y(p, b) \le q$ entonces $z \in (c, q) \ne \emptyset$
+			así que $p \in (c, q) \subseteq (c, d)$.
+			Y si $q = y(p, b)$, considerando que $p < x(q, c) < z < y(p, b) \le b$ entonces $z \in (p, b) \ne \emptyset$
+			así que $q \in (p, b) \subseteq (a, b)$.
+			Es decir, la situación es la siguiente:
+			$$ x(p, a) < p < x(q, c) < z < y(p, b) < q < y(q, d). $$
+			Pero entonces $x(q, c) \in (p, z) \subseteq (p, b)$ y por definición $y(p, b) := \min_\preceq(p, b)$, es decir, $y(p, b) \preceq x(q, c)$.
+			Y similarmente $y(p, b) \in (z, q) \subseteq (c, q)$ y por definición $x(q, c) := \min_\preceq(c, q)$, es decir, $x(q, c) \preceq y(p, b)$.
+			En conclusión, $x(q, c) = y(p, b)$, lo que contradice la existencia de $z$. \qedhere
+	\end{enumerate}
+\end{proof}
+\thmdep{}
+
+\begin{mydef}
+	Se dice que un conjunto ordenado es \strong{orden-completo} si todo subconjunto acotado posee ínfimo.
+\end{mydef}
+
+\begin{thmi}
+	Un espacio ordenado no vacío es compacto syss es orden-completo y posee extremos (mínimo y máximo).
+\end{thmi}
+\begin{proof}
+	$\implies$.
+	Veamos las dos condiciones:
+	\begin{enumerate}[i)]
+		\item \underline{$X$ posee extremos:} De lo contrario entonces $\{ (-\infty, x) \}_{x\in X}$ sería un cubrimiento por abiertos
+			que no posee subcubrimiento finito (pues todo conjunto finito posee máximo).
+			Análogamente para el mínimo.
+
+		\item \underline{$X$ es completo:} De lo contrario habría un corte $(A, B)$ tal que $A,B$ son convexos, todo elemento de $A$ es menor que
+			todo elemento de $B$ y ni $A$ ni $B$ poseen mínimo ni máximo. En cuyo caso se daría que
+			$$ A = \bigcup_{a\in A} (-\infty, a), \quad B = \bigcup_{b\in B} (b, \infty) $$
+			lo que prueba que $A,B$ son abiertos y aquí se forma un cubrimiento por abiertos de $X$ que no posee subcubrimiento finito.
+	\end{enumerate}
+
+	$\impliedby$.
+	Sea $X$ completo y con mínimo $m$ y máximo $M$.
+	Si $m = M$, entonces $X = \{m\}$ que es compacto.
+	Sino, fijemos un cubrimiento por abiertos $\mathcal{C}$ de $X$, y sea
+	$$ S := \{ y \in X : [m, y] \text{ tiene subcubrimiento finito} \}; $$
+	nótese que $S$ no es vacío pues $m \in S$ y está acotado así que admite un supremo $s$.
+	\underline{Veamos que $s \in S$}, en efecto existe un entorno $U_s$ de $s$ en $\mathcal{C}$, de modo que $s \in (a, b) \subseteq U$.
+	Luego $a < s$, es decir, $a \in S$ así que existe un subcubrimiento $\mathcal{C}_a$ finito de $[m, a]$ y $\mathcal{C}_a \cup \{U_s\}$ es
+	un subcubrimiento finito de $[m, s]$.
+	Similarmente sea $U_b$ un entorno de $b$ en $\mathcal{C}$, luego $\mathcal{C}_a \cup \{ U_s, U_b \}$ es un subcubrimiento finito
+	de $[m, b]$, por lo que si $s \ne M$, entonces $b$ contradiciría la maximalidad de $s$, es decir, necesariamente $s = M$, lo que prueba que $X$
+	admite un subcubrimiento finito y que es compacto.
+\end{proof}
+
+De ésto inmediatamente sigue una generalización del teorema de Heine-Borel:
+\begin{thm}
+	Un subespacio de un espacio ordenado completo es compacto syss es cerrado y acotado.
+\end{thm}
+
+\begin{exn}\label{ex:omega_1_ord_space}
+	% \addnamedexample{$[0, \omega_1]$}{Un espacio que es completamente normal, pero no perfectamente normal.
+	% Un espacio de Lindelöf que no es hereditariamente de Lindelöf}
+	% \addnamedexample{$[0, \omega_1)$}{Un espacio que es 1AN pero no es ni 2AN, ni es separable.
+	% Un espacio que es secuencialmente compacto, pero no es ni compacto ni de Lindelöf}
+	Sea $X := [0, \omega_1]$ y $Y := [0, \omega_1)$.
+	\begin{enumerate}
+		\item Como $X$ e $Y$ son espacios ordenados, entonces son completamente normales, sin embargo,
+			nótese que $\{ \omega_1 \}$ es un cerrado que no es un conjunto $G_\delta$ pues tendría que ser la intersección de numerables cerrados
+			que podemos suponer de la forma $\{ [\alpha_n, \omega_1] \}_{n\in\N}$ donde $\lim_{n \to \omega_0} \alpha_n = \omega_1$,
+			pero $\cf\omega_1 \ne \omega_0$ por lo que la sucesión $(\alpha_n)_{n\in\N}$ no existe;
+			en consecuencia $X$ no es perfectamente normal.
+
+		\item Por el mismo argumento, $X$ no es 1AN pues $\omega_1$ no posee una base de entornos numerable.
+			Sin embargo, $Y$ sí es 1AN pues el único punto con una base de entornos no numerable de $X$ es $\omega_1$,
+			como consecuencia, $X$ no es metrizable.
+			$X$, $Y$ no son separables pues para toda sucesión numerable $(\alpha_n)_{n\in\N}$ de puntos siempre
+			existe un intervalo $(\beta, \omega_1)$ que es un abierto que no contiene ningún $\alpha_n$.
+			Una modificación de éste argumento también permite ver que ni $X$ ni $Y$ son 2AN.
+
+		\item $X$ es compacto pues es orden-completo, por el mismo argumento $Y$ no es compacto.
+			Sin embargo, tanto $X$ como $Y$ son secuencialmente compactos.
+			Luego $Y$ no es metrizable (pues todo espacio métrico y secuencialmente compacto es compacto).
+			Además, tanto $X$ como $Y$ son numerablemente compactos,
+			pero como $Y$ no es compacto, entonces $Y$ no es de Lindelöf.
+			Luego $X$ es de Lindelöf, pero no hereditariamente de Lindelöf.
+	\end{enumerate}
+\end{exn}
+
+Éste es otro ejemplo que emplea la noción de cofinalidad:
+\begin{exn}[tabla de Tychonoff]\label{ex:tychonoff_plank}
+	\addnamedexample{Tabla de Tychonoff}{Un espacio que es normal, pero no completamente normal}
+	Sea $T := [0, \omega_1] \times [0, \omega_0]$ con la topología usual, llamado la \strong{tabla de Tychonoff}
+	y $T_\infty := T \setminus \{\omega_1, \omega_0\}$ con la topología subespacio, llamado la \strong{tabla reducida de Tychonoff}.
+	\begin{itemize}
+		\item $T$ es normal:
+			Puesto que $[0, \omega_1]$ y $[0, \omega_0]$ son espacios de Hausdorff compactos,
+			luego $T$ también es de Hausdorff compacto, por ende, es normal.
+
+		\item $T$ no es completamente normal, dado que $T_\infty$ no es normal:
+			Sean $A := \{\omega_1\} \times [0, \omega_0)$ y $B := [0, \omega_1) \times \{\omega_0\}$.
+			Es fácil comprobar que $A, B$ son cerrados y claramente disjuntos; sin embargo veamos que no poseen entornos disjuntos.
+			En efecto, sea $U$ un entorno de $A$.
+			Entonces para todo $(\omega_1, n) \in U$ necesariamente existe $\alpha_n < \omega_1$ tal que
+			$(\alpha_n, \omega_1] \times \{n\} \subseteq U$.
+			Sea $\gamma := \lim_{n\to\omega} \alpha_n < \omega_1$ (puesto que $\omega_1$ es un ordinal regular),
+			de modo que $(\gamma, \omega_1] \times [0, \omega_0) \subseteq U$.
+			Pero claramente todo entorno de $(\gamma + 1, \omega_0) \in B$ corta a $U$, por la caracterización anterior,
+			por lo que $T_\infty$ no es normal.
+	\end{itemize}
+\end{exn}
+
+\begin{exn}[tabla de Alexandroff]\label{ex:alexandroff_plank}
+	\addnamedexample{Tabla de Alexandroff}{Un espacio que es de Urysohn, pero no es ni regular ni de Tychonoff}
+	Sea $X := [0, \omega_1] \times [-1, 1]$ y $p := (\omega_1, 0)$ con la topología cuya base son los abiertos en la topología producto usual
+	junto a los conjuntos de la forma
+	$$ U(\alpha, n) := \{p\} \cup (\alpha, \omega_1]\times(0, 1/n). $$
+	Nótese que la topología en $X$ es, por definición, más fuerte que la topología producto, que es de Tychonoff, por lo que $X$ es al menos Urysohn.
+	Pero no es regular, dado que $C := (0, \omega_1) \times \{0\}$ es un cerrado (nótese que su complemento es trivialmente un entorno de todo punto
+	distinto de $p$, y para $p$ basta considerar que $p \in U(0, 1) \subseteq C^c$) y todo entorno de $C$ corta a todo entorno de $p$.
+	Como $X$ no es regular, tampoco es de Tychonoff.
+\end{exn}
+
+\begin{exn}[sacacorchos de Tychonoff]\label{ex:tychonoff_corkscrew}
+	\addnamedexample{Sacacorchos de Tychonoff}{Un espacio regular pero no de Urysohn}
+	\addnamedexample{Sacacorchos reducido de Tychonoff}{Un espacio regular y de Urysohn que no es de Tychonoff}
+	La construcción del espacio a continuación es complicada, así que recomendamos leerlo con detalle:
+	En primer lugar sea $T$ la tabla reducida de Tychonoff, vale decir, el subespacio $[0, \omega_1] \times [0, \omega_0] \setminus \{(\omega_1, \omega_0)\}$.
+	Luego definamos $P_k := T \times \{k\}$ e $Y := \bigcup_{k\in\Z} P_k$.
+	Pictóricamente cada $P_i$ es el cuadrante del sacacorchos de Tychonoff, de modo que por definición diremos que
+	$P_{4k}$ es el primer cuadrante, $P_{4k + 1}$ es el segundo, $P_{4k + 2}$ el tercero y $P_{4k + 3}$ el cuarto.
+	De momento $Y$ posee únicamente la topología producto, pero ahora definiremos $X$ como un espacio cociente de $Y$ bajo la siguiente relación
+	de equivalencia $\sim$ dada por que:
+	\begin{itemize}
+		\item Dos puntos que sean iguales.
+		\item $(\Omega, n, 2k) \sim (\Omega, n, 2k+1)$ con $k \in \Z$ y $n \in \N$.
+		\item $(\alpha, \omega, 2k+1) \sim (\alpha, \omega, 2k+2)$ con $k \in \Z$ y $0 \le \alpha < \Omega$.
+			% \item $(\alpha, \omega, 4k+3) \sim (\alpha, \omega, 4k+4)$ con $k \in \Z$ y $0 \le \alpha < \Omega$.
+	\end{itemize}
+	Denotamos por $L_k := P_{4k} \cup P_{4k+1} \cup P_{4k+2} \cup P_{4k+3}$.
+	A ésto le sumamos dos puntos $a_+$ y $a_-$ que son los que están <<al final arriba>> y <<al final abajo>> del sacacorchos,
+	y tal que la base de entornos de $a_+$ es $\bigcup_{k \ge n} L_k$ para todo $n\in\Z$ y $\bigcup_{k \le n} L_k$ para $a_-$.
+	Denotamos por $Z := X \setminus \{a_-\}$.
+	% Primero definamos $A_\gamma := (-1, -2, \dots, \gamma, \dots, 2, 1)$ para todo ordinal $\gamma > 0$.
+	% En particular sea $P := A_{\omega_1} \times A_{\omega_0}$ y sea $P^* := P \setminus \{(\omega_1, \omega_0)\}$.
+	% Luego
+	% ...
+	\todo{Completar construcción, ver \cite[pp. 109--111]{steen:counterexamples}.}
+\end{exn}
+
+% \section{Grupos topológicos}
+% \begin{mydef}[Grupos topológicos]\index{grupo!topológico}
+%	 Se dice que un grupo $(G, \cdot)$ dotado de una topología es un \strong{grupo topológico} si las aplicaciones
+%	 $$ \cdot : G\times G \to G, \quad ()^{-1} : G \to G $$
+%	 son continuas.
+%	 \par
+%	 Un \strong{isomorfismo topológico}\index{isomorfismo!topológico} entre dos grupos topológicos es un isomorfismo de grupos que es también
+%	 un homeomorfismo de espacios topológicos.
+% \end{mydef}
+
+% \textbf{Ejemplos.} Son grupos topológicos:
+% \begin{enumerate}
+%	 \item Cualquier grupo $G$ con la topología discreta, en cuyo caso se dice un \strong{grupo discreto}.
+%	 \item La topología estándar en $(\R, +)$.
+%	 \item La topología producto estándar en $(\R^n, +)$.
+%		 Por ende, la topología estándar en $(\C, +)$.
+%	 \item La topología subespacio en $(\R^\times, \cdot)$ y $(\C^\times, \cdot)$.
+% \end{enumerate}
+
+% \begin{prop}
+%	 Un grupo con una topología es un grupo topológico syss la aplicación $(x, y) \mapsto xy^{-1}$ es continua.
+% \end{prop}
+% \begin{proof}
+%	 $\implies$. Trivial.\\
+%	 $\impliedby$. Claramente $x \mapsto (1, x)$ es continua (pues lo es en cada coordenada) de modo que
+%	 $x\mapsto (1, x) \mapsto x^{-1}$ muestra ser continua.
+%	 Por ello $(x, y) \mapsto (x, y^{-1}) \mapsto x(y^{-1})^{-1} = xy$ es continua.
+% \end{proof}
+% A las aplicaciones de la forma $x \mapsto ax$ (resp. $xa$) en un grupo topológico les decimos \strong{traslación izquierda (resp. derecha) por $a$}.
+% Claramente las traslaciones son continuas.
+
+% \begin{prop}
+%	 $A$ es abierto en $G$ syss para todo $g\in G$ se cumple que $gA$ es abierto.
+% \end{prop}
+
+% \begin{thm}
+%	 En un grupo topológico $G$ son equivalentes:
+%	 \begin{enumerate}
+%		 \item $G$ es de Hausdorff.
+%		 \item $\{1\}$ es cerrado.
+%		 \item Si $ \mathcal{B} $ es una base de entornos de 1, entonces $\{1\} = \bigcap \mathcal{B}$.
+%	 \end{enumerate}
+% \end{thm}
+% \begin{proof}
+%	 Claramente $(1)\implies(2)$ y si $\{1\}$ es cerrado, entonces con $f(x, y) := xy^{-1}$ vemos que $f^{-1}[ \{1\} ] = \{(x, x) : x\in G\}$ la diagonal
+%	 es cerrada, es decir, $G$ es de Hausdorff.
+%	 \par
+%	 Nuevamente se sigue que $(1)\implies(3)$.
+%	 Veamos que $(3) \implies (2)$: notemos que para todo $x\in G$ existe un entorno $U$ de 1, tal que $x^{-1} \notin U$, luego $1 \notin xU$ donde $xU$
+%	 es un entorno de $x$, ergo $\{1\}$ es cerrado.
+% \end{proof}
+
+% \begin{prop}
+%	 Se cumple:
+%	 \begin{enumerate}
+%		 \item Si $H \le G$ (es subgrupo), entonces $\overline H \le G$.
+%		 \item Si $H \nsle G$ (es subgrupo normal), entonces $\overline H \nsle G$.
+%	 \end{enumerate}
+% \end{prop}
+
+\end{document}
