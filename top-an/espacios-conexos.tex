@@ -1,0 +1,2004 @@
+\documentclass[topologia-analisis.tex]{subfiles}
+\begin{document}
+
+\newrefsegment
+\chapter{Conexión y la categoría de espacios topológicos}
+\label{cha:normed_spaces}
+
+En éste capítulo veremos una introducción a los métodos categoriales.
+Más específicamente, comenzaremos dando una breve introducción a otra de las definiciones vitales de la topología: la conexión y sus derivados.
+Luego, al hablar del extremo opuesto, los espacios \textit{hereditariamente} disconexos, introduciremos ciertas nociones de límite categoriales
+de espacios topológicos.
+Después retomaremos un problema de compacidad: las compactificaciones como un tipo de adjunción.
+Y finalmente hablaremos de espacios de funciones desde la perspectiva de una adjunción, lo que a mi juicio esclarece la topología que uno le quiere dar
+(convergencia puntual, uniforme y compacto-abierto).
+
+\section{Espacios conexos}
+\begin{prop}
+	Son equivalentes:
+	\begin{enumerate}
+		\item $X$ no puede expresarse como $X_1\oplus X_2$ con $X_1,X_2$ subespacios de $X$.
+		\item $\emptyset, X$ son los únicos conjuntos cerrados y abiertos de $X$.
+		\item Si $X = X_1\cup X_2$ con $X_1,X_2$ separados; entonces algunos es vacío.
+		\item Para toda aplicación continua $f\colon X \to D(2)$ se cumple que $f[X] = \{0\}$ o $f[X] = \{1\}$.
+	\end{enumerate}
+\end{prop}
+% \begin{proof}
+% 	$1) \implies 2)$. Usar proposición~\ref{thm:open_subspace_sum}.
+% 	\par
+% 	$2) \implies 3)$. Por definición $X_1\cap\overline X_2 = \overline X_1\cap X_2 = \emptyset$. Luego, $\overline X_1 \subseteq X_2^c \subseteq X_1$ y así se obtiene que $\overline X_1 = X_1 = X_2^c$ y que $\overline X_2 = X_2 = X_1^c$. Luego son cerrados y abiertos cuya unión es el espacio, ergo, alguno es vacío.
+% 	\par
+% 	$3) \implies 4)$. $X = f^{-1}(0) \cup f^{-1}(1)$ donde ambos son cerrados y abiertos disjuntos, luego están separados.
+% 	\par
+% 	$4) \implies 1)$. Usar proposición~\ref{thm:open_subspace_sum}.
+% \end{proof}
+
+\begin{mydefi}[Espacio conexo]\index{conexo}
+	Se le dice \strong{conexo} a cualquier espacio que cumple alguna condición del teorema anterior. 
+	% Es cualquiera que cumple con alguna de las condiciones del teorema anterior.
+	De lo contrario se dice que un espacio es \strong{disconexo}.
+\end{mydefi}
+Ejemplos triviales de conjuntos conexos lo son $\emptyset$ y los conjuntos singulares.
+Como ejercicio argumente por qué $[0,1]\cup[2,3]$ y $\Q$ son subespacios disconexos de $\R$.
+
+\begin{cor}
+	Sea $X$ un espacio topológico, $C \subseteq X$ conexo y $X_1, X_2$ conjuntos separados tales que $C \subseteq X_1\cup X_2$.
+	Entonces $C \subseteq X_1$ o $C \subseteq X_2$.
+\end{cor}
+\begin{proof}
+	Veamos la contrarrecíproca: si $C \not\subseteq X_1$ y $C \not\subseteq X_2$, entonces $C\cap X_1 \ne \emptyset \ne C\cap X_2$.
+	Definamos $A := C \cap X_1$ y $B := C\cap X_2$, nótese que $A\cap B = \emptyset$ y que $A \cup B = C$.
+	Además
+	$$ \overline A \cap B \subseteq (\overline C\cap\overline X_1) \cap (C\cap X_2) = \emptyset $$
+	y análogamente $A \cap \overline B = \emptyset$, por lo que están separados y $C$ es disconexo.
+\end{proof}
+
+\begin{thmi}
+	Todo subespacio de $\overline{\R}$ (bajo la topología del orden) es conexo syss es un intervalo.
+\end{thmi}
+\begin{proof}
+	$\implies$.
+	En $\overline{\R}$ todo subespacio $S$ posee ínfimo y supremo $a, b$;
+	luego para probar que es un intervalo basta probar que para todo $a < x < b$ se cumple que $x \in S$.
+	De lo contrario $S\cap [-\infty, x)$ y $S\cap(x, \infty]$ son abiertos disjuntos cuya unión es $S$.
+	\par
+	$\impliedby$.
+	Supongamos por contradicción que un intervalo puede representarse como la suma de dos subespacios abiertos no vacíos $U, V$ de tal forma
+	que $x\in U$, $y\in V$ y $x < y$. Sea $U' := U\cap[x,y]$, $V' := V\cap[x,y]$ tal que $U'\cup V' = [x,y]$.
+	Notemos que $U,V$ son abiertos-cerrados en el subespacio $I$, de forma que $U',V'$ son cerrados.
+	Sea $s := \sup(U')$, luego se puede comprobar que $s \in \overline U' \subseteq U$ y que $s \in \overline V' \subseteq V$;
+	lo que contradice a la cualidad de subespacios disjuntos.
+\end{proof}
+Es fácil notar que la topología del orden sobre $\overline{\R}$ genera la topología usual sobre $\R$ como subespacio. Ergo, se concluye el mismo resultado para $\R$.
+
+\begin{thm}
+	La imagen continua de conexos es conexa.
+\end{thm}
+
+\begin{cor}
+	Si $X$ es de Urysohn, conexo y $|X| \ge 2$, entonces $|X| \ge \mathfrak{c}$.
+\end{cor}
+\begin{proof}
+	Sean $x, y \in X$, por ser de Urysohn están competamante separados por lo que existe $f\colon X \to [0, 1]$ tal que
+	$f(x) = 0$ y $f(y) = 1$.
+	Como $X$ es conexo, entonces $f$ ha de ser suprayectiva, luego $|X| \ge \mathfrak{c}$.
+\end{proof}
+Nótese que algun axioma de separación fuerte es necesario, ya que el espacio de Sierpiński es un ejemplo sencillo de un espacio $T_0$ conexo con dos puntos
+(en general, hay toda una familia de espacios espectrales que incurren en el mismo fenómeno).
+Otro ejemplo es $\N$ con la topología cofinita, el cual es $T_1$ y conexo.
+
+\begin{thmi}[Teorema del valor intermedio de Weierstrass]\index{teorema!del valor intermedio}
+	Sea $f\colon [a,b] \to \R$, donde $f(a) < f(b)$, entonces para todo $y \in (f(a), f(b))$ existe $c\in (a, b)$ tal que $f(c) = y$.
+\end{thmi}
+\begin{figure}[!hbt]
+	\centering
+	\includegraphics{intermediate-value.pdf}
+	\caption{Teorema del valor intermedio de Weierstrass.}
+\end{figure}
+\begin{cor}
+	Si $f\colon A\to\R$ es inyectiva y continua con $A\subseteq\R$ un intervalo, entonces $f$ es estrictamente monótona.
+\end{cor}
+
+\begin{cor}[Bolzano]
+	Sea $f\colon [a,b] \to \R$, donde $f(a)\cdot f(b) < 0$, entonces existe $c\in (a, b)$ tal que $f(c) = 0$.
+\end{cor}
+\begin{cor}
+	Toda función continua de la forma $f\colon [a,b] \to [a,b]$ posee un punto fijo.
+\end{cor}
+
+\begin{thm}
+	Sean $\{C_i\}_{i\in I}$ una familia de subespacios conexos de $X$, tal que existe algún $i_0 \in I$ tal que $C_{i_0}$ no está separado del resto de $C_i$,
+	entonces $\bigcup_{i\in I} C_i$ es conexo.
+\end{thm}
+\begin{proof}
+	Sea $C := \bigcup_{i\in I} C_i = X_1 \cup X_2$ donde $X_1,X_2$ están separados.
+	Como $C_{i_0}$ es conexo (por hipótesis) entonces $C_{i_0}$ está contenido en $X_1$ o en $X_2$, supongamos sin perdida de generalidad que
+	$C_{i_0} \subseteq X_1$.
+	Lo mismo aplica para el resto de $C_j$'s, pero como $C_j$ no está separado de $C_{i_0}$, entonces $C_j \subseteq X_1$ para todo $j \in I$.
+	En conclusión $C \subseteq X_1$ y por ende $X_2 = \emptyset$.
+\end{proof}
+
+\begin{cor}
+	Sean $\{C_i\}_{i\in I}$ una familia de subespacios conexos de $X$, tal que su intersección es no-vacía, entonces $\bigcup_{i\in I} C_i$ es conexo.
+\end{cor}
+\begin{cor}
+	Sea $A$ un conjunto cualquiera tal que $C \subseteq A \subseteq \overline C$ con $C$ conexo, entonces $A$ es conexo.
+	En particular la clausura de un conexo es conexa.
+\end{cor}
+\begin{proof}
+	Notemos que para todo $x\in A$ se cumple que $C$ y $\{x\}$ no están separados.
+	Luego el conjunto $\{C\}\cup\{\{x\} : x\in A\}$ es una familia de conexos tal que uno no está separado del resto.
+\end{proof}
+
+\begin{cor}
+	Si $X$ posee un subconjunto denso conexo, entonces $X$ es conexo.
+\end{cor}
+\begin{cor}
+	Si todo par de puntos en $X$ están contenidos en un subconjunto conexo de $X$, entonces $X$ es conexo.
+\end{cor}
+
+\begin{thm}
+	La topología producto de espacios no vacíos es conexa syss lo son los factores.
+\end{thm}
+\begin{proof}
+	Sea $\{X_i\}_{i\in I}$ tal que $X := \prod_{i\in I}X_i$.
+	\par
+	$\implies$. Si $X$ es conexo entonces $\pi_j(X) = X_j$ lo es pues la proyección es continua y la imagen de conexos es conexa.
+	\par
+	$\impliedby$.
+	Para $I = \{0,1\}$ basta notar que $X = (X_1\times\{x_2\})\cup(\{x_1\}\times X_2)$ donde ambos son conexos no-disjuntos, por ende, $X$ es conexo.
+	Luego se puede aplicar inducción para notar que el producto finitos de conexos es conexo.
+
+	Si los $X_i$ son conexos y no vacíos, entonces basta considerar un $\vec u \in X$, y notar que dado%
+	\footnote{Un subconjunto finito de $I$.}
+	$J \in [I]^{<\omega}_{\neq\emptyset}$ se define
+	$$ \prod_{j\in J} X_j \simeq C_J := \prod_{i\in I} A_i,\quad A_i := \begin{cases}\{\vec u_i\} &i\notin J \\ X_i &i\in J\end{cases}  $$
+	Luego la unión de los $C_J$ es un conjunto denso (¿por qué?) de $X$ que es conexo pues es la intersección de conexos
+	cuya intersección contiene a $\vec u$, es decir, es no vacía.
+\end{proof}
+Nótese que aquí se puede criticar de que hace falta AE para extraer el $\vec u\in X$,
+pero de darse que el producto sea nulo entonces es también trivialmente conexo.
+
+\begin{cor}
+	Los espacios euclídeos, los cubos de Tychonoff y los cubos de Alexandroff son conexos.
+	Los cubos de Cantor son siempre disconexos.
+\end{cor}
+
+\textbf{Ejemplo (la topología por cajas puede no ser conexa).}
+Sea $\prod_{i\in\N}^{\rm Box} \R$.
+Sea $A$ el conjunto de las sucesiones acotadas y $B := A^c$ es el conjunto de las sucesiones no-acotadas.
+Para probar que $A$ y $B$ son abiertos, basta notar que son entornos de todos sus puntos, para ello si $\vec x := (x_i)_{i=0}^\infty \in A$, entonces $\vec x\in \prod_{i=0}^\infty B_1(x_i) \subseteq A$, y de manera similar si $\vec y := (y_i)_{i=0}^\infty \in B$ entonces $\vec y \in \prod_{i=0}^\infty B_1(y_i) \subseteq B$, en donde, el producto de abiertos es abierto por lo que se prueba que $A$ y $B$ lo son.
+
+\begin{mydefi}
+	Se define la \strong{componente conexa}\index{componente conexa} $C(x)$ de un punto $x$ es la unión de todos los subespacios conexos que le contienen.
+	La \strong{cuasicomponente}\index{cuasicomponente} $Q(x)$ de un punto $x$ es la intersección de los entornos abiertos cerrados de $x$.
+	\nomenclature{$C(x), Q(x)$}{La componente conexa, cuasi-componente de $x$ resp.}
+\end{mydefi}
+\begin{prop}
+	Se cumple que:
+	\begin{enumerate}
+		\item $C(x)$ es cerrado y es el máximo subespacio conexo que contiene a $x$.
+		\item Para todo par de puntos sus componentes conexas (y cuasi-componentes) son iguales o disjuntas.
+		\item $Q(x)$ es cerrado y el conjunto de las cuasi-componentes forma una partición estricta del espacio.
+		\item Si $x\sim y$ syss $x,y$ están contenidos en un subespacio conexo, entonces $\sim$ es de equivalencia,
+			cuyas clases de equivalencia son las componentes conexas del espacio.
+		\item $C(x) \subseteq Q(x)$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Probaremos la última: Sea $F$ un entorno abierto-cerrado de $x$, de modo que está separado de $F^c$.
+	Luego $C(x)\cap F$ y $C(x)\cap F^c$ están separados, pero como $C(x)$ es conexo, entonces o $C(x)\cap F$ o $C(x)\cap F^c$ es disjunto.
+	Pero $x \in C(x)\cap F$, luego $C(x)\cap F^c = \emptyset$, ergo $C(x) \subseteq F$. Como $C(x)$ es una cota inferior y $Q(x)$ es el ínfimo,
+	se cumple que $C(x) \subseteq Q(x)$ como se quería probar.
+\end{proof}
+
+Un ejemplo es que si consideramos el subespacio $[0,1]\cup[2,3]$ de $\R$ es claro que es disconexo,
+pero sus componentes conexas son $[0,1]$ y $[2,3]$ que vendrían a ser las partes conexas del conjunto.
+
+\begin{ex}
+	En $\Q$ es fácil comprobar que todo conjunto con al menos dos elementos es disconexo, de modo que las componentes conexas son puntos.
+	No obstante, $\Q$ \textit{no} es homeomorfo al espacio discreto $D(\aleph_0)$.
+	Para demostrar esto, basta notar que $(0, 1) \cap \Q$ es un conjunto que no es cerrado, mientras que en el espacio discreto todo conjunto es cerrado.
+
+	La confusión de querer descomponer $\Q$ como suma de sus componentes yace de que las componentes son siempre cerradas, pero no siempre abiertas.
+	Por ejemplo, son abiertas cuando hay solo finitas componentes.
+\end{ex}
+% Algo interesante es que las componentes conexas de $\Q$ son todos los conjuntos singulares, luego es fácil notar que es homeomorfo $D(\aleph_0)$.
+\begin{prop}
+	En un espacio de Hausdorff compacto, las componentes y cuasicomponentes coinciden.
+\end{prop}
+\begin{proof}
+	Por la proposición anterior, basta probar que $C(x) \supseteq Q(x)$, vale decir, que toda cuasicomponente es conexa.
+	Denotemos $Q := Q(x)$ y sean $X_1, X_2$ un par de cerrados disjuntos en $Q$ tales que $X_1 \cup X_2 = Q$.
+	Supongamos que $x \in X_1$, como el espacio es compacto Hausdorff, entonces es normal y existen un par de abiertos (en $X$) disjuntos $U_1, U_2$
+	tales que cada $X_i \subseteq U_i$.
+	Así pues, $Q \subseteq U_1 \cup U_2$ y, por compacidad, existen finitos abiertos-cerrados $F_1, F_2, \dots, F_k$ tales que
+	$$ Q \subseteq F := \bigcap_{i=1}^{k} F_i \subseteq U \cup V, $$
+	donde claramente $F$ es abierto-cerrado. Como $\overline{U \cap F} \subseteq \overline{U} \cap F = \overline{U} \cap (U \cup V) \cap F = U \cap F$,
+	vemos que $U \cap F$ también es abierto y cerrado.
+	Como $x \in U \cap F$, entonces $Q \subseteq U \cap F$ y
+	$$ X_2 \subseteq Q \subseteq U \cap F \subseteq U, $$
+	como $X_2 \subseteq V$, entonces ha de darse que $X_2 = \emptyset$ como se quería probar.
+\end{proof}
+
+\begin{mydefi}
+	Se le llama un \strong{arco}\index{arco} entre $a$ y $b$ a una función continua $\gamma\colon [0,1]\to X$ tal que $\gamma(0) = a$ y $\gamma(1) = b$.
+	Un espacio se dice \strong{arcoconexo}\index{espacio!arcoconexo} si entre todo par de puntos existe un arco.
+
+	En un EVT se le dice un \strong{segmento}\index{segmento} entre $a$ y $b$ al conjunto $\{\lambda a + (1-\lambda)b: \lambda\in[0,1]\}$.
+	Un subconjunto se dice \strong{convexo}\index{convexo (conjunto)} si contiene todo segmento entre sus puntos.
+\end{mydefi}
+Es claro que todo segmento es un tipo de arco.
+
+\begin{prop}
+	Se cumple:
+	\begin{enumerate}
+		\item Todo espacio convexo es arcoconexo.
+		\item La imagen continua de un arcoconexo es arcoconexa.
+		\item La unión de una familia de intersección total no vacía de espacios arcoconexos es arcoconexa.
+		% \item La intersección de convexos es convexa.
+		\item Todo espacio arcoconexo es conexo.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	En particular probaremos la última:
+	Llamemos $\Img( C([0,1], X) )$ a la familia de las imágenes de todas las funciones continuas de dominio $[0,1]$ y codominio $X$.
+	Luego si $X$ es no vacío entonces posee un elemento $x$, luego basta considerar el subconjunto $S$ de $C([0,1], X)$
+	que contiene a las funciones que pasan por $x$, como $[0,1]$ es conexo, entonces $\Img(S)$ es una familia de conexos que contienen $x$,
+	y por definición, para todo $y\in X$ existe $f\in C([0,1], X)$ tal que $x,y\in\Img f$, luego $\bigcup \Img(S) = X$, luego $X$ es conexo.
+\end{proof}
+
+\thmdep{AE}
+\begin{thm}
+	El producto de espacios arcoconexos no vacíos es arcoconexo.
+\end{thm}
+\begin{proof}
+	Sean $\{X_i\}_{i\in I}$ una familia de arcoconexos, como son no vacíos, por AE $Y := \prod_{i\in I} X_i$ es no vacío.
+	Sean $\vec u,\vec v\in Y$, luego si $f_i:[0,1] \to X_i$ es un arco de extremos $u_i$ y $v_i$,
+	entonces la diagonal $f\colon [0,1] \to Y$ es continua y es un arco entre $\vec u$ y $\vec v$.
+\end{proof}
+\thmdep{}
+
+% \begin{mydef}[Envolvente convexa]\index{envolvente convexa}
+% 	Dado un subconjunto $A$ de un espacio vectorial $V$, se le llama \strong{envolvente convexa} de $A$, al mínimo conjunto convexo que le contiene, i.e.,
+% 	$$ \conv A := \bigcap\{C: A\subseteq C\wedge C\text{ convexo}\}. $$
+% \end{mydef}
+% \begin{prop}
+% 	Dado $A$ subconjunto de un $\korpe$-espacio vectorial, entonces
+% 	$$ \conv A = \left\{ \sum_i\alpha_ix_i : \sum_i\alpha_i = 1 \wedge \forall i\;(x_i\in A\wedge \alpha_i>0) \right\} $$
+% \end{prop}
+
+\begin{mydef}
+	Un espacio se dice \strong{débil-localmente conexo}\index{espacio!débil-localmente conexo} si todo punto posee un entorno conexo.
+\end{mydef}
+\begin{prop}
+	Para un espacio topológico $X$ son equivalentes:
+	\begin{enumerate}
+		\item $X$ es débil-localmente conexo.
+		\item Las componentes conexas de $X$ son abiertas.
+		\item $X$ es la suma de espacios topológicos.
+	\end{enumerate}
+	Más aún, los factores de la suma son únicos salvo isomorfismo y salvo permutación.
+\end{prop}
+
+\begin{ex}
+	Sea $X$ un espacio con más de tres puntos, con el punto excluído $\eta$.
+	Es decir, un abierto de $X$ es cualquier subconjunto que no contiene a $\eta$ o todo $X$.
+	Éste espacio es conexo, pues para que $X = U \cup V$, entonces sin perdida de generalidad $\eta \in U$ y luego $U = X$; así que también es
+	débil-localmente conexo.
+	Pero $V := X \setminus \{ \eta \}$ es un subespacio abierto de $X$ con la topología discreta y con dos puntos, luego es disconexo.
+
+	También podemos elegir que $X$ sea infinito con punto excluido $\eta$, en cuyo caso será compacto y $X \setminus \{ \eta \}$ no lo será,
+	por lo que $X$ no es localmente compacto.
+\end{ex}
+El ejemplo anterior exhibe las falencias de la definición anterior, lo que motiva la siguiente definición.
+
+\begin{mydefi}
+	Se dice que un espacio es \strong{localmente conexo}\index{espacio!localmente conexo} (resp. \strong{arcoconexo})\index{espacio!localmente arcoconexo}
+	si todo punto posee una base de entornos conexos (resp. arcoconexos).
+\end{mydefi}
+Así, lo que probamos es que el ejemplo anterior es débil-localmente conexo, pero no localmente conexo.
+
+\begin{thm}
+	Un espacio es localmente conexo (resp. localmente arcoconexo) syss todas las componentes conexas (resp. arcoconexas)
+	de todo subespacio abierto son abiertas (y, por tanto, cerradas).
+\end{thm}
+\begin{proof}
+	La demostración es la misma reemplazando conexo por arcoconexo donde corresponda.
+
+	$\implies$. Sea $C$ una componente conexa y sea $x\in C$.
+	Sea $\mathcal{B}$ una base formada por conexos, como $\mathcal{B}$ es base existe $B \in \mathcal{B}$ tal que $x\in B$, como $B$ es conexo
+	y $C$ es el mayor conexo que contiene a $x$ debe darse que $x \in B \subseteq C$, luego $C$ es entorno de $x$.
+
+	$\impliedby$.
+	Sea $\mathcal{B}$ la familia de componentes conexas de todo subespacio abierto.
+	Sea $U$ un entorno abierto cualquiera de $x$, luego $x \in C_U(x) \subseteq U$ y $C_U(x) \in \mathcal{B}$, por lo que $\mathcal{B}$ es base.
+\end{proof}
+Nótese que como la clausura de un subespacio conexo es conexo, entonces las componentes conexas siempre son cerradas, pero ese no es el caso para
+subespacios arcoconexos; por ello, la observación en paréntesis es interesante para componentes arcoconexas.
+\begin{ex}
+	Considere $X = \Q$.
+	Veremos que las componentes conexas son puntos: para ello, sea $x \in \Q$ y sea $S \subseteq \Q$ que contiene a $x$ y a otro punto $y$.
+	Ahora bien, por densidad de los irracionales, existe $z \in \R \setminus \Q$ tal que $z$ está entre $x, y$.
+	Así, $(-\infty, z) \cap \Q, (z, \infty) \cap \Q$ son abiertos disjuntos de $\Q$ y al intersectarlos con $S$ prueban que $S$ es disconexo.
+
+	Se nota que las componentes arcoconexas son también puntos, luego todas son cerradas, pero ninguna es abierta.
+\end{ex}
+
+\begin{thm}
+	Un espacio localmente arcoconexo es conexo syss es arcoconexo.
+\end{thm}
+\begin{proof}
+	Ya vimos que todo arcoconexo es conexo, así que veremos el converso:
+	Si el espacio es localmente arcoconexo, entonces sus componentes arcoconexas son abiertas y cerradas (y no vacías), como el espacio es conexo,
+	entonces la componente debe igualar al espacio.
+\end{proof}
+
+% \begin{exn}[peine del topólogo]
+% 	\addnamedexample{Peine del topólogo}{Un espacio que es conexo pero no es arcoconexo ni localmente conexo}
+% 	Consideremos
+% 	$$ Y := (0,1]\times\{0\} \cup \bigcup_{n \in \N_{\ne 0}} \{1/n\} \times [0,1] $$
+% 	que es conexo (¿por qué?) y luego definimos
+% 	$$ P := Y \cup \{0\} \times (0,1]. $$
+% 	Veamos que \underline{$P$ es conexo:} para ello nótese que $\{0\} \times (0, 1]$ e $Y$ son conexos disjuntos, así que basta ver que no están separados.
+% 	Sea $(0, y) \in P$, es decir, $y \in (0, 1]$, luego siempre se cumple que $(s, y) \in B_r\big( (0, y) \big) \cap P$ donde $0 \le s < r$ y por propiedad
+% 	arquimediana existe $1/n < r$, luego $(1/n, y) \in Y$ por lo que es conexo.
+
+% 	Sin embargo \underline{$P$ no es localmente conexo:} Nótese que $B_r\big( (0, 1) \big) \cap P$ con $r < 1$ siempre contiene a un segmento
+% 	$ S_0 := \{0\} \times (1-r, 1]$ y a otro segmento $ S_n := \{1/n\} \times (f(n),1]$ con $f(n) := \sqrt{r^2 - 1/n^2}$.
+% 	Nótese que el siguiente segmento está a distancia horizontal
+% 	$$ \frac{1}{n} - \frac{1}{n+1} = \frac{1}{n(n+1)}, \quad \delta_n := \frac{1}{2n(n+1)} $$
+% 	Así pues $( 1/n - \delta_n, 1/n + \delta_n ) \times (f(n)/2, 2) \cap P$ es un abierto que contiene a $S_n$, pero no contiene puntos de $S_0$.
+% 	Mientras que $(-1/2n, 1/2n) \times ( \frac{1-r}{2}, 2 )$ es un abierto que contiene a $S_0$, pero es disjunto de $S_n$.
+% \end{exn}
+
+\section{Límites inversos y espacios disconexos}
+\begin{mydef}
+	Se dice que un conjunto parcialmente ordenado $(I, \le)$ es un \strong{conjunto dirigido}\index{conjunto!dirigido} si para todo $i, j \in I$
+	existe $k \in I$ tal que $i \le k$ y $j \le k$.
+
+	Dado un conjunto ordenado dirigido $(I, \le)$, un \strong{sistema inverso}\index{sistema inverso}%
+	\footnote{\citeauthor{engelking:top}~\cite{engelking:top} les llama \textit{sistema inverso}, mientras que
+	\citeauthor{bourbaki:TG1}~\cite[I.28]{bourbaki:TG1} les llama \textit{sistema proyectivo}.}
+	es una familia $\{ X_i \}_{i\in I}$ de espacios topológicos con funciones continuas $\varphi^i_j \colon X_i \to X_j$ para $i \ge j$, tal que:
+	\begin{enumerate}
+		\item $\varphi^i_i = \Id_{X_i}$.
+		\item $\varphi^i_j \circ \varphi^j_k = \varphi^i_k$ cuando $i \ge j$ y $j \ge k$.
+	\end{enumerate}
+	De manera compacta, denotaremos que $(X_\bullet, \varphi^\bullet_\bullet, I)$ o que $\{ X_i \}_{i\in I}$ es el sistema inverso.
+\end{mydef}
+El ejemplo prototípico de un conjunto dirigido es $(\N, \le)$.
+Secretamente los sistemas inversos capturan la noción de un diagrama filtrado en $\mathsf{Top}$;
+como ésta categoría es completa, entonces posee toda clase de límites inversos, pero estos serán más fáciles de calcular.
+
+\begin{mydef}
+	Sea $S := \{ X_i \}_{i\in I}$ un sistema inverso.
+	Una \strong{hebra}\index{hebra}%
+	\footnote{eng. \textit{thread}.}
+	es una tupla $(x_i)_{i\in I}$ de elementos $x_i \in X_i$ tales que $\varphi^i_j(x_i) = x_j$.
+	Denotamos por $\invlim_{i\in I} X_i$ al subespacio de todas las hebras en $\prod_{i\in I} X_i$, llamado el \strong{límite inverso}%
+	\index{limite@límite!inverso} del sistema $S$.
+
+	También decimos que $S$ es el \strong{límite cofiltrado}\index{limite@límite!cofiltrado}%
+	\footnote{Esto se debe a que en la teoría de categorías existe una noción de <<categoría filtrada>> y lo que llamamos un \textit{sistema inverso}
+	es un diagrama contravariante filtrado.}
+	de los espacios $\{ X_i \}_{i\in I}$; esto será útil para sentencias de la forma <<el límite cofiltrado de $\mathcal{P}$ es $\mathcal{P}$>>.
+\end{mydef}
+
+El siguiente ejemplo, fundamental el teoría de números, da una buena imagen:
+\begin{exn}\label{ex:p-adics}
+	Considere los anillos $A_n := \Z/p^n\Z$.
+	Entonces la reducción $\bmod{p^n}$ induce un homomorfismo de anillos $\varphi^{n+1}_n\colon A_{n+1} \to A_n$.
+	Para hacer que $(A_\bullet, \varphi^\bullet_\bullet)$ sea un sistema inverso dotamos a cada $A_n$ con la topología discreta
+	(que es la única topología Hausdorff posible), y así, denotamos $\Z_p := \liminv_n \Z/p^n\Z$.
+	% https://q.uiver.app/#q=WzAsNSxbMiwxLCJcXFovcF4yXFxaIl0sWzMsMSwiXFxaL3BcXFoiXSxbMSwxLCJcXFovcF4zXFxaIl0sWzIsMCwiXFxaX3AiXSxbMCwxLCJcXGNkb3RzIl0sWzIsMCwiIiwyLHsic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoiZXBpIn19fV0sWzAsMSwiIiwyLHsic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoiZXBpIn19fV0sWzQsMiwiIiwyLHsic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoiZXBpIn19fV0sWzMsMl0sWzMsMF0sWzMsMV0sWzMsNF1d
+	\[\begin{tikzcd}
+		&& {\Z_p} \\
+		\cdots & {\Z/p^3\Z} & {\Z/p^2\Z} & {\Z/p\Z}
+		\arrow[two heads, from=2-2, to=2-3]
+		\arrow[two heads, from=2-3, to=2-4]
+		\arrow[two heads, from=2-1, to=2-2]
+		\arrow[from=1-3, to=2-2]
+		\arrow[from=1-3, to=2-3]
+		\arrow[from=1-3, to=2-4]
+		\arrow[from=1-3, to=2-1]
+	\end{tikzcd}\]
+	A los elementos de $\Z_p$ se le denominan \textit{números $p$-ádicos}.%
+	\footnote{En realidad, a $\Z_p$ se le otorga un carácter dual. Por un lado ha de ser un espacio topológico, pero también un anillo.}
+\end{exn}
+
+\begin{prop}
+	Sea $(X_\bullet, \varphi^\bullet_\bullet, I)$ un sistema inverso y sea $X$ su límite inverso.
+	\begin{enumerate}
+		\item Para cada $i \in I$, existe una función continua $p_i \colon X \to X_i$
+			tal que para cada $j \le i$ se cumple que $p_i \circ \varphi^i_j = p_j$.
+		\item Si $Y$ es un espacio topológico con una familia de funciones continuas $\{ q_i \colon Y \to X_i \}_{i\in I}$
+			tales que $q_i \circ \varphi^i_j = q_j$ para todo $j \le i$,
+			entonces existe una única función continua $f \colon Y \to X$ tal que el siguiente diagrama conmuta:
+			\begin{center}
+				\includegraphics{cats/inverse_system_top.pdf}
+			\end{center}
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	\begin{enumerate}
+		\item Basta definir $p_i := \pi_i|_X$ donde $\pi_i \colon \prod_{j\in I} X_j \to X_i$ es la proyección a la $i$-ésima coordenada.
+		\item Basta definir $f(y) := \big( q_i(y) \big)_{i\in I}$ y notar que la unicidad se sigue de la definición de $X$.
+			\qedhere
+	\end{enumerate}
+\end{proof}
+La proposición anterior, que no es más que un ejercicio, pero nos dice que la notación coincide con la interpretación categórica.
+
+\begin{exn}
+	Sea $\{ Y_\alpha \}_{\alpha\in S}$ una familia de espacios topológicos.
+	Definamos $I$ como la familia de subconjuntos finitos de $S$ con el orden parcial dado por la inclusión.
+	Definamos $X_i := \prod_{\alpha \in i} Y_\alpha$ para $i \in I$ y definamos $\varphi^i_j \colon X_i \to X_j$ como la proyección canónica
+	(nótese que $X_i$ <<tiene más coordenadas>> que $X_j$, de modo que $\varphi^i_j$ <<borra las coordenadas adicionales>>).
+	Mediante la propiedad universal de la proposición anterior es fácil comprobar que
+	\begin{equation}
+		\invlim_i X_i = \prod_{\alpha \in S} Y_\alpha.
+		\tqedhere
+	\end{equation}
+\end{exn}
+
+\begin{prop}
+	El límite cofiltrado de espacios $T_i$ es $T_i$ con $i \le 3.5$.
+\end{prop}
+
+\begin{prop}
+	El límite $\invlim S$ de un sistema inverso $S = \{ X_i \}_{i\in I}$ de espacios de Hausdorff
+	es un cerrado en $\prod_{i\in I} X_i$.
+\end{prop}
+\begin{proof}
+	Para todo $j \le i$ defínamos:
+	$$ F_{ij} := \left\{ (x_k)_k \in \prod_{k\in I} X_k : \varphi^i_j(x_i) = x_j \right\}, $$
+	nótese que es un cerrado pues los espacios son Hausdorff, y $\invlim S = \bigcap_{i, j} F_{ij}$ de modo que es cerrado.
+\end{proof}
+\thmdep{AE}
+\begin{cor}
+	Sea $(X_\bullet, \varphi_\bullet^\bullet, I)$ un sistema inverso de espacios compactos de Hausdorff
+	y sea $X := \invlim_{i\in I} X_i$ con $f_i \colon X \to X_i$. Entonces:
+	\begin{enumerate}
+		\item $X$ es compacto y para todo $i \in I$:
+			\begin{equation}
+				f_i[X] = \bigcap_{j\ge i} \varphi^j_i[X_j].
+				\label{eqn:proj_syst_incl}
+			\end{equation}
+		\item Si cada $X_i$ es no vacío, entonces $X$ no es vacío.
+	\end{enumerate}
+	% El límite de un sistema inverso de espacios compactos de Hausdorff (no vacíos) es compacto de Hausdorff (no vacío).
+\end{cor}
+% \begin{proof}
+% 	Lo único no trivial es la igualdad \eqref{eqn:proj_syst_incl}.
+% \end{proof}
+Por ejemplo, $\Z_p$ debe ser entonces un espacio de Hausdorff compacto.
+
+\begin{cor}
+	Sea $(X_\bullet, \varphi_\bullet^\bullet, I)$ un sistema inverso tal que para todo $x_i \in X_i$ y todo $j \le i$,
+	la fibra $(\varphi_i^j)^{-1}[\{ x_i \}]$ es compacto y Hausdorff.
+	Entonces la relación \eqref{eqn:proj_syst_incl} se satisface y las fibras $p_i^{-1}[\{ x_i \}]$ son compactas Hausdorff.
+\end{cor}
+\begin{proof}
+	Fijemos $i \in I$ y para todo $x_i \in \bigcap_{j\ge i} \varphi^j_i[X_j] \subseteq X_i$, definamos $F_j := (\varphi_i^j)^{-1}[\{ x_i \}]$.
+	Para todo $i \le j \le k$ se tiene que $ \varphi^k_j[F_k] \subseteq F_j$ por la transitividad de los índices,
+	de modo que $(F_\bullet, \varphi^\bullet_\bullet, \{ j \in I : j \ge i \})$ constituye un sistema inverso cuyo límite es $p_i^{-1}[\{ x_i \}]$.
+\end{proof}
+
+\begin{cor}\label{thm:proj_lim_surj_maps}
+	Sea $I$ un conjunto dirigido y $(X_\bullet, \varphi_\bullet^\bullet), (Y_\bullet, \psi_\bullet^\bullet)$ un par de sistemas inversos
+	de espacios de Hausdorff.
+	Sea $\{ f_i \colon X_i \to Y_i \}_{i\in I}$ una familia de funciones continuas tal que para todo $j \le i$, el siguiente diagrama conmuta:
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJYX2kiXSxbMCwxLCJYX2oiXSxbMSwwLCJZX2kiXSxbMSwxLCJZX2oiXSxbMiwzLCJcXHBzaV5pX2oiXSxbMCwxLCJcXHZhcnBoaV5pX2oiLDJdLFswLDIsImZfaSJdLFsxLDMsImZfaiIsMl1d
+	\[\begin{tikzcd}
+		{X_i} & {Y_i} \\
+		{X_j} & {Y_j}
+		\arrow["{\psi^i_j}", from=1-2, to=2-2]
+		\arrow["{\varphi^i_j}"', from=1-1, to=2-1]
+		\arrow["{f_i}", from=1-1, to=1-2]
+		\arrow["{f_j}"', from=2-1, to=2-2]
+	\end{tikzcd}\]
+	Sea $X := \invlim_i X_i$, $Y := \invlim_i Y_i$ y $f := \invlim_i f_i \colon X \to Y$. Entonces:
+	\begin{enumerate}
+		\item Si para cada $\vec y := (y_i)_i \in Y$ se cumple que $f_i^{-1}[\{ y_i \}]$ es compacto y no vacío,
+			entonces $f^{-1}[\{ \vec y \}]$ es compacto y no vacío.
+		\item Si cada $X_i$ es compacto y cada $f_i$ es suprayectivo, entonces $f$ también es suprayectivo y, en consecuente, $Y$ es compacto.
+	\end{enumerate}
+\end{cor}
+\thmdep{}
+
+\begin{mydef}
+	Se dice que un espacio es:
+	\begin{description}
+		\item[Hereditariamente disconexo]\index{hereditariamente disconexo (espacio)}\index{espacio!hereditariamente disconexo}
+			Si todo subespacio de cardinalidad ${}>1$ es disconexo.%
+			\footnote{Ésta es terminología de \citeauthor{engelking:top}~\cite{engelking:top}.
+			Desgraciadamente, la mayoría de autores (e.g., \citeauthor{bourbaki:TG1}~\cite[I.83]{bourbaki:TG1}) opta por \textit{totalmente
+			disconexo} o \textit{discontinuo}, la cual es relativamente conflictivo.}
+		\item[Cerodimensional]\index{espacio!cerodimensional}\index{cerodimensional (espacio)}
+			Si es no vacío, es $T_1$ y todo punto posee una base de entornos abiertos-cerrados.
+		\item[Fuertemente cerodimensional]\index{espacio!fuertemente cerodimensional}\index{fuertemente cerodimensional (espacio)}
+			Si es no vacío, de Tychonoff y si para todo par de conjuntos $A,B$
+			completamente separados existe un abierto-cerrado $C$ tal que $A\subseteq C \subseteq B^c$.
+	\end{description}
+\end{mydef}
+Todo espacio discreto es fuertemente cerodimensional y extremadamente disconexo.
+% Como ejercicio, demuestre que $\Q$ también lo es.
+\begin{prob}
+	Demuestre que $\Q$ y $\R \setminus \Q$ son hereditariamente disconexos y cerodimensionales.
+	% pero no son extremadamente disconexos.
+\end{prob}
+
+El siguiente corolario es claro:
+\begin{cor}
+	Las propiedades de ser hereditariamente disconexo o cerodimensional son hereditarias.
+\end{cor}
+\begin{thm}
+	Se cumple que:
+	\begin{enumerate}
+		\item Un espacio es hereditariamente disconexo syss sus componentes conexas son singulares.
+		\item En un espacio cerodimensional las cuasi-componentes son singulares, luego es hereditariamente disconexo.
+		\item Todo espacio fuertemente cerodimensional es cerodimensional.
+	\end{enumerate}
+\end{thm}
+
+\begin{ex}
+	El espacio $X := \{0\} \cup \{1/n : n \in \N_{\ne 0}\}$ es hereditariamente disconexo:
+	En efecto, sea $C \subseteq X$ conexo no vacío y supongamos que $1/n \in C$, nótese que $\{1/n\}$ es un conjunto abierto-cerrado de $X$,
+	luego como $C$ es conexo se ha de cumplir que $C = \{1/n\}$.
+	Si $1/n \notin C$ para todo $n$, entonces $C = \{0\}$.
+	% También es fácil comprobar que $X$ es extremadamente disconexo.
+\end{ex}
+
+\begin{thm}
+	Para un espacio de Tychonoff no vacío $X$ son equivalentes:
+	\begin{enumerate}
+		\item $X$ es fuertemente cerodimensional.
+		\item Todo cubrimiento finito por coceros $\{ U_i \}_{i=1}^k$ admite un refinamiento finito por abiertos $\{ V_i \}_{i=1}^m$
+			tal que $V_i \cap V_j = \emptyset$ para $i \ne j$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$2 \implies 1$. Sea $f \colon X \to [0, 1]$ tal que $f[A] \subseteq \{ 0 \}$ y $f[B] \subseteq \{ 1 \}$.
+	Los conjuntos $U_1 := f^{-1}\big[ (0, 1] \big]$ y $U_2 := f^{-1}\big[ [0, 1) \big]$ constituye un cubrimiento por coceros,
+	de modo que admiten un refinamiento por abiertos disjuntos $\{ V_i \}_{i=1}^m$.
+	Si elegimos los $V_i$'s de modo que exactamente $V_1, V_2, \dots, V_n$ cortan a $A$ y $V_{n+1}, \dots, V_m$ cortan a $B$,
+	entonces $U := V_1 \cup \cdots \cup V_n$ es un abierto-cerrado tal que $A \subseteq U \subseteq B^c$.
+
+	$1 \implies 2$. Basta proceder por inducción sobre $k$.
+	El caso base $k = 1$ es trivial.
+	Veamos el caso general: sea $\{ U_i \}_{i=1}^k$ un cubrimiento por coceros, y definamos $U_j^\prime := U_j$ para $j < k-1$ y
+	$U_{k-1}^\prime := U_{k-1} \cup U_k$.
+	Por hipótesis inductiva, existe un refinamiento finito por abiertos y cerrados disjuntos $\{ W_i \}_{i=1}^M$;
+	es fácil modificarlo de modo que $M = k-1$ y $W_j \subseteq U_j$ para cada $j < k$.
+
+	Los conjuntos $W_{k-1} \setminus U_{k-1}$ y $W_{k-1} \setminus U_k$ son ceros, de modo que están completamente separados
+	por el teorema~\ref{thm:func-closed-perf-sep}.
+	Luego, existe un conjunto abierto y cerrado $G$ tal que
+	\[
+		W_{k-1} \setminus U_{k-1} \subseteq G \subseteq X \setminus (W_{k-1} \setminus U_k) = W_{k-1}^c \cup U_k.
+	\]
+	Así pues, $V_{k-1} := W_{k-1} \setminus U \subseteq U_{k-1}$ y $V_k := W_{k-1} \cap U \subseteq U_k$ son abiertos y cerrados.
+	Rellenando con $V_i := W_i$ para $i < k-1$ se puede verificar que $\{ V_i \}_{i=1}^{k-1}$ satisface lo exigido.
+\end{proof}
+% \begin{proof}
+% \end{proof}
+
+\begin{thm}
+	Todo espacio cerodimensional y de Lindelöf (e.g., compacto) es fuertemente cerodimensional.
+\end{thm}
+\begin{proof}
+	Sean $A, B$ un par de cerrados disjuntos.
+	Para cada punto $x \in X$ elíjase un abierto y cerrado $x \in W_x \subseteq X$ tal que $A \cap W_x = \emptyset$ o $B \cap W_x = \emptyset$.
+	Como el espacio es Lindelöf, sea $\{ W_{x_n} \}_{n\in\N}$ un subcubrimiento numerable, y defínanse los conjuntos
+	$$ U_i := W_{x_i} \setminus \bigcup_{j<i} W_{x_j} \qquad i\in\N. $$
+	Entonces $\{ U_i \}_{i\in\N}$ es un cubrimiento de $X$ por abiertos y cerrados disjuntos dos a dos, y el conjunto
+	$U := \bigcup \{ U_i : A \cap U_i = \emptyset \}$ satisface que $A \subseteq U \subseteq B^c$.
+\end{proof}
+
+\begin{cor}
+	Todo espacio no vacío numerable y regular es fuertemente cerodimensional.
+\end{cor}
+\begin{proof}
+	Como $X$ es numerable, entonces es normal y es Lindelöf.
+	Basta probar que $X$ es cerodimensional, es decir, que $X$ posee una base de abiertos-cerrados.
+	Sea $x \in X$ un punto y $V$ un entorno de $x$.
+	Por el lema de Urysohn, existe $f \colon X \to [0, 1]$ tal que $f(x) = 0$ y $f[X \setminus V] = \{ 1 \}$.
+	Como $X$ es numerable, entonces su imagen también lo es, luego existe $r \in [0, 1] \setminus \Img f$.
+	Así, $U := f^{-1}\big[ [0, r) \big] = f^{-1}\big[ [0, 1] \big]$ es un subentorno abierto y cerrado de $V$ que contiene a $x$.
+\end{proof}
+
+\begin{thm}
+	Todo espacio no vacío, $T_1$, heriditariamente disconexo y localmente compacto es cerodimensional.
+\end{thm}
+\begin{proof}
+	% Como la definición de cerodimensional es local, podemos suponer que el espacio $X$ es compacto.
+	Sea $x \in X$ un punto, $V$ un entorno de $x$ y sea $W \subseteq V$ un subentorno de $x$ tal que $\overline{W}$ es compacto.
+	Como la componente conexa de $x$ en $\overline{W}$ es $\{ x \}$ y como las componentes conexas y cuasicomponentes coinciden,
+	entonces, denotando por $\mathcal{K}$ a la familia de abiertos-cerrados que contienen a $x$ en el subespacio $\overline{W}$,
+	se cumple que $\{ x \} = \bigcap \mathcal{K}$.
+	Por la propiedad de las intersecciones finitas, tenemos que existen finitos $F_1, \dots, F_k \in \mathcal{K}$
+	tales que $x \in U := F_1 \cap F_2 \cap \cdots \cap F_k \subseteq W \subseteq V$.
+	Nótese que $U$ es cerrado en $\overline{W}$, luego es cerrado también en $X$, y $U$ es abierto en $W$, luego también es abierto en $X$.
+	% tales que $\{ x \} = F_1 \cap F_2$
+\end{proof}
+
+\begin{cor}
+	Sea $X$ un espacio topológico no vacío localmente compacto y paracompacto (e.g., compacto y Hausdorff). Son equivalentes:
+	\begin{enumerate}
+		\item $X$ es hereditariamente disconexo.
+		\item $X$ es cerodimensional.
+		\item $X$ es fuertemente cerodimensional.
+	\end{enumerate}
+\end{cor}
+
+\begin{thm}
+	El producto de espacios no vacíos hereditariamente disconexos (resp. cerodimensionales) es hereditariamente disconexo (resp. cerodimensional).
+
+	En consecuencia, el límite cofiltrado de espacios hereditariamente disconexos (resp. cerodimensionales) es
+	hereditariamente disconexo (resp. cerodimensional o vacío).
+\end{thm}
+% \begin{exn}
+% 	Sea $\{ X_j \}_{j\in J}$ una familia de espacios topológicos (no un sistema inverso).
+% 	Si definimos $\mathcal{P}$ como la familia de subconjuntos finitos de $J$
+% \end{exn}
+\thmdep{AE}
+\begin{thm}
+	Para un espacio topológico $X$ no vacío, son equivalentes:
+	\begin{enumerate}
+		\item $X$ es el límite cofiltrado de espacios discretos finitos.
+		\item $X$ es Hausdorff, compacto y hereditariamente disconexo.
+		\item $X$ es Hausdorff, compacto y cerodimensional.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Ya vimos que $1 \implies 2 \iff 3$.
+
+	$3 \implies 1$. Sea $X$ Hausdorff, compacto y cerodimensional.
+	Sea $\mathcal{R}$ el conjunto de todas las relaciones de equivalencias $R \subseteq X \times X$ que son conjuntos abiertos.
+	Para $R \in \mathcal{R}$, nótese que el espacio cociente $X/R$ es finito y discreto; esto pues cada clase $[x]_R$ es abierta
+	y $X = \bigcup_{x\in X} [x]$, de modo que solo hay finitas clases de equivalencia.
+	% \todo{Revisar el por qué. Claramente es compacto}
+	Para $R_1, R_2 \in \mathcal{R}$ denotamos $R_1 \preceq R_2$ syss para todo $x \in X$ se tiene que $[x]_{R_1} \supseteq [x]_{R_2}$
+	(o equivalentemente, $R_1 \supseteq R_2$).
+	Entonces $(\mathcal{R}, \preceq)$ es un conjunto dirigido, pues para $R_1, R_2 \in \mathcal{R}$ se cumple que $R_i \preceq R_1 \cap R_2$.
+	Ahora bien, si $R \preceq S$ entonces $\varphi_{RS} \colon X/R \to X/S$ mandando $\varphi_{RS}([x]_R) = [x]_S$.
+
+	Finalmente, sea $Y := \liminv_{R \in \mathcal{R}} X/R$, entonces como las proyecciones canónicas $\pi_R \colon X \to X/R$ son compatibles
+	con el sistema inverso, tenemos una aplicación $\psi \colon X \to Y$ canónica.
+	Como las proyecciones son suprayectivas, entonces $\psi$ también por el corolario~\ref{thm:proj_lim_surj_maps}, y como $Y$ es Hausdorff y $X$
+	es compacto, entonces basta ver que $\psi$ es inyectiva.
+	Sean $x, y \in X$, entonces como $X$ es cerodimensional, existe $U$ abierto y cerrado tal que $x \in U$ e $y \notin U$.
+	Definiendo $R$ como la relación que identifica todo el conjunto $U$ y todo el conjunto $X \setminus U$, entonces vemos que
+	$\pi_R(x) \ne \pi_X(y)$, de modo que $\psi(x) \ne \psi(y)$ como se quería probar.
+\end{proof}
+\begin{mydef}
+	Se dice que un espacio topológico es \strong{de Stone}\index{espacio!de Stone}%
+	\footnote{También llamados \textit{espacios profinitos} o \textit{espacios booleanos}.}
+	si satisface alguna de las condiciones del teorema anterior.
+\end{mydef}
+
+\begin{cor}
+	Un espacio de Stone $X$ es 2AN syss $X = \invlim_{i \in I} X_i$ donde $\{ X_i \}_{i\in I}$ es un sistema inverso cuyos índices $I$ son numerables.
+\end{cor}
+\begin{proof}
+	$\impliedby$. Basta notar que $X$ es un subespacio de $\prod_{i\in I} X_i$, el cual es de Stone y 2AN.
+
+	$\implies$. Sea $\mathcal{R}$ el conjunto de relaciones de equivalencia abiertas en $X$ como en la demostración anterior.
+	Entonces, para todo $x \in X$ se nota que su clase $[x] \subseteq X \times X$ es un abierto, y como $X = \bigcup_{x\in X} [x]$,
+	entonces tiene que haber finitas clases, cada una siendo cerrada y abierta, luego compacta, de modo que es una unión de finitos elementos de la base.
+	Así pues, podemos notar que $\mathcal{R}$ es numerable, lo que basta siguiendo la demostración anterior.
+\end{proof}
+\thmdep{}
+
+\begin{exn}[el espacio <<escoba>> reducido]
+	\addnamedexample{Espacio <<escoba>> reducido}{Un espacio conexo, pero no arcoconexo}
+	Sea
+	$$ X := \{ (x, x/n) : x\in[0, 1], n\in\N_{\ne 0} \} \cup \{ (1, 0) \}. $$
+	\begin{figure}[!hbt]
+		\centering
+		\includegraphics[scale=1]{deleted_broom.pdf}
+		\caption{Espacio <<escoba>> reducida.}%
+		\label{fig:deleted_broom}
+	\end{figure}
+
+	\begin{enumerate}
+		\item \underline{$X$ es conexo:}
+			Claramente $X \setminus \{(1, 0)\}$ es conexo, dado que es la unión de conexos (las <<hebras>> $\{(x, x/n) : x\in[0,1]\}$ con un $n$ fijo)
+			que tienen un punto en común, el $(0,0)$.
+			Luego, basta probar que el conjunto $\{(1, 0)\}$ no está separado del resto,
+			para ello nótese que todo entorno $ B_\epsilon\big( (1, 0) \big) \cap X $ contiene un punto de la forma $(1, 1/n)$ para algún $n < \epsilon$,
+			luego $(1, 0)$ es un punto de acumulación de $X \setminus \{(1, 0)\}$ y sanseacabó.
+
+		\item \underline{$X$ no es arcoconexo:}
+			Sea $p\colon [0, 1] \to X$ un arco tal que $p(0) = (1, 0)$, queremos probar que $p(t) = (1, 0)$ para todo $t$.
+			Luego definamos
+			$$ C := \{ t\in[0, 1] : p(t) = (1, 0) \}. $$
+			Nótese que $C = p^{-1}\big[ \{(1, 0)\} \big]$, luego es cerrado.
+
+			Veamos que también es abierto:
+			Sea $t_0 \in C$, como $p$ es continuo, entonces existe un $\delta > 0$ tal que si $|t - t_0| < \delta$, entonces
+			$\|p(t) - p(t_0)\| < 1/2$.
+			Como $\|(0, 0) - (1, 0)\| = 1 > 1/2$, entonces $p(t) \ne (0, 0)$ y por lo tanto tiene coordenada en $x$ no nula.
+			Ahora, definimos la función
+			\begin{align*}
+				m \colon \R_{>0}\times\R &\longrightarrow \R \\
+				(x, y) &\longmapsto y/x
+			\end{align*}
+			que es claramente continua.
+			Notemos que $p\circ m$ toma valores en $Z := \{0\}\cup\{1/n : n>0\}$.
+			Sea $I := (t_0 - \delta, t_0 + \delta) \cap [0, 1]$, $I$ es claramente conexo en $[0, 1]$,
+			luego $(p\circ m)[I]$ es conexo en $Z$, pero $Z$ es hereditariamente disconexo, luego ha de corresponder a un punto,
+			que ha de ser el 0 (pues $(p\circ m)(t_0) = 0$ y $t_0 \in I$).
+			Así que $t_0 \in I \subseteq C$, por lo que $C$ es entorno de todos sus puntos y por ende es abierto.
+
+			Finalmente, como $C$ es un abierto y cerrado no vacío de $[0, 1]$, entonces ha de ser $[0, 1]$.
+			Luego todo arco desde $(1, 0)$ es constante, así que $X$ no puede ser arcoconexo. \qedhere
+	\end{enumerate}
+\end{exn}
+
+Otro ejemplo son los siguientes:
+\begin{ex}
+	Sea
+	$$ X := \{(1/n, y) : y\in [0,1]\} \cup \{0\}\times[0,1] \cup [0,1]\times\{0\}, \quad Y := X \setminus \{0\} \times (0, 1) $$
+	A $X$ se le conoce como el \strong{peine del topólogo} y a $Y$ como el \textit{peine reducido del topólogo}.
+	\addnamedexample{Peine del topólogo}{Un espacio arcoconexo no localmente conexo}
+
+	\begin{figure}[!hbt]
+		\centering
+		\includegraphics[scale=1]{deleted_comb.pdf}
+		\caption{Peine reducido del topólogo.}%
+		\label{fig:deleted_comb}
+	\end{figure}
+	\begin{enumerate}
+		\item \underline{$X, Y$ son conexos:}
+			Es claro que $X$ lo es, puesto que las <<hebras>> (los conjuntos de la forma $\{(x, y) : y\in[0,1]\}$ para $x = 1/n$ o $x = 0$)
+			son conexas, el <<mango>> (el conjunto $[0, 1]\times\{0\}$) también y todas las hebras cortan el mango.
+			El problema con $Y$ es que hay un punto, el $(0, 1)$, que no está en una hebra, sin embargo, es fácil notar que todo entorno del $(0, 1)$
+			corta al resto del conjunto, que sí es conexo, por lo que $Y$ también lo es.
+
+		\item \underline{$X$ es arcoconexo, pero $Y$ no:}
+			Podemos notar que $X = \bigcup_{x = 1/n, x=0} H_x$ donde $H_x := \{x\}\times[0, 1] \cup [0,1]\times\{0\}$ es arcoconexo;
+			luego $X$ es la unión de arcoconexos de intersección no vacía, por lo que $X$ es arcoconexo.
+
+			Para demostrar que $Y$ no es arcoconexo, podemos emplear un argumento similar al del espacio <<escoba>> reducido,
+			pero empleando dos funciones en lugar de una: una que proyecta sobre la coordenada $y$ para notar que todo arco siempre
+			tiene coordenada $y = 1$ y una segunda que proyecta sobre la coordenada $x$
+			empleando la disconexión hereditaria de $\{0\} \cup \{1/n: n>0\}$.
+
+		\item \underline{$X, Y$ no son localmente conexos:} 
+			Nótese que $B_r\big( (0, 1) \big) \cap P$ con $r < 1$ siempre contiene a un segmento
+			$ S_0 := \{0\} \times (1-r, 1]$ y a otro segmento $ S_n := \{1/n\} \times (f(n),1]$ con $f(n) := \sqrt{r^2 - 1/n^2}$.
+			Nótese que el siguiente segmento está a distancia horizontal
+			$$ \frac{1}{n} - \frac{1}{n+1} = \frac{1}{n(n+1)}, \quad \delta_n := \frac{1}{2n(n+1)} $$
+			Así pues $( 1/n - \delta_n, 1/n + \delta_n ) \times (f(n)/2, 2) \cap P$ es un abierto que contiene a $S_n$, pero no contiene puntos de $S_0$.
+			Mientras que $(-1/2n, 1/2n) \times ( \frac{1-r}{2}, 2 )$ es un abierto que contiene a $S_0$, pero es disjunto de $S_n$.
+		% \item \underline{$X, Y$ no son localmente conexos:} 
+		% 	Para ello hay que probar que toda base de entornos de $(0, 1)$ no son arcoconexos.
+		% 	Por el argumento anterior, es claro que $(0, 1)$ no posee entornos arcoconexos en $Y$,
+		% 	y los entornos arcoconexos de $(0, 1)$ en $X$ siempre deben tener a la hebra completa $\{0\} \times [0, 1]$,
+		% 	pero toda base de entornos de $(0, 1)$ posee entornos que no contienen a la hebra completa, ergo, contienen entornos no arcoconexos.
+	\end{enumerate}
+\end{ex}
+
+Una característica común al espacio escoba reducido y al peine reducido es que son espacios conexos, no arcoconexos,
+pero cuyas clausuras (en $\R^2$) son arcoconexas.
+Topológicamente ésto puede verse como que no son compactos (demuéstrelo).
+Sin embargo, ésto no ocurre para el seno del topólogo, que es conexo, no arcoconexo, y cuya clausura (que es compacta) tampoco es arcoconexa.
+
+\subsection{Objetos proyectivos}
+En ésta subsección seguimos el artículo de \citeauthor{gleason58projective}~\cite{gleason58projective}.
+% \addtocategory{article}{gleason58projective}
+En una primera lectura es opcional, pero los resultados de Gleason han adquirido una nueva luz en la teoría de objetos condensados de Clausen-Scholze.
+
+\begin{mydef}
+	Se dice que un espacio $X$ es \strong{extremadamente disconexo}\index{extremadamente disconexo (espacio)}\index{espacio!extremadamente disconexo}
+	si es de Hausdorff y la clausura de todo abierto es abierta.
+\end{mydef}
+\begin{thm}
+	Todo espacio extremadamente disconexo es hereditariamente disconexo.
+\end{thm}
+% El espacio $\{ 1/n : n \in \N \} \cup \{ 0 \}$ es extremadamente disconexo por ejemplificar.
+No obstante, la mayoría de ejemplos a los que nos hemos enfrentado no lo son: queda al lector verificar que ni $\Q, \R \setminus \Q$
+ni $\Z_p$ son extremadamente disconexos.
+
+La razón, como veremos en ésta sección, tiene que ver con el hecho de que los espacios extremadamente disconexos resultan increíblemente restrictivos.
+\begin{mydef}
+	Una \strong{categoría de Gleason}\index{categoría!de Gleason} es una subcategoría $\catC \subseteq \mathsf{Haus}$ de espacios de Hausdorff
+	tal que:
+	\begin{enumerate}
+		% \item Dados $X, Y \in \Obj\catC$ toda función $X \to Y$ es continua.
+		\item Dado $X \in \Obj\catC$, entonces $X \times D(2) \in \Obj\catC$ y cada proyección $\pi_i \colon X\times D(2) \to X$
+			está en $\Morf\catC$.
+		\item Sea $X \in \Obj\catC$ y $F \subseteq X$ un subespacio cerrado.
+			Entonces $F \hookto X \in \Morf\catC$.
+	\end{enumerate}
+\end{mydef}
+Varias subcategorías son de Gleason.
+Claramente $\mathsf{Haus}, \mathsf{KHaus}$ y, más importante, $\mathsf{Stone}$ son de Gleason.
+
+\begin{thm}
+	Sea $\catC$ una categoría de Gleason. Entonces los objetos proyectivos de $\catC$ son espacios extremadamente disconexos.
+\end{thm}
+\begin{proof}
+	Sea $X$ un objeto proyectivo de $\catC$ y sea $U \subseteq X$ un abierto.
+	Sea $D(2) = \{ 0, 1 \}$ y en $X \times D(2)$ considere el cerrado $Y := (X \setminus U) \times \{ 0 \} \cup \overline{U} \times \{ 1 \}$
+	y su inclusión $i \colon Y \to X\times D(2)$.
+	Sea $\pi \colon X\times D(2) \to X$ la proyección, de modo que $i\circ\pi \in \Morf\catC$ y es suprayectivo (luego un epimorfismo).
+	Como $X$ es proyectivo, tomando $\Id_X \colon X \to X$ vemos que existe $g \colon X \to Y$ tal que el siguiente diagrama conmuta:
+	\begin{center}
+		\begin{tikzcd}[row sep=large]
+			{} & X \dar[equals] \dlar["g"', dashed] \\
+			Y \rar["i\circ\pi"', two heads] & X
+		\end{tikzcd}
+	\end{center}
+	Nótese que $i\circ\pi|_{U\times\{ 1 \}} \colon U\times\{ 1 \} \to U$ es biyectivo, de modo que $g(x) = (x, 1)$ para $x \in U$ y,
+	por el corolario~\ref{thm:hausdorff_dense_extension} vemos que $g(x) = (x, 1)$ para $x \in \overline{U}$.
+	Luego $g^{-1}[ \overline{U}\times\{ 1 \} ] = \overline{U}$, pero $\overline{U}\times\{ 1 \}$ es abierto en $Y$,
+	de modo que $\overline{U}$ es abierto.
+\end{proof}
+% Vale aclarar, un objeto proyectivo $X$ de una categoría $\catA$ es aquel tal que $\Hom_\catA(X, -)$ res
+
+\begin{thm}
+	Sean $X$ un espacio extremadamente disconexo. Entonces:
+	\begin{enumerate}
+		\item Toda sucesión convergente en $X$ es eventualmente constante.
+		\item En consecuencia, si $X$ es 1AN, entonces es discreto.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Sea $(x_n)_{n\in\N}$ una sucesión que converge a $y$ y supongamos, por contradicción, que no es eventualmente constante.
+			% Pasando a una subsucesión podemos suponer que los términos son todos distintos entre sí y distintos de $y$.
+
+			Construyamos recursivamente una subsucesión de $(x_n)_n$ y una sucesión de abiertos $(U_k)_k$.
+			El abierto $U_0$ contiene al primer $x_{\sigma(0)} \ne y$ e $y \notin \overline{U}_0$.
+			% Luego, podemos construir recursivamente una sucesión de abiertos $\{ U_j \}_{j\in\N}$ tales que $x_n \in U_n$,
+			% los abiertos son disjuntos e $y \notin U_n$ para cada $n$.
+			Construido $U_n$, definamos $V := X \setminus ( \overline{U}_1 \cup \cdots \cup \overline{U}_n )$ el cual es un entorno de $y$,
+			luego existe un $\sigma(n+1) \in \N$ mayor que $\sigma(n)$ tal que $x_{\sigma(n+1)} \in V$, $x_{\sigma(n+1)} \ne y$
+			y sea $W$ un entorno de $x_{\sigma(n+1)}$ tal que $y \notin \overline{W}$.
+			Definimos $U_{n+1} := W \cap V$.
+
+			Definamos ahora $G := \bigcup_{n \in \N} U_{2n}$. Como $X$ es extremadamente disconexo, $\overline{G}$ es abierto
+			y claramente $y \in \overline{G}$ (pues $\lim_n x_{\sigma(2n)} = y$), así que $\overline{G}$ es entorno de $y$
+			y algún $x_{\sigma(2m+1)} \in \overline{G}$. Así que $U_{2m+1} \cap G \ne \emptyset$, lo cual es absurdo pues $U_{2m+1}$
+			es disjunto del resto de $U_{2n}$'s.
+
+		\item Basta notar que la clausura de un conjuntos en un espacio 1AN viene determinado por los límites de sucesiones,
+			los cuales son eventualmente constantes, luego todo conjunto es cerrado. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{lem}\label{thm:gleason_technical}
+	Sea $\rho \colon X \epicto Y$ una función continua suprayectiva tal que para todo $F \subset X$ cerrado propio se tiene que $\rho[F] \ne Y$
+	(e.g., $\rho$ biyectiva).
+	Entonces, para todo abierto $U \subseteq X$ tenemos que
+	$$ \rho[U] \subseteq \overline{Y \setminus \rho[X \setminus U]}. $$
+\end{lem}
+\begin{proof}
+	Supongamos que $U \ne \emptyset$.
+	Sea $y \in \rho[U]$ y sea $V$ un entorno de $y$. Basta ver que $V$ corta a $Y \setminus \rho[X \setminus U] =: S$.
+	Como $U \cap \rho^{-1}[V] \subseteq X$ es un abierto no vacío, entonces $Y \ne \rho\big[ X \setminus (U \cap \rho^{-1}[V]) \big]$, así que,
+	tómese $y' \in Y \setminus \rho\big[ X \setminus (U \cap \rho^{-1}[V]) \big]$.
+	Como $\rho$ es suprayectiva, existe $x' \in X$ tal que $\rho(x') = y'$.
+	Como $y' \in Y \setminus \rho[X \setminus U] = S$, necesariamente $x' \in U \cap \rho^{-1}[V]$ y,
+	por tanto, $y' = \rho(x') \in \rho\big[ \rho^{-1}[V] \big] = V$, por lo que $y' \in V \cap S$ como se quería ver.
+\end{proof}
+
+\begin{lem}
+	Si $Y$ es extremadamente disconexo y $U_1, U_2$ son un par de abiertos disjuntos, entonces $\overline{U}_1, \overline{U}_2$ también son disjuntos.
+\end{lem}
+\begin{proof}
+	Como $U_2$ es abierto, entonces $\overline{U}_1, U_2$ son disjuntos.
+	Análogamente como $\overline{U}_1$ es abierto, entonces $\overline{U}_1, \overline{U}_2$ son disjuntos.
+\end{proof}
+
+\begin{lem}
+	Sean $X, Y$ un par de espacios de Hausdorff compactos con $Y$ extremadamente disconexo.
+	Si $\rho \colon X \to Y$ es continua suprayectiva y para todo cerrado propio $F \subset Y$ tenemos que $\rho[F] \ne X$,
+	entonces $\rho$ es un homeomorfismo.
+\end{lem}
+\begin{proof}
+	Por el lema de la función cerrada, basta verificar que $\rho$ es inyectiva.
+	Sean $x_1, x_2 \in X$ tales que $\rho(x_1) = \rho(x_2)$ y sean $U_1, U_2$ abiertos disjuntos con $x_i \in U_i$.
+	Ambos $X \setminus U_i$ son compactos, luego $Y \setminus \rho[X \setminus U_i]$ son abiertos y son disjuntos (¿por qué?),
+	luego $\overline{Y \setminus \rho[X \setminus U_i]}$ son abiertos disjuntos, pero por el lema~\ref{thm:gleason_technical} vemos que
+	\[
+		\rho(x_1) = \rho(x_2) \in \overline{Y \setminus \rho[X \setminus U_1]} \cap \overline{Y \setminus \rho[X \setminus U_2]},
+	\]
+	lo que es absurdo.
+\end{proof}
+
+\begin{lem}
+	Sea $\pi\colon Z \epicto Y$ una función suprayectiva entre espacios de Hausdorff compactos.
+	Entonces $Z$ contiene un compacto $K \subseteq Y$ tal que $\pi[K] = Y$, pero $\pi[F] \ne Y$ para todo $F \subset K$ cerrado propio.
+\end{lem}
+\begin{proof}
+	Es una aplicación del lema de Zorn.
+\end{proof}
+
+\begin{thm}
+	En las siguientes categorías:
+	\begin{enumerate}[(a)]
+		\item La subcategoría plena $\mathsf{KHaus}$ de espacios Hausdorff compactos.
+		\item La subcategoría plena de espacios de Tychonoff (aquellos que poseen compactificaciones).
+		\item La categoría de espacios Hausdorff localmente compactos cuyas flechas son las funciones propias.
+	\end{enumerate}
+	Los objetos proyectivos son precisamente los espacios extremadamente disconexos.
+\end{thm}
+\begin{proof}
+	Claramente las categorías (a)-(c) son de Gleason, así que basta probar que todo espacio extremadamente disconexo es proyectivo.
+
+	Realizaremos la primera, empleando los lemas anteriores. Para el resto hay que apropiadamente ver que los lemas tienen su análogo.
+	Sea $Y \in \Obj\mathsf{KHaus}$ extremadamente disconexo y sean $f\colon A \epicto B$ una función continua suprayectiva con $f \in \Morf\mathsf{KHaus}$
+	y $g \colon Y \to B$ una función continua.
+	Hay que probar que existe $\bar f \colon Y \to A$ tal que $f = \bar f \circ g$.
+
+	Considere $Z := \{ (y, a) \in Y \times A : g(y) = f(a) \}$ como subespacio de $Y\times A$.
+	Como los espacios son Hausdorff, $Z$ es cerrado y, por tanto, compacto.
+	Como $f$ es suprayectivo, entonces la proyección $\pi_1 \colon Z \epicto Y$ es suprayectiva.
+	Así, existe $K \subseteq Z$ compacto tal que $\pi_1[K] = Y$ y $\pi_1[F] \ne Y$ para todo cerrado propio $F \subset K$.
+	Luego $\rho := \pi_1|_K \colon K \to Y$ es un homeomorfismo y podemos definir $\bar f := \rho^{-1} \circ \pi_2$,
+	donde $\pi_2 \colon Z \to A$ es la otra proyección.
+\end{proof}
+
+\begin{cor}
+	Un espacio de Tychonoff es extremadamente disconexo syss su compactificación de \v Cech-Stone lo es.
+\end{cor}
+\begin{proof}
+	Se sigue de la propiedad universal de los objetos proyectivos y la compactificación de \v Cech-Stone
+\end{proof}
+\begin{ex}
+	Considere el subespacio $\N \subseteq \R$ (el cual es discreto), entonces $\beta\N$ es un espacio extremadamente disconexo y compacto.
+\end{ex}
+
+\begin{cor}
+	Todo espacio de Hausdorff compacto es la imagen continua de un espacio extremadamente disconexo compacto.
+	En resumen, la categoría $\mathsf{KHaus}$ tiene suficientes proyectivos.
+\end{cor}
+\begin{proof}
+	Sea $X$ de Hausdorff compacto, entonces $D(X)$, el espacio discreto cuyo conjunto subyacente es $X$, induce una función continua suprayectiva
+	$D(X) \epicto X$, donde $D(X)$ es extremadamente disconexo.
+	Luego, por propiedad universal, esta función se factoriza por $\beta D(X) \epicto X$ la cual satisface lo exigido.
+\end{proof}
+
+\section{Espacios normados y espacios vectoriales topológicos}
+Siguiendo a \citeauthor{bourbaki:evt}~\cite{bourbaki:evt} emplearemos la siguiente terminología:
+\begin{mydef}
+	Un \strong{cuerpo topológico}\index{cuerpo!topológico} $K$ es un cuerpo con una topología
+	tal que las funciones ${+} \colon K\times K \to K$, ${\cdot} \colon K\times K \to K$ y $()^{-1} \colon K^\times \to K^\times$
+	son continuas.
+	Un \strong{cuerpo métrico}%
+	\footnote{O \emph{cuerpo valuado}, dependiendo del autor.}
+	es un par $(K, |\,|)$, donde $K$ es un cuerpo y $|\,| \colon K \to \R_{\ge 0}$ es una función valor absoluto.
+\end{mydef}
+
+En estricto rigor nos interesan los cuerpos métricos, no (topológicamente) discretos y completos (como $\R$ y $\C$),
+pero la terminología anterior será de utilidad.
+\begin{mydefi}
+	Sea $K$ un cuerpo topológico.
+	Un \strong{$K$-espacio vectorial topológico}\index{espacio!vectorial topológico (EVT)} (abrev., EVT) $V$ es un $K$-espacio vectorial
+	dotado de una topología mediante la cual las aplicaciones ${+} \colon V\times V \to V$ y
+	\[
+		K\times V \longrightarrow V, \qquad (\lambda, x) \longmapsto \lambda x
+	\]
+	son continuas.
+	Dados $V, W$ un par de $K$-EVTs, se denota por $L(V, W)$ (resp.\ $\dual_K(V, W)$) al conjunto de aplicaciones $K$-lineales (continuas) $V \to W$;
+	de no haber ambigüedad se obvía el subíndice <<$K$>>.
+
+	Dado un $K$-EVT $V$, una aplicación de $\dual(V, V)$ se dice un \strong{operador}\index{operador}.
+	Los isomorfismos bicontinuos se dicen \strong{isomorfismo topológico}\index{isomorfismo!topológico}.%
+	\footnote{Algunos libros le dicen \textit{isomorfismo topológico} a los homeomorfismos, en inglés también suele aparecer ésta definición
+	como \textit{toplinear isomorphism}.}
+\end{mydefi}
+\begin{cor}
+	Los $K$-EVTs (como objetos) con las transformaciones lineales continuas (como flechas) forman una categoría denotada $\mathsf{TVS}_K$.
+\end{cor}
+
+\begin{prop}
+	Sea $K$ un cuerpo topológico, sea $V$ un $K$-EVT y sea $F \le V$ un subespacio vectorial. Entonces:
+	\begin{enumerate}
+		\item $V$ es de Hausdorff syss el $\Vec 0 \in V$ es un punto cerrado.
+		\item $\overline{\{ \Vec 0 \}}$ es un subespacio vectorial y $V/\overline{\{ \Vec 0 \}}$ es,
+			con la topología cociente, un $K$-espacio vectorial topológico de Hausdorff.
+		\item El cociente de espacios vectoriales $V/F$ con la topología cociente es un $K$-EVT
+			(y, en particular, la proyección $V \epicto V/F$ es continua).
+		\item El cociente $V/F$ es de Hausdorff syss $F$ es cerrado en $V$, denotado $F \le_f V$.
+	\end{enumerate}
+\end{prop}
+
+\begin{prop}
+	Sea $K$ un cuerpo topológico, sea $V$ un $K$-EVT y $W \le V$ un subespacio vectorial.
+	Entonces $\overline W$ también es un subespacio vectorial.
+\end{prop}
+\begin{proof}
+	Hay que ver que $\overline W$ es cerrado bajo suma y producto por escalar.
+
+	Para ello, sea $\vec v \in W$, entonces $\vec v + W \subseteq W \subseteq \overline W$, luego $W \subseteq -\vec v + \overline W$,
+	pero como las traslaciones son homeomorfismos, entonces $-\vec v + \overline W$ es cerrado y por ende $\overline W \subseteq -\vec v + \overline W$,
+	y sumando $\vec v$ se tiene que $\vec v + \overline W \subseteq \overline W$.
+	Como aplica para todo $\vec v \in W$ se tiene que $W + \overline W \subseteq \overline W$.
+
+	Sea ahora, $\vec v \in \overline W$, luego como $\vec v + W \subseteq W + \overline W \subseteq \overline W$, se repiten los pasos
+	y se concluye que $\vec v + \overline W \subseteq \overline W$. Es decir, $\overline W$ es cerrado por suma de vectores.
+
+	Sea $\alpha \in K$.
+	Si $\alpha = 0$, entonces $\alpha\overline W = \{\Vec 0\} \subseteq W \subseteq \overline W$.
+	Si $\alpha \ne 0$, entonces $\alpha W \subseteq W \subseteq \overline W$, luego $W \subseteq (1/\alpha)\overline W$,
+	pero $\vec x \mapsto (1/\alpha)\vec x$ es homeomorfismo, entonces $(1/\alpha)\overline W$ es cerrado y así $\overline W \subseteq (1/\alpha)\overline W$,
+	y así finalmente $\alpha\overline W \subseteq \overline W$.
+\end{proof}
+Como ejercicio para el lector otorgue una demostración alternativa al teorema anterior.
+
+\begin{mydef}
+	Sea $K$ un cuerpo métrico y sea $V$ un $K$-espacio vectorial.
+	Se dice que un conjunto $S \subseteq V$ es \strong{equilibrado}\index{conjunto!equilibrado} si para todo $\alpha \in K$
+	con $|\alpha| \le 1$ y todo $\vec x \in S$ se cumple que $\alpha \vec x \in S$ (equivalentemente, $\alpha S \subseteq S$).
+\end{mydef}
+\begin{lem}
+	Sea $K$ un cuerpo métrico y sea $V$ un $K$-espacio vectorial.
+	\begin{enumerate}
+		\item La intersección de conjuntos equilibrados es equilibrada.
+		\item Dado un subconjunto $S \subseteq V$ existe un mínimo subconjunto $E \subseteq V$ que es equilibrado
+			y que contiene a $S$ llamado la \strong{envoltura equilibrada}\index{envoltura!equilibrada}.
+	\end{enumerate}
+\end{lem}
+\begin{prop}
+	Sea $K$ un cuerpo métrico y sea $V$ un $K$-EVT.
+	\begin{enumerate}
+		\item La clausura de un conjunto equilibrado es también equilibrada.
+		\item Supongamos que $K$ es no discreto y localmente compacto.
+			Entonces la envoltura equilibrada de un subconjunto compacto es también compacta.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Denotaremos por $B := \overline{B_1(0)} = \{ \lambda \in K : |\lambda| \le 1 \}$.
+	\begin{enumerate}
+		\item Sea $S \subseteq V$ un subconjunto arbitrario,
+			entonces éste es equilibrado syss la imagen de la multiplicación escalar $s\colon B \times S \to V$ cae en $S$.
+			Por continuidad, $s[ \,\overline{B \times S}\, ] = s[ B\times \overline{S} ] \subseteq \overline{s[B \times S]} = \overline{S}$.
+		\item Como $K$ es localmente compacto y no discreto, uno puede corroborar que $B$ ha de ser compacto (¿por qué?).
+			Luego la envoltura equilibrada de un compacto $C \subseteq V$ es la imagen de $B \times C \to V$,
+			la cual es compacta. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{mydef}
+	Sea $k$ un cuerpo arbitrario y sea $V$ un $k$-espacio vectorial.
+	Se dice que un subconjunto $A \subseteq V$ es \strong{absorvente}\index{conjunto!absorvente} si para todo vector $\vec x \in V$
+	existe $\alpha \in k$ tal que $\alpha\vec x \in A$.
+\end{mydef}
+\begin{prop}
+	Sea $K$ un cuerpo métrico no discreto, sea $V$ un $K$-EVT y sea $U$ un entorno del $\Vec 0$.
+	Entonces:
+	\begin{enumerate}
+		\item Dado un escalar no nulo $\alpha\in K^\times$, entonces $\alpha U$ es entorno de $\Vec 0$.
+		\item $U$ es un conjunto absorvente.
+		\item $U$ contiene un entorno de $\Vec 0$ equilibrado.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	\begin{enumerate}
+		\item Queda al lector.
+		\item Por continuidad del producto externo $f(\alpha, \vec v) := \alpha \vec v$ se cumple que $f^{-1}[U]$ es entorno de $(\Vec 0, \vec v)$, luego contiene a un abierto de la forma $B_{2\epsilon}(\Vec 0)\times W$ con $W$ entorno de $\Vec 0$, por ende, para todo $|\alpha| \le \epsilon$ se cumple que $\alpha\vec u\in U$ con $\vec u\in U$ y para un cierto $\epsilon > \Vec 0$.
+		\item Siguiendo la construcción anterior, consideremos $W' := W\cap U$ que es entorno de $0$ contenido en $U$ tal que para todo $|\alpha| < 2\epsilon$ se cumple que $\alpha W \subseteq U$.
+			Luego existe $|\alpha_0| < \epsilon$, de forma que
+			$$ U_0 := \bigcup_{|\alpha| \le 1} \alpha\alpha_0 W' \subseteq U $$
+			y $U_0$ es equilibrado. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}
+	Sea $K$ un cuerpo topológico y $V$ un $K$-EVT.
+	Para todo subespacio vectorial $U$ con interior no vacío, se cumple que $U=V$.
+	En consecuente, toda aplicación lineal abierta entre EVTs debe ser sobreyectiva.
+\end{thm}
+\begin{proof}
+	Como $U$ posee interior no vacío, entonces contiene a un abierto de la forma $\vec u + W$ donde $W$ es un entorno de $\Vec 0$ y $\vec u\in U$,
+	como $W$ es vectorial entonces $W\subseteq U$.
+	Como $W$ es absorvente, para todo $\vec v\in V$ existe $\alpha\in\K_{\ne 0}$ tal que $\alpha\vec v\in W\subseteq U$, luego
+	$\alpha^{-1}(\alpha\vec v) = \vec v \in U$, ergo $U = V$.
+\end{proof}
+
+\begin{prop}
+	Sea $K$ un cuerpo métrico no discreto y sea $V$ un $K$-EVT Hausdorff de dimensión 1.
+	Entonces para todo $\vec x \in V$ no nulo, $a \mapsto a\vec x$ es un isomorfismo topológico de $K$-EVTs.
+	En consecuencia, $V \cong K$ (en $\mathsf{TVS}_K$).
+\end{prop}
+\begin{proof}
+	Que $f(a) := a\vec x$ sea un homomorfismo continuo biyectivo es trivial de la definición,
+	por lo que falta ver que la inversa es continua.
+	Ello podemos verificarlo en el $\Vec 0 \in V$:
+	sea $\epsilon > 0$ un número real arbitrario y sea $a_0 \in K$ tal que $0 < |a_0| < \epsilon$, luego elija un entorno equilibrado $U$ del $\Vec 0$
+	que no contiene a $a_0\vec x$ (por ser espacio de Hausdorff), luego si $b\vec x \in U$
+	necesariamente $|b| < |a_0|$, ya que de lo contrario $|a_0b^{-1}| \le 1$ y $a_0\vec x = (a_0b^{-1})b\vec x \in U$, lo cual es absurdo.
+	Así que para todo $\vec y \in U$ se cumple que $|f^{-1}(\vec y)| < \epsilon$.
+\end{proof}
+
+Recuérdese que un \emph{hiperplano (afín)} $H$ de un $K$-espacio vectorial $V$ es un subconjunto de la forma $\{ \vec x \in V : f(\vec x) = a \}$,
+donde $f \colon V \to K$ es una aplicación lineal no nula y $a \in K$.
+\begin{thm}
+	Sea $K$ un cuerpo métrico no discreto y sea $V$ un $K$-EVT.
+	Un hiperplano afín $H$ definido por $f(\vec x) = a$ es cerrado syss $f \colon V \to K$ es un homomorfismo continuo.
+\end{thm}
+\begin{proof}
+	$\impliedby$. Trivial.
+
+	$\implies$. Podemos suponer, sin perdida de generalidad, que $a = 0$.
+	Ahora, $H \le V$ es un subespacio vectorial y el cociente $V/H$ es un $K$-EVT de dimensión 1 y es de Hausdorff (¿por qué?).
+	Denotando por $\pi \colon V \to V/H$ a la proyección (que es continua), la propiedad universal de los cocientes podemos factorizar
+	\[\begin{tikzcd}[column sep=small]
+		V \ar[rr, "f"] \drar["\pi"', two heads] &                                 & K \\
+			                                & V/H \urar["\exists!g"', dashed]
+	\end{tikzcd}\]
+	donde $g$ es un isomorfismo lineal y, por la proposición anterior, también debe ser un homeomorfismo.
+	Luego $f$ es continua por composición.
+\end{proof}
+
+\begin{thm}
+	Sea $K$ un cuerpo métrico completo y no discreto.
+	Todo $K$-EVT de Hausdorff $V$ de dimensión finita $n$ es topológicamente isomorfo a $K^n$.
+\end{thm}
+\begin{proof}
+	Procedemos por inducción, donde el caso $n = 1$ ya está probado.
+	Si $\vec e_1, \dots, \vec e_n \in V$ es una base ordenada, entonces por hipótesis inductiva $W := K\vec e_1 + \cdots K\vec e_{n-1}$ es isomorfo
+	a $K^{n-1}$ como $K$-EVT y, por tanto, es completo y, luego, también es cerrado en $V$.
+	Así que $V/W$ es un $K$-EVT de Hausdorff de dimensión 1, por consiguiente es topológicamente isomorfo a $K$ y $V \cong W \times K \cong K^n$.
+\end{proof}
+\begin{ex}
+	Considere a $\Q$ con la métrica usual.
+	Nótese que $\R$ es un $\Q$-EVT con la topología usual y, por tanto, $\Q(\sqrt{2}) \subseteq \R$ es un $\Q$-EVT de dimensión 2.
+	No obstante, $\Q(\sqrt{2})$ no es topológicamente isomorfo a $\Q^2$: la razón está en que todo par de vectores $\vec u, \vec v$
+	linealmente independientes de $\Q^2$ satisfacen que el reticulado $\Z\vec u + \Z\vec v \subseteq \Q^2$ es un subconjunto discreto,
+	mientras que $\{ 1, \sqrt{2} \}$ es una base de $\Q(\sqrt{2})$ tal que $\Z + \sqrt{2}\Z \subseteq \Q(\sqrt{2})$ es denso.
+\end{ex}
+
+\begin{cor}
+	Sea $K$ un cuerpo métrico completo y no discreto, y sea $V$ un $K$-EVT de Hausdorff.
+	Todo subespacio vectorial de dimensión finita de $V$ es cerrado.
+\end{cor}
+\begin{proof}
+	Basta notar que un subespacio de dimensión finita $F$ es topológicamente isomorfo a $K^n$, y por tanto es un espacio métrico completo,
+	luego es cerrado.
+\end{proof}
+\begin{cor}
+	Sea $K$ un cuerpo métrico completo y no discreto, y sea $E$ un $K$-EVT arbitrario.
+	Toda aplicación $K$-lineal $K^n \to E$ es continua.
+\end{cor}
+
+% Comenzamos por recordar la siguiente definición:
+\begin{mydefi}
+	Sea $V$ un $K$-espacio vectorial, donde $K$ es un cuerpo métrico.
+	Una aplicación $\|\,\|\colon V \to \R$ se dice una \strong{seminorma}\index{seminorma} si:
+	\begin{enumerate}[{SN}1.]
+		\item $\|\vec x\| \ge 0$ y $\|\Vec 0\| = 0$.
+		\item $\|\lambda\vec x\| = |\lambda| \, \|\vec x\|$.
+		\item $\|\vec x + \vec y\| \le \|\vec x\| + \|\vec y\|$.
+	\end{enumerate}
+	Se dice que $\|\,\|$ es una \strong{norma}\index{norma} si, en lugar de SN1, satisface:
+	\begin{enumerate}[{N}1.]
+		\item $\|\vec x\| \ge 0$ y $\|\vec x\| = 0$ syss $\vec x = \Vec 0$.
+	\end{enumerate}
+	Un par $(V, \|\,\|)$ se dice un \strong{$K$-espacio (semi)normado}\index{espacio!normado} si $\|\,\|$ es una\break (semi)norma.
+	Nótese que todo espacio (semi)normado es (pseudo)métrico con $d(\vec x, \vec y) := \|\vec x - \vec y\|$ y,
+	por tanto, es un espacio topológico.
+	Dos seminormas sobre $V$ se dicen \strong{equivalentes} si inducen la misma topología.
+\end{mydefi}
+
+\begin{thm}
+	Sea $K$ un cuerpo métrico.
+	Todo espacio normado es un EVT sobre $K$.
+\end{thm}
+\begin{proof}
+	Denotaremos $E$ al espacio.
+	\begin{enumerate}[i)]
+		\item 
+			\underline{La suma es continua:} 
+			Consideremos $E^2$ con la norma $L_1$, luego, sean $(a,b),(c,d)\in E^2$
+			$$ \|(a+b)-(c+d)\| \le \|a-c\| + \|b-d\| = \|(a-c,b-d)\|_1 = \|(a,b) - (c,d)\|_1, $$
+			ergo, $+$ tiene la propiedad de Lipschitz, por ende es continua.
+
+		\item \underline{El producto escalar es continuo:} 
+			Consideremos $K\times E$ con la norma $L_\infty$, luego sean $(\lambda,x),(\lambda',y)\in K\times E$, sea $\epsilon > 0$,
+			entonces consideremos
+			$$ \delta := \frac{\epsilon}{|\lambda| + \|x\| + 1} > 0, $$
+			y digamos que $(\lambda',y)$ está a menos de $\min(\delta, 1)$ de distancia de $(\lambda,x)$, por lo que
+			$$ \|(\lambda,x) - (\lambda',y)\|_\infty = \max\{ |\lambda - \lambda'|, \|x - y\| \} < \min(\delta, 1). $$
+			Luego, veamos que
+			$$ \|\lambda x - \lambda'y\| = \|\lambda(x - y) + (\lambda - \lambda')y\| \le |\lambda|\, \|x - y\| + |\lambda - \lambda'|\,\|y\| $$
+			ahora estamos casi listos, el único factor extraño es $\|y\| \le \|x - y\| + \|x\| \le 1 + \|x\|$.
+			Ahora acotando los factores convenientes por $\delta$ se obtiene:
+			\begin{equation}
+				\|\lambda x - \lambda'y\| < |\lambda|\delta + \delta(1 + \|x\|) = \epsilon. \tqedhere
+			\end{equation}
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}
+	Sea $K$ un cuerpo métrico no discreto y $X$ un $K$-espacio vectorial.
+	Dos normas $\|\,\|_1$ y $\|\,\|_2$ sobre $X$ son equivalentes syss existen $\alpha,\beta > 0$ reales
+	tales que para todo $\vec x \in X$ se cumple que
+	$$ \|\vec x\|_1 \le \alpha\|\vec x\|_2,\quad \|\vec x\|_2 \le \beta\|\vec x\|_1. $$
+\end{thm}
+\begin{proof}
+	$\impliedby$. Queda al lector.
+
+	$\implies$. La demostración es por contradicción.
+	Si las normas son equivalentes, pero las constantes no existen entonces sin perdida de generalidad supondremos que
+	$$ \inf_{\vec x \ne \Vec 0} \frac{\|\vec x\|_2}{\|\vec x\|_1} = 0 $$
+	de esta forma, definimos:
+	\begin{align*}
+		f \colon X &\longrightarrow X \\
+		\vec x &\longmapsto
+		\begin{cases}
+			\frac{\vec x}{\|\vec x\|_1}, &\vec x\ne \Vec 0\\
+			\Vec 0, &\vec x=\Vec 0
+		\end{cases}
+	\end{align*}
+	notemos que $f$ no es continua en $(X, \|\,\|_1)$ pues si aplicamos $f$ primero y luego $\|\,\|_1$, entonces la función es discontinua en $\Vec 0$,
+	pero la norma es continua y la composición de continuas es continua.
+	No obstante, $f$ sí es continua en $(X, \|\,\|_2)$, pues lo es en todo $\vec x\ne \Vec 0$ por ser cociente entre continuas,
+	y en $\vec x = \Vec 0$ también ya que de no serlo, entonces $f[B_\epsilon(\Vec 0)]$ no sería entorno de $\Vec 0$, luego al aplicarle $\|\,\|_2$ ...
+\end{proof}
+
+\begin{thm}
+	Sea $K$ un cuerpo métrico, no discreto, completo.
+	Las normas sobre un espacio de dimensión finita sobre $K$ son equivalentes.
+\end{thm}
+\begin{proof}
+	En particular probaremos que son todas equivalentes a $\|\vec x\|_\infty := \max\{ |x_1|,\dots,|x_n| \} $.
+	Sea $ \|\,\| $ una norma cualquiera, luego como $E$ es de dimensión finita posee una base canónica $\vec e_1,\dots,\vec e_n$ de modo que
+	$$ \|\vec x\| = |x_1|\,\|\vec e_1\| + \cdots + |x_n|\,\|\vec e_n\| \le \lambda\|\vec x\|_\infty $$
+	donde $\lambda := \|\vec e_1\| + \cdots + \|\vec e_n\|$.
+
+	Para ver la otra desigualdad probaremos por inducción que para todo $n$ y todo $i\le n$ existe $\mu_i>0$
+	tal que $|x_i| < \mu_i\|\vec x\|$ con $\vec x \in \korpe^n$, pues,
+	luego $\mu := \max\{\mu_i: i\le n\}$ satisface que $\|\vec x\|_\infty \le \mu\|\vec x\|$.
+
+	Para $n = 1$ veamos que $\mu := 1/\|1\|$ cumple lo pedido.
+	El caso $E := \korpe^{n+1}$, se demostrará que $\vec e_{n+1}$ es adherente a $F := \korpe^n \times \{0\}$ que es cerrado (por hipótesis inductiva),
+	lo que sería absurdo.
+	Supongamos que hay un índice que no cumple la hipótesis; sin perdida de generalidad podemos suponer que uno de ellos
+	es el $(n+1)$-ésimo (de lo contrario reordenamos índices), es decir que para todo $\mu > 0$ existe $\vec x\in E$ tal que $|x_{n+1}|>\mu\|\vec x\|$.
+	Podemos asumir que $x_{n+1} = 1$ pues basta dividir por tal $\vec x$ por $x_{n+1}$.
+	Para probar que $\vec e_{n+1}$ es adherente, sea $\epsilon > 0$, luego $\mu := 1/\epsilon > 0$
+	y existe $\vec y\in F$ tal que $d(-\vec y, \vec e_{n+1}) = \|\vec y + \vec e_{n+1}\| < 1/\mu = \epsilon$.
+	Pero esto es absurdo, lo que completa la demostración.
+\end{proof}
+\begin{ex}
+	\warn
+	Para dimensión infinita, el teorema anterior falla.
+	Considere $V = \R^{\oplus\N}$, es decir, el espacio de sucesiones $\vec x = (x_n)_{n\in\N}$ en $\R$
+	donde todos salvo finitas coordenadas son nulas.
+	Aquí podemos considerar las normas
+	\[
+		\|\vec x\|_1 = \sum_{n\in\N} |x_n|, \qquad \|\vec x\|_2 := \sum_{n=0}^{\infty} \frac{|x_n|}{n+1},
+	\]
+	y notamos que la sucesión de la base canónica $\vec e_0 := (1, 0, 0, \dots)$, $\vec e_1 := (0, 1, 0, \dots)$ y así sucesivamente
+	converge, en la norma $\|\,\|_2$, al vector $\Vec 0$; mientras que diverge en la norma $\|\,\|_1$.
+\end{ex}
+
+El ejemplo anterior es <<artificial>>, pero más adelante, cuando tengamos más herramientas analíticas a disposición, el lector podrá corroborar
+que hay varios otros ejemplos <<más naturales>> donde hay normas no equivalentes a disposición.
+En cierto sentido, esto también da una especie de \emph{riqueza} a la categoría de EVTs.
+
+\begin{lem}
+	Sea $K$ un cuerpo topológico, sea $V$ un $K$-espacio vectorial y $(E_i)_{i\in I}$ una familia de $K$-EVTs.
+	La topología inicial sobre $V$ definida por una familia de aplicaciones $K$-lineales $\{ f_i \colon V \to E_i \}_{i\in I}$
+	dota a $V$ estructura de $K$-EVT.
+
+	El espacio $V$ es de Hausdorff syss para cada $\vec x \in V$ no nulo, existe un índice $i \in I$ y un entorno del origen $U_i \subseteq E_i$
+	tal que $f_i(\vec x) \notin U_i$.
+	En particular, si cada $E_i$ es de Hausdorff, $V$ también syss $\bigcap_{i\in I} \ker(f_i) = \{ 0 \}$.
+\end{lem}
+\begin{proof}
+	La primera afirmación (que $V$ sea un $K$-EVT) se deduce de la propiedad universal de la topología inicial.
+	% (i.e., cada $f_i$ es continuo y $g \colon F \to V$ es continuo syss todas las poscomposiciones $g\circ f_i$ lo son).
+	La condición equivalente de ser Hausdorff se deduce de que un $K$-EVT es Hausdorff syss el origen es un punto cerrado y
+	\begin{equation}
+		\overline{\{ 0 \}} = \bigcap_{i\in I} f_i^{-1}[\overline{\{ 0 \}}].
+		\tqedhere
+	\end{equation}
+\end{proof}
+\begin{cor}
+	Sea $K$ un cuerpo topológico y sea $V$ un $K$-EVT con la topología inicial definida por
+	las funciones lineales continuas $\{ f_i \colon V \to E_i \}_{i\in I}$.
+	Sea $X$ un espacio topológico, una función $g \colon X \to V$ es continua syss cada $g\circ f_i$ lo es.
+\end{cor}
+
+La siguiente definición será útil más adelante:
+\begin{mydef}
+	Sea $K$ un cuerpo métrico y sea $V$ un $K$-espacio vectorial.
+	Dado un conjunto $\Gamma$ de seminormas sobre $V$, la unión de las topologías inducidas por los elementos de $\Gamma$
+	se dice la \strong{topología definida por $\Gamma$} sobre $V$ y es la mínima tal que $V$ es un $K$-EVT y todas las seminormas $p \in \Gamma$
+	son continuas.
+\end{mydef}
+La siguiente proposición es un ejercicio:
+\begin{prop}\label{thm:top_def_seminorm_set}
+	Sea $K$ un cuerpo métrico y sea $V$ un $K$-EVT cuya topología está definida por un conjunto $\Gamma$ de seminormas.
+	\begin{enumerate}
+		\item Si $\Gamma$ es finito, entonces $V$ es un espacio seminormado cuya topología está inducida por la seminorma
+			\[
+				P(\vec x) := \max\{ p(\vec x) : p \in \Gamma \}.
+			\]
+		\item La clausura $\overline{\{ 0 \}}$ es el conjunto $\vec x \in V$ tales que $p(\vec x) = 0$ para todo $p \in \Gamma$.
+		\item Para $p \in \Gamma$, denotemos por $V_p$ al $K$-espacio vectorial $V$ dotado de la topología de la seminorma $p$.
+			La diagonal $V \hookto \prod_{p\in \Gamma} V_p$ es un encaje topológico.
+		\item Si $V$ es de Hausdorff y $\Gamma$ es numerable, entonces $V$ es metrizable.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	El inciso 3 se deduce del hecho de que la afirmación es cierta en general para las topologías iniciales.
+	El inciso 4 se deduce del tercero, a partir de que el producto numerable de espacios pseudométricos es pseudométrico.
+\end{proof}
+
+% \begin{mydefi}[Espacio vectorial topológico]
+% 	Se dice que $(V, \tau)$ es un $\korpe$-\strong{espacio vectorial topológico} (abrevaido, EVT)\index{espacio!vectorial topológico (EVT)} si
+% 	$V$ es un $\korpe$-espacio vectorial y $\tau$ es una topología sobre $V$ tal que la suma $+\colon V^2 \to V$ y el producto por escalar
+% 	$\cdot\colon \korpe\times V\to V$ son funciones continuas.
+% 	% \nomenclature{EVT}{Espacio vectorial topológico}
+% \end{mydefi}
+
+% \begin{prop}
+% 	Un EVT es de Hausdorff syss $\{\Vec 0\}$ es cerrado.
+% \end{prop}
+% \begin{proof}
+% 	Basta notar que el gráfico de la diagonal es preimagen del $\{\Vec 0\}$ bajo la función $f\colon V^2 \to V$ dada por $f(x, y) := x-y$.
+% \end{proof}
+
+\begin{thm}
+	Sea $K$ un cuerpo métrico, no discreto y localmente compacto.
+	Un $K$-espacio normado es localmente compacto syss es de dimensión finita.
+\end{thm}
+\begin{proof}
+	$\implies$. Sea $X$ el espacio. Como $X$ es localmente compacto, entonces $\overline B_1( \Vec 0 )$ es compacto, luego es totalmente acotado
+	y existen $\vec x_1, \dots, \vec x_n \in \overline B_1(\Vec 0)$ tales que:
+	$$ \bigcup_{i=1}^n B_{1/2}(\vec x_i) \supseteq \overline B_1(\Vec 0). $$
+	Definamos $F := \Span\{ \vec x_1, \dots, \vec x_n \}$, veremos que $F = X$.
+	Sea $\vec x \in X \setminus F$, entonces sea $r := d(\vec x, F)$, luego nótese que $K := \overline B_{r+1}(\vec x) \cap F$ es un conjunto
+	compacto (¿por qué?) y no vacío; por ende la función $d(\vec x, -)$ que es continua, alcanza un mínimo y necesariamente dicho mínimo es $r$;
+	vale decir, existe $\vec y \in F$ tal que $r = \|\vec x - \vec y\|$.
+	Como $F$ es cerrado, se debe cumplir que $\vec x \ne \vec y$, luego existe $\vec x_i$ tal que
+	$$ \left\| \frac{\vec x - \vec y}{\|\vec x - \vec y\|} - \vec x_i \right\| < \frac{1}{2}. $$
+	Finalmente, multiplicando todo por $r > 0$ se obtiene que
+	$$ d(\vec x, \vec y + r\vec x_i) = \|\vec x - \vec y - r\vec x_i\| < \frac{r}{2}, $$
+	pero $\vec y + r\vec x_i \in F$, lo que contradice la definición de $r$.
+	\par
+	$\impliedby$. Todo espacio normado de dimensión finita es necesariamente $\R^n$ con la topología usual, el cual es localmente compacto.
+\end{proof}
+
+\begin{prop}
+	Sea $K$ un cuerpo métrico no discreto, sean $N, M$ un par de $K$-espacios normados y sea $f \in L(N, M)$ una aplicación lineal.
+	Son equivalentes:
+	\begin{enumerate}
+		\item $f$ es continua.
+		\item $f$ es continua en $\Vec 0$.
+		\item $f$ tiene la propiedad de Lipschitz.
+		\item $f[\overline{B}_1(\Vec 0)]$ es acotado en $M$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Basta notar que $3 \implies 1 \implies 2 \implies 4 \implies 3$
+	(donde $2\implies 4$ deriva que ser continua en $\Vec 0$ implica estar acotada cerca de $\vec 0$, luego se multiplica por un escalar).
+\end{proof}
+% \begin{mydef}
+% 	Sean $E, F$ un par de $\korpe$-EVTs, se denota por $\dual(N, M)$ al conjunto de funciones continuas y lineales desde $E$ a $F$.
+% \end{mydef}
+
+En lo sucesivo, como querremos trabajar con espacios de funciones lineales, denotaremos por $|\,|$ a una norma sobre un $K$-espacio vectorial $V$,
+para poder denotar por $\|\,\|$ a una norma sobre $\dual(W, V)$.
+\begin{prop}
+	Sean $E$ un EVT y $F$ un espacio normado sobre un cuerpo métrico $K$, entonces
+	\begin{align*}
+		\| \, \|_\infty \colon \dual(E, F) &\longrightarrow K \\
+		f &\longmapsto \sup\{|f(\vec x)| : |\vec x| = 1 \}
+	\end{align*}
+	determina una norma.
+\end{prop}
+En particular, si $f \in \dual(V, V)$ y definimos $C := \|f\|_\infty$, entonces
+$$ \forall\vec x\in V \quad | f(\vec x) | \le C |\vec x|. $$
+
+% \begin{prop}
+% 	Sean $E, F, G$ un trío de $\korpe$-EVTs. Entonces se cumplen:
+% 	\begin{enumerate}
+% 		\item $\Id_E \in \dual(E, E)$.
+% 		\item Si $f \in \dual(E, F)$ y $g\in \dual(F, G)$, entonces $f\circ g \in \dual(E, G)$.
+% 	\end{enumerate}
+% 	En consecuencia, los espacios vectoriales topológicos (como objetos) y las funciones lineales continuas entre ellos (como flechas)
+% 	constituyen una categoría denotada $\mathsf{TVS}$, la cual es una subcategoría tanto de $\mathsf{Top}$ como $\mathsf{Vect}$.
+% \end{prop}
+% % El lector debería advertir la potencia y rigidez de un equilibrio entre dichos objetos.
+
+\begin{mydef}
+	Un \strong{espacio de Banach}\index{espacio!de Banach} sobre un cuerpo métrico $K$ es un $K$-espacio normado que es completo (como espacio métrico).
+\end{mydef}
+\begin{prop}
+	Sea $K$ un cuerpo métrico, sea $E$ un $K$-EVT y $F$ un $K$-espacio de Banach.
+	Entonces $\dual(E, F)$ también es de Banach.
+\end{prop}
+
+\subsection{El teorema de Hahn-Banach analítico}
+En esta subsección y la siguiente trabajaremos principalmente con $K = \R$.
+\begin{mydefi}
+	% Un conjunto $A$ de un $\korpe$-EVT se dice:
+	% % \strong{(linealmente) acotado} si para todo entorno $U$ de $\Vec 0$ existe $\lambda\in\korpe$ tal que $A \subseteq \lambda U$.
+% % 	Un abierto $U$ de un $\K$-EVT (donde $\K$ es métrico) $V$ se dice:
+	% \begin{description}
+	% 	\item[(Linealmente) acotado]\index{acotado (linealmente)}
+	% 		Si para todo entorno $U$ de $\Vec 0$ existe $\lambda\in\korpe$ tal que $A \subseteq \lambda U$.
+	% 	\item[Absorvente]\index{absorvente (conjunto)}
+	% 		Si para todo $\vec x\in V$ existe $\epsilon > 0$ tal que para todo $|\alpha| \le \epsilon$ se cumple que $\alpha\vec x\in A$.
+	% \end{description}
+	Sea $V$ un $\R$-espacio vectorial y sea $A \subseteq V$ un subconjunto cualquiera.
+	Se dice que $A$ es \strong{convexo}\index{convexo (conjunto)} si para todo $\vec x,\vec y\in A$ y todo $\lambda\in[0,1]$
+	se cumple que $\lambda\vec u + (1-\lambda)\vec v \in A$.
+	Se dice que $A$ es \strong{absolutamente convexo}\index{absolutamente!convexo (conjunto)} si es convexo y equilibrado.
+\end{mydefi}
+
+\begin{prop}
+	Sea $V$ un $\R$-espacio normado. Entonces:
+	\begin{enumerate}
+		\item Las bolas son convexas, y en consecuente, las bolas centradas en el origen son absolutamente convexas.
+		\item La intersección de convexos es convexo, en consecuente, la intersección de absolutamente convexos es absolutamente convexo.
+	\end{enumerate}
+\end{prop}
+
+\begin{mydef}
+	Sea $V$ un $\R$-EVT y $A \subseteq V$ un subconjunto.
+	Se definen la \strong{envoltura (absolutamente) convexa} de $A$ como
+	\begin{align*}
+		\conv A &:= \bigcap\{C : A\subseteq C\wedge C\text{ convexo}\},\\
+		\aco A  &:= \bigcap\{C : A\subseteq C\wedge C\text{ abs. convexo}\};
+	\end{align*}
+	resp.
+\end{mydef}
+
+\begin{prop}
+	Si $A$ es convexo, entonces $\Int A$ y $\overline A$ son convexos.
+\end{prop}
+\begin{proof}
+	Sea $\vec u\in A$ y $\vec v\in\Int A$, luego para todo $0<\lambda<1$ se cumple que $\lambda\vec u + (1-\lambda)\vec v \in \lambda\vec u + (1-\lambda)\Int A$ donde el último es un subconjunto abierto de $A$, es decir, $A$ es entorno de $\lambda\vec u + (1-\lambda)\vec v$, luego pertenece a $\Int A$, ergo es convexo.
+	\par
+	Sea $f:\R\times V^2 \to V$ la aplicación tal que $f(\lambda,\vec u,\vec v) := \lambda\vec u + (1-\lambda)\vec v$ la cual es continua pues $V$ es un EVT, luego, un conjunto $A$ es convexo syss $f\big[ [0,1]\times A^2 \big] \subseteq A$, luego
+	\begin{equation}
+		f\left[ [0,1]\times\overline{A}^2 \right] = f\left[ \overline{ [0,1]\times A^2 } \right]
+		\subseteq \overline{ f\big[ [0,1]\times A^2 \big] } \subseteq \overline A. \tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{ex}
+	Considere el subespacio $X \subseteq \R^2$ dado por
+	$$ X = \{ (x, 1/x) : x \in (0, \infty) \} \cup \{ (0, 0) \}. $$
+	Nótese que $X$ es cerrado (¿por qué?), y luego compruebe que
+	$$ \conv X = (0, \infty) \times (0, \infty) \cup \{ (0, 0) \}. $$
+	De modo que $X$ es cerrado, pero $\conv X$ no lo es.
+\end{ex}
+
+% \begin{lem}
+% 	Sean $V, W$ un par de $\korpe$-EVTs y $f \in L(V, W)$.
+% 	Entonces $f$ es continua syss para todo entorno $U \subseteq W$ de $\Vec 0$, se cumple que $f^{-1}[U] \subseteq V$ es un entorno de $\Vec 0$.
+% \end{lem}
+% \begin{proof}
+% 	$\implies$. Trivial.
+% 	\par
+% 	$\impliedby$.
+% 	Como las traslaciones son homeomorfismos, entonces basta probar que la preimagen de todo entorno abierto $U \subseteq W$ de $\Vec 0$ es abierta.
+% 	Sea $\vec v \in f^{-1}[U]$, es decir, $f(\vec v) \in U$; consideremos $g(\vec x) = \vec x + \vec v$ el cual es un homeomorfismo sobre $V$,
+% 	luego existe un entorno abierto $U'$ de $\Vec 0$ tal que $f(\vec v) + U' \subseteq U$.
+% 	Por hipótesis existe $U''$ entorno abierto de $\Vec 0$ tal que $f[U''] \subseteq U'$, luego
+% 	$$ f[ \vec v + U'' ] = f(\vec v) + f[U''] \subseteq f(\vec v) + U' \subseteq U, $$
+% 	por lo que $\vec v + U'' \subseteq f^{-1}[U]$ y $f$ es continua.
+% \end{proof}
+
+% \begin{thm}
+% 	Sea $V$ un $\K$-EVT, entonces $f\in L(V, \K)$ es continua syss el núcleo es cerrado.
+% \end{thm}
+% \begin{proof}
+% 	$\implies$. $\{0\}$ es cerrado en $\K$, luego $f^{-1}[\{0\}] = \ker f$ es cerrado.
+% 	\par
+% 	$\impliedby$. En primer lugar, como $\dim\K = 1$, entonces se tiene que $f$ es o nula (lo que es claramente continua) o suprayectiva.
+% 	Si $f$ es suprayectiva, tenemos que probar, por el lema, que para todo $\epsilon > 0$ se cumple que $f^{-1}[ B_\epsilon(0) ]$ es
+% 	un entorno del $\Vec 0$.
+
+% 	Sea $\alpha \in \K$ tal que $0 < |\alpha| < \epsilon$, luego existe $\vec v_0$ tal que $f(\vec v_0) = \alpha$ y concretamente
+% 	$f^{-1}[ \{\alpha\} ] = \vec v_0 + \ker f$, el cual es un cerrado del espacio, luego su complemento es un entorno abierto del $\Vec 0$,
+% 	el cual contiene a un subentorno abierto equilibrado $U$; vale decir, $\alpha \notin f[U]$.
+% 	Sea $\vec u \in U$, si $f(\vec u) \ne 0$, entonces como
+% 	$$ f\left( \frac{\alpha}{f(\vec u)} \vec u \right) = \frac{\alpha}{f(\vec u)} f(\vec u) = \alpha, $$
+% 	entonces, como $U$ es equilibrado se sigue que $| \alpha/f(\vec u) | > 1$, vale decir, $|f(\vec u)| < |\alpha| < \epsilon$.
+% 	Si $f(\vec u) = 0 < \epsilon$.
+% 	Así pues, en cualquier caso, $U \subseteq f^{-1}[ B_\epsilon(0) ]$ como se quería probar.
+% \end{proof}
+
+\thmdep{AEN}
+\begin{thm}
+	Sea $K$ un cuerpo métrico, sean $M, N$ un par de $K$-espacios normados con $N$ de Banach y sea $F \le M$ un subespacio vectorial.
+	Dado $f \colon F \to N$ una función lineal continua, entonces posee una extensión $\bar f \in \dual(\overline F, N)$
+	tal que $\| \bar f \|_\infty = \| f \|_\infty$.
+\end{thm}
+\begin{proof}
+	Sea $\vec x \in \overline F$, entonces podemos elegir $\vec x_n \in F$ tal que $d(\vec x, \vec x_n) < 1/n$, de modo que $\lim_n \vec x_n = \vec x$.
+	Luego, nótese que como $\vec x_n$ es convergente en $\overline F$, entonces es de Cauchy en $F$.
+	Sea $C := \| f \|_\infty > 0$ y sea $\epsilon > 0$, entonces para $n, m$ suficientemente grande se tiene que
+	\[
+		\|\vec x_n - \vec x_m\| < \frac\epsilon C \implies \|f(\vec x_n) - f(\vec x_m)\|
+		= \|f(\vec x_n - \vec x_m)\| \le C \|\vec x_n - \vec x_m\| < \epsilon.
+	\]
+	Vale decir, la sucesión de los $f(\vec x_n)$'s es de Cauchy, luego es convergente pues $N$ es completo.
+	Luego podemos definir:
+	\[
+		\bar f(\vec x) = \lim_n f(\vec x_n).
+	\]
+	Y así para cualquier sucesión que aproxime a todo punto en $\overline F$.
+	\begin{enumerate}[i)]
+		\item \underline{$\bar f$ está bien definida:}
+			Sean $\lim_n \vec x_n = \lim_n \vec y_n = \vec x$.
+			Luego, por continuidad de la suma se tiene que $\lim_n \vec x_n - \vec y_n = \Vec 0$,
+			lo que equivale a ver que $\lim_n |\vec x_n - \vec y_n| = 0$.
+			De aquí se sigue claramente que $\lim_n | f(\vec x_n) - f(\vec y_n) | = 0$.
+
+		\item \underline{$\bar f$ es lineal:}
+			Se reduce a aplicar la continuidad de la suma y del producto escalar para poder hacer álgebra con dichos límites.
+
+		\item \underline{$\bar f$ está acotada por la misma cota:}
+			Se reduce a ver que
+			\begin{equation}
+				\lim_n | f(\vec x_n) | \le \lim_n C | \vec x_n | = C\mathopen{}\big\lvert \lim_n \vec x_n \big\rvert\mathclose{}
+				= C| \vec x |. \tqedhere
+			\end{equation}
+	\end{enumerate}
+\end{proof}
+\thmdep{}
+
+\thmdep{AE}
+Los siguientes teoremas se demuestran usando el axioma de elección, pero está probado que basta con asumir el teorema del ultrafiltro.
+\begin{thmi}[Teorema de Hahn-Banach]\index{teorema!de Hahn-Banach}
+	Sea $V$ un $\R$-espacio vectorial con una función $p \colon V \to \R$ tal que\footnotemark{}
+	\begin{equation}
+		\forall \lambda > 0 \qquad p(\lambda\vec u) = \lambda p(\vec u), \quad
+		p(\vec u + \vec v) \le p(\vec u) + p(\vec v).
+		\label{eqn:hahn_ban_axioms}
+	\end{equation}
+	Sea $W \le V$ y $f \in L(W, \R)$ un funcional tal que $f(\vec x) \le p(\vec x)$ para todo $\vec x \in W$.
+	Entonces existe $\bar f \in L(V, \R)$ tal que $\bar f|_W = f$ y que $\bar f(\vec u) \le p(\vec u)$ para todo $\vec u\in V$.
+\end{thmi}
+\footnotetext{A las funciones que satisfacen esta condición se les conoce como \textit{funcionales convexos}, \textit{funcionales de Minkowski}
+o \textit{medidores} en otras lenguas (eng.\ \textit{gauge}).}
+\begin{proof}
+	Sea $W\subseteq W_1\subset V$ un subespacio vectorial y $f_1:W_1\to \R$ cumpliendo las condiciones del enunciado,
+	luego si $\vec w\in V\setminus W_1$, entonces sea $W_2 := W_1\oplus\sangle{\vec w}$, veremos que existe $f_2\colon W_2\to\R$
+	que también cumple las condiciones.
+	\par
+	Sean $\vec u_1,\vec v_1\in W_1$, entonces
+	\begin{align*}
+		f_1(\vec u_1) - f_1(\vec v_1) &= f_1(\vec u_1 - \vec v_1) \le p(\vec u_1 - \vec v_1) \\
+		&= p(\vec u_1 + \vec w - (\vec v_1 + \vec w)) \le p(\vec u_1 + \vec w) + p(-\vec v_1 - \vec w),
+	\end{align*}
+	reordenando nos queda que
+	$$ -p(-\vec v_1 - \vec w) - f(\vec v_1) \le p(\vec u_1 + \vec w) - f_1(\vec u_1) $$
+	como desigualdad real, luego, se concluye facilmente que
+	$$ \sup_{\vec v_1\in W_1} \left( -p(-\vec v_1 - \vec w) - f(\vec v_1) \right)
+	\le \inf_{\vec u_1\in W_1} \left( p(\vec u_1 + \vec w) - f_1(\vec u_1) \right). $$
+	Sea $ k $ un real cualquiera entre los dos valores de la desigualdad superior y definamos $f_2(\vec v + \alpha\vec w) := f_1(\vec v) + \alpha k$
+	donde $\vec v\in W_1$.
+	Claramente $f_2$ es un funcional y por definición
+	$$ \gamma \le p\left( \frac{\vec v}{\alpha} + \vec w \right) - f_1\left( \frac{\vec v}{\alpha} \right) $$
+	luego se concluye facilmente que $f_2(\vec v + \alpha\vec w) \le p(\vec v + \alpha\vec w)$ como se quería probar.
+	\par
+	Ahora invocamos el AE en forma del lema de Zorn construyendo la familia de funcionales que cumplen lo del enunciado
+	para encontrar un funcional maximal que sería el que buscamos.
+\end{proof}
+Nótese que el AE o TUF sólo se requiere si $V$ es de dimensión infinita.
+
+\begin{thmi}[Teorema de Hahn-Banach analítico]
+	Si $V$ es un $\K$-espacio vectorial (con $\K\in\{\R,\C\}$),
+	$W$ un subespacio vectorial, $f\in L(W,\K)$ un funcional y $p\colon V\to\R$ una seminorma tal que para todo $\vec w\in W$
+	se cumple que $|f(\vec w)| \le p(\vec w)$, entonces existe $\bar f\colon V\to\K$ tal que $\bar f|_W = f$ y que
+	$|\bar f(\vec u)| \le p(\vec u)$ para todo $\vec u\in V$.
+\end{thmi}
+\begin{proof}
+	Si $\K = \R$, toda seminorma cumple los requisitos de la versión anterior del teorema de Hahn-Banach,
+	luego $f$ admite una extensión $\bar f$, pero $\bar f(-\vec v) \le p(-\vec v) = p(\vec v)$, luego $|f(\vec v)| \le p(\vec v)$ como se quería probar.
+	\par
+	Si $\K = \C$, entonces comenzamos por considerar a $V$ como un $\R$-espacio vectorial,
+	de modo que $g := \Re(f) \in L(W,\R)$ por lo que admite una extensión $\bar g$ por el inciso anterior,
+	de modo que probaremos que $\bar f(\vec v) := \bar g(\vec v) - \ui\bar g(\ui\vec v)$ cumple lo pedido.
+	En primer lugar nótese que $\Re f(\ui\vec v) = \Re( \ui f(\vec v) ) = -\Im f(\vec v)$, por lo que $\bar f|_W = f$.
+\end{proof}
+\thmdep{}
+
+Vamos a presentar un par de corolarios, para los cuales emplearemos el concepto de dual.
+Dado un $\R$-EVT $V$ denotaremos por $V^* := \dual(V, \R)$ y $V^\wedge := L(V, \R)$.
+
+Veamos un par de consecuencias:
+\begin{cor}
+	Sea $N$ un $\R$-espacio normado.
+	Para cada $\vec x_0 \in N$, existe un funcional $f \in N^*$ tal que
+	\[
+		\|f\| = |\vec x_0|, \qquad f(\vec x_0) = |\vec x_0|^2.
+	\]
+\end{cor}
+\begin{proof}
+	Basta extender el funcional $\tilde f(t\vec x_0) := t|\vec x_0|^2$ definido en el subespacio vectorial $F := \R\vec x_0 \le N$.
+\end{proof}
+\begin{cor}
+	Sea $N$ un $\R$-espacio normado.
+	Para todo $\vec x \in N$, se cumple que
+	\[
+		|\vec x| = \sup\{ |f(\vec x)| : f \in N^*, \|f\| = 1 \} = \max\{ |f(\vec x)| : f \in N^*, \|f\| = 1 \}.
+	\]
+\end{cor}
+
+\subsection{El teorema de Hahn-Banach geométrico}
+Éste es uno de los resultados centrales del análisis funcional.
+
+\begin{mydef}
+	Un \strong{espacio localmente convexo}\index{espacio!localmente convexo} es un $\R$-EVT que posee una base de entornos convexos.
+	Un \strong{espacio de Fréchet}\index{espacio!de Fréchet} es un espacio localmente convexo, metrizable y completo.
+\end{mydef}
+\begin{cor}
+	Todo espacio de Banach es de Fréchet.
+\end{cor}
+
+El siguiente lema es fundamental:
+\begin{lem}\label{thm:GHB_seminorm_lemma}
+	Sea $V$ un $\R$-EVT y sea $U \subseteq E$ un entorno abierto convexo del origen.
+	Defínase
+	\[
+		p_U \colon V \longrightarrow \R, \qquad \vec x \longmapsto \inf\{ \alpha > 0 : \alpha^{-1}\vec x \in U \},
+	\]
+	entonces satisface \eqref{eqn:hahn_ban_axioms}, además,
+	\[
+		U = \{ \vec x \in V : p(\vec x) < 1 \}
+	\]
+	y si $V$ es seminormado, entonces existe $M > 0$ tal que $0 \le p(\vec x) \le M|\vec x|$ para todo $\vec x \in V$.
+\end{lem}
+\begin{proof}
+	Es claro que $p(\lambda\vec x) = \lambda p(\vec x)$ para $\lambda > 0$.
+	Sea $r > 0$ tal que $B_r(\Vec 0) \subseteq U$, entonces para todo $\vec x \in V$ se cumple que $p(\vec x) \le \frac{1}{r}|\vec x|$,
+	por lo que $M = 1/r$ sirve.
+
+	Sea $\vec x \in U$, existe $\epsilon > 0$ suficiente pequeño tal que $(1 + \epsilon)\vec x \in U$, de modo que $p(\vec x) \le \frac{1}{1+\epsilon} < 1$.
+	Recíprocamente, si $p(\vec x) < 1$, entonces existe $0 < \alpha < 1$ con $\alpha^{-1}\vec x \in U$, luego
+	\[
+		\vec x = \alpha(\alpha^{-1}\vec x) + (1 - \alpha)\Vec 0 \in U.
+	\]
+	Finalmente, para ver que se satisface \eqref{eqn:hahn_ban_axioms}, sea $\vec u, \vec v \in V$ y sea $\epsilon > 0$.
+	% que $p(\vec u + \vec v) \le p(\vec u) + p(\vec v)$
+	Luego $\vec x := \frac{1}{p(\vec u) + \epsilon} \vec u, \vec y := \frac{1}{p(\vec v) + \epsilon} \vec v \in U$, de modo que con
+	$t := \frac{p(\vec u) + \epsilon}{p(\vec u) + p(\vec v) + 2\epsilon} \in (0, 1)$ se cumple que
+	\[
+		\frac{\vec u + \vec v}{p(\vec u) + p(\vec v) + 2\epsilon} = t\vec x + (1 - t)\vec y \in U,
+	\]
+	por lo que $p(\vec u + \vec v) \le p(\vec u) + p(\vec v)$.
+\end{proof}
+
+\begin{prop}
+	Sea $V$ un espacio localmente convexo, entonces posee una base de entornos del origen que son absolutamente convexos.
+\end{prop}
+\begin{cor}
+	Sea $V$ un $\R$-EVT.
+	Entonces $V$ es localmente convexo syss existe una familia de seminormas que define su topología.
+\end{cor}
+\begin{proof}
+	$\impliedby$.
+	Es trivial de verificar que, si $p \colon V \to \R$ es una seminorma
+	entonces la bola $B^p_r(0) = \{ \vec x \in V : p(\vec x) < r \}$ es un entorno absolutamente convexo del origen
+	y que los abiertos son intersecciones finitas de los conjuntos anteriores.
+
+	$\implies$.
+	Si $\mathcal{B}$ es una base de entornos simétricos absolutamente convexos del origen,
+	entonces la topología de $V$ está generada por las seminormas $\{ p_U : U \in \mathcal{B} \}$, donde $p_U$ es la aplicación definida en
+	el lema~\ref{thm:GHB_seminorm_lemma}.
+\end{proof}
+% \begin{cor}
+% 	Sea $V$ un espacio localmente convexo. Son equivalentes:
+% 	\begin{enumerate}
+% 		\item $V$ es (pseudo)metrizable.
+% 		\item Existe una familia numerable de seminormas que inducen su topología.
+% 		\item $V$ es 1AN o, equivalentemente, existe una base numerable de entornos del origen.
+% 	\end{enumerate}
+% \end{cor}
+
+Ahora bien, como la continuidad en la topología inicial se define por poscomposición,
+el corolario anterior nos permite verificar continuidad en cada seminorma por separado.
+\begin{mydef}
+	Sea $V$ un $\R$-espacio vectorial.
+	Dado un epimorfismo lineal $f \colon V \to \R$ y un $\gamma \in \R$,
+	se dice que el hiperplano afín $H = \{ \vec x \in V : f(\vec x) = \gamma \}$ \strong{separa} a un par de subconjuntos prefijados $A, B \subseteq V$
+	si (quizá tras intercambiar $A$ y $B$) se cumple que
+	\[
+		\forall \vec a\in A, \vec b \in B, \qquad f(\vec a) \le \gamma \le f(\vec b).
+	\]
+	Se dice que $H$ \strong{separa estrictamente} a $A$ y $B$ si existe $\epsilon > 0$ tal que
+	\[
+		\forall \vec a\in A, \vec b \in B, \qquad f(\vec a) \le \gamma - \epsilon < \gamma + \epsilon \le f(\vec b).
+	\]
+	% Dado un $f \in \dual(V, \R)$, entonces un conjunto de la forma $H_c := f^{-1}[ \{c\} ]$ se dice un \strong{hiperplano} de $V$.
+	% Nótese que si $f(\vec v_0) = c$, entonces $H_c = \vec v_0 + H_0 = \vec v_0 + \ker f$.
+	% Los conjuntos de la forma $f^{-1}\big[ [c, \infty) \big]$ y $f^{-1}\big[ (-\infty, c] \big]$ se dicen \strong{semi-espacios cerrados}.
+
+	% Dado un punto $\vec x_0$ y un cerrado $S$, se dice que un hiperplano \strong{separa} a $S$ y $\vec x_0$ si están completamente contenidos en los
+	% dos semi-espacios cerrados asociados a $H$.
+\end{mydef}
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	Sea $V$ un espacio localmente convexo, sea $U \subseteq V$ un abierto convexo no vacío y sea $\vec x_0 \in V \setminus U$.
+	Entonces existe $f \in V^*$ tal que $f(\vec u) \le f(\vec x_0)$ para todo $\vec u \in U$ y,
+	en particular, el hiperplano cerrado $\{ \vec x : f(\vec x) = f(\vec x_0) \}$ separa a $U$ y al punto $\vec x_0$.
+\end{slem}
+\begin{proof}
+	Apliquemos una traslación por $\vec y_0$ de modo que $U$ contenga al origen.
+	Considere la función $p := p_U$ definida en el lema~\ref{thm:GHB_seminorm_lemma},
+	considere el subespacio vectorial $F := \R\vec x_0 \le V$ y el funcional
+	\[
+		\tilde f \colon F \longrightarrow \R, \qquad t\vec x_0 \longmapsto t.
+	\]
+	Ya vimos que $\tilde f(\vec y) \le p(\vec y)$ para todo $\vec y \in F$, así que el teorema de Hahn-Banach nos permite extender $\tilde f$
+	a un funcional $f \in L(V, \R)$ con $|f(\vec x)| \le p(\vec x)$.
+	Finalmente, omo $p$ es continuo (¿por qué?) y $|f|$ está acotado por $p$, se comprueba que $f$ también es continuo.
+	% Finalmente, como $p$ está acotado, vemos que $\|f\|_\infty \le M$ (donde $M$ es la constante del lema anterior),
+	% por lo que $f$ es un funcional continuo.
+\end{proof}
+El lector puede notar que la norma está solamente empleada para probar que $f$ es continua, mediante la cota de $p$, pero que virtualmente
+no tiene mayores usos.
+En efecto, el lema anterior (y el teorema siguiente) son válidos para $\R$-EVTs en general, probando el lema~\ref{thm:GHB_seminorm_lemma}
+con ayuda de los espacios vectoriales topológicos \emph{ordenados} (vid.\ \citeauthor{bourbaki:evt}~\cite[II.22\psqq]{bourbaki:evt}, \S II.3).
+\addtocounter{thmi}{-1}
+
+% \begin{lem}
+% 	Sea $V$ un $\R$-EVT, $S \subseteq V$ un cerrado convexo y $\vec x_0 \notin S$;
+% 	entonces existe un hiperplano afín cerrado que separa a $S$ y a $\vec x_0$.
+% \end{lem}
+% \begin{proof}
+% 	Primero haremos el caso en que $V$ es de dimensión finita:
+% 	Consideremos la aplicación $\vec v \mapsto \|\vec v - \vec x_0\|$, la cual alcanza un mínimo $\vec q \in S$
+% 	tal que $\vec n := \vec q - \vec x_0$ tiene distancia mínima.
+% 	Consideremos la aplicación lineal $f(\vec v) := \vec v\cdot\vec n$, donde $\cdot$ es el producto interno de $\R^n$,
+% 	queremos probar que el semi-espacio $f^{-1}\big[ [\vec q\cdot\vec n, +\infty) \big]$ contiene completamente a $S$.
+% 	% complementario claramente contiene a $\vec x_0$.
+% 	Sea $\vec p \in S$ arbitrario, entonces para todo $t \in [0, 1]$ se cumple que
+% 	$$ \|\vec q - \vec x_0\| \le \|\vec q + t(\vec p - \vec q) - \vec x_0\| = \| (\vec q - \vec x_0) + t(\vec p - \vec q) \| $$
+% 	Luego elevando al cuadrado se obtiene que
+% 	$$ 0 \le 2\vec n(\vec p - \vec q) + t(\vec p - \vec q)^2, $$
+% 	y considerando el límite cuando $t \to 0$, se concluye que
+% 	$$ \vec n\cdot\vec p \ge \vec n\cdot\vec q = \vec n^2 + \vec n\cdot \vec p > \vec n\cdot\vec p. $$
+% 	Lo que concluye que están contenidos en semi-espacios distintos.
+% 	\todo{Completar caso general, \cite[p.~86]{lang:analysis}.}
+% \end{proof}
+
+\begin{thmi}[Teorema de Hahn-Banach geométrico]\index{teorema!de Hahn-Banach!geométrico}
+	Sea $V$ un espacio localmente convexo y sean $A, B \subseteq V$ un par de conjuntos convexos no vacíos disjuntos.
+	\begin{enumerate}
+		\item Si $A$ es abierto o $B$ es abierto, entonces existe un hiperplano cerrado que los separa.
+		\item Si $V$ es normado, $A$ es cerrado y $B$ es compacto, entonces existe un hiperplano cerrado que los separa estrictamente.
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	\begin{enumerate}
+		\item Sea
+			\[
+				C := A - B = \{ \vec a - \vec b : \vec a \in A, \vec b \in B \},
+			\]
+			el cual es abierto (pues $C = \bigcup_{\vec y \in B} (A - \vec y)$), es convexo (¿por qué?) y $\Vec 0 \notin C$.
+			Así, por el lema anterior, existe un funcional $f \in V^*$ tal que $f(\vec z) < 0$ para todo $\vec z \in C$, o equivalentemente,
+			\[
+				\forall \vec a\in A, \vec b \in B, \qquad f(\vec a) < f(\vec b).
+			\]
+			Así pues, sea $\gamma \in \R$ tal que
+			\[
+				\sup_{\vec a \in A} f(\vec a) \le \lambda \le \inf_{\vec b \in B} f(\vec b),
+			\]
+			se verifica que el hiperplano cerrado $\{ \vec x \in V : f(\vec x) = \lambda \}$ separa a $A$ y a $B$.
+		\item Igual que antes, sea $C := A - B$, el cual es convexo, $\Vec 0 \notin C$ y es cerrado (¿por qué?).
+			Así que existe $r > 0$ tal que $B_r(\Vec 0) \cap C = \emptyset$ y, por el inciso anterior, existe un hiperplano $H$
+			que separa a la bola $B_r(\Vec 0)$ y a $C$.
+			Queda al lector verificar que una traslación de $H$ es precisamente quién separa estrictamente a $A$ y a $B$. \qedhere
+	\end{enumerate}
+\end{proof}
+\begin{cor}
+	Sea $V$ un $\R$-espacio normado y sea $F \le V$ tal que $\overline{F} \ne V$.
+	Entonces existe un funcional $f \in V^*$ no nulo que se anula en $F$.
+\end{cor}
+\begin{proof}
+	Sea $A := \overline{F}$ y $B := \{ \vec x_0 \}$ para algún $\vec x_0 \notin \overline{A}$.
+	Por el teorema geométrico de Hahn-Banach, existe un hiperplano cerrado $\{ \vec x \in V : f(\vec x) = \gamma \}$
+	que separa estrictamente a $A$ y a $B$, es decir
+	\[
+		\forall \vec y \in F \qquad f(\vec y) < \gamma < f(\vec x_0).
+	\]
+	Ahora bien, para todo $\lambda \in \R$ se cumple que $f(\lambda\vec y) = \lambda f(\vec y) < \gamma$,
+	ya que $\overline{F} \le V$, por lo que necesariamente $f(\vec y) = 0$ para $\vec y \in \overline{F} \supseteq F$.
+\end{proof}
+
+El enunciado del teorema geométrico de Hahn-Banach es <<óptimo>>:
+\begin{exn}
+	En $\R^2$ podemos considerar (ver fig.~\ref{fig:top/geometric_HB})
+	\[
+		A := \left\{ (x, y) : x > 0, y > \frac{1}{x} \right\}, \qquad B := \{ (x, y) : x \le 0 \}.
+	\]
+	Aquí $A$ y $B$ son convexos (¿por qué?), y el hiperplano (cerrado) $H = \{ (x, y) : x = 0 \}$ los separa,
+	pero no existe un hiperplano que los separa estrictamente (¡demuéstrelo!).
+	\begin{figure}[!hbtp]
+		\centering
+		\includegraphics{top/geometric_HB.pdf}
+		\caption{}%
+		\label{fig:top/geometric_HB}
+	\end{figure}
+\end{exn}
+\begin{ex}
+	Sea $E$ un $\R$-EVT localmente convexo metrizable que no es completo.
+	Podemos considerar a $E$ como subespacio de su compleción $\widehat{E}$.
+	Sea $y_0 \in \widehat{E} \setminus E$, y considere los subconjuntos $A := E$ y $B := \{ y_0 \}$.
+	Claramente $A$ y $B$ son convexos, pero $A$ no es cerrado, y no existe ningún hiperplano cerrado que los separa ya que $A$ es denso.
+\end{ex}
+
+\begin{mydef}
+	Sea $V$ un $\R$-espacio vectorial y $S \subseteq V$ convexo.
+	Un punto $\vec x \in V$ se dice un \strong{extremo} si $\vec x = t\vec y_1 + (1 - t)\vec y_2$ con
+	$t \in [0, 1]$ y $\vec y_1, \vec y_2 \in S$ implica que $\vec y_1 = \vec y_2 = \vec x$.
+\end{mydef}
+
+\thmdep{AE}
+\begin{thm}
+	Sea $V$ un $\R$-EVT.
+	Entonces todo subconjunto compacto convexo no vacío $S$ de $V$ posee extremos.
+\end{thm}
+\begin{proof}
+	Sea $ \mathcal{F} $ la familia de subconjuntos $K$ de $S$ que sean convexos, compactos, no vacíos,
+	tales que si $\vec x \in K$ y $\vec y_1,\vec y_2 \in S$ satisfacen que $\vec x = t\vec y_1 + (1 - t)\vec y_2$
+	para algún $t \in [0, 1]$, entonces $\vec y_1, \vec y_2 \in K$.
+
+	Sea $\{ K_i \}_{i\in I} \subseteq \mathcal{F}$ es una $\subseteq$-cadena (descendiente), entonces
+	$$ K := \bigcap_{i\in I} K_i \in \mathcal{F}, $$
+	para ello nótese que como los $K_i$'s son de Hausdorff y compactos, entonces, fijando $j \in I$
+	se cumple que todo $i\in I$ tal que $K_i \subseteq K_j$ debe cumplir que $K_i$ sea un subespacio convexo cerrado de $K_j$.
+	Luego $K$ es una intersección de cerrados, así que es cerrado; por compacidad tampoco es vacío puesto que la familia tiene la PIF,
+	luego $K$ es compacto y ya hemos visto que la intersección de convexos es convexa.
+	Además es fácil ver que $K$ también posee la última propiedad, luego $K \in \mathcal{F}$.
+	Finalmente por el lema de Zorn (versión descendiente) se cumple que $\mathcal{F}$ posee un $\subseteq$-minimal $S_0$.
+
+	Hay que probar que $S_0$ consta de un sólo elemento, que sería un extremo de $S$.
+	Para ello, veremos que para todo $\lambda \in \dual(E, \R)$ se satisface que $\lambda[S_0]$ consta de un solo punto.
+	Como $S_0$ es compacto, entonces $\lambda[S_0]$ también y luego podemos elegir el máximo $c$ y ver que $S_0 \cap \lambda^{-1}[ \{c\} ] \in \mathcal{F}$:
+	Para ello, claramente $S_0$ es compacto y convexo, y para la última propiedad veamos que si
+	$$ \vec x = t\vec y_1 + (1 - t)\vec y_2 \in S_0 \cap \lambda^{-1}[ \{c\} ] $$
+	luego aplicando $\lambda$ a ambos lados se tiene que necesariamente $\lambda(\vec y_1) = \lambda(\vec y_2) = c$, por definición de máximo.
+	Finalmente, por minimalidad de $S_0$, entonces $\lambda[S_0] = \{c\}$.
+	\par
+	Queda al lector comprobar que $\dual(E, \R)$ separa puntos: vale decir, que para todo par de puntos distintos podemos encontrar un funcional
+	continuo que toma valores distintos en dos puntos distintos.
+\end{proof}
+
+\begin{cor}
+	Sea $V$ un $\R$-EVT, sea $\emptyset \ne K \subseteq V$ compacto y convexo, y sea $\lambda \in \dual(V, \R)$.
+	Si $c$ es un extremo de $\lambda[K]$, entonces $K \cap \lambda^{-1}[ \{c\} ]$ posee un extremo de $K$.
+\end{cor}
+
+\begin{thm}[de Krein-Milman]%
+	% \index{teorema!de Krein-Milman}
+	Sea $V$ un $\R$-EVT y $\emptyset \ne K \subseteq V$ compacto y convexo.
+	Entonces si $S$ es el conjunto de los extremos de $K$, entonces $K = \overline{\conv S}$.
+\end{thm}
+\begin{proof}
+	Llamemos $K' := \overline{\conv S}$, claramente $K' \subseteq K$.
+	Como $K'$ es cerrado en $K$ que es compacto, entonces $K'$ es compacto y es claramente convexo por definición,
+	luego si $\vec x_0 \in K \setminus K'$, entonces existe $\lambda \in \dual(V, \R)$ que separa a $\vec x_0$ y $K'$,
+	por lo que, sin perdida de generalidad supondremos que $\lambda(\vec x_0) > \lambda(\vec v)$ para todo $\vec v\in K'$.
+	No obstante, si $c$ es el máximo de $\lambda[K]$, entonces existe un extremo en $K \cap \lambda^{-1}[ \{c\} ]$,
+	luego existe que $\vec y \in K'$ tal que $\lambda(\vec y) = c \ge \lambda(\vec x_0)$; lo que es absurdo.
+\end{proof}
+% Se ha comprobado el teo
+\thmdep{}
+
+\section{Topologías débiles y dualidad}
+\begin{mydef}
+	Sea $k$ un cuerpo y sean $V, W$ un par de $k$-espacios vectoriales.
+	Dada una forma bilineal $\beta \colon V\times W \to k$, se dice que $V, W$ \emph{están en dualidad} (respecto a $\beta$).
+	Se dice que la dualidad es \strong{separante en $V$} (resp.\ \emph{en $W$}) si para todo $\vec x \in V$ (resp.\ $\vec y \in W$) no nulo
+	la aplicación lineal $\beta(\vec x, -) \colon W \to k$ (resp.\ $\beta(-, \vec y)$) es no nula.
+\end{mydef}
+\begin{ex}
+	Sea $V$ un $k$-espacio vectorial arbitrario.
+	Dado un subespacio vectorial $F \le V^\wedge$, se cumple que naturalmente $V, F$ están en dualidad con
+	\[
+		\langle -, - \rangle \colon V\times F \longrightarrow k, \qquad (\vec x, f) \longmapsto f(\vec x).
+	\]
+	Es claro que esta dualidad siempre es separante en $F$.
+\end{ex}
+
+\begin{cor}
+	Sean $V, W$ un par de espacios vectoriales en dualidad sobre un cuerpo $k$.
+	La dualidad es separante en $V$ syss la aplicación $k$-lineal
+	\[
+		V \longrightarrow W^\wedge, \qquad \vec x \longmapsto \beta(\vec x, -)
+	\]
+	es inyectiva.
+\end{cor}
+
+\begin{mydefi}
+	Sea $K$ un cuerpo topológico y sean $E, F$ un par de $K$-espacios vectoriales en dualidad.
+	La \strong{topología $\sigma(E, F)$} sobre $E$ es la topología inicial inducida por las funciones $\beta(-, \vec y_0)$,
+	donde $\vec y_0$ recorre los elementos de $F$.
+	Ocasionalmente, escribiremos $E_\sigma$ (o $F_\sigma$) para enfatizar la topología.
+
+	Dado un $K$-EVT $V$, la \strong{topología débil} sobre $V$ es la topología $\sigma(V, V^*)$,
+	mientras que la \strong{topología débil*}\index{topología!debil@débil(*)} sobre $V^*$ es la topología $\sigma(V^*, V)$;
+	donde la forma bilineal es la canónica.
+	% \[
+	% 	\langle -, - \rangle \colon V \times V' \longrightarrow K, \qquad (\vec x, f) \longmapsto f(\vec x)
+	% \]
+\end{mydefi}
+
+\begin{prop}
+	Sea $K$ un cuerpo topológico de Hausdorff y $E, F$ un par de $K$-espacios vectoriales en dualidad.
+	Se cumple que $E_\sigma$ (resp.\ $F_\sigma$) es un espacio de Hausdorff syss la dualidad es separante en $E$ (resp.\ $F$).
+\end{prop}
+\begin{proof}
+	Se sigue de la proposición~\ref{thm:top_def_seminorm_set}.
+\end{proof}
+\begin{cor}
+	Sea $K$ un cuerpo topológico de Hausdorff y sea $V$ un $K$-EVT.
+	El dual topológico $V^*_\sigma$ es Hausdorff en la topología débil*.
+\end{cor}
+
+Se recomienda al lector intentar lo siguiente:
+\begin{prob}
+	Sea $V$ un $\R$-espacio normado.
+	Demuestre que $V_\sigma$ (es decir, $V$ con la topología débil) es Hausdorff.
+\end{prob}
+% \begin{hint}
+% 	Emplee el teorema de Hahn-Banach geométrico.
+% \end{hint}
+
+\begin{prop}
+	Sean $E, F$ un par de $K$-espacio vectorial en dualidad, separante en $E$ y $F$.
+	Dado un conjunto de elementos linealmente independientes $\vec y_1, \dots, \vec y_n \in F$,
+	existen $\vec x_j \in E$ tales que $\beta(\vec x_i, \vec y_j) = \delta_{ij}$.
+\end{prop}
+\begin{proof}
+	Procedemos por inducción, donde el caso $n = 1$ se sigue de que $\beta(-, \vec y_1)$ no es la función nula.
+	Así, supongamos que existen $\overline{\vec x}_1, \dots, \overline{\vec x}_{n-1}$ tales que $\beta(\overline{\vec x}_i, \vec y_j) = \delta_{ij}$.
+	Sean
+	\[
+		S_n := \sum_{i=1}^{n-1} K\overline{\vec x}_i, \qquad T_n := \bigcap_{i=1}^{n-1} \ker\beta(-, \vec y_i).
+	\]
+	Entonces como $E \cong S_n \oplus T_n$ (algebraicamente),
+	ahora bien, $\beta(-, \vec y_n)$ no es la función nula sobre $T_n$, pues de lo contrario, $\vec y_n$ sería linealmente dependiente
+	al resto y, por tanto, existe $\vec x_n \in T_n$ tal que $\beta(\vec x_n, \vec y_n) = 1$.
+	Así $\vec x_j := \overline{\vec x}_j - \beta(\overline{\vec x}_j, \vec y_n)\vec x_n$ satisface lo exigido.
+\end{proof}
+
+\begin{prop}
+	Sea $K$ un cuerpo topológico y sean $E, F$ un par de $K$-espacios vectoriales en dualidad.
+	Un funcional $f \in L(E, K)$ es continuo en la topología $\sigma(E, F)$ syss es de la forma $f = \beta(-, \vec y_0)$
+	para algún $\vec y_0 \in F$.
+	Además, si la dualidad es separante en $E$, entonces el $\vec y$ es único.
+\end{prop}
+
+\begin{thm}
+	Sea $K$ un cuerpo topológico y sea $V$ un $K$-espacio normado.
+	Entonces
+	\[
+		\iota := \ev_- \colon V \longrightarrow V^{**}, \qquad \vec x \longmapsto (\ell \mapsto \ell(\vec x))
+	\]
+	es una isometría.
+	Además, si $V$ es de Banach, entonces $\Img\iota \le_f V^{**}$.
+\end{thm}
+
+\section*{Notas históricas y referencias}
+La teoría de espacios conexos es bastante antigua, más incluso que la exploración de los axiomas de separación, y data de \textbf{Camille Jordan},
+conocido por su famoso teorema de las curvas planares a finales de siglo \textsc{xix}.
+Por el contrario, la teoría de espacios \emph{disconexos} es más reciente y puede trazarse a la década de 1930;
+una de las mayores inspiraciones para los límites inversos de espacios topológicos y los espacios hereditariamente disconexos son
+ciertos espacios de números $p$-ádicos.
+
+Los espacios vectoriales topológicos están estudiados en varias fuentes, aunque la mayoría se restringe al caso de $\R$ y $\C$.
+No obstante, la gran mayoría de analistas saben que la teoría se puede llevar a cabo en mayor generalidad,
+\citeauthor{bourbaki:evt}~\cite{bourbaki:evt} es de las pocas fuentes que sí lo hacen.
+
+\printbibliography[segment=\therefsegment, check=onlynew, notcategory=history, notcategory=historical, notcategory=other]
+% \bibbycategory[segment=\therefsegment, check=onlynew]
+
+\end{document}

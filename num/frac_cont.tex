@@ -1,0 +1,1367 @@
+\documentclass[teoria-numeros.tex]{subfiles}
+\begin{document}
+
+\chapter{Fracciones continuas}
+Ya habíamos visto en el primer capítulo la idea de la representación de números por bases, pero ésto tiene un par de problemas:
+El primero es que elegir algo como el número 10 es considerablemente arbitrario, podríamos haber elegido 2 ó cualquier otro en éste sentido.
+El segundo problema es que, como vimos, las representaciones no son únicas, pues $0.\overline{9} = 1$, y ésto aplica para cualquier base empleando el último
+dígito, por ejemplo, en base 5 se cumple que $( 0.\overline{4} )_5 = 1$ y así, por ende, podríamos sospechar que, si en lugar de emplear una base finita
+utilizaramos una <<base infinita>>, dado que no hay un último dígito el problema se vería resuelto.
+
+\section{Introducción}
+\nocite{khinchin:fractions}
+\begin{mydefi}[Fracción continua]\index{fracción continua}
+	Dadas dos sucesiones $(a_n)_{n=0}, \break (b_n)_{n = 1}^\infty \in \C$ se define la siguiente sucesión $(c_n)_{n=0}^\infty \in \C$:
+	$$ c_0 := a_0, \quad c_1 := a_0 + \dfrac{b_1}{a_1}, \quad c_2 := a_0 + \dfrac{b_1}{a_1 + \dfrac{b_2}{a_2}}, \; \cdots $$
+	a la sucesión $(c_n)_{n\in\N}$ se le dicen \strong{aproximantes}.%
+	\footnote{Khinchin sugiere los términos \textit{convergentes} y \textit{aproximantes}, preferimos el segundo para evitar confusiones,
+	aunque otros autores en español tienden a optar por el primero.} 
+	También añadimos un número $\infty$ (sin signo) que satisface lo siguiente:
+	$$ \frac{z}{0} = \infty, \qquad \frac{z}{\infty} = 0, \qquad a \pm \infty = \infty $$
+	Finalmente, si $c_n$ converge a un límite $L$ se admiten las siguientes notaciones:
+	$$ L = a_0 + \dfrac{b_1}{a_1 + \dfrac{b_2}{a_2 + \dfrac{b_3}{a_3 + \cdots}}} = a_0 + \frac{b_1}{a_1} {{}\atop +} \frac{b_2}{a_2} {{}\atop + \cdots}
+	= a_0 + \ksum_{n=1}^\infty \frac{b_n}{a_n} $$
+	\nomenclature{$a_0 + \ksum_{n=1}^\infty \frac{b_n}{a_n}$}{Notación de Gauss de fracción continua,
+	$\displaystyle {}=a_0 + \frac{b_1}{a_1 + \frac{b_2}{a_2 + \cdots}} = a_0 + \frac{b_1}{a_1} {{}\atop +} \frac{b_2}{a_2} {{}\atop + \cdots}$}
+	La última es notación de Gauss y favoreceremos ésta.
+	% Además, en varios casos la sucesión $b_n$ tendrá valor constante 1, y ahí se admite la siguiente notación:
+	% $$ a_0 + \ksum_{n=1}^\infty \frac{1}{a_n} = [a_0; a_1, a_2, a_3, \dots]. $$
+	% A las fracciones continuas de ésta forma, donde todos los $(a_n)_{n\in\N}$ son naturales no nulos (y donde se admite que la sucesión sea finita)
+	% se les dicen \textit{fracciones continuas simples}\index{fracción continua!simple}.
+	% \nomenclature{$[a_0; a_1, a_2, \dots]$}{Notación de Khinchin de fracción continua, ${} = a_0 + \ksum_{n=1}^\infty \frac{1}{a_n}$}
+\end{mydefi}
+
+Las notaciones están hechas para abreviar espacio, pero no dicen mucho sobre la sucesión real, pues notemos que a pesar de su parecido con la suma,
+aquí el orden sí importa y deben hacerse desde derecha a izquierda, por ejemplo:
+\begin{align*}
+	\frac{1}{2} {\atop +} \left( \frac{1}{3} {\atop +} \frac{1}{5} \right) &= \frac{1}{2} {\atop +} \frac{1}{3 + \frac{1}{5}} \\
+									       &= \frac{1}{2} {\atop +} \frac{5}{16} = \frac{1}{2 + \frac{5}{16}} = \frac{16}{37}
+\end{align*}
+mientras que
+\begin{align*}
+	\left( \frac{1}{2} {\atop +} \frac{1}{3} \right) {\atop +} \frac{1}{5} &= \frac{1}{2 + \frac{1}{3}} {\atop +} \frac{1}{5} \\
+									       &= \frac{3}{7} {\atop +} \frac{1}{5} = \frac{3}{7 + \frac{1}{5}} = \frac{15}{36}.
+\end{align*}
+
+\begin{thm}
+	Dadas las sucesiones $(a_n)_{n=0}^\infty, (b_n)_{n=1}^\infty$, entonces sus aproximantes $(c_n)_{n=0}^\infty$ se pueden
+	calcular mediante la fórmula $c_n = p_n/q_n$, donde éstos se calcular recursivamente por
+	\begin{align*}
+		p_{-1} = 1, \quad p_0 = a_0, &\qquad q_{-1} = 0, \quad q_0 = 1 \\
+		p_n = a_np_{n-1} + b_np_{n-2}, &\qquad q_n = a_nq_{n-1} + b_nq_{n-2}
+	\end{align*}
+\end{thm}
+\begin{proof}
+	La demostración es por inducción:
+	$$ c_0 = a_0 = \frac{a_0}{1} $$
+	Y suponiendo que aplica para toda sucesión entonces se tiene que
+	\begin{align*}
+		c_{n+1} &= a_0 + \frac{b_1}{a_1} {\atop {}+\cdots+{}} \frac{b_n}{a_n} {\atop +} \frac{b_{n+1}}{a_{n+1}} \\
+			&= a_0 + \frac{b_1}{a_1} {\atop {}+\cdots+{}} \frac{b_n}{a_n + \frac{b_{n+1}}{a_{n+1}}} \\
+			&= a_0 + \frac{b_1}{a_1} {\atop {}+\cdots+{}} \frac{b_na_{n+1}}{a_na_{n+1} + b_{n+1}} = \frac{p_{n+1}}{q_{n+1}} = \frac{p^\prime_n}{q^\prime_n}.
+	\end{align*}
+	donde $p^\prime_n, q^\prime_n$ representan los valores dados por las nuevas sucesiones en donde el último término está cambiado.
+	Por inducción se tiene que
+	\begin{align*}
+		p^\prime_n &= a^\prime_n p_{n-1} + b^\prime_n p_{n-2} = (a_n a_{n+1} + b_{n+1})p_{n-1} + b_na_{n+1}p_{n-2} \\
+			   &= ( a_np_{n-1} + b_np_{n-2} ) a_{n+1} - b_np_{n-2}a_{n+1} + b_{n+1}p_{n-1} + b_na_{n+1}p_{n-2} \\
+			   &= a_{n+1}p_n + b_{n+1}p_{n-1} = p_{n+1}.
+	\end{align*}
+	y reemplazando las $p$'s por $q$'s nos queda la misma igualdad para $q_{n+1}$.
+\end{proof}
+
+\begin{thm}
+	Dadas las sucesiones $(a_n)_{n=0}^\infty, (b_n)_{n=1}^\infty$ y la sucesión $(r_n)_{n=0}^\infty \in \C_{\ne 0}$ con $r_0 = 1$, entonces
+	$$ a_0 + \ksum_{n=1}^N \frac{b_n}{a_n} = r_0a_0 + \ksum_{n=1}^N \frac{r_{n-1}r_n b_n}{r_na_n}. $$
+	de modo que una converge syss la otra lo hace y comparten límite.
+\end{thm}
+\begin{hint}
+	Basta probar por inducción que sus aproximantes son de la forma $c_n = r_np_n / r_nq_n$.
+\end{hint}
+
+\begin{thmi}[Fracción continua de Euler]\index{fracción continua!de Euler}
+	Sea $(t_n)_{n=0}^\infty \in \C_{\ne 0}$, entonces
+	$$ \sum_{n=0}^N t_0\cdots t_n = \frac{t_0}{1} {\atop +} \frac{-t_1}{1 + t_1} {\atop {}+\cdots+{}} \frac{-t_n}{1 + t_n}, $$
+	de modo que una converge syss la otra lo hace y comparten límite.
+	Más aún se cumple que
+	$$ 1 + \sum_{n=0}^N t_0\cdots t_n = \frac{1}{1} {\atop +} \frac{-t_0}{1 + t_0} {\atop +} \frac{-t_1}{1 + t_1} {\atop {}+\cdots}
+	= \frac{1}{1} {\atop +} \ksum_{n=0}^N \frac{-t_n}{1 + t_n}. $$
+\end{thmi}
+\begin{proof}
+	Vamos a probarlo por inducción sobre $N$.
+	El caso $N = 0$ es trivial y
+	$$ t_0 + t_0t_1 = t_0(1 + t_1) = \frac{t_0}{ \dfrac{1 + t_1 - t_1}{1 + t_1} } = \frac{t_0}{1 + \dfrac{-t_1}{1 + t_1}}
+	= \frac{t_0}{1} {\atop +} \frac{-t_1}{1 + t_1}. $$
+	Si asumimos que se cumple para $N$, notemos que
+	$$ \sum_{n=0}^{N+1} t_0\cdots t_n = \sum_{n=0}^{N-1} t_0\cdots t_n + t_0\cdots t_N(1 + t_{N+1}). $$
+	Si $t_{N+1} = -1$, entonces $a_{N+1} = 1 + t_{N+1} = 0$ y
+	$$ c_{N+1} = \frac{a_{N+1}p_N + b_{N+1}p_{N-1}}{a_{N+1}q_N + b_{N+1}q_{N-1}} = \frac{p_{N-1}}{q_{N-1}} = c_{N-1}. $$
+	Si $t_{N+1} \ne -1$, entonces $a_{N+1} \ne 0$ y aplicamos la hipótesis de inducción a la sucesión $t_0, \dots, t_{N-1}, t^\prime_N$, donde
+	$t^\prime_N = t_N(1 + t_{N+1})$ y notamos que
+	$$ \sum_{n=0}^{N+1} t_0\cdots t_n = \frac{t_0}{1} {\atop +} \frac{-t_1}{1 + t_1} {\atop {}+\cdots+{}} \frac{-t^\prime_N}{1 + t^\prime_N} $$
+	donde
+	\begin{align*}
+		\frac{-t^\prime_N}{1 + t^\prime_N} &= \frac{-t_N(1 + t_{N+1})}{1 + t_N(1 + t_{N+1})} \\
+						   &= \frac{-t_N}{1 + t_N + \frac{1}{1 + t_{N+1}} - 1} = \frac{-t_N}{1 + t_N} {\atop +} \frac{-t_{N+1}}{1 + t_{N+1}}.
+	\end{align*}
+	Para la segunda identidad basta notar que
+	$$ 1 + \frac{t_0}{1 + F} = \frac{1 + F + t_0}{1 + F} = \frac{1}{1 - \dfrac{t_0}{1 + t_0 + F}} = \frac{1}{1} {\atop +} \frac{-t_0}{1 + t_0 + F} $$
+	que aplica para todo $F$ (incluyendo $F = -1$ o $F = \infty$), así que basta reemplazar por el resto de términos para obtener la identidad buscada.
+\end{proof}
+
+\begin{ex}[ $\displaystyle \exp(x) = \frac{1}{1} {\atop +} \frac{-x/1}{1 + x/1} {\atop +} \frac{-x/2}{1 + x/2} {\atop +} \frac{-x/3}{1 + x/3} {\atop {}+\cdots} $ ]
+	Nótese que ya habíamos visto que
+	$$ \exp(x) = 1 + \sum_{n=1}^\infty \frac{x^n}{n!} $$
+	dónde cada término en la sumatoria puede verse como la multiplicación de $x/n$, de modo que por la fracción continua de Euler se cumple que
+	$$ \exp(x) = \frac{1}{ \displaystyle 1 + \ksum_{n=1}^\infty \frac{-x/n}{1 + x/n} }, \qquad \forall x\in\C_{\ne 0} $$
+	También podemos emplear $-x$ para obtener y elevar ambos lados a $(-1)$ para tener que:
+	$$ \exp(x) = 1 + \ksum_{n=1}^\infty \frac{x/n}{1 - x/n} $$
+	Luego podemos ajustar según el teorema por $r_n = n$:
+	$$ \exp(x) = 1 + \frac{x}{1 - x} {\atop +} \frac{x}{2 - x} {\atop +} \frac{2x}{3 - x} {\atop +} \frac{3x}{4 - x} {\atop {}+\cdots} $$
+\end{ex}
+
+\section{Fracciones continuas simples}
+\begin{mydefi}
+	Dada una sucesión $(a_n)_{n=0}$ posiblemente finita (por ello obviamos el punto de final) de números naturales no nulos, donde $a_0$ se permite como
+	cualquier entero (incluyendo al cero) se denota
+	$$ [a_0; a_1, a_2, \dots] = a_0 + \ksum_{n=1} \frac{1}{a_n} $$
+	lo que se considera una \strong{fracción continua simple}\index{fracción continua!simple}.
+	Claramente el punto-coma sirve para denotar una idea de parte entera.
+\end{mydefi}
+De momento las fracciones continuas simples son sólo un subconjunto de las generalizadas, pero veremos que son mucho más.
+
+En primer lugar una consecuencia del primer teorema que vimos:
+\begin{prop}
+	Sea $[a_0; a_1, a_2, \dots]$, entonces sus aproximantes $(c_n)_{n=0}$ satisfacen que $c_n = p_n/q_n$ donde $p_n,q_n$ son enteros determinados
+	recursivamente por:
+	\begin{align*}
+		p_{-1} = 1, \quad p_0 = a_0, &\qquad q_{-1} = 0, \quad q_0 = 1 \\
+		p_n = a_np_{n-1} + p_{n-2}, &\qquad q_n = a_nq_{n-1} + q_{n-2}
+	\end{align*}
+\end{prop}
+
+\begin{prop}\label{thm:approximants_closeness}
+	Si $(c_n)_{n=0}$ son los aproximantes de $[a_0; a_1, a_2, \dots]$ y $c_n = p_n/q_n$, entonces se comprueba que $p_nq_{n+1} - p_{n+1}q_n = (-1)^{n+1}$,
+	o equivalentemente,
+	$$ c_n - c_{n+1} = \frac{(-1)^{n+1}}{q_nq_{n+1}}. $$
+\end{prop}
+\begin{proof}
+	Naturalmente es por inducción, en el caso $n = 0$ se reduce a ver que
+	$$ p_0q_1 - p_1q_0 = a_0a_1 - ( a_1a_0 + 1 ) = -1. $$
+	Y el caso $n+1$ se da pues
+	\begin{align}
+		p_{n+1}q_{n+2} - p_{n+2}q_{n+1} &= p_{n+1}(a_{n+2}q_{n+1} - q_n) + (a_{n+2}p_{n+1} - p_n)q_{n+1} \notag \\
+						&= p_{n+1}q_n - p_nq_{n+1} = (-1) (-1)^{n+1}. \tqedhere
+	\end{align}
+\end{proof}
+
+\begin{cor}
+	Toda fracción continua simple infinita converge.
+\end{cor}
+
+\begin{prop}\label{thm:real_simple_cont_frac_rep}
+	Todo número real $x$ admite una representación como fracción continua simple:
+	$$ x = [a_0; a_1, a_2, a_3, \dots] $$
+	donde $t_0 := x$ y $a_0 = \sfloor{x}$ y el resto de dígitos se construye por recursión:
+	$$ t_{n+1} :=  \frac{1}{t_n - a_n}, \quad a_{n+1} = \sfloor{t_{n+1}} $$
+	donde se subentiende que la fracción termina en $a_n$ si $a_n = t_n$.
+\end{prop}
+Los términos $t_n$ se ven como desplazar la fracción continua:
+$$ t_0 = [a_0; a_1, a_2, \dots], \quad t_1 := [a_1; a_2, a_3, \dots], \quad t_2 = [a_2; a_3, a_4 \dots], \quad \dots $$
+% \begin{proof}
+%	 Sea 
+% \end{proof}
+
+\begin{lem}
+	Dada una fracción continua simple cuyos aproximantes son $(p_n/q_n)_{n=0}^\infty$, entonces la sucesión $q_n$ es estrictamente creciente.
+\end{lem}
+
+\begin{thmi}
+	Un número es irracional syss tiene una fracción continua simple infinita asociada.
+\end{thmi}
+\begin{proof}
+	$\implies$. Por contrarrecíproca queda que si un número tiene una fracción continua simple finita entonces es racional lo que es trivial.
+	\par
+	$\impliedby$.
+	Sea $\alpha := [a_0; a_1, a_2, \dots]$ y supongamos por contradicción que converge a un número racional $p/q$ (siendo $p,q$ coprimos).
+	Si $c_n = (p_n/q_n) \to p/q$ entonces por el lema existe $N$ tal que para todo $n \ge N$ se cumple que $q_n > q$.
+	Luego se cumple que
+	\begin{align*}
+		| \alpha - c_n | &\le |c_{n+1} - c_n| = \frac{1}{q_nq_{n+1}} < \frac{1}{q_nq} \\
+		| \alpha - c_n | &= \left| \frac{p}{q} - \frac{p_n}{q_n} \right| = \frac{|pq_n - p_nq|}{q_nq} \ge \frac{1}{q_nq}.
+	\end{align*}
+	donde $|pq_n - p_nq| \ge 1$ pues $c_n \ne \alpha$.
+\end{proof}
+
+\begin{thm}
+	Un número irracional posee una única fracción continua simple asociada.
+\end{thm}
+\begin{proof}
+	Sean $[a_0; a_1, \dots] = [b_0; b_1, \dots] =: x$ dos expansiones en fracción continua simple de un mismo número irracional $x$,
+	luego $x$ no es entero y de hecho $a_0 < x < a_0 + 1$, luego
+	$$ a_0 = \lfloor [a_0; a_1, a_2, \dots] \rfloor = \lfloor [b_0; b_1, b_2, \dots] \rfloor = b_0, $$
+	y luego notamos que $\frac{1}{x - a_0} = [a_1; a_2, \dots] = [b_1; b_2, \dots]$ y empleamos el mismo truco inductivamente,
+	notando que nunca puede ser entero porque $x$ es irracional, para concluir que $a_n = b_n$ para todo $n$.
+\end{proof}
+De éste modo podemos hablar de \textit{los} aproximantes de una fracción continua simple.
+Ésto será útil pues claramente los aproximantes nos otorgan buenas aproximaciones racionales para números irracionales,
+pero el recíproco también es cierto (cfr. teorema~\ref{thm:approximants_satisfy_approx}).
+
+Uno puede mejorar el teorema anterior un poco.
+En expansión base $b \ge 2$, veíamos que un número tenía una expansión periódica asociada si era racional;
+vamos a responder el qué signfica tener expansión periódica, pero veamos un par de lemas primero.
+% el siguiente teorema de \citeauthor{lehmer00continued}~\cite{lehmer00continued} responde la misma pregunta para fracciones continuas:
+\begin{lem}
+	Sea $\alpha$ un real irracional con $\alpha = [a_0; a_1, a_2, \dots]$ y sean $t_n$ como en la proposición~\ref{thm:real_simple_cont_frac_rep}.
+	% y defínase
+	% $$ \alpha^\prime_n := [a_n; a_{n+1}, a_{n+2}, \dots]. $$
+	Entonces, para todo $n$ se tiene lo siguiente:
+	$$ \alpha = t_0, \qquad \alpha = \frac{t_1 a_0 + 1}{t_1}, \qquad \alpha = \frac{t_n p_{n-1} + p_{n-2}}{t_n q_{n-1} + q_{n-2}}. $$
+\end{lem}
+\begin{hint}
+	Aplique inducción.
+\end{hint}
+
+\begin{mydef}
+	Una fracción continua simple $\alpha = [a_0; a_1, a_2, \dots]$ se dice \strong{eventualmente periódica}\index{eventualmente periódica (fracción continua)}
+	si existen $n_0 \in \N$ y $m > 0$ tal que $a_{n + m} = a_n$ para todo $n \ge n_0$.
+	Si $n_0 = 0$, decimos que (la fracción continua simple de) $\alpha$ es \strong{puramente periódica}\index{puramente periódica (fracción continua)}.
+\end{mydef}
+\begin{thm}
+	Para un número irracional $\alpha$ son equivalentes:
+	\begin{enumerate}
+		\item Su fracción continua simple es eventualmente periódica.
+		\item $\alpha$ es algebraico cuadrático, vale decir, es raíz de un polinomio cuadrático.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	$1 \implies 2$.
+	Sea
+	\[
+		\alpha = [b_0; b_1, \dots, b_m, a_1, a_2, \dots, a_n, a_1, \dots].
+	\]
+	Definiendo $\beta := [a_1, a_2, \dots]$ nótese que $t_n = \beta$ por hipótesis, de modo que el lema anterior nos da que
+	$$ \beta = \frac{ \beta p_{n-1} + p_{n-2} }{ \beta q_{n-1} + q_{n-2} } \iff q_{n-1} \beta^2 + (q_{n-2} - p_{n-1}) \beta - p_{n-2} = 0, $$
+	% la periodicidad nos da
+	% $$ \beta = \frac{1}{a_1} {\atop +} \frac{1}{a_2} {\atop + \cdots +} \frac{1}{a_n} {\atop +} \frac{\beta}{1}. $$
+	% Recuérdese que la notación no es conmutativa y se debe ir desarrollando de derecha a izquierda.
+	% Con esa advertencia en mente, es fácil comprobar que en desarrollo sale $f(\beta)/g(\beta)$ donde $f, g \in \Z[x]$ son polinomios de grado 1 con coeficientes enteros,
+	% Así que
+	% $$ \beta = \frac{u + v \beta}{w + z\beta} \iff z \beta^2 + (w - v) \beta - u = 0, $$
+	donde cada $p_i, q_i \in \Z$ son aproximantes, lo que prueba que $\beta$ es cuadrático.
+
+	Realizando un procedimiento similar podemos despejar a $\alpha$ como $\alpha = f(\beta)/g(\beta)$ donde los polinomios son lineales,
+	de modo que $\alpha \in \Q(\beta)$ y, siendo irracional, necesariamente es cuadrático también.
+
+	$2 \implies 1$.
+	Sea $\alpha$ con polinomio minimal $ax^2 + bx + c = a(x - \alpha)(x - \beta) \in \Z[x]$.
+	Defínase
+	$$ g(x, y) := ax^2 + bxy + cy^2 = (x, y) \cdot
+	\begin{bmatrix}
+		a & b/2 \\
+		b/2 & c
+	\end{bmatrix} \cdot
+	\begin{pmatrix}
+		x \\ y
+	\end{pmatrix}. $$
+	En notación de la proposición~\ref{thm:real_simple_cont_frac_rep} con $\kappa := (q_nt_{n+1} - q_{n-1})^{-1} \ne 0$,
+	tenemos que
+	$$ \begin{pmatrix}
+		\alpha \\ 1
+	\end{pmatrix} = \kappa \cdot
+	\begin{bmatrix}
+		p_n & p_{n-1} \\
+		q_n & q_{n-1}
+	\end{bmatrix} \cdot
+	\begin{pmatrix}
+		t_{n+1} \\ 1
+	\end{pmatrix} =:
+	\kappa \cdot M \cdot
+	\begin{pmatrix}
+		t_{n+1} \\ 1
+	\end{pmatrix}. $$
+	Luego si definimos la siguiente matriz
+	$$ \begin{bmatrix}
+		A_n & B_n/2 \\
+		B_n/2 & C_n
+	\end{bmatrix} := M^t \cdot
+	\begin{bmatrix}
+		a & b/2 \\
+		b/2 & c
+	\end{bmatrix} \cdot M, $$
+	vemos que su determinante es el mismo que del polinomio $f(x)$, pues $|\det M| = 1$ por la proposición~\ref{thm:approximants_closeness}.
+
+	Además:
+	\begin{align*}
+		A_nt_{n+1}^2 + B_nt_{n+1}^2 + C_n &= (t_{n+1}, 1) \cdot
+		\begin{bmatrix}
+			A_n & B_n/2 \\
+			B_n/2 & C_n
+			\end{bmatrix} \cdot \begin{pmatrix}
+			t_{n+1} \\ 1
+		\end{pmatrix} \\
+						  &= \kappa^2 (\alpha, 1) \cdot
+						  \begin{pmatrix}
+							  a & b/2 \\
+							  b/2 & c
+							  \end{pmatrix} \cdot \begin{pmatrix}
+							  \alpha \\ 1
+						  \end{pmatrix} = \kappa^2 g(\alpha, 1) = 0.
+	\end{align*}
+	Luego $g_n(x) := A_nx^2 + B_nx + C_n$ tiene una raíz $t_{n+1}$.
+	Ahora bien, $A_n = f(p_n, q_n)$ (¿por qué?) y, por lo tanto, $C_n = A_{n-1}$.
+	Nótese que
+	$$ \left| \beta - \frac{p_n}{q_n} \right| \le |\beta - \alpha| + \left| \alpha - \frac{p_n}{q_n} \right| \le
+	|\beta - \alpha| + \frac{1}{q_n^2} \le |\beta - \alpha| + 1, $$
+	de modo que para todo $n \ge 1$ se cumple que
+	$$ |A_n| = |f(p_n, q_n)| = aq_n^2 \left| \alpha - \frac{p_n}{q_n} \right| \, \left| \beta - \frac{p_n}{q_n} \right| \le a(|\beta - \alpha| + 1)
+	a + \sqrt{d}, $$
+	donde $a|\beta - \alpha| = \sqrt{d}$ por la fórmula cuadrática.
+
+	Como los $A_n$'s y $C_n$'s son enteros esto nos a lo sumo finitas soluciones, y como $B_n^2 = d + 4A_nC_n$ esto nos da finitas posibilidades para $B_n$
+	también.
+	Así, hay finitos polinomios $g_n$'s, cada uno con dos raíces, por lo tanto, hay alguna raíz que se repite infinitas veces, digamos $t_m = t_n$
+	con $m < n$. Pero la expansión de $t_m = [a_m; a_{m+1}, \dots, a_{n-1}, t_n]$, así que la fracción continua simple de $t_m$ es periódica.
+\end{proof}
+
+% Así resolvimos cuando un irracional tiene fracción continua simple eventualment
+\begin{prop}
+	Sea $\alpha \in \Q(\sqrt{d})$ un número real cuadrático y denotemos por $\overline{()}$ la conjugación.
+	Entonces la fracción continua simple de $\alpha$ es puramente periódica syss $\alpha > 1 > -\overline{\alpha} > 0$.
+\end{prop}
+\begin{proof}
+	$\implies$. Escribamos $\alpha = [ \overline{a_0; a_1, \dots, a_m} ]$, donde la barra denota que $a_{m+1} = a_0$ y así (¡no confundir con conjugación!).
+	Por definición de fracción continua simple tenemos que $\lfloor \alpha \rfloor = a_0 = a_{m+1} > 0$, por lo que $\alpha > 1$.
+	Empleando el lema obtenemos que
+	$$ \alpha = \frac{\alpha p_{m-1} + p_{m-2}}{\alpha q_{m-1} + q_{m-2}}, $$
+	de modo que definiendo $f(x) := q_{m-1}x^2 + (q_{m-2} - p_{m-1})x - p_{m-2}$, tenemos que $f(\alpha) = 0 = f(\overline{\alpha})$.
+	Basta notar que $f(0) = -p_{m-2} < 0$ y que
+	$$ f(-1) = (q_{m-1} - q_{m-2}) + (p_{m-1} - p_{m-2}) > 0, $$
+	de modo que, por el teorema del valor intermedio, $\overline{\alpha} \in (-1, 0)$ como se quería probar.
+
+	$\impliedby$. Denotemos por $\beta := -\overline{\alpha}$, por $\alpha_n$ el real tal que $\alpha = [a_0; \dots, a_{n-1}, \alpha]$
+	y $\beta_n$ lo mismo con $\beta$.
+	Nótese que $\alpha_n > a_n \ge 1$ y veamos que $0 < \beta_n < 1$ por inducción:
+	el caso base $n = 0$ es obvio y tomando conjugados vemos que
+	$$ \alpha_n = a_n + \frac{1}{\alpha_{n+1}} \iff -\beta_n = a_n - \frac{1}{\beta_{n+1}}. $$
+	Luego, por hipótesis inductiva, $a_n$ es un entero en $( 1/\beta_{n+1} - 1, 1/\beta_{n+1} )$, luego $a_n = \lfloor 1/\beta_{n+1} \rfloor$,
+	de modo que $1/\beta_{n+1} > 1$ como se quería ver.
+
+	Ahora, como la fracción continua de $\alpha$ es eventualmente periódica, tenemos que $\alpha_n = \alpha_m$ para algunos $n < m$,
+	donde elegimos $n > 0$ minimal.
+	Tomando conjugados tenemos que $\beta_n = \beta_m$ y, por tanto, $a_{n-1} = \lfloor 1/\beta_n \rfloor = \lfloor 1/\beta_m \rfloor = a_{m-1}$,
+	de lo que se sigue que $\alpha_{n-1} = \alpha_{m-1}$ lo que contradice la minimalidad de $n$.
+	Es decir, necesariamente $n = 0$.
+\end{proof}
+
+Un teorema de \citeauthor{lehmer00continued}~\cite{lehmer00continued} dice que además, la fracción es capicúa (i.e., se lee igual al derecho que al revés)
+\addtocategory{article}{lehmer00continued}
+
+\subsection*{Expansión de $e$}
+Veamos que $e$ es irracional deduciendo que su fracción continua simple es
+$$ e = [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, \dots] = [1; 0, 1, 1, 2, 1, 1, 4, 1, \dots]; $$
+éste es el método descrito por \citeauthor{cohn:expansion_of_e}~\cite{cohn:expansion_of_e}.
+Sabemos, por el teorema principal, que el patrón en las aproximantes de la fracción continua de la derecha es
+\begin{align*}
+	p_{3n}   &= p_{3n-1} + p_{3n-2}, &\quad q_{3n}   &= q_{3n-1} + q_{3n-2} \\
+	p_{3n+1} &= 2np_{3n} + p_{3n-1}, &\quad q_{3n+1} &= 2nq_{3n} + q_{3n-1} \\
+	p_{3n+2} &= p_{3n+1} + p_{3n},   &\quad q_{3n+2} &= q_{3n+1} + q_{3n}
+\end{align*}
+
+Definamos las siguientes integrales:
+\begin{align*}
+	A_n &:= \int_0^1 e^x \frac{x^n (x - 1)^n}{n!} \, \ud x \\
+	B_n &:= \int_0^1 e^x \frac{x^{n+1} (x - 1)^n}{n!} \, \ud x \\
+	C_n &:= \int_0^1 e^x \frac{x^n (x - 1)^{n+1}}{n!} \, \ud x
+\end{align*}
+
+\begin{lem}
+	Para todo $n\ge 0$ se cumple que
+	$$ A_n = q_{3n}e - p_{3n}, \; B_n = p_{3n+1} - q_{3n+1}e, \; C_n = p_{3n+2} - q_{3n+2}e. $$
+\end{lem}
+\begin{proof}
+	Aplicaremos inducción sobre $n$:
+	\underline{Caso $n = 0$:}
+	Notemos que $p_0/q_0 = 1/1, p_1/q_1 = 1/0$ y que $p_2/q_2 = 2/1$ así que para aplicar inducción basta probar que
+	$$ A_0 = \int_0^1 e^x \, \ud x = e - 1, \quad B_0 = \int_0^1 xe^x \, \ud x = [ xe^x ]_0^1 - \int_0^1 e^x \, \ud x = e - (e - 1) = 1. $$
+	y el caso restante saldrá de un caso probado más abajo.
+	\underline{Caso $n+1$:} Comenzaremos por ver un par de identidades
+	\begin{align*}
+		B_n &= \int_0^1 x^{n+1}e^x \frac{(x-1)^n}{n!} \, \ud x \\
+		    &= \left[ x^{n+1}e^x \frac{(x-1)^{n+1}}{(n+1)!} \right]_0^1 - \int_0^1 \frac{(x-1)^{n+1}}{(n+1)!} ( (n+1)x^ne^x + x^{n+1}e^x ) \, \ud x \\
+		    &= -\int_0^1 \frac{e^xx^n(x-1)^{n+1}}{n!} \, \ud x - \int_0^1 \frac{e^x x^{n+1}(x-1)^{n+1}}{(n+1)!} \, \ud x = -C_n - A_{n+1}. \\
+		B_n + C_n &= \int_0^1 \frac{e^x x^n (x-1)^n}{n!}(2x - 1) \, \ud x = 2B_n - A_n,
+	\end{align*}
+	las cuales se reordenan a $A_{n+1} = -B_n - C_n$ y $C_n = B_n - A_n$
+	(nótese que de la última se deduce que $C_0 = B_0 - A_0 = 2 - e$).
+	La relación $B_n = -2nA_n + C_{n-1}$ sale de que
+	% \begin{align*}
+	%	 \frac{\ud}{\ud x}\left( e^x\frac{x^n(x - 1)^{n+1}}{n!} \right) &= \frac{\ud}{\ud x} \left( e^x \frac{x^{n+1}(x - 1)^n - x^n(x - 1)^n}{n!} \right) \\
+	%	 &= e^x\frac{x^{n+1}(x - 1)^n - x^n(x - 1)^n}{n!} + e^x \frac{(n+1)x^n(x - 1)^n + nx^{n+1}(x - 1)^{n-1} - nx^{n-1}(x-1)^n - nx^n(x-1)^{n-1}}{n!}
+	% \end{align*}
+	$$ \frac{\ud}{\ud x}\left( e^x\frac{x^n(x - 1)^{n+1}}{n!} \right)
+	= {\color{red} e^x \frac{x^n(x - 1)^{n+1}}{n!} } + {\color{blue} e^x \frac{x^{n-1}(x - 1)^{n+1}}{(n-1)!} } + e^x \frac{(n+1)x^n(x - 1)^n}{n!} $$
+	Nótese que al término en azul podemos factorizar un término $(x - 1)$ para obtener
+	$$ e^x \frac{x^{n-1}(x - 1)^{n+1}}{(n-1)!} = -e^x\frac{x^{n-1}(x - 1)^n}{(n-1)!} + e^x \frac{n x^n (x - 1)^n}{n!} $$
+	Lo mismo se puede hacer en el término en rojo lo que da
+	$$ e^x \frac{x^n(x - 1)^{n+1}}{n!} = e^x \frac{x^{n+1}(x-1)^n}{n!} - e^x\frac{x^n(x-1)^n}{n!} $$
+	Reemplazando todo en la ecuación original nos queda
+	$$ \frac{\ud}{\ud x}\left( e^x\frac{x^n(x - 1)^{n+1}}{n!} \right)
+	= e^x \frac{x^{n+1}(x-1)^n}{n!} + (2n) e^x \frac{x^n(x - 1)^n}{n!} -e^x\frac{x^{n-1}(x - 1)^n}{(n-1)!} $$
+	Integrando a ambos lados nos queda la relación restante.
+	Con ellas se puede deducir el caso inductivo.
+\end{proof}
+
+\begin{thm}
+	\addexample{$e = [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, 1, \dots]$}
+	Se cumple que
+	$$ e = [1; 0, 1, 1, 2, 1, 1, 4, 1, 1, 6, 1, \dots] = [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, \dots]. $$
+	En consecuencia, $e$ es irracional.
+\end{thm}
+\begin{hint}
+	Basta comprobar que $A_n, B_n, C_n \to 0$.
+\end{hint}
+La proposición~\ref{thm:irrational_numbers_thr_approx} da una demostración más sencilla de la irracionalidad de $e$, pero
+nuestro teorema da otra clase de información interesante.
+Una consecuencia es que $e$ tampoco es algebraico cuadrático, pues su fracción continua simple no es periódica.
+
+\section{Aproximaciones diofánticas y la ecuación de Pell}%
+\label{sec:basic_diophantine_approx}
+
+\begin{thmi}[Teorema de aproximación de Dirichlet]\index{teorema!de aproximación!de Dirichlet}
+	Sea $\alpha$ un número irracional y $M > 0$. Entonces existen $u, v \in \Z$ con $0 < v \le M$ tales que
+	$$ \left| \alpha - \frac{u}{v} \right| < \frac{1}{vM} \le \frac{1}{v^2}. $$
+\end{thmi}
+\begin{proof}
+	Considere los $M + 1$ números $\{ 0\cdot\alpha, 1\cdot\alpha, \dots, M\alpha \}$, y la aplicación $f(x) := x - \lfloor x \rfloor $
+	que otorga la parte fraccionaria o decimal de los números, de modo que $f(j\alpha) \in [0, 1)$.
+	Ahora particionemos el conjunto $[0, 1)$ en $M$ subintervalos:
+	$$ \left[ \tfrac{0}{M}, \tfrac{1}{M} \right), \quad \left[ \tfrac{1}{M}, \tfrac{2}{M} \right), \quad \cdots,
+	\quad \left[ \tfrac{M-1}{M}, \tfrac{M}{M} \right). $$
+	Por el principio del palomar, se cumple que existen $0 \le i < j \le M$ distintos con $f(i\alpha), f(j\alpha)$ en el mismo subintervalo.
+	Luego
+	$$ \frac{1}{M} > |f(j\alpha) - f(i\alpha)| = | (j - i)\alpha - \lfloor j\alpha \rfloor + \lfloor i\alpha \rfloor |, $$
+	definiendo $v := (j - i)$ y $u := \lfloor i\alpha \rfloor - \lfloor j\alpha \rfloor$ se verifica el enunciado.
+\end{proof}
+Nótese que el teorema anterior no solo nos da la existencia, sino que además deben ser infinitas estas fracciones buenas $u/v$.
+En efecto si fijamos una aproximación $u/v$, entonces definimos $\epsilon := |v\alpha - u| > 0$ y eligiendo $M$ tal que $1/M < \epsilon$,
+tenemos que la proxima aproximación $u'/v'$ ha de tener un mayor denominador.
+
+A consecuencia del teorema de Dirichlet podemos redemostrar:
+\begin{cor}
+	Sea $n > 0$ entero tal que $-1$ es un residuo cuadrático módulo $n$.
+	Entonces $n$ es suma de dos cuadrados.
+\end{cor}
+\begin{proof}
+	Sea $r^2 \equiv -1 \pmod{n}$, luego por el teorema de aproximación de Dirichlet existe $v < \sqrt{n} = M$ y $u \in \Z$ tales que
+	$$ \left| -\frac{r}{n} - \frac{u}{v} \right| < \frac{1}{v\sqrt{n}}. $$
+	Multiplicando por $vn$ vemos que $a := rv + un$ tiene $|a| < \sqrt{n}$.
+	Nótese que $a \equiv rv \pod n$, de modo que $a^2 + v^2 \equiv r^2v^2 + v^2 \equiv 0 \pod n$
+	y $0 < a^2 + v^2 < n + n = 2n$, por lo que necesariamente $a^2 + v^2 = n$.
+\end{proof}
+
+A consecuencia tenemos el siguiente criterio sencillo de irracionalidad:
+\begin{cor}
+	Sea $\alpha$ un número real.
+	Entonces $\alpha$ es irracional syss para todo $\epsilon > 0$ existen $u/v \in \Q$ tales que $0 < |\alpha v - u| < \epsilon$.
+\end{cor}
+\begin{proof}
+	$\impliedby$. Por contrarrecíproca, si $\alpha = a/b$ es racional, entonces $va - ub$ es siempre un entero y por tanto
+	$|va - ub| \ge 1 > 0$. Luego
+	$$ 0 < |v \alpha - u| \ge \frac{1}{b}. $$
+	$\implies$. Basta elegir $1/M < \epsilon$ en el teorema de aproximación de Dirichlet.
+\end{proof}
+
+Empleando esto, demos ejemplos de números irracionales:
+\begin{prop}\label{thm:irrational_numbers_thr_approx}
+	Sea $(g_n)_n$ una sucesión creciente y no acotada de números naturales con $g_1 \ge 1$, y sea $(z_n)_n$ una sucesión de 0s y 1s
+	tal que $z_n = 1$ para infinitos $n$'s.
+	Entonces el número
+	$$ \alpha := \sum_{n=1}^{\infty} \frac{z_n}{g_1g_2 \cdots g_n} = \frac{z_1}{g_1} + \frac{z_2}{g_1g_2} + \frac{z_3}{g_1g_2g_3} + \cdots $$
+	es irracional.
+	En particular, $e = \sum_{n=1}^{\infty} \frac{1}{n!}$ es irracional.
+\end{prop}
+\begin{proof}
+	Definamos los enteros
+	$$ G_N := g_1 g_2 \cdots g_N, \qquad F_N := G_N \sum_{n=1}^{N} \frac{z_n}{G_n}. $$
+	Entonces
+	\begin{align}
+		0 < \left| \alpha - \frac{F_N}{G_N} \right| &= \frac{1}{G_N} \sum_{n = N+1}^{\infty} \frac{z_n}{g_{N+1} \cdots g_n} \notag \\
+							    &\le \frac{1}{G_N}\left( \frac{1}{g_{N+1}} + \frac{1}{g_{N+1}^2}
+							    + \cdots \right) = \frac{1}{G_N(g_{N+1} - 1)}. \label{eqn:eeerational}
+	\end{align}
+	Como $g_{N+1} \to \infty$, entonces para todo $\epsilon$ eventualmente tendremos que $g_{N+1} - 1 > 1/\epsilon$ y aplicamos el corolario anterior.
+\end{proof}
+
+Hay varias modificaciones al teorema anterior e incluiremos algunas:
+\begin{prop}
+	Sean $\alpha_1, \dots, \alpha_r$ números reales y $M > 0$ un entero.
+	Entonces existen $u_1, \dots, u_r \in \Z$ con $0 < v \le M^r$ tales que
+	$$ \forall 1 \le j \le r \quad \left| \alpha_j - \frac{u_j}{v} \right| < \frac{1}{vM^r} \le \frac{1}{v^{r+1}}. $$
+\end{prop}
+Intercambiando el rol del numerador y denominador, Dirichlet probó:
+\begin{prop}
+	Sean $\alpha_1, \dots, \alpha_r$ números reales y $M > 0$ un entero.
+	Entonces existen $u \in \Z$ y $v_1, \dots, v_r \in \Z$ no todos nulos donde cada $|v_j| \le M^{1/r}$ tales que
+	$$ \left| \sum_{j=1}^{r} \alpha_jv_j - u \right| < \frac{1}{M}. $$
+\end{prop}
+
+Finalmente, Kronecker dio una generalización simultánea:
+\begin{thm}[de aproximación de Dirichlet multidimensional]
+	Sean $\alpha_{11}, \alpha_{12}, \dots, \alpha_{m,r}$ números reales donde $m, r > 0$ son enteros fijos, y sean $M > 0$ otro entero.
+	Entonces existen $m$ enteros $u_1, \dots, u_m$ y $r$ enteros $v_1, \dots, v_r$ (no todos nulos) con cada $|v_j| < M^{m/r}$
+	tales que
+	$$ \forall 1 \le j \le m \quad \left| \sum_{k=1}^{r} \alpha_{jk} v_k - u_j \right| < \frac{1}{M}. $$
+\end{thm}
+\begin{proof}
+	La $m$-tupla
+	$$ \left( \sum_{k=1}^{r} \alpha_{1k}v_k - \left\lfloor \sum_{k=1}^{r} \alpha_{1k}v_k \right\rfloor, \dots, \sum_{k=1}^{r} \alpha_{mk}v_k - \left\lfloor \sum_{k=m}^{r} \alpha_{1k}v_k \right\rfloor \right) $$
+	yace en el cubo $[0, 1)^m$ que se descompone en $M^m$ subcubos.
+
+	Para poder aplicar el principio del palomar deben haber más $r$-tuplas $(v_1, \dots, v_r)$ que subcubos.
+	Si decidimos que $0 \le v_j \le P$, entonces hay $(P+1)^r$ tuplas y queremos que $(P+1)^r > M^m$ o equivalentemente, $P + 1 > M^{m/r}$,
+	por lo que $P := \lfloor M^{m/r} \rfloor$ basta.
+	Finalmente, concluimos como en el teorema original de Dirichlet.
+\end{proof}
+
+El teorema de aproximación de Dirichlet nos dice que podemos aproximar bien a los números irracionales, pero no nos otorga, de buenas a primeras,
+un método eficiente para encontrar buenas aproximaciones.
+
+De momento ya sabemos que la expansión en fracción continua simple de un irracional $\alpha$ es única, lo que nos permite hablar sin ambigüedad de \textit{los}
+aproximantes de $\alpha$.
+Podemos caracterizarles parcialmente por lo siguiente:
+\begin{thmi}[Criterio de Legendre]\index{criterio!de Legendre}
+	Sea $\alpha \in \R$ un número irracional y sea $p, q \in \Z$ enteros tales que
+	$$ \alpha - \frac{p}{q} = \frac{\theta}{q^2}, \qquad |\theta| < 1. $$
+	Sean $p/q = [a_0; a_1, \dots, a_n]$ y supongamos que $\sign\theta = (-1)^n$.
+	Entonces $p/q$ es un aproximante de $\alpha$ syss
+	$$ |\theta| \le \frac{q_n}{q_n + q_{n-1}}, $$
+	(donde $q_{n-1}$ es aproximante $p/q$.)
+\end{thmi}
+\begin{proof}
+	Definamos $\beta$ tal que
+	$$ \alpha = \frac{\beta p_n + p_{n-1}}{\beta q_n + q_{n-1}}, $$
+	de modo que
+	$$ \frac{\theta}{q_n^2} = \frac{\beta p_n + p_{n-1}}{\beta q_n + q_{n-1}} - \frac{p_n}{q_n} = \frac{(-1)^n}{q_n(\beta q_n + q_{n-1})}, $$
+	por lo que
+	$$ |\theta| = \frac{q_n}{\beta q_n + q_{n-1}}. $$
+	Despejando tenemos que $\beta = (q_n - |\theta| q_{n-1})/|\theta| q_{n-1}$ y como $0 < |\theta| < 1$ vemos que $\beta > 0$.
+
+	Si $\beta \ge 1$, entonces $\alpha = [a_0; a_1, \dots, a_n, \beta]$ lo que prueba que $p_n/q_n$ son aproximantes.
+	Si $0 < \beta < 1$, entonces $\lfloor a_n + 1/\beta \rfloor =: a_n + c$ con $c > 0$, de modo que $\alpha = [a_0; a_1, \dots, a_n + c, \dots]$,
+	por lo que $[a_0; a_1, \dots, a_n]$ no es un aproximante de $\alpha$.
+	Esto prueba la equivalencia del enunciado.
+\end{proof}
+
+\begin{thm}\label{thm:approximants_satisfy_approx}
+	Sean $\alpha \in \R$ un número irracional.
+	\begin{enumerate}
+		\item Sean $(c_n)_{n\in\N}$ los aproximantes de $\alpha$.
+			Entonces para todo $n$ (al menos) uno de los dos aproximantes $p/q \in \{ c_n, c_{n+1} \}$ satisface que
+			\begin{equation}
+				\left| \alpha - \frac{p}{q} \right| < \frac{1}{2q^2}.
+				\label{eqn:continued_fract_approx}
+			\end{equation}
+			En consecuencia, hay infinitas aproximaciones racionales que satisfacen la desigualdad \eqref{eqn:continued_fract_approx}.
+
+		\item Sean $p, q$ enteros coprimos que satisfacen \eqref{eqn:continued_fract_approx}, entonces $p/q$ es un aproximante de $\alpha$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Por la proposición~\ref{thm:approximants_closeness}, tenemos que si $c_n$ es un aproximante de $\alpha$, se cumple que
+			$|c_n - c_{n+1}| = 1/q_nq_{n+1}$, pero como $\alpha$ está entre $c_n$ y $c_{n+1}$ concluimos que
+			$$ |\alpha - c_n| < \frac{1}{q_nq_{n+1}} < \frac{1}{q_n^2}, $$
+			puesto que $q_n$ es una sucesión estrictamente creciente.
+			Ésto se puede mejorar aún más notando que
+			$$ |\alpha - c_n| + |\alpha - c_{n+1}| = |c_n - c_{n+1}| = \frac{1}{q_n q_{n+1}}, $$
+			y ahora, por la desigualdad media geométrica-media cuadrática (cf. \cite[Teo.~6.68]{Top}) sabemos que $xy < (x^2 + y^2)/2$ si $0 < x < y$,
+			luego se concluye que
+			$$ |\alpha - c_n| + |\alpha - c_{n+1}| = \frac{1}{q_n q_{n+1}} < \frac{1}{2q_n^2} + \frac{1}{2q_{n+1}^2}. $$
+			Luego, al menos alguno de las dos restas, digamos $c_n$, satisface $|\alpha - c_n| < 1/(2q_n^2)$.
+		\item Empleando que $q_{n-1} < q_n$ para los aproximantes de una fracción continua, tenemos que
+			$$ \frac{q_n}{q_n + q_{n-1}} > \frac{q}{q + q} = \frac{1}{2}. $$
+			De modo que podemos aplicar el criterio de Legendre. \qedhere
+			% \item Como los aproximantes $p_n,q_n$ de $\alpha$, son tales que $q_n$ es creciente, entonces podemos elegir un $n$ tal que $0 < q < q_{n+1}$.
+			%	 Probaremos que $|q\alpha - p| \ge |q_n\alpha - p_n|$, i.e., que $p_n/q_n$ es la mejor aproximación posible.
+			%	 Consideremos el sistema de ecuaciones racionales
+			%	 \begin{align*}
+			%		 p &= up_n + vp_{n+1}, \\
+			%		 q &= uq_n + vq_{n+1}
+			%	 \end{align*}
+			%	 como viene dado por una matriz a coeficientes enteros de determinante $p_nq_{n+1} - p_{n+1}q_n = (-1)^{n+1} \in \Z^\times$ posee
+			%	 las soluciones enteras:
+			%	 $$ u = (-1)^{n+1}(q_{n+1}p - p_{n+1}q), \qquad v = (-1)^{n+1}(p_nq - q_np). $$
+			%	 Como $0 < q < q_{n+1}$, volviendo a la ecuación original vemos que $u \ne 0$ y si $v \ne 0$ entonces $u, v$ tienen signos opuestos,
+			%	 de lo que se deduce que
+			%	 \begin{align*}
+			%		 |q\alpha - p| &= |(uq_n + vq_{n+1})\alpha - (up_n + vp_{n+1})| \\
+			%			       &= |u(q_n\alpha - p_n) + v(q_{n+1}\alpha - p_{n+1})| \ge |q_n\alpha - p_n|.
+			%	 \end{align*}
+			%	 Fijemos $n$ tal que $q_n \le q < q_{n+1}$ y nótese que
+			%	 \begin{align*}
+			%		 \left| \frac{p}{q} - \frac{p_n}{q_n} \right| &\le \left| \alpha - \frac{p}{q} \right| + \left| \alpha - \frac{p_n}{q_n} \right|
+			%		 = \frac{|q\alpha - p|}{q} + \frac{|q_n\alpha - p_n|}{q_n} \\
+			%							      &\le \left( \frac{1}{q} + \frac{1}{q_n} \right) |\alpha q - p|
+			%							      < \frac{2}{q_n} \cdot \frac{1}{2q} = \frac{1}{qq_n},
+			%	 \end{align*}
+			%	 finalmente, multiplicando a ambos lados por $qq_n$ se obtiene que $|pq_n - qp_n| < 1$ debe ser nulo, de modo que $p/q = p_n/q_n$. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}[Hurwitz]
+	Sea $\alpha$ un real irracional y sean $(c_n)_{n\in\N}$ sus aproximantes.
+	Entonces para todo $n$, uno de los aproximantes $p/q \in \{ c_n, c_{n+1}, c_{n+2} \}$ satisface que
+	$$ \left| \alpha - \frac{p}{q} \right| < \frac{1}{\sqrt{5}q^2}. $$
+	En consecuencia, infinitas fracciones reducidas satisfacen la desigualdad anterior.
+\end{thm}
+\begin{proof}
+	Sean $p_n, q_n$ los numeradores y denominadores correspondientes de $c_n$.
+	Con la notación del lema anterior es fácil comprobar que
+	$$ \left| \alpha - \frac{p_n}{q_n} \right| = \frac{1}{q_n( \alpha^\prime_{n+1}q_n + q_{n-1} )} = \frac{1}{q_n^2(\alpha^\prime_{n+1} + \beta_{n+1})}, $$
+	donde $\beta_{n+1} := q_{n-1}/q_n$.
+	Basta probar que $\alpha_j^\prime + \beta_j > \sqrt{5}$ para algún $j \in \{ n, n+1, n+2 \}$.
+
+	Supongamos que no se satisface para $j \in \{ n, n+1 \}$.
+	Como $\alpha^\prime_n = a_n + 1/\alpha^\prime_{n+1}$ y
+	$$ \frac{1}{\beta_{n+1}} = \frac{q_n}{q_{n-1}} = \frac{a_{n}q_{n-1} + q_{n-2}}{q_{n-1}} = a_n + \beta_n, $$
+	de modo que
+	$$ \frac{1}{\alpha^\prime_{n+1}} + \frac{1}{\beta_{n+1}} = \alpha^\prime_n + \beta_n \le \sqrt{5}. $$
+	Luego, concluimos que
+	$$ 1 = \frac{1}{\alpha_{n+1}^\prime} \alpha_{n+1}^\prime \le \left( \sqrt{5} - \frac{1}{\beta_{n+1}} \right)( \sqrt{5} - \beta_{n+1} ) =
+	5 - \sqrt{5}\left( \frac{1}{\beta_{n+1}} + \beta_{n+1} \right) + 1, $$
+	lo que nos da que $\frac{1}{\beta_{n+1}} + \beta_{n+1} < \sqrt{5}$, donde la desigualdad estricta sale del hecho de que $\beta_{n+1}$ es racional.
+	Como $\beta_{n+1} < 1$, se deduce de que $\beta_{n+1} > \frac{1}{2}( \sqrt{5} - 1 )$.
+
+	Análogamente vemos que $\beta_{n+2} > \frac{1}{2}( \sqrt{5} - 1 )$, por lo que
+	$$ a_{n+1} = \frac{1}{\beta_{n+2}} - \beta_{n+1} < \sqrt{5} - (\beta_{n+2} + \beta_{n+1}) < \sqrt{5} - (\sqrt{5} - 1) = 1, $$
+	lo cual es absurdo.
+\end{proof}
+
+La constante en el teorema de Hurwitz es aguda:
+\begin{prop}
+	Para todo $A > \sqrt{5}$ existe un $\alpha$ real irracional para el que la desigualdad $|\alpha - p/q| < 1/Aq^2$ solo admite finitas soluciones.
+\end{prop}
+\begin{proof}
+	Elijamos $\alpha := \frac{1}{2}( \sqrt{5} - 1 )$ y supongamos que
+	$$ \alpha = \frac{p}{q} + \frac{\delta}{q^2}, \qquad |\delta| < \frac{1}{A} < \frac{1}{\sqrt{5}}. $$
+	Multiplicando por $q$ y reordenando obtenemos
+	$$ \frac{\delta}{q} - \frac{1}{2} \sqrt{5}q = \frac{\delta}{q} - \left( \frac{1}{2}q + p + \frac{\delta}{q} \right) = -\frac{1}{2}q - p. $$
+	Luego, tomando cuadrados tenemos que
+	$$ \frac{\delta^2}{q^2} - \sqrt{5}\delta = \left( \frac{\delta}{q} - \frac{1}{2} \sqrt{5}q \right)^2 - \frac{5q^2}{4} = pq + p^2 - q^2. $$
+	Como $|\delta| < 1/\sqrt{5}$ vemos que para $q$ suficientemente grande el lado izquierdo tiene valor absoluto $<1$,
+	de modo que $pq + p^2 - q^2 = 0$, o equivalentemente $(2p + q)^2 = 5q^2$ lo cual es absurdo pues $\sqrt{5}$ es irracional.
+\end{proof}
+
+\subsection{El teorema y los números de Liouville}
+\begin{thm}[de aproximación de Liouville]\index{teorema!de aproximación!de Liouville}
+	Sea $\alpha \in \R \setminus \Q$ un número algebraico de grado $d$.
+	Entonces existe $C > 0$ tal que toda fracción $u/v \in \Q$ satisface que
+	$$ \left| \alpha - \frac{u}{v} \right| \ge \frac{C}{v^d}. $$
+\end{thm}
+\begin{proof}
+	Sea $f(x) = c_d x^d + \cdots + c_1 x + c_0 \in \Z[x]$ el polinomio minimal de $\alpha$ (es decir, los coeficientes son coprimos y
+	el $c_d$ <<limpia denominadores>>). Entonces $f(x) = (x - \alpha)g(x)$, donde $g(x) \in \Q[x]$.
+	Ahora bien, la función $|g(x)|$ alcanza un máximo $M$ en el compacto $[\alpha - 1, \alpha + 1]$ y, por tanto,
+	para toda fracción $u/v \in \Q$ se tiene que
+	$$ |f(u/v)| = \left| \alpha - \frac{u}{v} \right| \cdot |g(u/v)| \le M\left| \alpha - \frac{u}{v} \right|, $$
+	y nótese que $v^d |f(u/v)|$ es un entero, de modo que $|f(u/v)| \ge 1/v^d$ pues $f(x)$ no tiene raíces racionales.
+	Así, tomando $C := \min\{ 1, 1/M \}$ tenemos el enunciado.
+\end{proof}
+\begin{cor}
+	Sea $\alpha$ un irracional algebraico de grado $d$.
+	Entonces existen a lo más finitas fracciones $u/v \in \Q$ tales que
+	$$ \left| \alpha - \frac{u}{v} \right| < \frac{1}{v^{d+1}}. $$
+\end{cor}
+\begin{proof}
+	Basta notar que de existir infinitas, el denominador no está acotado y escoger $q > 1/C$, donde $C$ es la constante del teorema anterior.
+\end{proof}
+
+Liouville empleó su teorema para dar el primer ejemplo de un número trascendente:
+\begin{exn}\label{ex:liouville_number}
+	El número
+	$$ \lambda := \sum_{n=1}^{\infty} \frac{1}{10^{n!}} = 0.110001 00000 00000 00000 001... $$
+	es trascendente.
+
+	En efecto, sea $c_n := \sum_{j=1}^{n} 10^{-j!}$ los cuales satisfacen que $\lim_n c_n = \lambda$.
+	Luego, nótese que, con $v_n := 10^{n!}$, tenemos que $u_n := v_nc_n$ es entero y ésta fracción satisface que
+	\begin{align*}
+		\left| \lambda - \frac{u_n}{v_n} \right| &= \frac{1}{10^{(n+1)!}} + \frac{1}{10^{(n+2)!}} + \cdots < \sum_{j=0}^{\infty} \frac{1}{10^{(n+1)! + j}} \\
+							 &= \frac{1}{10^{(n+1)!}} \cdot \frac{1}{1 - 1/10} < \frac{1}{10^{(n+1)!}} < \frac{1}{v_n^n}.
+	\end{align*}
+	Ahora sí, $\lambda$ es irracional (pues su expansión decimal no es periódica) y, si fuese algebraico, tendría un grado $d$ que acote las
+	aproximaciones, pero claramente $u_n/v_n$ son infinitas aproximaciones <<buenas>> lo que es absurdo.
+\end{exn}
+\begin{mydef}
+	Se dice que un real irracional $\alpha$ es un \strong{número de Liouville}\index{numero@número!de Liouville} si para cada $j \ge 1$ natural
+	existe una fracción reducida $u/v$ tal que $|\alpha - u/v| < 1/v^j$.
+	Se denota por $\mathcal{L}$ el conjunto de los números de Liouville.
+\end{mydef}
+
+El mismo argumento prueba que los números de Liouville son todos trascendentes, aunque el recíproco es falso.
+Exhibir un contraejemplo no es fácil, pero podemos dar una prueba indirecta.
+
+\begin{mydef}
+	Sea $\varphi \colon \N \to (0, 1]$ una función y sea $\alpha$ un irracional.
+	Se dice que $\varphi$ es \strong{aproximante para $\alpha$}\index{función!aproximante} si existen infinitas fracciones $u/v \in \Q$
+	tales que $|\alpha v - u| < \varphi(v)$.
+	Denotamos por $A(\varphi)$ el conjunto de reales para los cuales $\varphi$ es aproximante.
+\end{mydef}
+
+\begin{thm}[Khinchin]
+	Sea $\varphi \colon \N \to (0, 1]$ una función.
+	\begin{enumerate}
+		\item El conjunto $A(\varphi)$ es no numerable.
+		\item El conjunto $A(\varphi)$ es denso.
+		\item Si $\sum_{q=1}^{\infty} \varphi(q) < \infty$, entonces $A(\varphi)$ tiene medida (de Lebesgue) nula.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Sea $Z' := \Func(\N, \{ 0, 1 \})$, es decir, el conjunto de las sucesiones binarias.
+			Definamos $Z \subseteq Z'$ como las sucesiones que tienen infinitos 1's.
+			Sea $2 < g_1 \le g_2 \le g_3 \le \cdots$ una sucesión de naturales creciente tal que $\lim_n g_n = \infty$,
+			entonces definimos la función
+			\begin{align*}
+				\psi_{\vec g} \colon Z &\longrightarrow \R \\
+				\vec z = (z_n)_n &\longmapsto \sum_{n=1}^{\infty} \frac{z_n}{g_1 g_2 \cdots g_n}.
+			\end{align*}
+			Si fijamos $\vec z \in Z$ podemos definir las aproximaciones
+			$$ G_N := q_1 q_2 \cdots q_N, \qquad F_N := G_N \sum_{n=1}^{N} \frac{z_n}{G_n}. $$
+			Entonces, la desigualdad \eqref{eqn:eeerational} nos da que
+			\[
+				0 < \left| \psi_{\vec q}(\vec z) - \frac{F_N}{G_N} \right| \le \frac{1}{G_N(q_{N+1} - 1)}.
+			\]
+			Ahora bien, si rellenamos con $z_{N+1} = z_{N+2} = \cdots = z_{N + r - 1} = 0$ podemos mejorar la desigualdad por
+			$\frac{1}{G_N(g_{N + r} - 1)}$, por lo que basta elegir el $r$ suficientemente grande de modo que $\frac{1}{g_{N+r} - 1} < \varphi(G_N)$.
+
+			Finalmente, es fácil notar que cada elección de $\vec g := (g_n)_{n \in \N}$ nos da un valor distinto y siempre nos otorga al menos
+			un elemento de $A(\varphi)$ (dado por rellenar con suficientes ceros).
+			Luego tenemos una inyección desde el conjunto de $\vec q$'s hasta $A(\varphi)$ y un mero argumento de cardinalidad nos dice que
+			hay $\mathfrak{c}$ distintos $\vec q$'s.
+
+		\item Basta notar que, con la notación anterior, a un elemento $\psi_{\vec q}(\vec z) \in A(\varphi)$ podemos sumarle racionales de la forma $a/G_N$,
+			donde $a \in \Z$ y $N \in \N$ varían, para obtener un elemento de $A(\varphi)$ y este conjunto de racionales es denso.
+			También, el lector puede realizar el ejercicio de probar que $A(\varphi) + \Q = A(\varphi)$ en general y emplear que $A(\varphi) \ne
+			\emptyset$ por nuestra demostración anterior.
+
+		\item Fijemos $N, g \in \N$.
+			Si $\Alpha \in A( \varphi) \cap [-g, g]$, entonces ha de existir una fracción $u/v$ con $v \ge N$
+			tal que $|\alpha - u/v| < \varphi(v)/v$, es decir,
+			$$ \alpha \in \left( \frac{u - \varphi(v)}{v}, \frac{u + \varphi(v)}{v} \right). $$
+			En consecuencia, $|u| < |\alpha|v + \varphi(v) \le 1 + gv$, por lo que
+			$$ A(\varphi) \cap [-g, g] \subseteq \bigcap_{N=1}^\infty \bigcup_{v=N}^{\infty} \bigcup_{|u| \le 1 + gv} \left( \frac{u - \varphi(v)}{v},
+			\frac{u + \varphi(v)}{v} \right), $$
+			por lo que, denotando la medida de Lebesgue por $\mu$, tenemos que
+			\begin{align*}
+				\mu\big( A(\varphi) \cap [-g, g] \big) &\le \sum_{v=N}^{\infty} \sum_{|u| \le 1 + gv} 2 \frac{\varphi(v)}{v}
+				= \sum_{v=N}^{\infty} 2(3 + 2gv) \frac{\varphi(v)}{v} \\
+								       &\le 16g \sum_{v=N}^{\infty} \varphi(v),
+			\end{align*}
+			lo cual con $N \to \infty$ converge a 0. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{cor}
+	El conjunto $\mathcal{L} \subseteq \R$ es denso, no numerable y de medida nula.
+\end{cor}
+\begin{proof}
+	Basta notar que los elementos de $\mathcal{L}$ pertenecen todos a cada $A(\varphi_j)$ donde $\varphi_j(v) := \frac{1}{v^j}$,
+	por lo que $\mathcal{L}$ tiene medida nula.
+
+	Nótese que al intersectar densos no numerables podemos perder susodichas propiedades, por lo que hay que ser cautelosos.
+	Replicando el mismo argumento del ejemplo~\ref{ex:liouville_number}, pero con otra base, vemos que el número
+	\[
+		\sum_{n=1}^{\infty} \frac{a_n}{b^{n!}}
+	\]
+	con $0 \le a_n < b$ y $b \ge 2$ fijo son trascendentes.
+	Incluso con $b = 2$ obtenemos no numerables irracionales dados por la libertad de elegir la sucesión $(a_n)_{n \in \N}$.
+	Además, es claro que $\mathcal{L} + \Q = \mathcal{L}$, de modo que es denso.
+\end{proof}
+
+Y finalmente un resultado divertido expuesto en \cite{erdos62liouville}:
+\begin{thm}[Erd\H os]
+	$\mathcal{L + L} = \R$.
+\end{thm}
+\begin{proof}
+	Sea $\alpha \in \R$.
+	Como $\Q + \mathcal{L} = \mathcal{L}$, vemos que si $\alpha - \lfloor \alpha \rfloor = \beta + \gamma$, con $\beta, \gamma \in \mathcal{L}$,
+	entonces $\alpha = \beta + (\gamma + \lfloor \alpha \rfloor)$ satisface que $\gamma + \lfloor \alpha \rfloor \in \mathcal{L}$.
+	Así que, sea $\alpha$ dado por expansión en base 2:
+	$$ \alpha = \sum_{n=1}^{\infty} \frac{a_n}{2^n}, $$
+	con $0 \le a_n < 2$.
+	Definimos
+	$$ \beta := \sum_{n=1}^{\infty} \frac{b_n}{2^n}, \qquad \gamma := \sum_{n=1}^{\infty} \frac{c_n}{2^n}, $$
+	donde, fijado $m \ge 1$ tal que $m! \le n < (m+1)!$, definimos $b_n = a_n$ y $c_n = 0$ si $m$ es par,
+	y $b_n = 0, c_n = a_n$ si $m$ es impar.
+	Queda al lector verificar que $\beta, \gamma$ son números de Liouville.
+\end{proof}
+\nocite{hlawka:number, hua:number, granville:masterclass}
+
+\subsection{La irracionalidad de $\zeta(2)$ y $\zeta(3)$}
+En ésta sección seguimos el artículo de \citeauthor{beukers79irrationality}~\cite{beukers79irrationality}.
+
+En las siguientes demostraciones emplearemos $V(n) := \mcm\{ 1, 2, \dots, n \}$.
+
+\begin{prop}
+	El número
+	$$ \zeta(2) := \frac{1}{1^2} + \frac{1}{2^2} + \frac{1}{3^2} + \cdots = \sum_{k=1}^{\infty} \frac{1}{n^2}. $$
+	es irracional.
+\end{prop}
+\begin{proof}
+	Para un complejo $|z| < 1$ tenemos que la serie geométrica
+	$$ \frac{z^r}{1 - z} = z^r + z^{r+1} + z^{r+2} + \cdots $$
+	Si tenemos $x, y \in (0, 1)$, entonces $z = xy$ nos permite deducir lo siguiente:
+	\begin{align*}
+		I_{rr} := \int_{0}^{1} \int_{0}^{1} \frac{x^ry^r}{1 - xy} \, \ud x \, \ud y &=
+		\int_{0}^{1} \left( \frac{y^r}{r+1} + \frac{y^{r+1}}{r+2} + \cdots \right) \, \ud y \\
+											    &= \frac{1}{(r+1)^2} + \frac{1}{(r+2)^2} + \cdots,
+	\end{align*}
+	de modo que
+	$$ \zeta(2) = \frac{1}{1^2} + \frac{1}{2^2} + \cdots + \frac{1}{r^2} + I_{rr}.  $$
+	o despejando, tenemos que $I_{rr} = \frac{\alpha \zeta(2) + \beta}{V(r)^2}$, donde $\alpha, \beta \in \Z$.
+
+	Si ahora definimos
+	$$ P_n(x) := \frac{1}{n!} \frac{\ud^n}{\ud x^n}\big( x^n(1 - x)^n \big), $$
+	entonces se puede notar que $P_n(x)$ es un polinomio con coeficientes enteros (¿por qué?), y luego
+	$$ \int_{0}^{1} \int_{0}^{1} \frac{(1 - y)^n P_n(x)}{1 - xy} \, \ud x \, \ud y = \frac{a_n \zeta(2) + b_n}{V(n)^2}, $$
+	donde $a_n, b_n$ son enteros. Si integramos parcialmente respecto a $x$ en el lado derecho tenemos
+	$$ \frac{a_n \zeta(2) + b_n}{V(n)^2} = (-1)^n \int_{0}^{1} \int_{0}^{1} \frac{y^n(1 - y)^n x^n(1 - x)^n}{(1 - xy)^{n+1}} \, \ud x \, \ud y. $$
+	Vamos a acotar el integrando. Para ello, vamos a calcular el máximo valor en el intervalo $x \in [0, 1]$ buscando valores críticos, de lo que
+	$$ \frac{y(1 - y) x(1 - x)}{1 - xy} \le \left( \frac{\sqrt{5} - 1}{2} \right)^5. $$
+	Así, tenemos que
+	\begin{align*}
+		0 &< \left| \int_{0}^{1} \int_{0}^{1} \frac{y^n(1 - y)^n x^n(1 - x)^n}{(1 - xy)^{n+1}} \, \ud x \, \ud y \right| \\
+		  &= \frac{|a_n \zeta(2) + b_n|}{V(n)^2} \le \left( \frac{\sqrt{5} - 1}{2} \right)^{5n} \int_{0}^{1} \int_{0}^{1} \frac{\ud x \, \ud y}{1 - xy} \\
+		  &= \left( \frac{\sqrt{5} - 1}{2} \right)^{5n} \zeta(2).
+	\end{align*}
+	Así que, basta probar que
+	\[
+		\lim_n V(n)^2 \left( \frac{\sqrt{5} - 1}{2} \right)^{5n} = 0.
+	\]
+	Ahora bien, nótese que $V(n) \le n^{\pi(n)}$ y empleando las aproximaciones de Chebychev tenemos que
+	$$ \pi(n) \le (\log 3) \cdot \frac{n}{\log n}, $$
+	por lo que podemos concluir pues
+	\begin{equation}
+		V(n)^2 \left( \frac{\sqrt{5} - 1}{2} \right)^{5n} \le 3^n \cdot \left( \frac{\sqrt{5} - 1}{2} \right)^{5n} \approx 0.2705^n.
+		\tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{cor}
+	Hay infinitos primos.
+\end{cor}
+\begin{proof}
+	De lo contrario, empleando el producto de Euler
+	$$ \zeta(2) = \prod_{p} \frac{1}{1 - 1/p^2}, $$
+	notamos que a la derecha tenemos un producto finito de racionales y, por tanto, el lado izquierdo es racional.
+\end{proof}
+\begin{cor}
+	$\pi^2$ es irracional.
+\end{cor}
+
+Vamos a emplear un método similar para concluir lo siguiente:
+\begin{thm}[Apéry]
+	El número $\zeta(3)$ es irracional.
+\end{thm}
+\begin{proof}
+	Nótese que
+	\begin{align*}
+		\int_{0}^{1} \int_{0}^{1} \frac{\log(xy)}{1 - xy}(xy)^r \, \ud x \, \ud y &= \int_{0}^{1} \int_{0}^{1} \sum_{j=0}^{\infty} (\log x + \log y)x^{r+j} y^{r+j} \, \ud x \, \ud y \\
+											  &= \int_{0}^{1} \sum_{j=0}^{\infty} \left( -\frac{y^{r+j}}{(r+j+1)^2} +
+											  \frac{(\log y) y^{r+j}}{r+j+1} \right)\, \ud y \\
+											  &= -2 \sum_{j=0}^{\infty} \frac{1}{(r+j+1)^3}
+											  = -2\left( \zeta(3) - 1 - \frac{1}{2^3} - \cdots - \frac{1}{r^3} \right).
+	\end{align*}
+	y análogamente si $r > s$ es fácil comprobar que
+	$$ I_{rs} := \int_{0}^{1} \int_{0}^{1} \frac{\log(xy)}{1 - xy}x^r y^s \, \ud x \, \ud y =
+	\frac{-1}{r - s}\left( \frac{1}{(s+1)^2} + \cdots + \frac{1}{r^2} \right), $$
+	de modo que, $I_{rs}$ es siempre un número racional si $\zeta(3)$ es racional.
+
+	Nuevamente, definiendo
+	$$ P_n(x) := \frac{1}{n!} \frac{\ud^n}{\ud x^n}\big( x^n(1 - x)^n \big), $$
+	entonces se puede notar que
+	$$ \int_{0}^{1} \int_{0}^{1} \frac{-\log(xy)}{1 - xy} P_n(x) P_n(y) \, \ud x \, \ud y = \frac{a_n \zeta(3) + b_n}{V(n)^3}, $$
+	donde $a_n, b_n$ son enteros.
+
+	Empleando la siguiente identidad
+	$$ \frac{-\log(xy)}{1 - xy} = \int_{0}^{1} \frac{1}{1 - (1 - xy)z} \, \ud z, $$
+	tenemos que
+	\begin{align*}
+		\frac{a_n \zeta(3) + b_n}{V(n)^3} &= \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} \frac{P_n(x) P_n(y)}{1 - (1-xy)z} \, \ud x \, \ud y \, \ud z, \\
+		\shortintertext{ahora integramos $n$ veces respecto a $x$ y obtenemos que}
+						  &= \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} \frac{(xyz)^n (1 - x)^n P_n(y)}{(1 - (1-xy)z)^{n+1}}
+						  \, \ud x \, \ud y \, \ud z.
+	\end{align*}
+	Mediante la sustitución
+	$$ w := \frac{1 - z}{1 - (1-xy)z} \iff 1 - w = \frac{xyz}{1 - (1-xy)z}, $$
+	podemos reescribir
+	\begin{align*}
+		\frac{a_n \zeta(3) + b_n}{V(n)^3} &= \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} (1 - x)^n (1 - w)^n \frac{P_n(y)}{1 - (1-xy)w} \, \ud x \, \ud y \, \ud w, \\
+		\shortintertext{ahora integramos $n$ veces respecto a $y$ y obtenemos que}
+						  &= \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} \frac{x^n(1-x)^n y^n(1-y)^n w^n(1-w)^n}{(1 - (1-xy)w)}
+						  \, \ud x \, \ud y \, \ud w.
+	\end{align*}
+	Nuevamente procedemos a acotar el integrando:
+	$$ \frac{x(1 - x) y(1 - y) w(1 - w)}{1 - (1 - xy)w} \le (\sqrt{2} - 1)^4, $$
+	y entonces
+	\begin{align*}
+		\frac{a_n \zeta(3) + b_n}{V(n)^3} &= (\sqrt{2} - 1)^{4n} \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} \frac{1}{1 - (1 - xy)w} \, \ud x \, \ud y \, \ud w \\
+						  &= (\sqrt{2} - 1)^{4n} \int_{0}^{1} \int_{0}^{1} \frac{-\log(xy)}{1 - xy} \, \ud x \, \ud y
+						  = 2 \zeta(3) \cdot (\sqrt{2} - 1)^{4n},
+	\end{align*}
+	reordenando tenemos que $0 < |a_n \zeta(3) + b_n| = 2 \zeta(3) V(n)^3 (\sqrt{2} - 1)^{4n}$.
+	Empleando la misma desigualdad de Chebyshev, vemos que
+	\begin{equation}
+		2 V(n)^3 (\sqrt{2} - 1)^{4n} = 2 \cdot 27^{n} \cdot (\sqrt{2} - 1)^{4n} \approx 2(0.7948)^n \to 0.
+		\tqedhere
+	\end{equation}
+\end{proof}
+
+El lector notará los fuertes paralelos entre la demostración para $\zeta(2)$ y $\zeta(3)$, ¿admitirá una generalización para $\zeta(4)$ y $\zeta(5)$?
+La respuesta es que no, o al menos no el método empleado; ya en la última demostración vimos que $27(\sqrt{2} - 1)^4 \approx 0.7948 < 1$;
+pero ya en casos superiores éste factor se pasa del 1.
+\begin{con}
+	Se creen:
+	\begin{enumerate}
+		\item Los valores $\zeta(5), \zeta(7), \zeta(9), \dots$ son irracionales.
+		\item Los valores $\zeta(n)$ son trascendentes para todo $n > 1$ entero.
+		\item Los valores $\pi, \zeta(3), \zeta(5), \zeta(7), \dots$ son ($\Q$-)algebraicamente independientes.
+	\end{enumerate}
+\end{con}
+Claramente $3 \implies 2 \implies 1$.
+Hay gente que cree que, similar al caso par, $\zeta(2n+1)$ se puede escribir como $\pi^{2n+1}$ con sus respectivos errores;
+no obstante, una conjetura de Grothendieck implica la propiedad 3, por lo que se opta por ésta última.
+
+Indudablemente es curioso que además de $\zeta(3)$ se desconozca la irracionalidad de otros valores $\zeta(2n+1)$.
+
+% Casi no hay avances en las conjeturas anteriores, salvo un par de detalles:
+% (1), para $\zeta(2n+1)$ se sabe que estos valores toman infinitas veces valores irracionales, pero no se ha d
+
+\subsection{La ecuación de Pell}
+Ahora veremos cómo emplear fracciones continuas para calcular eficientemente la ecuación de Pell.
+En ésta sección fijaremos un natural $D > 0$ que no es un cuadrado y nos enfocaremos en la ecuación de Pell:
+\begin{equation}
+	x^2 - Dy^2 = 1,
+	\label{eq:Pell_equation}
+\end{equation}
+y diremos que las \strong{soluciones triviales} son las de la forma $(\pm 1, 0)$.
+En primer lugar queremos encontrar soluciones no triviales de la ecuación de Pell:
+\begin{lem}
+	Existe un entero $k$ con $1 \le |k| \le 1 + 2\sqrt{D}$ tal que la ecuación diofántica $x^2 - Dy^2 = k$ tiene infinitas soluciones enteras.
+\end{lem}
+\begin{proof}
+	Como $\sqrt{D}$ es irracional, por el teorema de Dirichlet, existen infinitos $u/v \in \Q$ con $(u; v) = 1$ y $1 \le v$ tales que
+	$$ \left| \sqrt{D} - \frac{u}{v} \right| < \frac{1}{v^2}, $$
+	o equivalentemente, $|u - v\sqrt{D}| < 1/v$. Nótese que
+	\begin{align*}
+		|u^2 - v^2D| &= |u - v\sqrt{D}| \, |u + v\sqrt{D}| < \frac{1}{v}(|u - v\sqrt{D}| + 2v\sqrt{D}) \\
+			     &< \frac{1}{v^2} + 2\sqrt{D} \le 1 + 2\sqrt{D},
+	\end{align*}
+	donde empleamos desigualdad triangular.
+	Finalmente, concluimos por una variación del principio de palomar.
+\end{proof}
+
+\begin{thm}
+	La ecuación de Pell siempre posee soluciones no triviales.
+\end{thm}
+\begin{proof}
+	Por el lema anterior, elijamos $k$ de modo que la ecuación diofántica $x^2 - Dy^2 = k$ posee infinitas soluciones.
+	Consideramos dos soluciones distintas $(a_1, b_1), (a_2, b_2)$ positivas con
+	$$ a_1 \equiv a_2, \qquad b_1 \equiv b_2 \pmod k, $$
+	las cuales siempre existen puesto que hay finitas posibilidades de congruencias e infinitas soluciones.
+	Definamos:
+	$$ A + B\sqrt{D} := (a_1 - b_1\sqrt{D})(a_2 + b_2\sqrt{D}) = (a_1a_2 - b_1b_2D) + (a_1b_2 - a_2b_1)\sqrt{D}, $$
+	de modo que $A^2 - B^2D = \galnorm(A + B\sqrt{D}) = k^2$.
+
+	Afirmamos que $B \ne 0$: de lo contrario, existiría $\lambda \in \Q_{\ne 0}$ tal que $a_1 = \lambda a_2$, $b_1 = \lambda b_2$ y tal que
+	$$ k = a_2^2 - b_2^2 D = \lambda^2(a_1^2 - b_1^2 D) = \lambda^2k, $$
+	por lo que $\lambda = \pm 1$.
+	Como las soluciones son positivas, entonces $\lambda = 1$, pero eso es absurdo pues elegimos las soluciones distintas.
+
+	Además nótese que como $a_1 \equiv a_2$ y $b_1 \equiv b_2 \pod k$ se cumple que
+	$$ A \equiv a_1^2 - b_1^2D = k \equiv 0, \qquad B \equiv a_1b_1 - a_1b_1 = 0\pmod k. $$
+	luego existen $u, v$ enteros tales que $A = ku, B = kv$ y finalmente:
+	$$ k^2 = A^2 - B^2D = k^2(u^2 - v^2D) \iff 1 = u^2 - v^2D, $$
+	donde $v \ne 0$ pues $B \ne 0$ por lo que es una solución no trivial.
+\end{proof}
+
+Está claro que las soluciones de la ecuación de Pell $(a, b)$ son exactamente los números algebraicos $a + b\sqrt{D} \in \Z[\sqrt{D}]$ de norma 1.
+De modo que podemos definir
+$$ \mathcal{P}_D := \{ a + b\sqrt{D} \in \Z[\sqrt{D}] : a^2 - b^2D = 1 \} $$
+el cual es un grupo con la multiplicación.
+\begin{thm}
+	$\mathcal{P}_D \cong \Z \oplus \Z/2\Z$.
+\end{thm}
+\begin{proof}
+	Nótese que $\mathcal{P}_D \subseteq \Z[\omega]^\times$ el cual es el anillo de enteros de $\Q(\sqrt{D})$.
+	Una solución no trivial de $\mathcal{P}_D$ es también una unidad no trivial de $\Z[\omega]$,
+	luego tiene una unidad fundamental $\eta > 1$ (teo.~\ref{thm:fundamental_units}).
+	Hay dos posibilidades, o bien la unidad fundamental es tal que $\galnorm(\eta) = -1$, en cuyo caso, los elementos de $\mathcal{P}_D$
+	son exactamente las potencias pares de $\eta$, i.e., potencias de $\epsilon := \eta^2$;
+	o bien la unidad fundamental ya es de norma 1, en cuyo caso, las soluciones de Pell son ya las potencias de $\epsilon := \eta$.
+	En ambos casos se obtiene que $\mathcal{P}_D = \{ \pm \epsilon^n : n \in \N \} \cong \Z \oplus \Z/2\Z$.
+\end{proof}
+
+\begin{thm}
+	Sea $d > 0$ libre de cuadrados y sea $\omega \in \Z[\sqrt{d}]$ con coordenadas positivas tal que $\galnorm(\omega) = 1$.
+	Dada una solución de la ecuación de Pell generalizada $x^2 - dy^2 = n$ existen $a, b, k \in \Z$
+	tales que $x + y\sqrt{d} = (a + b\sqrt{d})\omega^k$ con
+	$$ |a| \le \frac{ \sqrt{|n|}(\sqrt{\omega} + 1/\sqrt{\omega}) }{2}, \qquad |b| \le \frac{ \sqrt{|n|}(\sqrt{\omega} + 1/\sqrt{\omega}) }{2\sqrt{d}}. $$
+\end{thm}
+\begin{proof}
+	Para $\alpha \in \Z[\sqrt{d}]_{\ne 0}$ definamos $L(\alpha) = (\log|\alpha|, \log |\overline{\alpha}|) \in \R^2$.
+	Claramente para $ \alpha, \beta$ arbitrarios se tiene $L(\alpha \beta) = L(\alpha) + L(\beta)$.
+	Nótese que $L(2) = (\log 2)(1, 1)$ y $L(\omega) = (\log\omega) (1, -1)$ son $\R$-linealmente independientes, de modo que
+	$$ L(x + y\sqrt{d}) = c_1 (1, 1) + c_2 L(\omega) = (c_1 + c_2^\prime, c_1 - c_2^\prime), $$
+	para algunos $c_1, c_2 \in \R$ y donde $c_2^\prime = c_2\log \omega$.
+	Sumando coordenadas obtenemos que
+	$$ c_1 = \frac{\log|x + y\sqrt{d}| + \log|x - y\sqrt{d}|}{2} = \frac{\log|n|}{2}. $$
+	Ahora bien, elijamos $k$ el entero más cercano a $c_2$ de modo que $\delta := k - c_2 \in (-1/2, 1/2)$, luego tendremos que
+	$$ L(x + y\sqrt{d}) = \frac{\log|n|}{2}(1, 1) + L(\omega^k) + \delta L(\omega), $$
+	y definimos $a + b\sqrt{d} := (x + y\sqrt{d}) \omega^{-k}$, donde
+	$$ L(a + b\sqrt{d}) = ( \log( \sqrt{|n|} ) + \delta\log\omega, \log( \sqrt{|n|} ) - \delta\log\omega ). $$
+	Y, por tanto, alguno de los dos números $|a + b\sqrt{d}|, |a - b\sqrt{d}|$ está acotado por $\sqrt{|n|}\omega^{1/2} = \sqrt{|n| \omega}$
+	y el otro por $\sqrt{|n|} \omega^0 = \sqrt{|n|}$.
+	Así tenemos
+	$$ |a| = \frac{|(a + b\sqrt{d}) + (a - b\sqrt{d})|}{2}, \qquad |a| = \frac{|(a + b\sqrt{d}) - (a - b\sqrt{d})|}{2\sqrt{d}}. $$
+	Definamos $s := \max\{ |a + b\sqrt{d}|, |a - b\sqrt{d}| \}$, entonces ambos números son $s, |n|/s$ con algún orden.
+	Además vimos que alguno de los dos números es $> \sqrt{|n|}$ y el otro es $< \sqrt{|n| \omega}$; como $s$ es el máximo,
+	tenemos que $\sqrt{|n|} < s < \sqrt{|n|}\omega$.
+	Un cálculo de las derivadas permite deducir que la función $t \mapsto t + |n|/t$ es creciente para $t \ge \sqrt{|n|}$, de modo que
+	$$ |a| \le \frac{1}{2}\left( s + \frac{|n|}{s} \right) \le \frac{1}{2}\left( \sqrt{|n| \omega} + \frac{|n|}{\sqrt{|n| \omega}} \right)
+	= \frac{\sqrt{|n|}( \sqrt{\omega} + 1/\sqrt{\omega} )}{2}. $$
+	Y similarmente con $|b \sqrt{d}|$ por lo que dividiendo por $\sqrt{d}$ da las cotas del enunciado.
+\end{proof}
+\addtocategory{article}{conrad:pell}
+% La ecuación de Pell generalizada podría no tener soluciones en general.
+
+Ahora que hemos asegurado la existencia de soluciones no triviales de la ecuación de Pell, veamos cómo encontrarlas.
+\begin{thm}
+	Sea $D > 0$ libre de cuadrados, $|n| < \sqrt{D}$ entero y $x, y > 0$ enteros tales que $x^2 - Dy^2 = n$.
+	Entonces $x/y$ ocurren como aproximantes en la fracción continua simple de $\sqrt{D}$.
+\end{thm}
+\begin{proof}
+	Considere primero el caso con $n > 0$.
+	Como $x - y\sqrt{D} > 0$, entonces vemos que $x + y\sqrt{D} > 2y \sqrt{D}$ y, por tanto
+	$$ 0 < x - y \sqrt{D} = \frac{n}{x + y \sqrt{D}} < \frac{\sqrt{D}}{2y \sqrt{D}} = \frac{1}{2y}, $$
+	luego dividiendo ambos lados por $y$ tenemos que $| x/y - \sqrt{D} | < 1/(2y^2)$, por lo que es un aproximante
+	por el teorema~\ref{thm:approximants_satisfy_approx}.
+
+	Si $n < 0$, entonces $Dy^2 - x^2 = |n|$ luego
+	$$ y^2 - \frac{1}{D}x^2 = \frac{|n|}{D} > 0 \implies y > \frac{x}{\sqrt{D}}. $$
+	Se sigue que
+	$$ y - \frac{x}{\sqrt{D}} = \frac{|n|}{D(y + x/\sqrt{D})} < \frac{|n|}{2D(x / \sqrt{D})} < \frac{1}{2x}, $$
+	dividiendo por $x$ llegamos a la misma conclusión.
+\end{proof}
+% ...
+% \todo{Insertar ejemplo con fracciones continuas.}
+
+% Esto nos otorga un método algorítmico para resolver la ecuación de Pell.
+\begin{prob}
+	Resuelva (con ayuda de un ordenador) la ecuación generalizada de Pell $x^2 - 103y^2 = 2$.
+\end{prob}
+\begin{sol}
+	En primer lugar calcularemos la fracción continua simple de $\sqrt{103}$.
+	Empleando que $\lfloor \sqrt{103} \rfloor = 10$, podemos calcular que $a_1$ viene dado por la parte entera de
+	$$ t_1 := \frac{1}{\sqrt{103} - 10} = \frac{1}{\sqrt{103} - 10} \cdot \frac{\sqrt{103} + 10}{\sqrt{103} + 10} = \frac{1}{3}( \sqrt{103} + 10 ), $$
+	como $10 < \sqrt{103} < 11$ vemos que $20/3 < t_1 < 21/3 = 7$, así que $a_1 = 6$.
+
+	Reiterando el proceso podemos obtener la siguiente tabla:
+	\[\begin{array}{r|*{8}{r}}
+		n & -1 & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+		\hline
+		a_n & {} & 10 & 6 & 1 & 2 & 1 & 1 & 9 \\
+		p_n & 1 & 10 & 61 & 71 & 203 & 274 & 477 & 4567 \\
+		q_n & 0 & 1 & 6 & 7 & 20 & 27 & 47 & 450 \\
+		p_n^2 - 103 q_n^2 & {} & -3 & 13 & -6 & 9 & -11 & 2 & -11
+	\end{array}\]
+	Y prosiguiendo obtendremos dos piezas fundamentales de información:
+	que $(477, 47)$ es la solución minimal de $x^2 - 103 y^2 = 2$ y que la solución fundamental de $x^2 - 103 y^2 = 1$
+	se corresponde a $\omega := 227528 + 22419 \sqrt{103}$.
+	Nótese que por el teorema anterior, ésta solución debía aparecer como aproximante y, de haber más,
+	también deberían aparecer.
+
+	Finalmente, un cálculo nos da que:
+	$$ \frac{ \sqrt{2}( \sqrt{\omega} + 1/\sqrt{\omega} ) }{2} = 477 $$
+	por lo que todas las soluciones de la Pell generalizada son de la forma:
+	\begin{equation}
+		\pm (477 + 47 \sqrt{103}) \cdot (227528 + 22419 \sqrt{103})^k.
+		\tqedhere
+	\end{equation}
+\end{sol}
+
+\subsection{La ecuación de Markoff}
+La ecuación de Pell terminó por <<resolverse>> dando un algoritmo para iterar entre todas las soluciones,
+el siguiente es otro ejemplo en el mismo espíritu:
+\begin{thm}
+	Considere la \strong{ecuación de Markoff}\index{ecuación!de Markoff} dada por
+	\begin{equation}
+		x^2 + y^2 + z^2 = 3xyz.
+		\label{eqn:markoff}
+	\end{equation}
+	Entonces:
+	\begin{enumerate}
+		\item Dada una solución $(a, b, c)$ de \eqref{eqn:markoff}, entonces $(a, b, 3ab - c)$ es otra solución.
+		\item Todas las soluciones positivas no triviales a la ecuación de Markoff están generadas por $(1, 1, 1)$ empleando la regla del inciso anterior,
+			reordenando coordenadas o cambiando signo a dos coordenadas.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Es un mero cálculo.
+			% \begin{align*}
+			%	 a^2 + b^2 + (3ab - c)^2 &= a^2 + b^2 + 9a^2b^2 - 6abc + c^2 \\
+			%				 &= -3abc + 9a^2b^2 = 3ab(3ab - c). \tqedhere
+			% \end{align*}
+		\item Por casos:
+			\begin{enumerate}[(a)]
+				\item \underline{Si $x = y = z$:} entonces $3x^2 = 3x^3$ implica que $x \in \{ 0, 1 \}$ y descartamos la trivial.
+				\item \underline{Si $x = y \ne z$:} entonces $2x^2 + z^2 = 3x^2z$ implica que $x^2 \mid z^2$ y, por tanto, $x \mid z$.
+					Sea $z = wx$, luego tenemos la ecuación $2 + w^2 = 3wx$.
+					Nótese que, en consecuencia, $w \mid 2$ y como $z \ne x$, necesariamente $w = 2$ lo que nos da
+					la solución $(1, 1, 2)$ dada por aplicar la regla a $(1, 1, 1)$.
+				\item \underline{Si $x < y < z$:}
+					Basta probar que $3xy - z < z$ para poder aplicar un argumento inductivo.
+
+					Mirando la ecuación de Markoff en $\Z[x, y][z]$ podemos obtener la solución
+					$$ 2z_\pm = 3xy \pm \sqrt{ 9x^2y^2 - 4(x^2 + y^2) }. $$
+					De darse el caso $z_-$ nótese que
+					$$ 8x^2y^2 - 4x^2 - 4y^2 = 4x^2(y^2 - 1) + 4y^2(x^2 - 1) > 0, $$
+					de modo que
+					$$ x^2y^2 < 9x^2y^2 - 4(x^2 + y^2) \iff 2z_- < 3xy - xy = 2xy. $$
+					No obstante, como $z$ es el mayor, vemos que $3xyz_- = x^2 + y^2 + z_-^2 < 3z_-^2$ por lo que $xy < z_-$
+					lo cual es absurdo.
+
+					Así que se da el caso $z_+$ y vemos que $3xy - z_+ = z_- < z_+$ como se quería probar. \qedhere
+			\end{enumerate}
+	\end{enumerate}
+\end{proof}
+
+\begin{mydef}
+	Una solución $(a, b, c)$ de \eqref{eqn:markoff} con coordenadas estrictamente positivas se dice una \strong{terna de Markoff}\index{terna!de Markoff}.
+	Un número $x$ que pertenece a alguna terna de Markoff se dice un \strong{número de Markoff}\index{numero@número!de Markoff}.
+\end{mydef}
+Hay una variedad de razones por las cuales los matemáticos tienen interés en las ternas y números de Markoff.
+De partida, el teorema anterior permite construir una estructura a raíz de las ternas (desordenadas) de Markoff, llamado un árbol de Markoff.
+Otra razón es que el mismo Markoff demostró que las ternas de Markoff tenían relación a un cierto tipo de formas cuadráticas.
+
+\begin{thm}[Frobenius]
+	Se cumplen:
+	\begin{enumerate}
+		\item Los números de una terna de Markoff son coprimos dos a dos.
+		\item Todo número de Markoff impar es $\equiv 1 \pmod 4$.
+		\item Todo número de Markoff   par es $\equiv 2 \pmod 8$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Sea $(a, b, c)$ una terna de Markoff.
+			Nótese que si $d \in \N$ es tal que divide a dos de tres números, entonces por la ecuación \eqref{eqn:markoff}
+			vemos que divide al restante, de modo que $(a; b) = (a; c) = (b; c) = (a; b; c)$.
+			Finalmente, aplicando el teorema anterior, notamos que
+			$$ (a; b; c) = (a; b; 3ab - c) = \cdots = (1; 1; 1) = 1. $$
+		\item[2. y 3.] Nótese que como $c(3ab - c) = a^2 + b^2$, entonces $c$ no puede ser múltiplo de 4.
+			Más aún, para cada $p \mid c$, tenemos que $a^2 + b^2 \equiv 0 \pod p$, donde $p \nmid ab$,
+			de modo que $-1$ es un residuo cuadrático módulo $p$ y, por tanto, $p = 2$ o $p \equiv 1 \pmod 4$.
+			Así todo factor primo impar $p$ de $c$ satisface $p \equiv 1\pmod 4$ y de aparecer el 2, lo hace una única vez.  \qedhere
+	\end{enumerate}
+\end{proof}
+
+El siguiente teorema es original de \citeauthor{zhang2007markoff}~\cite{zhang2007markoff}:
+\addtocategory{article}{zhang2007markoff}
+\begin{thm}[Y.~Zhang]
+	Un número de Markoff par $c$ satisface $c \equiv 2 \pmod{32}$.
+\end{thm}
+\begin{proof}
+	Sea $(a, b, c)$ una terna de Markoff donde $c$ es par y $a, b$ son impares.
+	Entonces $(a - b)/2$ es par y $c/2 \equiv 1 \pod 4$ por el teorema de Frobenius, luego
+	$$ \left( \frac{a - b}{2} \right)^2 + \left( \frac{c}{2} \right)^2 = ab\cdot \frac{3c - 2}{4}. $$
+	Como $c$ es coprimo con $a$ y $b$, y $c/2$ es coprimo con $(3c - 2)/4$ (¿por qué?);
+	de modo que $c/2$ es coprimo con $ab(3c - 2)/4$ y, en consecuente, con $(a - b)/2$.
+	Ahora bien, $ab(3c - 2)/4$ es un impar y suma de dos cuadrados coprimos, luego todos sus factores primos son $\equiv 1 \pod 4$
+	(teorema~\ref{thm:primes_two_square} y siguiente), de modo que $(3c - 2)/4 \equiv 1 \pod 4$, o equivalentemente, $c \equiv 2 \pod{16}$.
+
+	Así $3c + 2 \equiv 8 \pod{16}$ implica que $(3c + 2)/8$ es impar y un mero cálculo da
+	$$ \left( \frac{a + b}{2} \right)^2 + \left( \frac{c}{2} \right)^2 = 2ab\cdot \frac{3c + 2}{8}. $$
+	Aplicamos el mismo procedimiento verificando que $c/2$ es coprimo con $(3c + 2)/8$, de lo que se sigue que $(3c + 2)/8 \equiv 1 \pod 4$ y,
+	en consecuente, $c \equiv 2 \pod{32}$.
+\end{proof}
+El teorema es agudo pues $(1, 1, 2)$ y $(1, 13, 34)$ son ternas de Markoff, de modo que $2, 34$ son pares de Markoff.
+
+La gran pregunta sobre la ecuación de Markoff, aún abierta es la siguiente:
+\begin{con}[de unicidad de Markoff]
+	Sean $(a_1, b_1, c_1), (a_2, b_2, \break c_2)$ un par de ternas de Markoff donde $a_i \le b_i \le c_i$ para $i \in \{ 1, 2 \}$.
+	Si $c_1 = c_2$, entonces $a_1 = a_2$ y $b_1 = b_2$.
+\end{con}
+Esta conjetura lleva más de un siglo sin resolución y, como otros problemas diofánticos ya estudiados, lleva un historial de demostraciones fallidas.
+Diremos que el número de Markoff $c$ en la conjetura es \strong{único}\index{numero@número!de Markoff!único} si la conjetura es cierta para $c$.
+
+\begin{lem}
+	Sea $m \in \{ p^n, 2p^n \}$ para algún $n \ge 1$ y $p$ primo impar.
+	Entonces, para todo $r$ coprimo con $m$, la ecuación $x^2 + r = 0 \pmod m$ tiene a lo más una única solución con $0 < x < m/2$.
+\end{lem}
+\begin{hint}
+	Se sigue de que dicho $m$ tiene raíces primitivas por el teorema~\ref{thm:numbers_with_prim_root}.
+\end{hint}
+% \begin{proof}
+%	 Sea $A := \Z/m\Z$.
+%	 Si $m = p^n$, entonces $A^\times = U_{p^n}$ es cíclico y, por tanto, $A$ posee una raíz primitiva.
+%	 Si $m = 2p^n$, entonces por el teorema chino del resto $A \cong \Z/2\Z \times \Z/p^n\Z$, de modo que $A^\times \cong U_2 \times U_{p^n} = U_{p^n}$
+%	 y se concluye lo mismo.
+%	 Claramente una solución de la ecuación es un elemento de $A$ y es fácil comprobar entonces que tiene, o bien cero o bien dos soluciones.
+%	 De tener dos, una solución $m/2 \le y < m$ es tal que $0 < m - y \le m/2$ y $x = m-y$ es una solución.
+% \end{proof}
+
+\begin{thm}
+	Un número de Markoff $c$ es único si $3c + 2$ o $3c - 2$ es de la forma $p^n, 4p^n$ u $8p^n$
+	para algún $p$ primo impar y $n \ge 1$.
+\end{thm}
+\begin{proof}
+	Sean $(a, b, c)$ y $(\tilde a, \tilde b, c)$ dos ternas de Markoff, donde $a \le b \le c$ y $\tilde a \le \tilde b \le c$.
+	Dividimos por subcasos:
+	\begin{enumerate}[(a)]
+		\item \underline{Si $c$ es impar:} 
+			Si $3c - 2 = p^n =: m$, entonces $(b - a)^2 + c^2 = abm \equiv 0 \pmod{m}$.
+			Como $(c; 3c - 2) = 1$ y como
+			$$ 0 < b-a < \frac{c}{2} - 1 < \frac{3c - 2}{2} = \frac{m}{2}, $$
+			entonces aplicamos el lema anterior para concluir que $b - a = \tilde b - \tilde a$.
+			Igualando
+			\[
+				ab(3c - 2) = (b - a)^2 + c^2 = (\tilde b - \tilde a)^2 + c^2 = 3\tilde a\tilde b c = \tilde a\tilde b(3c - 2),
+			\]
+			Así, $ab = \tilde a\tilde b =: d$; luego vemos que $\{ a, b \}$ y $\{ \tilde a, \tilde b \}$ son soluciones
+			de $(d/x - x)^2 + c^2 = dc$.
+
+			Si $3c + 2 = p^n =: m$, entonces empleamos la ecuación $(b + a)^2 + c^2 = abm$ de forma análoga.
+
+		\item \underline{Si $c$ es par:}
+			Por el teorema de Y.~Zhang tenemos que $3c - 2 \equiv 4 \pod{32}$ y $3c + 2 \equiv 8 \pod{32}$.
+			Así que, si $3c - 2 = 4p^n$, empleamos la ecuación
+			$$ \left( \frac{b - a}{2} \right)^2 + \left( \frac{c}{2} \right)^2 = abp^n \equiv 0 \pmod{p^n}. $$
+			Y si $3c + 2 = 8p^n$, empleamos la ecuación
+			$$ \left( \frac{b + a}{2} \right)^2 + \left( \frac{c}{2} \right)^2 = 2abp^n \equiv 0 \pmod{2p^n} $$
+			ambas de forma análoga al caso de $c$ impar. \qedhere
+	\end{enumerate}
+\end{proof}
+
+% Antes de proseguir haremos una traducción útil.
+% Sea $(a, b, c)$ una terna de Markoff con $a \le b \le c$.
+% Sea $u > 0$ el mínimo natural tal que $ua \equiv \pm b \pmod c$ (puesto que los números en la terna son coprimos).
+
+% \begin{thm}[Baragar-Button-Schmutz]
+%	 Un número de Markoff es único si es de la forma $p^n$ o $2p^n$ para algún $p$ primo impar y $n \ge 1$.
+% \end{thm}
+
+% Aquí expondremos un caso <<sencillo>> de cuando 
+
+%\section{El problema de Waring}
+%En 1770, el matemático inglés \textbf{Edward Waring} escribió para sí en sus \textit{Meditationes Algebraicæ}:
+%\begin{displayquote}
+%	Todo entero es igual a la suma de no más de 9 cubos.
+%	Además, todo entero es la suma de no más de 19 potencias cuartas y \textit{así sucesivamente...}\footnotemark{}
+%\end{displayquote}
+%\footnotetext{\itshape Every integer is equal to the sum of not more than 9 cubes. Also every integer is the sum of not more than 19 fourth powers, and so on...}
+%Esta última frase, <<así sucesivamente...>> ha sido interpretado como el \strong{problema de Waring}\index{problema!de Waring}:
+%dado un natural $k\ge 1$ existe un número $g \ge 1$ tal que todo entero $n\in\Z$ se puede escribir como suma de $g$ potencias $k$-ésimas, es decir, tal que
+%\begin{equation}
+%	\exists a_i\in\Z \qquad n = a_1^k + a_2^k + \cdots + a_g^k.
+%	\label{eqn:waring}
+%\end{equation}
+%En ésta sección presentaremos una prueba elemental para este hecho.
+%En primer lugar, obsérvese que los números más problemáticos para ésta afirmación son valores <<pequeños>> de $a$, ya que habrían pocas potencias con las que jugar;
+%por ejemplo $n = b^k - 1$ con $b$ <<pequeño>>.
+%Esto obstaculiza las cotas que podamos dar para $g$, por lo que es conveniente hacer las siguientes dos definiciones:
+%\begin{mydef}
+%	Sea $k \ge 1$ entero.
+%	Denotamos por $g(k)$ al mínimo cardinal (\textit{a priori}, posiblemente $\infty$) tal que para todo $n \in \Z$ se satisfaga \eqref{eqn:waring}.
+%	Denotamos por $G(k)$ al mínimo cardinal tal que para todo $n$ \textit{suficientemente grande} se satisface \eqref{eqn:waring}.
+%\end{mydef}
+%Si $g(k) < \infty$, entonces las consideraciones previas sugieren que $G(k)$ es bastante menor que $g(k)$ para $k$ suficientemente grande.
+%Nótese que, en los capítulos previos hemos ya deducido que $g(2) = G(2) = 4$ (teorema de Lagrange).
+
+%Ahora vamos a introducir las siguientes definiciones:
+%\begin{mydef}
+%	Sea $k \ge 1$ entero.
+%	Para $n$ suficientemente grande, sean:
+%	$$ N := \lfloor n^{1/k} \rfloor, \qquad v := 1/100, \qquad P := N^v. $$
+%	Dados $1 \le a \le q \le P$ con $b, q$ coprimos, se definen los \strong{arcos mayores}\index{arco!mayor}:
+%	$$ \mathfrak{M}(q, a) := \{ \alpha \in \R : |\alpha - a/q| \le N^{v - k} \}. $$
+%	Denotamos por $\mathscr{U} := (N^{v - k}, 1 + N^{v - k}]$ una traslación del intervalo semiabierto unitario y se definen los \strong{arcos menores}:
+%	\index{arco!menor} 
+%	$$ \mathfrak{m}(q, a) := \mathscr{U} \setminus \mathfrak{M}(q, a). $$
+%	De no haber ambigüedad sobre la elección del par $a, q$, obviaremos los paréntesis en los arcos.
+%\end{mydef}
+%Nótese que, pese a llamarse <<arcos>>, en realidad son intervalos.
+
+%% Dado un conjunto $\mathcal{A} = \{ a_m : m\in\N \}$ de naturales, podemos definir la serie de potencias formal
+%% \[
+%%	 F(z) := \sum_{m=1}^{\infty} z^{a_m}, \qquad |z| < 1,
+%% \]
+%% de modo que, para $s \ge 1$ entero:
+%% $$ F(z)^s = \sum_{m_1=1}^{\infty} \cdots \sum_{m_s=1}^{\infty} z^{a_{m_1} + \cdots  + a_{m_s}} = \sum_{n=0}^{\infty} R_s(n) z^n, $$
+%% donde $R_s(n)$ es la cantidad de representaciones de $n$ como suma de $s$ elementos de $\mathcal{A}$.
+%Vamos a introducir una técnica de conteo, llamada las \textit{sumas trigonómetricas}.
+%Denotaremos $e(\alpha) := \exp(2\pi \ui \alpha)$ y, dado un conjunto finito $b_1 < \cdots < b_N$ de naturales, definiremos
+%$$ f(\alpha) := \sum_{j=1}^{N} e(\alpha b_j), $$
+%de modo que, dado $s \ge 1$ entero, se satisface que
+%$$ f(\alpha)^s = \sum_{m=0}^{sb_N} R_s(m)e(\alpha m); $$
+%donde $R_s(m)$ denota la cantidad de maneras de escribir $m$ como suma de $s$ elementos de $b_j$'s.
+%Ahora bien, la teoría clásica de Fourier dice que
+%$$ \int_{0}^{1} e(\alpha m) \, \ud \alpha = \int_{0}^1 \exp(2\pi m \ui \cdot t) \, \ud t =
+%\begin{cases}
+%	1, & m = 0, \\
+%	0, & m \ne 0.
+%\end{cases} $$
+%De modo que
+%\[
+%	\int_{0}^{1} f(\alpha)^s e(-\alpha n) \, \ud \alpha = R_s(n).
+%\]
+%Aplicando todo lo anterior para $b_j := j^k$ con $N = \lfloor n^{1/k} \rfloor$, obtenemos lo siguiente:
+%\[
+%	R_s(n) = \int_{\mathfrak{M}} f(\alpha)^s e(-\alpha n) \, \ud \alpha + \int_{\mathfrak{m}} f(\alpha)^s e(-\alpha n) \, \ud \alpha.
+%\]
+%% Primero, defínase  y, con $N$ definido como antes, y definamos
+%% $$ f(\alpha) := \sum_{m=1}^{N} e(\alpha m^k). $$
+%% Por definición, los $\alpha m^k$'s van a ser números entre 0 y 1 distintos.
+
+\section*{Notas históricas}
+El resultado de que $\zeta(3)$ sea irracional fue original de \citet{apery79irrationalite} y
+fue rápidamente sustituído por el método de las integrales de \citeauthor{beukers79irrationality}~\cite{beukers79irrationality}.
+Se contaba que cuando Apéry presentó su solución original en los Días Aritméticos (\textit{Journées Arithmétiques}) de Luminy, los estudiantes estaban
+inquietos con la pizarra que se llenaba de relaciones crípticas entre fracciones continuas, y que al acabar era como si la respuesta se revelase por milagro.
+Indudablemente no eran los estudiantes los únicos desorientados, también así lo estaban los colegas, por lo que la demostración con integrales de Beukers
+rapidamente tomó terreno y, además, también alumbro el por qué la demostración de Apéry solo aplicaba en los casos de $\zeta(2)$ y $\zeta(3)$.
+
+El nombre <<ecuaciones de Pell>> es desafortunado y se debe al propio L. Euler quien le acredita las ecuaciones a John Pell;
+según Weil, esto podría deberse a que en el texto de \textit{Álgebra} de Wallis, el nombre de Pell aparece en repetidas ocasiones, pero no en relación
+a las ecuaciones que llevan su nombre.
+Cuando $D$ es relativamente pequeño, se pueden encontrar ingeniosamente soluciones a la ecuación de Pell y, tras descubrir la operación de grupo,
+generar más soluciones;
+por ello, la ecuación de Pell debería atribuirse mejor al indio Brahamgupta quién resolvió la ecuación $x^2 - 92y^2 = 1$ y descubrió completamente la
+ley de grupo en las soluciones.
+Otro gran aporte de la matemática hindú es el famoso método \textit{chakravala} que hemos omitido aquí por ser menos eficiente que las aproximaciones
+por fracción continua, pero que resultó uno de los más eficaces algoritmos en la historia; su autoría se debate entre Bhaskara II (c. 1150)
+o Shankar Shukla.
+
+Además de los indios, los griegos también aportaron a la ecuación, Teón de Esmirna (c. 130 a.C.) descubrió la ley de grupo para la ecuación $x^2 - 2y^2 = \pm 1$
+y Diofanto resolvió las ecuaciones con $D \in \{ 26, 30 \}$.
+Una situación divertida que vincula a los griegos con las ecuaciones de Pell es el \textit{problema del ganado de Arquimedes} que plantea
+calcular el número del ganado del dios Helios mediante una serie de restricciones que eventualmente se reducen a resolver una ecuación de Pell
+con $D = 2^2 \cdot 609 \cdot 7766 \cdot 4657^2$;
+el problema tardó siglos en resolverse y no se pudo sino mediante computador, pero esto no se corresponde tanto en su dificultad, sino en que los
+números elegidos son demasiado grandes como para efectuar las cuentas a mano.%
+\footnote{De hecho, se cree que en cierto modo Aristóteles sabía que, tras los despejes apropiados, se escondía una ecuación de Pell astronómica y
+que intencionalmente propuso el problema en respuesta a otros trabajos griegos con números grandes.}
+
+Otros matemáticos emplean la terminología <<ecuación de Pell-Fermat>> que es más apropiada, pero
+preservamos la terminología anticuada por ser más común.
+Fermat redescubrió el problema en 1657. 
+El recuento histórico de la ecuación de Pell es de \citeauthor{williams:pell}~\cite{williams:pell}.
+\addtocategory{historical}{apery79irrationalite, beukers79irrationality}
+\addtocategory{history}{williams:pell}
+
+\printbibliography[segment=\therefsegment, check=onlynew, notcategory=history, notcategory=historical, notcategory=other]
+\bibbycategory[segment=\therefsegment, check=onlynew]
+
+\end{document}

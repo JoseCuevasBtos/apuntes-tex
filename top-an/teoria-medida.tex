@@ -1,0 +1,1628 @@
+\chapter{Integración y teoría de la medida}
+La medida pretende ser un método para cálcular una generalización de la longitud, el área y el volúmen;
+en principio es fácil construir medidas sobre conjuntos simples como segmentos, rectángulos y paralelepípedos,
+pero también nos gustaría medir cosas que no estén formadas a partir de finitas cajas, como esferas o conos por ejemplo.
+
+La medida es una definición general de un objeto, sin embargo, hay unas medidas en particular que nos gustaría construir que corresponden
+a la medida de Jordan y la medida de Lebesgue, para lo cual, definiremos objetos más sencillos
+(como las medidas finitamente aditivas, y luego la medida externa) para poder extenderlos progresivamente.
+% Para lograr nuestro objetivo hacen falta muchas definiciones y conceptos nuevos,
+% no obstante prometo que no ha de ser demasiado distinto de las complicaciones que podría haber tenido la introducción a topología.
+
+\section{Teoría de la medida}
+\begin{mydef}
+	Sea $\Omega$ un conjunto que, al igual que en topología, llamaremos \textit{espacio}.
+	Una familia de subconjuntos $\Sigma \subseteq \P(\Omega)$ se dice una \strong{álgebra}\index{algebra (de conjuntos)@álgebra (de conjuntos)}
+	de conjuntos si:
+	\begin{enumerate}[{ALG}1.]
+		\item $\emptyset \in \Sigma$.
+		\item Si $A, B \in \Sigma$, entonces $A\cup B, A\cap B, A\setminus B \in \Sigma$.
+	\end{enumerate}
+	Se dice que $\Sigma$ es una \strong{$\sigma$-álgebra}\index{sigma-algebra@$\sigma$-álgebra} si además satisface:
+	\begin{enumerate}[resume*]
+		\item Para toda familia numerable $\{ A_n \}_{n\in\N} \subseteq \Sigma$ se cumple que $\bigcup_{n\in\N} A_n \in \Sigma$.
+	\end{enumerate}
+\end{mydef}
+\begin{ex}
+	Sea $\Omega$ un conjunto cualquiera.
+	Tanto $\Sigma = \{ \emptyset, \Omega \}$ como $\Sigma = \P(\Omega)$ constituyen $\sigma$-álgebras denominadas \strong{impropias} de $\Omega$.
+\end{ex}
+
+\begin{prop}
+	La intersección de ($\sigma$-)álgebras sobre un conjunto fijo $\Omega$ es también una ($\sigma$-)álgebra
+\end{prop}
+\begin{prop}
+	Sea $\mathcal{S} \subseteq \P(\Omega)$ una familia de subconjuntos de un conjunto fijo $\Omega$.
+	Existe una ($\sigma$-)álgebra mínima (respecto a la inclusión) tal que contiene a $\mathcal{S}$,
+	llamada la ($\sigma$-)\strong{álgebra generada} por $\mathcal{S}$.
+\end{prop}
+\begin{exn}
+	Sea $\Omega$ un conjunto infinito.
+	La álgebra $\mathscr{A}$ de conjuntos sobre $\Omega$ generada por los <<puntos>> $\{ x \}$
+	consiste exactamente de los conjuntos finitos y cofinitos (i.e., de complemento finito).
+	Ésta álgebra no es una $\sigma$-álgebra.
+
+	En su lugar, la $\sigma$-álgebra $\mathscr{M}$ generada por los puntos consiste exactamente de los conjuntos numerables
+	y conumerables (i.e., de complemento numerable).
+\end{exn}
+
+\begin{mydef}
+	Sea $\Omega = X$ un espacio topológico.
+	La $\sigma$-álgebra generada por los conjuntos abiertos de $X$ se llama la \strong{$\sigma$-álgebra de Borel},%
+	\index{sigma-algebra@$\sigma$-álgebra!de Borel}
+	y sus elementos se denominan \strong{conjuntos de Borel} o \strong{Borel-medibles}\index{conjunto!Borel-medible}.%
+	\footnote{Otros autores también emplean la expresión \textit{conjunto boreliano}.}
+\end{mydef}
+\begin{ex}
+	Si $X$ es un espacio topológico, entonces los conjuntos abiertos, cerrados, conjuntos $F_\sigma$ y $G_\delta$
+	son todos Borel-medibles.
+\end{ex}
+
+\begin{prop}
+	Sea $\mathscr{M}$ una ($\sigma$-)álgebra sobre $X$.
+	\begin{enumerate}
+		\item Dada una función $f \colon X \to Y$ entre conjuntos, la familia
+			\[
+				\mathscr{N} := \{ N \subseteq Y : f^{-1}[N] \in \mathscr{M} \}
+			\]
+			es una ($\sigma$-)álgebra sobre $Y$, denotada $f_*\mathscr{M} := \mathscr{N}$
+			y llamada la\break \strong{($\sigma$-)álgebra imagen directa}.
+		\item Dada una función $g \colon Y \to X$ entre conjuntos, la familia
+			\[
+				\mathscr{N} := \{ g^{-1}[M] \subseteq Y : M \in \mathscr{M} \}
+			\]
+			es una ($\sigma$-)álgebra sobre $Y$, denotada $g^{-1}\mathscr{M} := \mathscr{N}$
+			y llamada la\break \strong{($\sigma$-)álgebra preimagen}.
+	\end{enumerate}
+\end{prop}
+
+\begin{mydef}
+	Un \strong{espacio medible}\index{espacio medible} es un par $(X, \mathscr{M})$,
+	donde $X$ es un conjunto y $\mathscr{M}$ es una $\sigma$-álgebra sobre $X$.
+	Los subconjuntos $M \subseteq X$ que pertenecen a $\mathscr{M}$ se dicen ($\mathscr{M}$-)medibles.
+
+	Una función entre espacios medibles $f \colon (X, \mathscr{M}) \to (Y, \mathscr{N})$
+	se dice una \strong{función $\mathscr{M}$-$\mathscr{N}$-medible}\index{función!medible}
+	(o simplemente, \textit{medible}, de no haber ambigüedad)
+	si para todo conjunto $N \subseteq Y$ medible, su preimagen $f^{-1}[N] \subseteq X$ es también medible.
+\end{mydef}
+\begin{ex}
+	Sea $(X, \mathscr{M})$ un espacio medible.
+	Para todo subconjunto $Y \subseteq X$, la inclusión determina una función $\iota \colon Y \hookto X$
+	que dota a $Y$ de la $\sigma$-álgebra preimagen $\iota^{-1}\mathscr{M}$.
+	El par $(Y, \iota^{-1}\mathscr{M})$ se dice un subespacio (medible) de $(X, \mathscr{M})$.
+\end{ex}
+
+\begin{cor}
+	Sea $(X, \mathscr{M})$ un espacio medible.
+	\begin{enumerate}
+		\item Dada una función $f \colon X \to Y$ cualquiera.
+			La $\sigma$-álgebra imagen directa $f_*\mathscr{M}$ es la máxima tal que $f$ es medible.
+		\item Dada una función $g \colon Y \to X$ cualquiera.
+			La $\sigma$-álgebra preimagen $g^{-1}\mathscr{M}$ es la mínima tal que $g$ es medible.
+	\end{enumerate}
+\end{cor}
+
+\begin{prop}
+	Sean $(X, \mathscr{M}), (Y, \mathscr{N})$ y $(Z, \mathscr{P})$ un trío de espacios medibles.
+	EntonceS:
+	\begin{enumerate}
+		\item La identidad $\Id_X \colon (X, \mathscr{M}) \to (X, \mathscr{M})$ es medible.
+		\item Si $f \colon (X, \mathscr{M}) \to (Y, \mathscr{N})$ y $g \colon (Y, \mathscr{N}) \to (Z, \mathscr{P})$ son medibles,
+			entonces $f\circ g$ también lo es.
+	\end{enumerate}
+	En consecuencia, los espacios medibles conforman una categoría denotada $\mathsf{Meas}$.
+\end{prop}
+
+\begin{prop}
+	Sea $Y$ un conjunto, $\mathcal{S} \subseteq \P(Y)$ una familia de subconjuntos de $Y$ y $\mathscr{N}$ la $\sigma$-álgebra generada por $\mathcal{S}$.
+	Para todo espacio medible $(X, \mathscr{M})$, una función $f \colon X \to Y$ es medible syss $f^{-1}[S]$ es medible para todo $S \in \mathcal{S}$.
+\end{prop}
+\begin{cor}
+	Sean $X$ e $Y$ un par de espacios topológicos.
+	Toda función continua $X \to Y$ es Borel-medible.
+\end{cor}
+
+\begin{mydefi}
+	Sea $\Sigma$ una álgebra sobre un conjunto $\Omega$.
+	Una función $\mu\colon \Sigma \to [0,+\infty]$ se dice una \strong{medida finitamente aditiva}\index{medida!finitamente aditiva} si:
+	\begin{enumerate}[{MF}1.]
+		\item $\mu(\emptyset) = 0$.
+		\item Si $A_1,\cdots,A_n \in \Sigma$ son disjuntos dos a dos, entonces
+			$$ \mu( \bigcup_{i=1}^n A_i ) = \sum_{i=1}^n \mu(A_i). $$
+	\end{enumerate}
+	Se dice que $\mu$ es una \strong{medida}\index{medida} (a secas) si además satisface:
+	\begin{enumerate}[resume*]
+		\item Si $\{A_i\}_{i\in\N} \in \Sigma$ son disjuntos dos a dos, entonces
+			$$ \mu\left( \bigcup_{i\in\N}A_i \right) = \sum_{i\in\N} \mu(A_i). $$
+	\end{enumerate}
+	Una terna $(\Omega, \Sigma, \mu)$ donde $\sigma$ es un álgebra sobre $\Omega$ y $\mu$ finitamente aditiva,
+	se dice un \strong{espacio de medida booleana}. 
+	Si, en cambio, $\Sigma$ es una $\sigma$-álgebra y $\mu$ es una medida, entonces decimos que $(X, \Sigma, \mu)$
+	es un \strong{espacio de medida}\index{espacio!de medida}.
+\end{mydefi}
+
+\begin{ex}
+	\begin{itemize}
+		\item Si $\Sigma = \P(\Omega)$, entonces
+			$$ \mu(A) := 
+			\begin{cases}
+				|A|, & A\text{ finito}\\
+				+\infty, & A\text{ infinito}
+			\end{cases} $$
+			es una medida, llamada la \strong{medida de conteo}.
+		\item Si $x\in\Omega$ arbitrario y $\Sigma = \P(\Omega)$, entonces:
+			$$ \delta_x(A) :=
+			\begin{cases}
+				0, & x\notin A \\
+				1, & x\in A
+			\end{cases} $$
+			es una medida, llamada la \strong{medida de Dirac} concentrada en $x$. 
+	\end{itemize}
+\end{ex}
+\begin{ex}
+	% \addnamedexample{}{}
+	Considere a $\N$ con la $\sigma$-álgebra potencia $\P(\N)$.
+	La función
+	\[
+		\mu \colon \P(\N) \to [0, \infty], \qquad \mu(S) =
+		\begin{cases}
+			0, & S \text{ es finito,} \\
+			1, & S \text{ es infinito,}
+		\end{cases}
+	\]
+	es una medida booleana que no es una medida.
+\end{ex}
+
+% \begin{enumerate}
+	% \item $\Sigma_{\rm conum}$ formada por todos los subconjuntos de $\Omega$ a lo más numerables y sus complementos.
+	% \item Si $\{A_i\}_{i\in\N}$ es partición estricta de $\Omega$, entonces el conjunto de cualquier unión arbitraria de ellos es una $\sigma$-álgebra.
+% \end{enumerate}
+
+\begin{prop}
+	Se cumple que:
+	\begin{enumerate}
+		\item La intersección de ($\sigma$-)álgebras sobre un mismo conjunto $\Omega$
+			da otra ($\sigma$-)álgebra sobre $\Omega$.
+		\item Dada una familia $\mathcal{F}$ de subconjuntos de $\Omega$, existe una mínima ($\sigma$-)álgebra tal que
+			$\mathcal{F} \subseteq \Sigma$, en ese caso se le dice a $\Sigma$ la ($\sigma$-)álgebra inducida por $\mathcal{F}$.
+	\end{enumerate}
+\end{prop}
+\begin{mydef}
+	Llamamos $\sigma$-álgebra de Borel\index{sigma-algebra@$\sigma$-álgebra!de Borel} a aquella inducida por la topología de un espacio topológico;
+	vale decir, ésta $\sigma$-álgebra es la mínima tal que los conjuntos abiertos son medibles.
+	Los conjuntos de la $\sigma$-álgebra de Borel se dicen \strong{conjuntos de Borel}\index{conjunto!de Borel}.
+	Es fácil notar que los cerrados, $F_\sigma$ y $G_\delta$ son ejemplos de conjuntos de Borel.
+\end{mydef}
+
+\begin{prop}
+	Si $\Omega$ es un espacio de medida booleana, entonces, para todo $A,B$ medibles:
+	\begin{enumerate}
+		\item Si $A,B$ son disjuntos, entonces $\mu(A\cup B) = \mu(A) + \mu(B)$.
+		\item Si $A\subseteq B$ y $\mu(A) < +\infty$; entonces $\mu(B\setminus A) = \mu(B) - \mu(A)$.
+		\item Si $A\subseteq B$, entonces $\mu(A) \le \mu(B)$.
+		\item $\mu(A\cap B) + \mu(A\cup B) = \mu(A) + \mu(B)$.
+		\item Si $\{A_i\}_{i\in\N}$ es medibles y su unión también, entonces
+			$$ \mu\left( \bigcup_{i\in\N} A_i \right) \le \sum_{i\in\N} \mu(A_i). $$
+		\item Si $\{A_i\}_{i\in\N}$ es medibles, su unión también y $A_i \subseteq A_{i+1}$, entonces
+			$$ \mu\left( \bigcup_{i\in\N} A_i \right) = \sup_n\mu(A_n). $$
+		\item Si $\{A_i\}_{i\in\N}$ es medibles, su unión también, $A_i \supseteq A_{i+1}$ y $\mu(A_0) < +\infty$, entonces
+			$$ \mu\left( \bigcap_{i\in\N} A_i \right) = \inf_n\mu(A_n). $$
+	\end{enumerate}
+\end{prop}
+
+\begin{mydef}
+	Un subconjunto de un espacio de medida se dice \strong{nulo}\index{conjunto!nulo} si posee medida nula.
+	Un espacio de medida se dice \strong{completo}\index{espacio!de medida!completo} si todo subconjunto de un conjunto nulo
+	es medible (y, en consecuente, también es nulo).
+\end{mydef}
+
+\begin{prop}
+	Si $(\Omega, \Sigma, \mu)$ es de medida, entonces posee una extensión mínima tal que
+	$$ \bar\Sigma := \{ M\cup S: M\in\Sigma\wedge S\subseteq N\wedge \mu(N) = 0 \} $$
+	es un $\sigma$-álgebra que extiende a $\Sigma$ y $\bar\mu$ es una medida sobre $\bar\Sigma$ tal que
+	$$ \bar\mu(M\cup S) = \mu(M) $$
+	si $S$ es subconjunto de un nulo y $M$ es $\mu$-medible.
+	A $\bar\mu$ le decimos la \strong{compleción} de $\mu$.
+\end{prop}
+
+\begin{mydef}
+	Una función $\varphi\colon \P(\Omega) \to [0,+\infty]$ se dice una \strong{medida exterior}\index{medida!exterior} si:
+	\begin{enumerate}
+		\item $\varphi(\emptyset) = 0$.
+		\item $\varphi\left( \bigcup_{i=0}^\infty A_i \right) \le \sum_{i=0}^\infty \varphi(A_i)$.
+	\end{enumerate}
+	Un subconjunto $M\subseteq\Omega$ se dice $\varphi$-medible si para todo $A\subseteq\Omega$ se cumple
+	$$ \varphi(A) = \varphi(A\cap M) + \varphi(A\cap M^c). $$
+\end{mydef}
+Claramente toda medida finitamente aditiva sobre $\P(A)$ es exterior,
+sin embargo, no toda medida finitamente aditiva está definida en $\P(A)$, pero veremos cómo hacerlo luego.
+En lo sucesivo $\varphi$ siempre representará una medida exterior.
+
+\begin{prop}
+	Se cumple:
+	\begin{enumerate}
+		\item Si $A\subseteq B$, entonces $\varphi(A) \leq \varphi(B)$.
+		\item Si $N$ es tal que $\varphi(N) = 0$, entonces $N$ es $\varphi$-medible.
+			En particular, $\emptyset$ es $\varphi$-medible.
+		\item Si $M$ es $\varphi$-medible, $M^c$ también lo es.
+		\item Si $M,N$ son $\varphi$-medibles, $M\cup N$ también lo es.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Probaremos la última, si $A$ es un conjunto cualquiera, como $M$ es $\varphi$-medible entonces
+	$$ \varphi(A\cap N^c) = \varphi(A\cap N^c\cap M) + \varphi(A\cap N^c\cap M^c). $$
+	Definamos $U := M\cup N$, nótese que $U^c = M^c\cap N^c$ y que $A\cap U = (A\cap N)\cup(A\cap N^c\cap M)$, luego
+	$$ \varphi(A\cap U) \le \varphi(A\cap N) + \varphi(A\cap M\cap N^c). $$
+	Observe el siguiente razonamiento:
+	\begin{align*}
+		\varphi(A\cap U) + \varphi(A\cap U^c) &\le \varphi(A\cap N) + \varphi(A\cap M\cap N^c) + \varphi(A\cap U^c) \\
+		&= \varphi(A\cap N) + \varphi(A\cap N^c) = \varphi(A),
+	\end{align*}
+	como se quería probar.
+\end{proof}
+
+\begin{lem}
+	Si $M_1,\dots,M_n$ son una sucesión finita de conjuntos $\varphi$-medibles disjuntos dos a dos y $A$ es arbitrario, entonces
+	$$ \varphi\left( A\cap\bigcup_{i=1}^n M_i \right) = \sum_{i=1}^n \varphi(A\cap M_i). $$
+\end{lem}
+\begin{hint}
+	Usar inducción.
+\end{hint}
+
+\begin{thmi}[Teorema de extensión de Carathéodory]\index{teorema!de extensión!de Carathéodory}
+	Sea $\varphi$ una medida exterior.
+	Denotando por $\Sigma_\varphi$ es la familia de subconjuntos $\varphi$-medibles,
+	se cumple que $\Sigma_\varphi$ un $\sigma$-álgebra y que $\mu := \varphi\restrict\Sigma_\varphi$ es una medida completa.
+\end{thmi}
+\begin{proof}
+	\begin{enumerate}[i)]
+		\item \underline{Los $\varphi$-medibles forman un $\sigma$-álgebra:}
+			De la proposición anterior se deduce la completitud y que el conjunto de medibles es un álgebra booleana, de lo cuál simplemente desprenderemos que la resta de medibles es medible; ahora veremos que los medibles también son cerrados bajo uniones numerables.
+			Sean $\{M_i\}_{i\in\N}$ una sucesión de $\varphi$-medibles, sea
+			$$ E_k := \bigcup_{i=0}^k M_i,\quad M := \bigcup_{i=0}^\infty M_i. $$
+			Por definición $E_k \subseteq M$, ergo, $E_k^c \supseteq M^c$; es claro que los $E_k$ son $\varphi$-medibles, luego, para $A$ arbitrario:
+			$$ \varphi(A) = \varphi(A\cap E_k) + \varphi(A\cap E_k^c) \ge \varphi(A\cap E_k) + \varphi(A\cap M^c). $$
+			Aquí nos permitiremos definir $F_0 := M_0$ y $F_{n+1} := M_{n+1}\setminus E_n$, de modo que $E_k = \bigcup_{i=0}^k F_i$ y los $F_i$ son disjuntos dos a dos, luego por el lema anterior
+			$$ \varphi(A) \ge \sum_{i=0}^k\varphi(A\cap F_i) + \varphi(A\cap M^c), $$
+			con lo que se concluye que
+			$$ \varphi(A) \ge \sum_{i=0}^\infty\varphi(A\cap F_i) + \varphi(A\cap M^c) \ge \varphi(A\cap M) + \varphi(A\cap M^c). $$
+
+		\item \underline{$\varphi$ es medida:}
+			Se sabe que $\varphi(\emptyset) = 0$ y de que sólo toma valores positivos.
+			En primer lugar veamos un dato sencillo, que si $A,B$ son $\varphi$-medibles disjuntos entonces:
+			$$ \varphi(A\cup B) = \varphi(A) + \varphi(B), $$
+			esto se deduce porque $A$ es $\varphi$-medible, luego con $U := A\cap B$ se concluye que
+			$$ \varphi(U) = \varphi(U\cap A) + \varphi(U\cap A^c). $$
+			Sea $\{M_i\}_{i\in\N}$ una sucesión de $\varphi$-medibles disjuntos dos a dos, sea $ E_k := \bigcup_{i=0}^k M_i $ y $ M := \bigcup_{i=0}^\infty M_i $.
+			Por definición de medida exterior tenemos una desigualdad, probaremos la contraria, para ello usaremos el dato anterior y el que $E_k\subseteq M$ para notar que
+			$$ \sum_{i=0}^k \varphi(M_i) = \varphi(E_k) \le \varphi(M), $$
+			luego como es cota superior se cumple que $\sum_{i=0}^\infty \varphi(M_i) \le \varphi(M)$, que es lo que se quería probar. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{mydef}
+	Sea $\mu_0\colon \mathcal{B}_0 \to [0,+\infty]$ una medida finitamente aditiva.
+	Se dice que $\mu_0$ es una \strong{premedida}\index{premedida} si dada una familia de medibles disjuntos dos a dos $\{ E_i \}_{i\in\N}$
+	tales que $E := \bigcup_{i\in\N} E_i \in \mathcal{B}_0$, entonces
+	$$ \mu_0 \left( \bigcup_{i\in\N} E_i \right) = \sum_{i\in\N} \mu_0(E_i). $$
+\end{mydef}
+
+\begin{thmi}[Teorema de extensión de Hahn-Kolmogorov]\index{teorema!de extensión!de Hahn-Kolmogorov}
+	Toda premedida está contenida en una medida completa.
+\end{thmi}
+\begin{proof}
+	Sea $\mu_0$ una premedida sobre $\mathcal{B}_0$, definimos $\mu^* : \P(\Omega) \to [0,+\infty]$ como
+	$$ \mu_e(S) := \inf \left\{ \sum_{i\in\N}\mu_0(A_i) : S\subseteq\bigcup_{i\in\N} A_i \wedge \forall i\in\N\;(A_i\in\mathcal{B}_0) \right\}. $$
+	Es fácil notar que $\mu_e$ es un medida exterior, pero basta probar dos cosas más:
+
+	\begin{enumerate}[i)]
+		\item \underline{Todo $\mu_0$-medible es $\mu_e$-medible:}
+			Sea $M\in\mathcal{B}_0$ y $A$ arbitrario, hemos de probar que
+			$$ \mu_e(A) \ge \mu_e(A\cap M) + \mu_e(A\cap M^c). $$
+			Si $\mu_e(A) = +\infty$ entonces es trivial, así que supondremos lo contrario.
+			Sea $\epsilon > 0$, por definición de $\mu_e$ se cumple que existe una sucesión $\{M_i\}_{i\in\N} \in \mathcal{B}_0$ tal que $A\subseteq\bigcup_{i\in\N} M_i$ y que
+			$$ \sum_{i\in\N} \mu_0(M_i) \le \mu_e(A) + \epsilon, $$
+			luego la sucesión $\{ M_i\cap M \}_{i\in\N} \in \mathcal{B}_0$ cubre a $A\cap M$ y análogamente se cumple que
+			$$ \mu_e(A\cap M) \le \sum_{i\in\N} \mu_0(M_i\cap M),\quad \mu_e(A\cap M^c) \le \sum_{i\in\N} \mu_0(M_i\cap M^c). $$
+			Como $\mu_0$ es una premedida, entonces $\mu_0(M_i\cap M) + \mu_0(M_i\cap M^c) = \mu_0(M_i)$, por lo que
+			$$ \mu_e(A\cap M) + \mu_e(A\cap M^c) \le \sum_{i\in\N} \mu_0(M_i) \le \mu_e(A) + \epsilon, $$
+			y como se cumple para cualquier $\epsilon > 0$, en particular, se da lo que se quería probar.
+
+		\item \underline{$\mu_e$ concuerda con $\mu_0$:} 
+			Es inmediato que si $M\in\mathcal{B}_0$, entonces $\mu_e(M) \le \mu_0(M)$.
+			Sea $\{E_i\}_{i\in\N} \in \mathcal{B}_0$ tal que cubre a $M$, entonces definimos
+			$$ F_k := E_k \setminus \bigcup_{i=0}^{k-1} E_i $$
+			que es una sucesión de $\mu_0$-medibles disjuntos dos a dos que cubren a $M$, luego $G_k := F_k\cap M$ es
+			también una sucesión de $\mu_0$-medibles disjuntos dos a dos, pero que cumplen que su unión (que es $M$)
+			pertenece a $\mathcal{B}_0$, luego, por definición de premedida, la suma de sus medidas ha de ser $\mu_0(M)$
+			probando así que $\mu_0(M) \le \mu_e(M)$. \qedhere
+	\end{enumerate}
+\end{proof}
+La extensión construida en la demostración le llamaremos la extensión de Hahn-Kolmogorov, y análogamente con la extensión de Carathéodory.
+
+Las dos siguientes subsecciones presentan ejemplos clásicos de como aplicar las construcciones que hemos realizado:
+
+\subsection{Medida de Jordan y de Lebesgue}
+La medida de Jordan es un ejemplo de una (casi) medida intuitiva, su estudio es opcional, sin embargo otorga la intuición de cómo conseguir construir la medida de Lebesgue.
+
+\begin{mydefi}
+	Llamamos una \strong{celda} a un subconjunto de $\R^n$ que resuta el producto de intervalos acotados. Denotamos por $\mathcal{C}^n$ al conjunto de las celdas de $\R^n$.
+	Otro subconjunto es \strong{elemental} si es la unión de finitas celdas. Denotamos por $\mathcal{E}^n$ al conjunto de las figuras elementales de $\R^n$.
+	\par
+	Se define $m_c: \mathcal{C}^n \to [0,+\infty)$ como prosigue, si $(I_i)_{i=1}^n$ es una sucesión de intervalos tales que $a_k := \inf I_k$ y $b_k := \sup I_k$, entonces
+	$$ m_c\left( \prod_{i=1}^n I_i \right) := \prod_{i=1}^n (b_i - a_i). $$
+\end{mydefi}
+De momento, $m_c$ no resulta ser ni siquiera una medida finitamente aditiva, pero pretendemos extenderla a una.
+
+\begin{prop}
+	Si $A,B \in \mathcal{E}^n$, entonces:
+	\begin{enumerate}
+		\item $A\cup B\in\mathcal{E}^n$.
+		\item $A\cap B\in\mathcal{E}^n$.
+		\item $A\setminus B\in\mathcal{E}^n$.
+		\item $\vec v+A\in\mathcal{E}^n$, donde $\vec v\in\R^n$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	Supongamos que $A = \bigcup_{k=1}^p C_k$ y $B = \bigcup_{k=1}^q D_k$ con $C_k,D_k\in \mathcal{C}^n$.
+	\begin{enumerate}
+		\item Trivial.
+		\item Basta notar que
+			$$ A\cap B = \bigcup_{i=1}^p\bigcup_{j=1}^q(C_i\cap D_j), $$
+			y queda al lector ver que la intersección de celdas es una celda.
+		\item Basta probar que si $B$ está contenido en una celda $C$, entonces $C\setminus B \in \mathcal{E}^n$ (pues en cuyo caso $A\setminus B = A\cap(C\setminus B)$ con $A\cup B\subseteq C$).
+		\item Ejercicio para el lector. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{lem}
+	Si $E\in\mathcal{E}^n$, entonces:
+	\begin{enumerate}
+		\item $E$ es la unión de cajas disjuntas dos a dos.
+		\item Si $A_1,\dots,A_p$ y $B_1,\dots,B_q$ son sucesiones finitas de cajas disjuntas dos a dos tales que
+			$\bigcup_{i=1}^p A_i = \bigcup_{i=1}^q B_i$, entonces $\sum_{i=1}^p m_c(A_i) = \sum_{i=1}^q m_c(B_i)$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	\begin{enumerate}
+		\item Supongamos que $n=1$, en cuyo caso $E = I_1\cup\cdots\cup I_k$, luego hay a lo más $2k$ puntos que representan
+			los extremos de los intervalos, luego bastaría una simple inducción para notar que para $k$ intervalos se
+			pueden reemplazar por una familia finita disjunta de ellos.
+			Si $n > 1$, sale por inducción con lo que basta probar el caso de dos celdas, que queda para el lector.
+
+		\item Para ello veremos que si $I$ es un intervalo, entonces
+			$$ m_c(I) = \lim_n \frac{1}{n} \left| I\cap \frac{1}{n}\Z \right|, $$
+			en efecto supongamos que $I = [a,b]$, entonces
+			$$ \left| [a,b]\cap \frac{1}{n}\Z \right| = |\{m\in\Z: na\le m\le nb \}| $$
+			notemos que $\{ \sfloor{na}+1,\dots,\sfloor{nb} \} \subseteq \{m\in\Z : na\le m\le nb\} \subseteq \{\sfloor{na}, \dots, \sfloor{nb}+1\}$.
+			Luego se cumple que el conjunto tiene un cardinal entre $\sfloor{nb} - \sfloor{na}$ y $\sfloor{nb} - \sfloor{na} + 2$, y se sabe que
+			$$ \lim_n \frac{\sfloor{nx}}{n} = x $$
+			(¿por qué?), por ende se cumple lo deseado.
+			\par
+			Luego, si $C := \prod_{i=1}^d I_i \in \mathcal{C}^d$, entonces
+			$$ m_c(C) = \lim_n \frac{1}{n^d} \left| C\cap \frac{1}{n}\Z^d \right|; $$
+			con lo cual es fácil probar que si $E := \bigcup_{i=1}^p A_i$ donde $A_i$ son cajas disjuntas dos a dos, entonces
+			$$ \sum_{i=1}^p m_c(A_i) = \lim_n \frac{1}{n^d} \left| E\cap \frac{1}{n}\Z^d \right| $$
+			donde la expresión de la derecha no depende de la partición elegida. \qedhere
+	\end{enumerate}
+\end{proof}
+La medida finitamente aditiva definida en el último inciso la llamaremos \strong{medida elemental}\index{medida!elemental}.
+
+\begin{thm}
+	Existe una única medida finitamente aditiva $m:\mathcal{E}^n \to [0,+\infty)$ tal que:
+	\begin{enumerate}
+		\item $m([0,1]^n) = 1$.
+		\item $m(\vec v+E) = m(E)$ para todo $\vec v\in\R^n$ y $E\in\mathcal{E}^n$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	La idea sería probar que la medida restringida a las cajas es necesariamente $m_c$,
+	de lo que se aplica el lema anterior para concluir que $m$ debe ser la descrita anteriormente;
+	en general nos restringiremos a $\R^2$, pero las pruebas funcionan generalmente.
+	Para ello primero se prueba que si tenemos el producto de $[0,1]$ y $\{0\}$ en alguna coordenada, entonces su medida ha de ser nula,
+	por lo cual llamemos $\ell := m([0,1]\times\{0\})$, luego $m\left( \cup_{k=1}^n [0,1]\times\{k/n\} \right) = n\ell$ y
+	$\cup_{k=1}^n [0,1]\times\{k/n\} \subseteq [0,1]^2$, por lo que $\ell = 0$, con esto se concluye que no importa si el intervalo posee o no los bordes.
+	Como $[0,1]\times[0, n) = \bigcup_{k=1}^n [0,1]\times [k-1, k)$ se concluye que tiene medida $n$.
+	Así mismo como $[0,1] \times [0, 1/n]$ copiado $n$ veces da $[0,1]^2$, entonces tiene medida $1/n$.
+	Por lo que $m$ concluye con $m_c$ en caso de celdas de coordenadas racionales.
+	Para concluir el caso real, basta aproximar por coordenadas racionales, ya que la medida conserva el orden de la contención de los conjuntos.
+\end{proof}
+
+\begin{mydefi}[Medida de Jordan]\index{medida!de Jordan}
+	Dado $A \subseteq \R^d$, denotamos
+	$$ J_*(A) := \sup\{m_e(E): A\supseteq E\in\mathcal{E}^d\}, \;
+	J^*(A) := \inf\{m_e(E): A\subseteq E\in\mathcal{E}^d\}; $$
+	donde $m_e$ es la medida elemental.
+	\par
+	Diremos que un conjunto $A$ es Jordan-medible si $J_*(A) = J^*(A) =: m_J(A)$ donde $m_J$ denota la \strong{medida de Jordan} (conste que aún no hemos comprobado que sea una medida).
+	La clase de los conjuntos Jordan-medibles de $\R^d$ se denota $\mathcal{J}^d$.
+\end{mydefi}
+
+\begin{prop}
+	Un conjunto acotado $A \subseteq \R^d$ es Jordan-medible syss para todo $\epsilon > 0$ existen $E_1, E_2$ elementales tales que $E_1 \subseteq A \subseteq E_2$ y que $m_e(E_2 \setminus E_1) < \epsilon$.
+\end{prop}
+\begin{proof}
+	$\implies$. Si $A$ es Jordan-medible, entonces por definición de supremo e ínfimo para todo $\epsilon > 0$ existen $E_1,E_2$ elementales tales que $E_1 \subseteq A \subseteq E_2$ y que $m_e(E_2) - m_J(A) < \epsilon/2$ y $m_J(A) - m_e(E_2) < \epsilon/2$, luego 
+	$$ m_e(E_2 \setminus E_1) = m_e(E_2) - m_e(E_1) < \epsilon. $$
+	$\impliedby$. Por definición se cumple que
+	$$ 0\le J^*(A) - J_*(A) \le m_e(E_2) - m_e(E_1) = m_e(E_2\setminus E_1) < \epsilon, $$
+	para todo $\epsilon > 0$, luego $J_*(A) = J^*(A)$, es decir, $A$ es Jordan-medible.
+\end{proof}
+
+\begin{thm}
+	$\mathcal{J}^d$ es un álgebra que contiene a $\mathcal{E}^d$ y la medida de Jordan es una medida finitamente aditiva que extiende a la medida elemental.
+\end{thm}
+\begin{proof}
+	Es claro que las figuras elementales son Jordan-medibles y que conservan su medida.
+
+	Sea $\epsilon > 0$ y sean $A,B$ son Jordan-medibles, entonces la propiedad anterior comprueba que existen $A_1,A_2,B_1,B_2$ elementales tales que $A_1\subseteq A\subseteq A_2$, $m_e(A_2\setminus A_1) < \epsilon/2$ y análogamente para $B$.
+
+	\begin{enumerate}[i)]
+		\item \underline{Unión de finitos Jordan-medibles es Jordan-medible:}
+			Sea $C_1 := A_1\cup B_1 \subseteq A\cup B \subseteq C_2 := A_2\cup B_2$ y vemos que se cumple que
+			$$ m_e(C_2 \setminus C_1) = m_e\big( (A_2\setminus A_1)\cup(B_2\setminus B_1) \big)
+			\le m_e(A_2\setminus A_1) + m_e(B_2 \setminus B_1) < \epsilon. $$
+			Queda al lector probar que la propiedad aditiva se da.
+
+		\item \underline{Resta de Jordan-medibles es Jordan-medible:} 
+			Sea $D_1 := A_1\setminus B_2 \subseteq A\setminus B \subseteq D_2 := B_2\setminus A_1$, entonces
+			\begin{equation}
+				m_e(D_2 \setminus D_1) = m_e\big( (A_2\setminus A_1)\cup(B_2\setminus B_1) \big) < \epsilon. \tqedhere
+			\end{equation}
+	\end{enumerate}
+\end{proof}
+
+\begin{prop}
+	Si $A\in\mathcal{J}^d$, entonces para todo $\epsilon > 0$ existen $K$ compacto y $U$ abierto tales que $K\subseteq A\subseteq U$ y $m_e(U\setminus K) < \epsilon$.
+\end{prop}
+\begin{proof}
+	La prueba es algo así, comenzaremos por el caso en que $A$ es una celda y veremos inductivamente sobre la dimensión del espacio que existen $K\subseteq A$ tal que $m_J(A\setminus K) < \epsilon$ y $m_J(U\setminus A) < \epsilon$. Así dado que los conjuntos Jordan-medibles pueden ser aproximados por elementales, y los elementales son unión finita de celdas, podemos aproximar esos elementales por debajo por compactos, y los elementales por arriba por abiertos.
+	\par
+	Sea $\epsilon > 0$. Sea $A$ de extremos $a<b$, luego sea $r := \min(b-a, \epsilon)/2$ de modo que $K := [ a+r/2, b-r/2 ] \subseteq A$ y $m_J(A\setminus K) = r < \epsilon$. Así mismo $U := (a - \epsilon/3, b + \epsilon/3)$ cumple que $m_J(U\setminus A) < \epsilon$.
+	\\
+	Si $A \in \mathcal{C}^d$ de medida $\alpha$ e $I$ es un intervalo de extremos $a<b$ de medida $\beta$, entonces $A\times I\in \mathcal{C}^d$ y claramente $m_J(A\times I) = \alpha\beta$. Sea $r := \min\left( 1, \frac{\epsilon}{\alpha + \beta + 1} \right)$, luego existen $K_1,K_2$ compactos tales que $m_J(A\setminus K_1), m_J(I\setminus K_2) < r$, luego $m_J(K_1\times K_2) > (\alpha-r)(\beta-r) = \alpha\beta - r(\alpha + \beta - r) \ge \alpha\beta - \epsilon$, con lo que $m_J(A\times I\setminus K_1\times K_2) < \epsilon$.
+	Es similar para lo del abierto.
+	\par
+	Es fácil extender la prueba para admitir aproximaciones a conjuntos elementales, basta dividir el epsilon según la cantidad de celdas en las que se descompone.
+\end{proof}
+
+\thmdep{AEN}
+\begin{thm}
+	La medida de Jordan es una premedida, i.e., si $\{A_i\}_{i\in\N} \in \mathcal{J}^d$ son tales que $\bigcup_{i\in\N} A_i \in \mathcal{J}^d$, entonces
+	$$ m_J\left( \bigcup_{i\in\N} A_i \right) = \sum_{i\in\N} m_J(A_i). $$
+\end{thm}
+\begin{proof}
+	Sea $A := \bigcup_{i\in\N} A_i$, notemos que para todo $n\in\N$ se cumple que
+	$$ \sum_{i=0}^n m_J(A_i) = m_J\left( \bigcup_{i=0}^n A_i \right) \le m_J(A), $$
+	luego $\sum_{i=0}^\infty m_J(A_i) \le m_J(A)$.
+	\par
+	Sea $\epsilon > 0$, para la otra implicancia utilizaremos la proposición anterior para conseguir un $K$ elemental y compacto tal que $K \subseteq A$ y para el cuál $m_J(A \setminus K) < \epsilon/2$.
+	Por otro lado, para todo $A_i$ existe un elemental y abierto $U_i$ tal que $A_i \subseteq U_i$ y $m_J(U_i \setminus A_i) < \epsilon/2^{i+2}$.
+	Como $K \subseteq A \subseteq \bigcup_{i\in\N} U_i$ y $K$ es compacto, entonces existe $U_{k_1},\dots,U_{k_n}$ que cubren a $K$, luego
+	\begin{align*}
+		m_J(A) &= m_J(A\setminus K) + m_J(K) \le \frac{\epsilon}{2} + \sum_{i=1}^n m_J(U_{k_i})\\
+		&\le \frac{\epsilon}{2} + \sum_{i=1}^n m_J(A_{k_i}) + \sum_{i=1}^n m_J(U_{k_i} \setminus A_{k_i}) \\
+		&\le \frac{\epsilon}{2} + \sum_{i\in\N}m_J(A_i) + \sum_{i\in\N} m_J(U_i \setminus A_i) \\
+		&\le \sum_{i\in\N}m_J(A_i) + \epsilon,
+	\end{align*}
+	para todo $\epsilon > 0$, luego se sostiene la igualdad.
+\end{proof}
+\thmdep{}
+
+\begin{mydefi}
+	Se le llama \strong{medida de Lebesgue}\index{medida!de Lebesgue} a la extensión de Hahn-Kolmogorov de la medida de Jordan.
+	Los clase de los conjuntos Lebesgue-medibles se denota por $\mathcal{M}^d$.
+	En lo sucesivo denotaremos $\mu$ a la medida de Lebesgue de no haber ambigüedad, y a los conjuntos Lebesgue-medibles les llamaremos medibles a secas.
+	% \\
+	% Se les dice \textit{finitos} a los conjuntos medibles de medida finita y \textit{nulos} a los de medida nula.
+\end{mydefi}
+
+\begin{cor}
+	Todo conjunto Lebesgue-medible es la unión entre un conjunto de Borel y un subconjunto de un conjunto nulo.
+\end{cor}
+
+\begin{exn}[conjunto de Cantor]
+	\addnamedexample{Conjunto de Cantor}{Un conjunto Lebesgue-nulo que no es numerable}
+	Sea $C$ el conjunto de Cantor construido en el teorema~\ref{thm:continuum_cardinal}, ya vimos en la demostración que no es numerable
+	y otra notación es que en cada paso el conjunto de Cantor está contenido en un conjunto de medida de Lebesgue $1/3^n$, así que se comprueba que es nulo.
+\end{exn}
+\begin{cor}
+	Hay $2^{\mathfrak{c}}$ conjuntos Lebesgue-medibles.
+\end{cor}
+
+Nótese que hay $2^{\mathfrak{c}}$ subconjuntos de $\R$ en general así que habría posibilidad de que todos ellos fueran medibles,
+por lo tanto, queda preguntarse si existen conjuntos no Lebesgue-medibles, y según las formas del axioma de elección se pueden construir varios de ellos
+que se presentan en la sección \S~\ref{sec:measure_mess}, cabe destacar que en todos los casos se construyen $2^{\mathfrak{c}}$ conjuntos no medibles.
+Curiosamente, Solovay probó que hay un modelo de ZF consistente, donde se cumple DE, AE falla y no hay conjuntos no Lebesgue-medibles.
+
+\begin{thmi}[Primer principio de Littlewood]\index{principio!de Littlewood!(primero)}
+	Si $F$ es medible y finito, entonces para todo $\epsilon > 0$ existe una figura elemental $E$ tal que $\mu(F\Delta E) < \epsilon$.
+\end{thmi}
+\begin{proof}
+	Por definición si $F$ es medible existe $\bigcup_{i=0}^\infty C_i$ donde $C_i$ son celdas tales que
+	$$ F \subseteq \bigcup_{i=0}^\infty C_i,\quad \sum_{i=0}^\infty \mu(C_i) \le \mu(E) + \frac\epsilon 2. $$
+	Como la serie de la derecha converge, existe $n\in\N$ tal que $\sum_{i=n+1}^\infty\mu(C_i) < \epsilon/2$, luego si $E := \bigcup_{i=0}^n C_i$ se cumple que
+	\begin{align}
+		\mu(F\Delta E) &= \mu(F\setminus E) + \mu(E\setminus F) \notag \\
+		&\le \mu\left( \bigcup_{i=n+1}^\infty C_i \right) + \mu\left( \bigcup_{i=0}^\infty C_i \setminus F \right) \notag \\
+		&\le \sum_{i=n+1}^\infty \mu(C_i) + \sum_{i=0}^\infty \mu(C_i) - \mu(F) \notag \\
+		&< \epsilon. \tqedhere
+	\end{align}
+\end{proof}
+
+\section{Funciones medibles}%
+\label{sec:funciones_medibles}
+
+\begin{mydefi}
+	Si $(X, \mathcal{A})$ e $(Y, \mathcal{B})$ son espacios dotados de $\sigma$-álgebras,
+	entonces una función $f\colon X\to Y$ se dice $(\mathcal{A, B})$-\strong{medible}\index{medible!(función)} si le preimagen de todo $\mathcal{B}$-medible
+	es $\mathcal{A}$-medible.
+	% Si $X$ es de medida e $Y$ es topológico, entonces una función $f:X\to Y$ se dice \textit{medible}\index{medible!(función)} si la preimagen de todo abierto es también medible.
+	Si $Y$ es un espacio topológico y no se indica su $\sigma$-álgebra, entonces se asume que es la de Borel.
+	Si $X = \R^d$, entonces se dice que la función es \strong{Lebesgue} (resp. \strong{Borel})-\strong{medible} si $\mathcal{A}$ es la
+	$\sigma$-álgebra de Lebesgue (resp. Borel).
+	\index{Lebesgue-medible (función)}\index{Borel-medible (función)}
+	% \par
+	% Notemos que no es necesario la existencia de una medida, sino simplemente la existencia de una $\sigma$-álgebra.
+	% Luego podemos decir que si $X$ es topológico, entonces $f$ es Borel-medible\index{Borel-medible (función)} considerando a la $\sigma$-álgebra de Borel.
+\end{mydefi}
+Una aclaración es que una función $f\colon \R^n \to \R^m$ es Lebesgue-medible cuando la preimagen de todo conjunto de Borel en $\R^m$ es Lebesgue-medible;
+no es necesario exigir que todo Lebesgue-medible en $\R^m$ tenga preimagen Lebesgue-medible, ya que dicha condición es bastante más fuerte.
+% Una observación rápida es que una función $f:X\to\R^d$ es Borel-medible
+
+\begin{prop}
+	Si $(X, \mathcal{A}), (Y, \mathcal{B}), (Z,\mathcal{C})$ son de medida, entonces:
+	\begin{enumerate}
+		\item $\Id_X \colon X \to X$ es $( \mathcal{A, A} )$-medible.
+		\item Si $f$ es $(\mathcal{A,B})$-medible y $g$ es $(\mathcal{B, C})$-medible, entonces $f\circ g$ es $(\mathcal{A, C})$-medible.
+			En consecuencia, los espacios de medida (como objetos) y las funciones medibles entre ellos (como flechas)
+			conforman una categoría denotada $\mathsf{Meas}$.
+		\item Las funciones continuas son Borel-medibles.
+		\item La composición de Borel-medibles es Borel-medible.
+		\item Si $f\colon \R^d \to X$ es Borel-medible, entonces es Lebesgue-medible.
+		\item Si $f\colon \R^n \to \R^m$ es Lebesgue-medible y $g\colon R^m \to X$ es Borel-medible,
+			entonces $f\circ g\colon \R^n \to X$ es Lebesgue-medible.
+		\item $f\colon X\to\R^d$ es $\mathcal{A}$-medible syss $f\circ\pi_i$ lo es.
+	\end{enumerate}
+\end{prop}
+\begin{prop}
+	Sean $\Omega$ un espacio de medida, $Y$ un espacio métrico y $(f_n\colon\Omega \to Y)_{n\in\N}$ una sucesión de funciones
+	medibles tales que convergen puntualmente a $f$. Entonces $f$ es medible.
+\end{prop}
+\begin{proof}
+	Sea $U$ un abierto no vacío de $Y$.
+	Sea $x \in f^{-1}[U]$, entonces como $f(x) \in U$ existe un $m$ tal que para todo $k\ge m$ se cumple que $f_k(x) \in U$, por lo que
+	$$ f^{-1}[U] \subseteq \bigcup_{k=m}^\infty f^{-1}_k[U], $$
+	como ésto aplica para todo $m$, entonces se satisface que
+	$$ f^{-1}[U] \subseteq \bigcap_{m=1}^\infty \bigcup_{k=m}^\infty f^{-1}_k[U]. $$
+	Sea $C$ un cerrado no vacío de $Y$, si
+	$$ x \in \bigcup_{k=m} f_k^{-1}[C] $$
+	es porque $f_k(x) \in C$ para algún $k \ge m$.
+	Si ésto aplica para todo $m$, es porque existe una subsucesión de $f_k(x)$ completamente contenida en $C$,
+	luego se sigue que
+	$$ \bigcap_{m=1}^\infty \bigcup_{k=m}^\infty f^{-1}_k[C] \subseteq f^{-1}[C]. $$
+	Fijemos un abierto no vacío $V$ de $Y$.
+	Luego $V^c$ es cerrado y ya hemos visto que $y \in V^c$ syss $d(y, V^c) = 0$.
+	Por ende, definamos
+	$$ U_n := \left\{ y\in Y : d(y, V^c) > \frac{1}{n} \right\}, \qquad C_n := \left\{ y\in Y : d(y, V^c) \ge \frac{1}{n} \right\}. $$
+	Entonces $V^c = \bigcap_{n=1}^\infty C_n^c$, o equivalentemente
+	$$ V = \bigcup_{n=1}^\infty C_n = \bigcup_{n=1}^\infty U_n. $$
+	Finalmente, veamos que la preimagen de $V$ es medible pues:
+	\begin{align*}
+		f^{-1}[V] &\supseteq \bigcup_{n=1}^\infty f^{-1}[C_n] \supseteq \bigcup_{n=1}^\infty \bigcap_{m=1}^\infty \bigcup_{k=m}^\infty f^{-1}_k[C_n] \\
+		&\supseteq \bigcup_{n=1}^\infty \bigcap_{m=1}^\infty \bigcup_{k=m}^\infty f^{-1}_k[U_n]
+	\end{align*}
+	y que 
+	\begin{equation}
+		f^{-1}[V] = \bigcup_{n=1}^{\infty} f^{-1}[U_n] = \bigcup_{n=1}^{\infty} \bigcap_{m=1}^\infty \bigcup_{k=m}^\infty f^{-1}_k[U_n] \tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{mydefi}
+	Si $\Omega$ es de medida $\mu$, se dice que una propiedad se cumple\footnote{En inglés, \textit{almost everywhere} (a.e.).
+	En español no hay consenso, otros autores usan \textit{por casi todas partes} (p.c.t.p.) y \textit{casi todo punto} (c.t.p.).}
+	\strong{$\mu$-casi dondequiera} (abreviado $\mu$-c.d.) si se cumple en el complemento de un conjunto nulo.
+	Si no hay ambigüedad sobre los signos se puede obviar el ``$\mu$-''.
+	\nomenclature{$\mu$-c.d.}{$\mu$-casi dondequiera, dicho de una propiedad que se cumple en el complemento de un conjunto $\mu$-nulo.
+	La medida $\mu$ puede obviarse}
+\end{mydefi}
+
+\begin{prop}
+	Si $f,g\colon X \to Y$ con $f$ medible, $X$ de medida completa $\mu$ y si se cumple que $f = g$ en $\mu$-c.d., entonces $g$ es medible.
+\end{prop}
+
+\begin{thm}
+	Si $\Omega$ es de medida y $f:\Omega \to \overline\R$, entonces son equivalentes:
+	\begin{enumerate}
+		\item $f$ es medible.
+		\item Para todo $a\in\overline\R$ se cumple que $\{ x\in\Omega : f(x) <   a \}$ es medible.
+		\item Para todo $a\in\overline\R$ se cumple que $\{ x\in\Omega : f(x) \le a \}$ es medible.
+		\item Para todo $a\in\overline\R$ se cumple que $\{ x\in\Omega : f(x) >   a \}$ es medible.
+		\item Para todo $a\in\overline\R$ se cumple que $\{ x\in\Omega : f(x) \ge a \}$ es medible.
+	\end{enumerate}
+\end{thm}
+% \begin{proof}
+% 	$(1)\implies(2)$. Basta notar que $[-\infty, a)$ es abierto, luego es de Borel y Lebesgue-medible.
+% 	\par
+% 	$(2)\implies(3)$. Basta notar que
+% 	$$ f^{-1}\big[ [-\infty, a] \big] = \bigcap_{k=1}^\infty f^{-1}\left[ \left[-\infty, a + \frac{1}{k}\right) \right], $$
+% 	donde los de la derecha son medibles, luego su intersección numerable también lo es.
+% 	\\
+% 	$(3) \implies (4) \implies (5) \implies (2)$ son análogas.
+% 	\par
+% 	$(5) \implies (1)$. Basta probar que los conjuntos de la forma $f^{-1}[(a,b)]$ lo sean, lo cuál se cumple claramente por las implicaciones anteriores.
+% \end{proof}
+
+\begin{prop}
+	Si $f\colon X\to Y$ es una función medible y $g\colon Y\to Z$ es Borel-medible, entonces $f\circ g$ es medible.
+	En particular, $f\circ g$ es medible si $g$ es continua.
+\end{prop}
+
+\begin{prop}
+	Sea $X$ es un espacio de medida, sean $Y, Z$ espacios topológicos y sea $f\colon X \to Y\times Z$.
+	Si $f = g \Delta h$, entonces $f$ es una función medible syss $g, h$ lo son.
+\end{prop}
+
+\begin{prop}
+	Si $f,g\colon X \to \R^d$ es medible, entonces $f + g$, $\langle f, g \rangle$ (producto interno) y $f\cdot g$ (producto complejo) lo son.
+\end{prop}
+\begin{proof}
+	La prueba se reduce en aplicar la proposición anterior, pues la suma y el producto interno en espacios euclídeos es continua; el producto complejo es una función lineal, vista como operación sobre $\R^2$, luego también es continua.
+	Sólo basta probar que $F(x) := (f(x), g(x))$ (es decir, la diagonal) sea medible.
+\end{proof}
+
+% \textbf{Ejemplo (función de Cantor-Lebesgue).} Sea ...
+
+\begin{thm}
+	Sean $f_i\colon X \to \overline\R$ para todo $i\in\N$ una sucesión de funciones medibles, entonces
+	\begin{align*}
+		g_1(x) &:= \sup\{f_i(x):i\in\N\}, & g_2(x) &:= \inf\{f_i(x):i\in\N\} \\
+		h_1(x) &:= \limsup_i f_i(x),      & h_2(x) &:= \liminf_i f_i(x)
+	\end{align*}
+	son también medibles.
+\end{thm}
+\begin{proof}
+	Probaremos sólo que $g_1$ lo es, ya que el resto es análogo.
+	Para todo $a\in\overline\R$ se cumple que
+	$$ \{x\in X:g_1(x) > a\} = \bigcup_{i\in\N} \{x\in X:f_i(x) > a\} $$
+	que corresponde a la unión de numerables conjuntos medibles, por ende, da un conjunto medible.
+\end{proof}
+
+\begin{cor}
+	Si $f_i\colon X\to\R^d$ son medibles, con $X$ de medida completa, y se cumple c.d. que $g(x) = \lim_i f_i(x)$, entonces $g$ es medible.
+\end{cor}
+
+\begin{cor}
+	Si $f,g\colon X\to\overline\R$ son medibles, entonces $\max(f,g)$ y $\min(f,g)$ también lo son.
+\end{cor}
+
+En la integración de Riemann admitimos que una función es integrable cuando se aproxima por las llamadas <<funciones escalón>>,
+en la teoría de Lebesgue hay un concepto análogo, pero que generaliza las funciones escalón:
+\begin{mydefi}[Función simple]\index{función!simple}
+	Sea $\Omega$ un espacio de medida, se dice que una función $s\colon \Omega \to Y$ es una \strong{función simple} si
+	$s[\Omega]$ es finito (vale decir $s$ solo toma finitos valores), cada $s^{-1}[\{c\}]$ es un conjunto medible de $\Omega$,
+	y $s$ es no nulo en un conjunto finito de $\Omega$.
+\end{mydefi}
+
+Claramente toda función simple es medible, independiente de la $\sigma$-álgebra sobre el codominio, ésto es bastante útil para nuestra teoría,
+pero primero habría que ver que toda función se puede aproximar por funciones simples.
+% Ahora estaría bueno verificar que las funciones medibles son aproximables por las funciones simples.
+\begin{thm}\label{thm:measurable_is_simple_limit}
+	Sea $\Omega$ un espacio de medida.
+	\begin{enumerate}
+		\item $f\colon \Omega \to \R^d$ es medible syss es el límite puntual de funciones simples.
+		\item $f\colon \Omega \to [0, \infty)$ es medible syss es el límite puntual de una sucesión creciente de funciones simples.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	\begin{enumerate}
+		\item Probaramos el caso $d = 1$:
+			Para cada $n > 0$ se denotan por $J_1, \dots, J_N$ a los intervalos de la forma $[ \frac{k}{n}, \frac{k+1}{n})$
+			con $-n^2 \le k < n^2$. Así, definimos $E_k := f^{-1}[J_k]$, los cuales son conjuntos medibles disjuntos dos a dos,
+			y así construimos $s_n\colon\Omega \to \R$ con $s_n[E_k] = \{ \inf(J_k) \}$ y cero en el resto de puntos.
+			Finalmente, para todo $x \in \Omega$, se cumple que $f(x) > -n_0$ para algún $n_0$.
+			Luego, para todo $n \ge n_0$, se cumple que $s_n(x)$ está a distancia menor que $1/n$ de $f(x)$, de modo que
+			se concluye que $\lim_n s_n(x) = f(x)$.
+			\par
+			Queda al lector generalizarlo a $\R^d$.
+
+		\item La misma demostración anterior nos otorga dicha sucesión. \qedhere
+	\end{enumerate}
+\end{proof}
+
+El siguiente es también conocido como el tercer principio de Littlewood:
+\begin{thmi}[Teorema de Egoroff]\index{teorema!de Egoroff}
+	Si $\{f_n\}_{n\in\N}$ es una sucesión de funciones medibles sobre $E$ finito que convergen puntualmente c.d. a $f$;
+	entonces para todo $\epsilon > 0$ existe $A_\epsilon \subseteq E$ medible tal que $\mu(E \setminus A_\epsilon) \le \epsilon$
+	y que $f_n$ converge uniformemente a $f$ en $A_\epsilon$.
+\end{thmi}
+\begin{proof}
+	Redefiniremos $E'$ como el conjunto de $E$ donde $f_n$ converge puntualmente a $f$.
+	Sea $\epsilon > 0$, entonces para todo $n,k\in\N$ sea
+	$$ A_k^n := \bigcap_{m=k}^\infty \left\{ x\in E':|f_m(x) - f(x)| < \frac{1}{n} \right\}, $$
+	y es claro que si $i < j$ entonces $A_i^n \subseteq A_j^n$ y que $\bigcup_{k=0}^\infty A_k^n = E'$ por la convergencia puntual.
+	Luego, ha de existir un $k_n$ (podemos elegir el mínimo de ellos) tal que
+	$$ \mu(E \setminus A^n_{k_n}) < \frac{\epsilon}{2^n}. $$
+	Finalmente se define $A_\epsilon := \bigcap_{n=1}^\infty A^n_{k_n}$, y notemos que
+	$$ \mu(E\setminus A) = \mu\left( \bigcup_{n=1}^\infty (E\setminus A^n_{k_n}) \right) \le \sum_{n=1}^\infty \mu(E\setminus A^n_{k_n}) = \epsilon, $$
+	además, para todo $m\ge k_n$ se cumple que
+	$$ |f_m(x) - f(x)| < \frac{1}{n} $$
+	para todo $x\in A^n_{k_n} \supseteq A_\epsilon$, luego funciona para todo $x\in A_\epsilon$ lo que prueba el enunciado.
+\end{proof}
+
+El siguiente es también conocido como el segundo principio de Littlewood:
+\begin{thmi}[Teorema de Lusin]\index{teorema!de Lusin}
+	Sea $X$ un espacio topológico y $\mu$ una medida finita de Borel sobre $X$.
+	Sea $f\colon X\to\overline\R$ una función medible, que es finita $\mu$-c.d.
+	Entonces para todo $\epsilon > 0$ existe $F_\epsilon$ cerrado tal que $\mu(X \setminus F_\epsilon) < \epsilon$ y $f\restrict F_\epsilon$ es continua.
+\end{thmi}
+\begin{proof}
+	Sea $\epsilon > 0$.
+	Para todo $i\in\N_{\ne 0}$ particione $\R$ en los intervalos semi-abiertos $S_{i,j}$ de largo $1/i$ para $j = 1,2,\dots$
+	Luego sea $A_{i,j} := f^{-1}[S_{i,j}]$, como $\mu(A_{i,j}) \le \mu(X) < \infty$ y $\mu$ es de Borel,
+	existe $F_{i,j} \subseteq A_{i,j}$ cerrado tal que $\mu(A_{i,j} \setminus F_{i,j}) < \frac{\epsilon}{2^{i+j}}$.
+	Sea
+	$$ E_{i,k} := X \setminus \bigcup_{j=1}^k F_{i,j} $$
+	entonces, como $E_{i,1} \supseteq E_{i,2} \supseteq \cdots$
+	sea $E_{i,\infty} := \bigcap_{k=1}^\infty E_{i,k}$, luego
+	$$ \mu(E_{i,\infty}) = \sum_{j=1}^\infty \mu(A_{i,j} \setminus F_{i,j}) < \frac{\epsilon}{2^i}. $$
+	Por ende, existe $K_i$ tal que $\mu(E_{K_i}) < \epsilon/2^i$.
+	Para todo $i,j$ sea $m_{i,j}$ el punto medio de $S_{i,j}$ y sea $B_i := \bigcup_{j=1}^{K_i} F_{i,j}$,
+	entonces sea $g_i$ la función continua sobre $B_i$ tal que $g_i(x) = m_{i,j}$ si $x \in F_{i,j}$ (pues son disjuntos dos a dos).
+	Luego para todo $i\in\N_{\ne 0}$ se cumple que $|f(x) - g_i(x)| < 1/i$ para todo $x\in B_i$, por lo que,
+	si $F_\epsilon := \bigcap_{i=1}^\infty B_i$, entonces se cumple que
+	$$ \mu(X \setminus F_\epsilon) \le \sum_{i=1}^\infty \mu(X\setminus B_i) < \epsilon, $$
+	y las $g_i\restrict F_\epsilon$ son una sucesión de continuas sobre $F_\epsilon$ que convergen uniformemente a $f$, luego $f$ es continua en $F_\epsilon$.
+\end{proof}
+
+\section{Integración de Lebesgue}
+% Además de las particiones o disecciones, otra forma de interpretar la integral de Riemann es que las funciones en un intervalo se aproximan
+% por <<funciones escalón>> que son constantes en intervalos abiertos, y que sabemos integrar pues conocemos la medida de los intervalos.
+% Pero elegir <<intervalos>> es una arbitrariedad, en lugar de las funciones escalón, la función más sencilla para la integración de Lebesgue es la siguiente:
+
+Pero del mismo modo podemos intercambiar los intervalos por cualquier conjunto (Lebesgue) medible y obtener una integral que es mucho mejor:
+\begin{mydefi}
+	Sea $\Omega$ un espacio de medida $\mu$.
+	Dada una función $s\colon \Omega \to [0,+\infty)$ simple positiva
+	$$ s(x) = \sum_{i=1}^n \lambda_i\chi_{E_i}(x) $$
+	con $\lambda_1,\dots,\lambda_n \in [0, +\infty)$ y $E_1,\dots,E_n$ medibles disjuntos dos a dos.
+	% $$ s(x) = \sum_{i=1}^n \lambda_i\chi_{E_i}(x), $$
+	% es decir, $s(x)$ toma el valor $\lambda_i$ si $x\in E_i$ y $0$ si $x$ no está en ningún $E_i$.
+	Se le llama la \strong{integral} de $s$ a
+	$$ \int_\Omega s_n \,\ud\mu := \sum_{i=1}^n \lambda_i\mu(E_i), $$
+	con el convenio de que $0\cdot\infty = \infty\cdot 0 = 0$.
+	Se define también la integral de una función simple $s$ en un conjunto medible $E$ como
+	$$ \int_E s\,\ud\mu := \int_\Omega s\chi_E\,\ud\mu = \sum_{i=1}^n \lambda_i\mu(E_i\cap E). $$
+\end{mydefi}
+
+En este sentido la función de Dirichlet no es más que una función simple según la medida de Lebesgue, luego su integral debería ser 0.
+
+\begin{prop}
+	Si $s,t$ son funciones simples positivas sobre un espacio de medida $\Omega$, entonces:
+	\begin{enumerate}
+		\item $\nu(E) := \int_E s\,\ud\mu$ es una medida sobre $\Omega$.
+		\item Se cumple que
+			$$ \int_\Omega (s+t)\,\ud\mu = \int_\Omega s\,\ud\mu + \int_\Omega t\,\ud\mu. $$
+		\item Si $\lambda \ge 0$, entonces
+			$$ \int_\Omega (\lambda s)\,\ud\mu = \lambda \int_\Omega s\,\ud\mu. $$
+		\item Si $s \le t$ en todo el dominio, entonces
+			$$ \int_\Omega s\,\ud\mu \le \int_\Omega t\,\ud\mu. $$
+	\end{enumerate}
+\end{prop}
+
+\begin{mydefi}
+	Si $f\colon \Omega \to [0,+\infty)$ es una función medible, entonces se define su \textit{integral} como
+	$$ \int_\Omega f\,\ud\mu := \sup \left\{\int_\Omega s\,\ud\mu : s\text{ simple positiva}\wedge s\le f\right\}. $$
+	Si $E$ es un conjunto medible, entonces se define
+	$$ \int_E f\,\ud\mu := \int_\Omega f\chi_E\,\ud\mu. $$
+\end{mydefi}
+
+\begin{prop}
+	Si $E$ es un conjunto medible, se cumple:
+	\begin{enumerate}
+		\item Si $0\le f\le g$ medibles, entonces $\int_E f\,\ud\mu \le \int_E g\,\ud\mu$.
+		\item Si $0\le f$ es función medible y $A\subseteq B$ son conjuntos medible, entonces $\int_A f\,\ud\mu \le \int_B f\,\ud\mu$.
+		\item Si $0\le f$ es función medible y $f|_E = 0$, entonces $\int_E f\,\ud\mu = 0$.
+		\item Si $0\le f$ es función medible y $E$ es nulo, entonces $\int_E f\,\ud\mu = 0$.
+	\end{enumerate}
+\end{prop}
+
+% \begin{prop}
+% 	Si $f$ es Riemann-integrable en $[a,b]$, entonces
+% 	$$ \int_{[a,b]} f\,\ud\mu = \int_a^b f(x)\,\ud x. $$
+% \end{prop}
+% \begin{hint}
+% 	Basta notar que las funciones escalón son simples.
+% \end{hint}
+
+\begin{thm}[de la convergencia monótona de Lebesgue]\index{teorema!de la convergencia!monótona de Lebesgue}
+	Si $f_i\colon X \to \overline\R$ son medibles tales que $0 \le f_0 \le f_1 \le \cdots$, entonces
+	$$ \int_X (\lim_i f_i)\,\ud\mu = \lim_i \int_X f_i\,\ud\mu. $$
+\end{thm}
+\begin{proof}
+	Sea $f := \lim_n f_n$ que es medible y sea $k := \lim_i \int_\Omega f_i\,\ud\mu$, es claro que para todo $n\in\N$ se cumple que $f_n \le f$,
+	luego $\int_\Omega f_n\,\ud\mu \le \int_\Omega f\,\ud\mu$, por lo que
+	$$ k \le \int_\Omega f\,\ud\mu. $$
+	Por otro lado, sea $0\le s \le f$ simple y $c\in(0,1)$, denotaremos 
+	$$ E_n := \{ x\in\Omega : cs(x) \le f_n(x) \} $$
+	es claro que $E_n$ es una sucesión creciente de conjuntos medibles que cumple que $\Omega = \bigcup_{n\in\N} E_n$ (¿por qué?).
+	Cómo $\nu(E) := \int_E s\,\ud\mu$ es una medida, entonces se cumple que
+	$$ k = \lim_n \int_\Omega f_n\,\ud\mu \ge \lim_n c\int_{E_n} s\,\ud\mu = c\int_\Omega s\,\ud\mu. $$
+	Dado que ocurre para todo $c\in(0,1)$, entonces se concluye que para toda $s\le f$ simple se cumple que $\int_\Omega s\,\ud\mu \le k$,
+	ergo, $\int_\Omega f\,\ud\mu \le k$.
+\end{proof}
+
+\begin{ex}[Sucesión de funciones de integral 1, que convergen puntualmente a una de integral 0]
+	Sean $f_n:[0,1] \to \R$ definidas como
+	$$ f_n(x) := n\chi_{(0, 1/n]}, $$
+	de modo que su límite puntual es la función nula.
+	\par
+	Como las $f_n$'s son todas funciones simples, son integrables y de hecho todas sus integrales son 1, sin embargo, su límite puntual tiene integral 0.
+\end{ex}
+\begin{cor}
+	Si $f_i\colon \Omega\to\overline\R$ es una sucesión de funciones positivas medibles, entonces
+	$$ \int_\Omega \sum_{i=0}^\infty f_i \,\ud\mu = \sum_{i=0}^\infty \int_\Omega f_i\,\ud\mu. $$
+\end{cor}
+
+Nótese que como toda función medible es un límite puntual de funciones simples (teo.~\ref{thm:measurable_is_simple_limit}), el teorema anterior
+nos dice que podemos calcular la integral mediante un límite de funciones simples que la aproximan.
+Ésto nos permite dar una mejor definición de integral:
+\begin{mydef}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Dada una función simple $s\colon \Omega \to X$:
+	$$ s = \sum_{i=1}^n v_i \chi_{E_i}, $$
+	entonces se define su integral como
+	$$ \int_\Omega s \, \ud\mu := \sum_{i=1}^n v_i \mu(E_i). $$
+	Y si $A \subseteq \Omega$ es medible, se define:
+	$$ \int_A s \, \ud\mu := \int_\Omega s\cdot\chi_A \, \ud\mu. $$
+	Se denota por $\St(\Omega; X)$ al conjunto de funciones simples.
+\end{mydef}
+
+\begin{prop}
+	Sea $\Omega$ un espacio de medida, $A\subseteq\Omega$ un conjunto medible y $X$ un espacio de Banach sobre un cuerpo $\K$.
+	Entonces:
+	\begin{enumerate}
+		\item $\St(\Omega; X)$ es un $\K$-espacio vectorial.
+		\item La siguiente aplicación:
+			\begin{align*}
+				\St(\Omega; X) &\longrightarrow X \\
+				s &\longmapsto \int_A s \, \ud\mu
+			\end{align*}
+			es lineal.
+		\item Sea $s \in \St(\Omega; X)$, entonces:
+			$$ \left\| \int_A s\, \ud\mu \right\| \le \int_A \|s\| \, \ud\mu \le \|s\|_{\infty} \mu(A). $$
+			Nótese que $A$ podría no ser finito, pero $\|s\|_\infty$ siempre es finito por la definición de simple.
+		\item Sea $s \in \St(\Omega; X)$ y $\alpha \in \R$, entonces:
+			% $$ \int_A \alpha s \, \ud\mu = \alpha\int_A s\, \ud\mu. $$
+			% En particular,
+			$$ \int_A \| \alpha s \| \, \ud\mu = |\alpha| \int_A \|s\|\, \ud\mu. $$
+		\item Sean $s, t \in \St(\Omega; X)$, entonces
+			$$ \int_A \|s + t\| \, \ud\mu \le \int_A \|s\| \, \ud\mu + \int_A \|t\| \, \ud\mu. $$
+		\item La aplicación:
+			\begin{align*}
+				\|\,\|_1 \colon \St(\Omega; X) &\longrightarrow X \\
+				s &\longmapsto \int_\Omega \|s\| \, \ud\mu
+			\end{align*}
+			determina una seminorma, denominada la \strong{seminorma $L^1$}\index{norma!L1@$L^1$}.
+	\end{enumerate}
+\end{prop}
+De momento podríamos tener tres posibles topologías sobre $\St$ (y otros espacios de funciones): la dada por la convergencia puntual, la convergencia uniforme
+y la convergencia en seminorma $L^1$, por ello trataremos de ser lo más claros con respecto a cual en los subsiguientes resultados.
+
+\begin{lem}
+	Sean $(f_n)_{n\in\N}, (g_n)_{n\in\N}$ dos sucesiones de Cauchy en $\St(\Omega; X)$ tales que su límite puntual (que no es necesariamente simple)
+	es el mismo $\mu$-c.d. Entonces
+	$$ \lim_n \int_\Omega f_n \, \ud\mu = \lim_n \int_\Omega g_n \, \ud\mu, $$
+	donde ambos límites existen.
+\end{lem}
+\begin{proof}
+	Definamos $h_n := f_n - s_n$, nótese que probar que los dos límites son iguales equivale a ver que 
+	$$ \lim_n \int_\Omega \|h_n\| \, \ud\mu = 0. $$
+	Por definición de sucesión de Cauchy se tiene que para todo $\epsilon > 0$ existe $N$ tal que para todo $n, m \ge N$ se satisface que
+	$$ \| h_n - h_m \|_1 < \frac{\epsilon}{4}. $$
+	Sea $A$ un conjunto finito tal que $f$ es nulo afuera de $A$, entonces para todo $n \ge N$ se cumple que
+	$$ \int_{A^c} \| h_n \| \, \ud\mu = \int_{A^c} \| h_n - h_N \| \, \ud\mu \le \int_\Omega \| h_n - h_N \| \, \ud\mu = \|h_n - h_N\|_1 < \frac{\epsilon}{4}. $$
+	Por el teorema de Egoroff, podemos elegir un conjunto medible $B$ tal que
+	$$ \mu(B) < \frac{\epsilon}{1 + \|f_N\|_\infty}, $$
+	y que $f_n$ converge uniformemente a $0$ en $A \setminus B$.
+	Por ende, existe un $N'$ tal que para todo $n\ge N'$ se satisface que
+	$$ \int_{A\setminus B} \|f_n\| \, \ud\mu < \frac{\epsilon}{4}. $$
+	Luego para $n \ge N$ se satisface que
+	\begin{align*}
+		\int_B \|f_n\| \, \ud\mu &\le \int_B \|f_n - f_N\| \, \ud\mu + \int_B \|f_N\| \, \ud\mu \\
+		&\le \|f_n - f_N\|_1 + \mu(B) \|f_N\|_1 < \frac{2\epsilon}{4}.
+	\end{align*}
+	Finalmente para todo $n \ge \max\{ N, N' \}$ se tiene que:
+	\begin{equation}
+		\int_\Omega \|f_n\| \, \ud\mu = \int_{A^c} \|f_n\| \, \ud\mu + \int_{A \setminus B} \|f_n\| \, \ud\mu + \int_B \|f_n\| \, \ud\mu < \epsilon.
+		\tqedhere
+	\end{equation}
+\end{proof}
+\begin{mydefi}
+	Se define $\LL^1(\Omega; X)$ como las funciones medibles que sean el límite de una sucesión de Cauchy (bajo seminorma $L^1$) de funciones simples.
+	A los elementos de $\LL^1(\Omega; X)$ se les dicen \strong{funciones integrables}\index{integrable (función)}.
+\end{mydefi}
+
+Desde ahora en adelante
+$$ \int_a^b f(x)\,\ud x := \int_{[a,b]} f\,\ud\mu(x) $$
+donde $\mu(x)$ representa la medida de Lebesgue considerando a $f$ con el parámetro $x$.
+Esta definición es útil pues extiende la integral de Riemann y concuerda con ella en los puntos definidos (¿por qué?).
+
+\begin{lem}
+	Sea $f \in \LL^1(\Omega; X)$ el límite (bajo seminorma $L^1$) de la sucesión de Cauchy $(f_n)_{n\in\N} \subseteq \St(\Omega; X)$.
+	Entonces:
+	$$ \int_X \|f\| \, \ud\mu = \lim_n \int_X \|f_n\| \, \ud\mu = \lim_n \|f_n\|_1. $$
+\end{lem}
+\begin{proof}
+	En primer lugar, notemos que $\|f_n\|$ es una sucesión de Cauchy de funciones simples:
+	Para ello, nótese que
+	$$ \big\| \|f_n\| - \|f_m\| \big\| \le \|f_n - f_m\|. $$
+	y para concluir el lema vemos que
+	\begin{align*}
+		\big\| \|f_n\| - \|f_m\| \big\|_1 &= \int_\Omega \big\| \|f_n\| - \|f_m\| \big\| \, \ud\mu \notag \\
+		&\le \int_\Omega \|f_n - f_m\| \, \ud\mu = \|f_n - f_m\|_1. \tqedhere
+	\end{align*}
+\end{proof}
+% Nótese que el lema anterior sirve para poder definir una semi-norma sobre $\LL^1$ que es, además, completa.
+
+\begin{thmi}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Entonces $\LL^1(\Omega; X)$ es un espacio seminormado completo.
+\end{thmi}
+\begin{proof}
+	Sea $(f_n)_{n\in\N}$ una sucesión de Cauchy en $\LL^1(\Omega; X)$, luego para todo $\epsilon > 0$
+	existe $N$ tal que para todo $n, m\ge N$ se cumple que
+	$$ \|f_n - f_m\|_1 < \frac{\epsilon}{3}. $$
+	Sea $(g_n)_{n\in\N}$ una sucesión en $\St(\Omega; X)$ tal que $\|g_n - f_n\|_1 < 1/n$.
+	Eligiendo $N' \ge N$ tal que $1/N' < \epsilon/3$, entonces para todo $n, m \ge N'$ se cumple que:
+	$$ \|g_n - g_m\|_1 \le \|g_n - f_n\|_1 + \|f_n - f_m\|_1 + \|f_m - g_m\|_1 < \epsilon. $$
+	Luego $g_n$ es una sucesión de Cauchy de funciones simples, por ende converge a una función integrable $f$ que es también
+	el límite de $f_n$.
+\end{proof}
+
+\begin{thm}
+	Sean $\Omega$ un espacio de medida, $X, Y$ dos espacios de Banach y $T\colon X \to Y$ una aplicación lineal continua.
+	Entonces la aplicación:
+	\begin{align*}
+		h^T \colon \LL^1(\Omega; X) &\longrightarrow \LL^1(\Omega; Y) \\
+		f &\longmapsto f\circ T
+	\end{align*}
+	es lineal y continua. Más aún, para todo $f \in \LL^1(\Omega; X)$ se satisface que
+	$$ \int_\Omega (f\circ T) \, \ud\mu = T\left( \int_\Omega f \, \ud\mu \right), $$
+	es decir, el siguiente diagrama conmuta (en $\mathsf{TVS}$):
+	\begin{center}
+		\begin{tikzcd}[row sep=large]
+			\LL^1(\Omega; X) \rar["h^T"] \dar["\int_\Omega \, \ud\mu"'] & \LL^1(\Omega; Y) \dar["\int_\Omega \, \ud\mu"] \\
+			X \rar["T"'] & Y
+		\end{tikzcd}
+	\end{center}
+\end{thm}
+\begin{proof}
+	La linealidad de $h^T$ es un hecho general de espacios de funciones sobre $\R$-espacios vectoriales.
+	La continuidad se reduce a ver que
+	$$ \|h^T\| := \sup \{ \|f\circ T\|_1 : \|f\|_1 = 1 \} \le \|T\|. $$
+	Y el intercambio entre integral y aplicar $T$ se reduce a una comprobación trivial sobre las funciones simples.
+\end{proof}
+
+\begin{thm}
+	Sean $\Omega$ un espacio de medida y $X, Y$ dos espacios de Banach.
+	Entonces el siguiente es un isomorfismo topológico:
+	\begin{align*}
+		\LL^1(\Omega; X\times Y) &\longrightarrow \LL^1(\Omega; X) \times \LL^1(\Omega; Y) \\
+		f &\longmapsto (f_1, f_2)
+	\end{align*}
+	que además hace conmutar el siguiente diagrama (en $\mathsf{TVS}$):
+	\begin{center}
+		\begin{tikzcd}[row sep=large]
+			\LL^1(\Omega; X\times Y) \rar["{(\pi_1, \pi_2)}"] \dar["\int_\Omega\,\ud\mu"']
+			& \LL^1(\Omega; X) \times \LL^1(\Omega; Y) \dar["{ \left( \int_\Omega\,\ud\mu, \int_\Omega\,\ud\mu \right) }"] \\
+			X\times Y \rar["\Id"'] & X\times Y
+		\end{tikzcd}
+	\end{center}
+	En particular, una función compleja es integrable syss su parte real y compleja lo son.
+\end{thm}
+
+\begin{thm}\label{thm:L1_convergence_pointwise}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $(f_n)_{n\in\N} \subseteq \LL^1(\Omega; X)$ una sucesión de Cauchy que converge (bajo la seminorma $L^1$) a $f \in \LL^1(\Omega; X)$.
+	Entonces existe $f \in \LL^1(\Omega; X)$ tal que:
+	\begin{enumerate}
+		\item $(f_n)_{n\in\N}$ converge (bajo la seminorma $L^1$) a $f$.
+	\end{enumerate}
+	Y existe una subsucesión $(f_{n_k})_{k\in\N}$ tal que:
+	\begin{enumerate}[resume]
+		\item $(f_{n_k})_{k\in\N}$ converge puntualmente a $f$ en $\mu$-c.d.
+		\item Para todo $\epsilon > 0$ existe $A_\epsilon \subseteq \Omega$ medible, con $\mu(\Omega \setminus A_\epsilon) \le \epsilon$,
+			tal que $f_{n_k}|_{A_\epsilon} \unifto f|_{A_\epsilon}$.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Sustituyendo $f_n$ por $f_n - f$ el enunciado se reduce a probar el caso en que $f = 0$.
+	Podemos elegir una subsucesión de $(f_n)_n$ tal que
+	$$ \| f_{n_k} \|_1 < \frac{1}{2^{2k}}. $$
+	Sea $B_k := \{ x\in\Omega : \|f_{n_k}(x)\| > 2^{-k} \}$, entonces
+	$$ \frac{\mu(B_k)}{2^k} \le \int_{B_k} \|f_{n_k}\| \, \ud\mu \le \int_\Omega \|f_{n_k}\| \, \ud\mu = \|f_{n_k}\|_1 < \frac{1}{2^{2k}}. $$
+	Por lo tanto, $\mu(B_k) < 2^{-k}$.
+	Definiendo
+	$$ C_k := \bigcup_{m=k}^\infty B_m, $$
+	se concluye que $\mu(C_k) < 2^{-(k-1)}$.
+	Nótese que para $k$ fijo, para todo $m \ge k$ y todo $x \notin C_k$ se satisface que $\|f_k(x)\| < 2^{-k}$.
+	Más aún, como $C_k \supseteq C_{k+1} \supseteq \cdots$ se concluye que $(f_{n_k})_k$ converge uniformemente a la función nula en $\Omega \setminus C_k$.
+	Finalmente, definiendo
+	$$ N := \bigcap_{k\in\N} C_k, \qquad \mu(N) = 0 $$
+	y que $(f_{n_k})$ converge puntualmente a la función nula en $\Omega \setminus N$.
+\end{proof}
+
+\begin{cor}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Si $f \in \LL^1(\Omega; X)$ es tal que $ \int_{\Omega} \|f\| \, \ud\mu = 0 $, entonces $f$ es nula en $\mu$-c.d.
+\end{cor}
+En consecuencia, dos funciones en el espacio $\LL^1(\Omega; X)$ son indistinguibles (como puntos en un espacio topológico) syss son iguales $\mu$-c.d.
+Ésto explica una serie de otros teoremas en donde sólo se requiere exigir que ciertas condiciones se satisfagan $\mu$-c.d.
+
+\begin{cor}\label{thm:L1-limit-is-L1}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $(f_n)_{n\in\N} \subseteq \LL^1(\Omega; X)$ una sucesión de Cauchy (bajo la seminorma $L^1$) que converge puntualmente a $f$,
+	entonces $f \in \LL^1(\Omega; X)$ y es el límite (bajo la seminorma $L^1$) de $(f_n)_n$.
+\end{cor}
+
+\begin{lem}[Fatou]
+	Sean $(f_n)_{n\in\N} \in \LL^1(\Omega; [0,+\infty])$, entonces
+	$$ \int_\Omega \liminf_n f_n\,\ud\mu \le \liminf_n \int_\Omega f_n\,\ud\mu. $$
+\end{lem}
+\begin{proof}
+	Definamos $g_k := \inf_{n\ge k} f_n$, claramente $g_k \le f_n$ si $n\ge k$, por lo que
+	$$ \int_\Omega g_k\,\ud\mu \le \inf_{n\ge k} \int_\Omega f_n\,\ud\mu; $$
+	luego $g_k \to \liminf_n f_n$ cuando $k \to \infty$ y la sucesión es creciente, luego el límite es el supremo y 
+	\begin{align}
+		\int_\Omega \liminf_n f_n\,\ud\mu &= \lim_k \int_\Omega g_k\,\ud\mu = \sup_k \int_\Omega g_k\,\ud\mu \notag \\
+		&\le \sup_k \inf_{n\ge k} \int_\Omega f_n\,\ud\mu = \liminf_n \int_\Omega f_n\,\ud\mu. \tqedhere
+	\end{align}
+\end{proof}
+
+\begin{thmi}[Teorema de la convergencia dominada de Lebesgue]\index{teorema!de la convergencia!dominada de Lebesgue}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $(f_n)_{n\in\N} \subseteq \LL^1(\Omega; X)$ que converge puntualmente a $f$ y sea $g \in \LL^1(\Omega; \R)$ tal que $\|f_n\| \le g$.
+	Entonces $f \in \LL^1(\Omega; X)$ y
+	% Si $f_n \in L^1(\Omega)$ es una sucesión de funciones Lebesgue-integrables que converge puntualmente a otra función $f$ y tales que existe $g$ Lebesgue-integrable que cumple que $|f_n| \le g$ para todo $n\in\N$, entonces $f$ es Lebesgue-integrable y
+	$$ \int_\Omega \lim_n f_n\,\ud\mu = \lim_n \int_\Omega f_n\,\ud\mu. $$
+\end{thmi}
+\begin{proof}
+	Para todo $k\in\N$ definamos
+	$$ g_k(x) := \sup\{ \|f_n(x) - f_m(x)\| : n, m \ge k \}. $$
+	Nótese que $(g_k)_k$ es una sucesión decreciente de funciones reales positivas.
+	Además como $\|f_n(x) - f_m(x)\| \le 2g(x)$ para todo $n, m$ y todo $x \in \Omega$, entonces $g_k$ es una sucesión de funciones integrables
+	lo que por convergencia monótona de Lebesgue converge a $0$.
+	En consecuencia $(f_n)_{n\in\N}$ es una sucesión de Cauchy en $\LL^1(\Omega; X)$ (con la norma $L^1$),
+	luego basta aplicar el corolario~\ref{thm:L1-limit-is-L1}.
+\end{proof}
+% \begin{proof}
+% 	Claramente $\lim_n |f_n| = |f| \le g$, luego $f$ es integrable.
+% 	Notemos que $|f - f_n| \le 2g$, luego también son integrables y aplicando el lema de Fatou a $2g - |f - f_n|$ se obtiene que
+% 	\begin{align*}
+% 		\int_\Omega 2g\,\ud\mu &= \int_\Omega \liminf_n (2g - |f - f_n|)\,\ud\mu \le \liminf_n \int_\Omega (2g - |f - f_n|)\,\ud\mu \\
+% 		&= \int_\Omega 2g\,\ud\mu + \liminf_n \int_\Omega -(|f - f_n|)\,\ud\mu.
+% 	\end{align*}
+% 	Es fácil notar que $\liminf_n\int_\Omega -|f - f_n|\,\ud\mu = -\limsup_n\int_\Omega |f-f_n|\,\ud\mu$, con lo que, cancelando la integral de $2g$, se obtiene que
+% 	$$ 0 \le \liminf_n\int_\Omega |f-f_n|\,\ud\mu \le \limsup_n\int_\Omega|f-f_n|\,\ud\mu \le 0. $$
+% 	Finalmente, por teorema del sandwich, la integral converge a 0, y se concluye el enunciado.
+% \end{proof}
+
+\begin{cor}
+	Sean $\Omega$ un espacio de medida y $X, Y, Z$ son espacios de Banach sobre un cuerpo $\K$.
+	\begin{enumerate}
+		\item Sea $f \in \LL^1(\Omega; X)$ y $g\colon \Omega \to \K$ es medible y acotada, entonces $f\cdot g \in \LL^1(\Omega; X)$.
+		\item Sean $f \in \LL^1(\Omega; X)$, $h\colon \Omega \to Y$ medible y acotada, y $ \langle -,- \rangle \colon X\times Y \to Z$
+			es una forma $\K$-bilineal; entonces $\langle f, h \rangle \in \LL^1(\Omega; X)$.
+	\end{enumerate}
+\end{cor}
+\begin{cor}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sean $(f_n)_{n\in\N} \subseteq \LL^1(\Omega; X)$ tales que
+	$$ \sum_{n\in\N} \int_{\Omega} \|f_n\| \, \ud \mu < \infty. $$
+	Entonces la siguiente serie:
+	$$ \sum_{n\in\N} f_n(x) $$
+	converge absolutamente en $\mu$-c.d. Y más aún,
+	$$ \sum_{n\in\N} \int_{\Omega} f_n \, \ud \mu = \int_{\Omega} \sum_{n\in\N} f_n \, \ud \mu. $$
+\end{cor}
+
+% \begin{mydefi}[Función integrable]
+% 	Se dice que una función $f\colon\Omega \to \overline\R$ es \strong{integrable} si $\int_\Omega f^+\,\ud\mu$ y $\int_\Omega f^-\,\ud\mu$ son finitas,
+% 	en cuyo caso
+% 	$$ \int_\Omega f\,\ud\mu := \int_\Omega f^+\,\ud\mu - \int_\Omega f^-\,\ud\mu. $$
+% 	Denotamos $L^1(\Omega; Y)$ a la clase de las funciones Lebesgue-integrables de dominio $\Omega$ y codominio $Y$.
+% 	Se obvia a $Y$ si $Y = \overline\R$.
+% 	\nomenclature{$L^1(\Omega; Y)$}{Clase de funciones Lebesgue-integrables con dominio en el espacio de medida $\Omega$ y codominio $Y$.
+% 	Se obvia $Y$ cuando $Y = \overline\R$}
+% \end{mydefi}
+
+\begin{prop}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach sobre un cuerpo $\K$.
+	Si $f,g\colon \Omega \to X$ son medibles, entonces:
+	\begin{enumerate}
+		\item $f$ es integrable syss $\|f\|$ lo es,
+			% $\int_\Omega \|f\|\,\ud\mu < +\infty$.
+			en cuyo caso
+			$$ \left\| \int_\Omega f\,\ud\mu \right\| \le \int_\Omega \|f\|\,\ud\mu = \|f\|_1. $$
+		\item Si $X = \overline\R$, $f \le g$ y ambas son Lebesgue-integrables, entonces $\int_\Omega f\,\ud\mu \le \int_\Omega g\,\ud\mu$.
+		\item Si $\|f\| \le \|g\|$ y $g$ es integrable, entonces $f$ también lo es.
+		\item Si $f,g$ son integrables y $\alpha,\beta\in\K$, entonces
+			$$ \int_\Omega (\alpha f + \beta g)\,\ud\mu = \alpha\int_\Omega f\,\ud\mu + \beta\int_\Omega g\,\ud\mu. $$
+		\item Si $E$ es medible y $f|_E = 0$ o bien si $E$ es nulo, entonces $\int_E f\,\ud\mu = 0$.
+		\item Si $E, F$ son medibles disjuntos y si $f\in \LL^1(E\cup F; X)$, entonces $f\in \LL^1(E; X)\cap \LL^1(F; X)$ y
+			$$ \int_{E\cup F} f\,\ud\mu = \int_E f\,\ud\mu + \int_F f\,\ud\mu. $$
+		% \item Si $E$ es nulo, entonces $\int_E f\,\ud\mu = 0$.
+		\item Si $\mu$ es completo, $g$ es integrable y $f = g$ en $\mu$-c.d., entonces $f$ también lo es y comparte integral.
+		\item Si $f \in \LL^1(\Omega; \overline\R)$, entonces toma valores finitos c.d.
+	\end{enumerate}
+\end{prop}
+% Nótese que si $\mu$ es completo varias propiedades se pueden generalizar a que la condición se cumpla $\mu$-c.d.
+
+\begin{thm}
+	Sea $A\subseteq\R^n$ abierto, $K$ un espacio métrico compacto dotado de una medida de Borel finita $\mu$.
+	Sea $f\colon A\times K \to \R$ continua y $g:K \to \R$ medible y acotada.
+	Definamos $F\colon A \to \R$ como
+	$$ F(\vec x) := \int_K f(\vec x, y)\cdot g(y) \, \ud\mu(y), $$
+	entonces $F$ es continua. Y si existe
+	$$ D_if = \frac{\partial f}{\partial x_i} : A\times K \to \R $$
+	continua, entonces se cumple que
+	$$ D_i F(\vec x) = \int_K D_i f(\vec x, y)\cdot g(y) \, \ud\mu(y) $$
+	y es continua.
+\end{thm}
+\begin{proof}
+	\begin{enumerate}[i)]
+		\item \underline{$F$ es continua:}
+			Sea $\vec a\in A$ y sea $B$ una bola cerrada centrada en $\vec a$ contenida en $A$.
+			Por definición sea $M$ cota de $|g|$.
+			Como $B\times K$ es compacto, entonces $f$ es uniformemente continua lo que significa que para todo $\epsilon > 0$
+			existe $\delta > 0$ tal que si $\|\vec x - \vec a\| < \delta$, entonces $|f(\vec x, y) - f(\vec a, y)| < \frac{\epsilon}{M \cdot \mu(K)}$
+			para todo $y\in K$. Luego
+			$$ |F(\vec x) - F(\vec a)| \le \int_K |f(\vec x, y) - f(\vec a, y)| \cdot |g(y)| \, \ud\mu(y) < \epsilon. $$
+
+		\item \underline{Existencia de derivadas parciales continuas:}
+			Supongamos que existe la derivada parcial continua con respecto a $x_i$.
+			Por el mismo argumento, $\partial f/\partial x_i$ es uniformemente continua en $B\times K$ lo que significa que
+			existe $\delta > 0$ tal que si $|h| < \delta$, entonces para todo $y\in K$ se cumple que
+			$$ | D_if(\vec a + h\vec e_i, y) - D_if(\vec a, y) | < \frac{\epsilon}{M\cdot\mu(K)} $$
+			Fijemos un $y\in K$ y un $|h| < \delta$, el teorema del valor medio nos otorga $|\lambda| < |h|$ tal que
+			$$ f(\vec a + h\vec e_i, y) - f(\vec a, y) = h\cdot D_i f(\vec a + \lambda\vec e_i, y) $$
+			Luego
+			\begin{multline*}
+				\left| \frac{f(\vec a + h\vec e_i, y)g(y) - f(\vec a, y)g(y)}{h} - D_if(\vec a, y)g(y) \right| \\
+				= \left| D_i f(\vec a + \lambda\vec e_i, y) - D_if(\vec a, y) \right| \, |g(y)| < \frac{\epsilon}{\mu(K)},
+			\end{multline*} 
+			por lo que, integrando con respecto a $y$ se obtiene que
+			$$ \left| \frac{F(\vec a + h\vec e_i) - F(\vec a)}{h} - \int_K D_if(\vec a, y)g(y)\,\ud\mu(y) \right| < \epsilon $$
+			que es literalmente la definición de derivada parcial con respecto a $x_i$.
+			La continuidad sigue de la propiedad anterior. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{mydef}[Función factorial]
+	Se define $\Pi : (-1, +\infty) \to \R$ la función factorial definida por
+	$$ \Pi(x) := \int_0^\infty t^xe^{-t} \, \ud t. $$
+	\nomenclature{$\Pi(x)$}{Función factorial, formalmente ${} := \int_0^\infty t^xe^{-t} \, \ud t = \Gamma(x + 1)$}
+	Ésta función fue descubierta por Euler, ésta es la notación de Gauss y también es popular la función $\Gamma(x) := \Pi(x - 1)$ conocida como
+	la \strong{función Gamma} por notación de Legendre.
+\end{mydef}
+Veamos que está bien definida: Para ello vamos a probar dos cosas
+\begin{enumerate}[i)]
+	\item La integral existe entre $[0,1]$:
+		Si $x \ge 0$, entonces $t^xe^{-t}$ es continua y por ende integrable.
+		Si $-1 < x < 0$, entonces $0 \le t^xe^{-t} \le t^x$ que vimos que es integrable en un ejemplo de la misma sección.
+
+	\item La integral existe entre $[1, \infty)$:
+		Notemos que
+		$$ \lim_{t \to \infty} \frac{t^xe^{-t}}{1/t^2} = \lim_{t \to \infty} \frac{t^{x+2}}{e^t} = 0 $$
+		lo que implica que existe un $M > 1$ tal que para todo $t \ge M$ se cumple que $t^{x+2}e^{-t} \le 1$, o equivalentemente que $t^xe^{-t} \le 1/t^2$.
+		Como $t^xe^{-t}$ es continua en $[1, M]$, entonces es integrable y
+		\begin{equation}
+			\int_M^\infty t^xe^{-t} \, \ud t \le \int_M^\infty \frac{1}{t^2} \, \ud t
+			= \lim_{y\to \infty} \left[ \frac{1}{t} \right]^y_M = \frac{1}{M}. \tqedhere
+		\end{equation}
+\end{enumerate}
+
+\begin{thm}
+	La función factorial es continua y para todo $x \in (-1, \infty)$ se cumple que
+	$$ \Pi(x+1) = (x+1)\Pi(x). $$
+	En consecuencia y considerando que $\Pi(0) = 1$ se concluye que para todo $n\in\N$ se cumple que $\Pi(n) = n!$
+\end{thm}
+\begin{proof}
+	Para ver la continuidad veremos que es continua en un intervalo de la forma $I := (-1 + \epsilon, M)$ para todo $\epsilon > 0$ y $M > 0$, así que
+	fijaremos ambos valores y el intervalo de antemano.
+	Luego definimos $\Pi_n(x) := \int_{-1+1/n}^n t^xe^{-t}\,\ud t$ y definimos $h(t) := t^{-1+\epsilon}e^{-t} + t^Me^{-t}$.
+	En $I$ se cumple que el integrando de $\Pi$ está acotado por $h(t)$ que tiene integral $\Pi(-1+\epsilon) + \Pi(M)$ y como el integrando de $\Pi_n$
+	es diferenciable como función de $x$ sobre un compacto, entonces $\Pi_n$ es continua y notemos que
+	$$ |\Pi(x) - \Pi_n(x)| \le \int_0^{1/n} h(t)\,\ud t + \int_n^\infty h(t) \,\ud t $$
+	por lo que la sucesión de $\Pi_n$ converge uniformemente a $\Pi$ en $I$, ergo $\Pi$ es continua en $I$.
+	\par
+	Ahora veamos las igualdades básicas:
+	$$ \Pi(0) = \int_0^\infty e^{-t} \, \ud t = [ -e^{-t} ]_0^\infty = 1, $$
+	la otra igualdad sale de aplicar integración por partes con $g'(t) = e^{-t}$, $g(t) = -e^{-t}$ y $f(t) = t^{x+1}$, $f'(t) = (x+1)t^x$:
+	\begin{equation}
+		\int_0^\infty t^{x+1}e^{-t}\,\ud t = \left[ -t^{x+1}e^{-t} \right]_0^\infty + (x+1)\int_0^\infty t^xe^{-t} \,\ud t = (x+1)\Pi(x). \tqedhere
+	\end{equation}
+\end{proof}
+
+% \section{Espacios $L^p$}
+% % \subsection{Integración generalizada}
+% % Además de poder integrar funciones medibles desde $\Omega$ a $\R$, podemos definir una integral de manera general:
+% % \subsection{Espacios $L^p$}
+% \begin{mydefi}[Espacio $L^p$]\index{espacio!$L^p$}
+% 	Dado $p\in[1,\infty]$ y $f:\Omega \to \overline\R$ integrable se denota
+% 	$$ \|f\|_p :=
+% 	\begin{cases}
+% 		\left( \int_\Omega |f|^p\,\ud\mu \right)^{1/p}, &p\ne\infty \\
+% 		\inf\{M : \exists N:\mu(N) = 0\wedge \forall x\in N^c\;(|f(x)| \le M)\}, &p=\infty
+% 	\end{cases} $$
+% 	y se escribe que $f \in L^p(\Omega)$ si $\|f\|_p < \infty$.
+% \end{mydefi}
+% Notemos que si $f\in L^\infty$, entonces $\|f\|_\infty$ es una cota c.d. sobre $f$.
+
+% En primer lugar veremos varias desigualdades que fundamentan la construcción del espacio, todas ellas son parecidas a las de la sección~\ref{sec:desigualdades}, sólo que reemplazando sumas finitas por integrales.
+% \begin{thm}
+% 	Si $p\ge 1$ y $\K \in \{\R,\C\}$, entonces $L^p(\Omega; \K)$ es un espacio de Banach.
+% \end{thm}
+% \begin{proof}
+% 	Sea $\{f_i\}_{i\in\N}$ una sucesión de funciones $L^p$ que es de Cauchy, es decir, tal que para todo $\epsilon > 0$ existe $n_0\in\N$ tal que para todo $n,m\ge n_0$ se cumple que
+% 	$$ \|f_n - f_m\|_p := \left( \int_\Omega |f_n - f_m|^p\,\ud\mu \right)^{1/p} < \epsilon. $$
+% 	Hemos de probar que la función converge (en el sentido de las distancias en $L^p$ y al menos c.d.) a otra función $L^p$.
+% 	\\
+% 	Sea $f_{\sigma(n)}$ tal que $d_p(f_{\sigma(n)}, f_{\sigma(n+1)}) < 2^{-n-1}$ de modo que
+% 	$$ g_k(x) := \sum_{i=0}^k |f_{\sigma(i+1)}(x) - f_{\sigma(i)}(x)|,\quad g(x) := \lim_k g_k(x) $$
+% 	Por desigualdad triangular (de Minkowski) se prueba que $\|g_k\|_p < 1$, y por lema de Fatou sobre $\{|g_k|^p\}_{k=0}^\infty$ se comprueba que $\|g\|_p < 1$, luego $g$ es finita c.d. y
+% 	$$ f(x) := f_{\sigma(0)}(x) + \sum_{i=0}^\infty ( f_{\sigma(i+1)}(x) - f_{\sigma(i)}(x) ) $$
+% 	converge absolutamente c.d.
+% 	En los puntos que no converja definamos $f(x) := 0$.
+% 	\\
+% 	Basta ver que $f$ es $L^p$ y que es el límite de la sucesión $f_{\sigma(i)}$.
+% 	Por ser de Cauchy, para todo $\epsilon > 0$ existe $n_\epsilon\in\N$ tal que para todo $n,m \ge n_\epsilon$ se cumple, por lema de Fatou, que
+% 	$$ \int_\Omega \|f - f_{\sigma(m)}\|^p\,\ud\mu \le \liminf_n \int_\Omega \|f_{\sigma(n)} - f_{\sigma(m)}\|^p\,\ud\mu < \epsilon^p. $$
+% 	O lo que es equivalente $\|f - f_{\sigma(m)}\|_p < \epsilon$, lo que implica $\|f\|_p < \|f_{\sigma(m)}\| + \epsilon$.
+% 	Esto prueba que $f$ es el límite de la sucesión y que es $L^p$.
+% \end{proof}
+
+% % \begin{thmi}
+% % 	Los siguientes conjuntos son densos en $L^1$:
+% % 	\begin{enumerate}
+% % 		\item Las funciones simples.
+% % 		\item Las funciones escalón.
+% % 		\item Las funciones continuas de soporte compacto.
+% % 	\end{enumerate}
+% % \end{thmi}
+% % \begin{proof}
+% % 	...
+% % \end{proof}
+
+% \begin{mydef}
+% 	Si $f,g:\Omega \to \K$, entonces
+% 	$$ \sangle{f, g} := \int_\Omega f\cdot\overline g\,\ud\mu $$
+% 	donde $\overline g$ es el conjugado de $g$ en todo punto si $\K = \C$ y $\overline g = g$ si $\K = \R$ o $\overline\R$.
+% \end{mydef}
+
+\begin{mydef}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $A \subseteq \Omega$ de medida finita no nula, se denota
+	$$ \fint_{A} f \, \ud \mu := \frac{1}{\mu(A)} \int_{A} f \, \ud \mu. $$
+\end{mydef}
+
+\begin{thm}\label{thm:averaging_int}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $f \in \LL^1(\Omega; X)$ y $S \subseteq X$ un cerrado tal que para todo $A \subseteq \Omega$ de medida finita no nula
+	se satisfaga que
+	$$ \fint_{A} f \, \ud \mu \in S. $$
+	Si $\Vec 0 \in S$, u $\Omega$ es $\sigma$-finito, entonces $f(x) \in S$ para casi todo $x$.
+\end{thm}
+\begin{proof}
+	Nótese que basta probar el teorema para el caso $\Omega$ de medida finita.
+	Sea $\vec v\in X \setminus S$, luego existe $r > 0$ tal que $B_r(\vec v)$ es disjunto de $S$, luego
+	sea $A := f^{-1}[ B_r(\vec v) ]$, si $\mu(A) > 0$, entonces se tendría que
+	$$ \left| \fint_{A} f \, \ud \mu - \vec v \right| = \left| \fint_{A} (f - \vec v) \, \ud \mu \right| \le \fint_{A} |f - \vec v| \, \ud \mu < r, $$
+	pero entonces $\fint_{A} f \, \ud \mu \notin S$, lo que es absurdo.
+	El resto de casos se deducen de éste.
+\end{proof}
+\begin{cor}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $f \in \LL^1(\Omega; X)$ tal que para todo $A \subseteq \Omega$ de medida finita se cumpla que
+	$$ \int_{A} f \, \ud \mu = 0. $$
+	Entonces $f$ es nula en $\mu$-c.d.
+\end{cor}
+Haciendo la sustitución explícita de $ \int_{A} f \, \ud \mu = \int_{\Omega} f\cdot\chi_A \, \ud \mu $ se obtiene:
+\begin{cor}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $f \in \LL^1(\Omega; X)$ tal que para toda $g \in \St(\Omega)$ se cumpla que
+	$$ \int_{\Omega} f\cdot g \, \ud \mu = 0. $$
+	Entonces $f$ es nula en $\mu$-c.d.
+\end{cor}
+
+\begin{cor}\label{thm:finite_inequality_over_ints}
+	Sea $\Omega$ un espacio de medida y $X$ un espacio de Banach.
+	Sea $f \in \LL^1(\Omega; X)$ tal que para todo $A \subseteq \Omega$ de medida finita se cumpla que
+	$$ \left\| \int_{A} f \, \ud \mu \right\| \le C \mu(A). $$
+	Entonces $\|f(x)\| \le C$ en $\mu$-c.d.
+\end{cor}
+\begin{cor}\label{thm:null_kernel_orthoganility}	
+	Sea $\Omega$ un espacio de medida y $H$ un espacio de Hilbert sobre un cuerpo $\K$.
+	Sea $f \in \LL^1(\Omega; H)$ tal que para toda $g \in \St(\Omega; \K)$ se cumpla que
+	$$ \int_{\Omega} \langle f, g \rangle \, \ud \mu = 0. $$
+	Entonces $f$ es nula en $\mu$-c.d.
+\end{cor}
+
+\section{Producto de medidas}
+
+\begin{mydefi}[Producto de medidas]
+	Si $(X, \mathcal{A}, \mu)$ e $(Y, \mathcal{B}, \nu)$ son espacios de medida con $E \in \mathcal{A}, F \in \mathcal{B}$,
+	entonces se dice que $E\times F$ es un rectángulo medible en $X\times Y$ y se denota por $\mathcal{A}\otimes\mathcal{B}$ a la $\sigma$-álgebra
+	inducida por rectángulos medibles.
+
+	Sean $E$ medible en $X\times Y$, $x \in X$ e $y \in Y$. Se denota
+	$$ E_x := \{y\in Y:(x,y)\in E\},\quad E^y := \{x\in X:(x,y)\in E\}, $$
+	y si $f\colon X\times Y\to Z$ se denota
+	$$ f_x(y) := f(x,y),\quad f^y(x) := f(x,y). $$
+\end{mydefi}
+
+\begin{prop}
+	Si $E$ es medible en $X\times Y$, entonces para todo $x\in X$ y todo $y\in Y$ se cumple que $E_x$ es medible en $Y$ y que $E^y$ es medible en $X$.
+	Así mismo, si $f\colon X\times Y\to Z$ es medible, entonces para todo $x\in X$ y todo $y\in Y$ se cumple que $f_x$ y $f^y$ también.
+\end{prop}
+\begin{proof}
+	Definamos $\mathcal{C}$ como la subfamilia de $\mathcal{A\otimes B}$ tal que si $E$ es medible entonces $E_x$ también (es análogo para $E^y$).
+	Claramente $\emptyset, X\times Y \in \mathcal{C}$, y todo rectángulo medible está en $\mathcal{C}$.
+	Probaremos que $\mathcal{C}$ es una $\sigma$-álgebra, por lo que se concluiría que $\mathcal{C = A\otimes B}$.
+
+	Si $E\in \mathcal{C}$, entonces para todo $x\in X$ se cumple que
+	$$ (X\times Y\setminus E)_x = \{y\in Y:(x,y)\notin E\} = Y\setminus E_x $$
+	por lo que $E^c \in \mathcal{C}$.
+
+	Si $\{E_i\}_{i\in\N}\in\mathcal{C}$, entonces para todo $x\in X$ se cumple que
+	$$ \left( \bigcup_{i\in\N} E_i \right)_x = \{y\in Y: \exists i\in\N\;(x,y)\in E_i\} = \bigcup_{i\in\N}(E_i)_x $$
+	luego $\bigcup_{i\in\N} E_i \in \mathcal{C}$.
+	\par
+	Si $E$ es medible en $Z$, entonces $f^{-1}[E]$ es medible en $\mathcal{A\otimes B}$ por lo que
+	$$ f_x^{-1}[E] = \{y\in Y:f(x,y)\in E\} = (f^{-1}[E])_x $$
+	luego $f_x$ es medible y es análogo para $f^y$.
+\end{proof}
+
+\begin{thm}
+	Si $X,Y$ son espacios de medidas $\sigma$-finitas $\mu$ y $\nu$ resp.
+	Sea $E$ medible en $X\times Y$, entonces las aplicaciones $x\mapsto\nu(E_x)$ e $y\mapsto\mu(E^y)$ son medibles y
+	$$ \int_X \nu(E_x)\,\ud\mu = \int_Y \mu(E^y)\,\ud\nu. $$
+\end{thm}
+\begin{proof}
+	Sea $\mathcal{C}$ la subfamilia de $\mathcal{A\otimes B}$ tales que sus elementos cumplen el enunciado,
+	probaremos que $\mathcal{C = A\otimes B}$, por lo que probaremos muchos pasos intermedios:
+	\begin{enumerate}[i)]
+		\item \underline{$C$ contiene a los rectángulos medibles:}
+			Es claro que si $A,B$ son medibles en $X,Y$, entonces llamando $F := A\times B$ se cumple
+			$$ F_x =
+			\begin{cases}
+				B, &x\in A\\
+				\emptyset, &x\notin A
+			\end{cases}, $$
+			luego
+			$$ \int_X \nu(F_x)\,\ud\mu = \int_X \nu(B)\chi_A\,\ud\mu = \mu(A)\nu(B) = \int_Y \mu(F^y)\,\ud\nu. $$
+
+		\item \underline{Si $\{Q_i\}_{i\in\N} \subseteq \mathcal{C}$ es creciente, entonces $Q := \bigcup_{i\in\N}Q_i \in \mathcal{C}$:}
+			Denotaremos
+			$$ F_i(x) := \nu((Q_i)_x),\quad F^\prime_i(y) := \mu((Q_i)^y). $$
+			Luego
+			$$ \lim_n F_n = \nu(Q_x),\quad\lim_n F_n^\prime = \mu(Q^y) $$
+			y se cumple la igualdad de integrales por criterio de convergencia monótona de Lebesgue.
+			\par
+			Como consecuencia si $\{Q_i\}_{i\in\N} \in \mathcal{C}$ son disjuntos dos a dos, entonces $Q:=\bigcup_{i\in\N}Q_i \in \mathcal{C}$.
+
+		\item Si $\{Q_i\}_{i\in\N} \subseteq \mathcal{C}$ es decreciente y $Q_0\subseteq U\times V$ con $\mu(U)\nu(V) < \infty$,
+			entonces $Q:=\bigcup_{i\in\N}Q_i \in \mathcal{C}$:
+			Similar a la anterior, pero terminamos por aplicar criterio de convergencia dominada de Lebesgue.
+	\end{enumerate}
+	Como las medidas son $\sigma$-finitas existe $\{X_i\}_{i\in\N}$ y $\{Y_j\}_{j\in\N}$ medibles finitos tales que cubren a $X$ e $Y$ y son disjuntos dos a dos.
+	Si $E$ es medible en $X\times Y$ denotamos $E_{ij} := E\cap(X_i\times X_j)$, y llamamos $\mathcal{D}$ a la familia de los $E_{ij}$ en $\mathcal{C}$.
+\end{proof}
+
+\begin{mydefi}
+	Dados $(X,\mathcal{A},\mu),(Y,\mathcal{B},\nu)$ espacios de medidas $\sigma$-finitas.
+	Entonces se denota $\mu\times\nu$ a la medida sobre $\mathcal{A\otimes B}$ tal que
+	$$ (\mu\times\nu)(E) := \int_X \nu(E_x)\,\ud\mu = \int_Y \mu(E^y)\,\ud\nu. $$
+\end{mydefi}
+
+\begin{prop}
+	Si $X,Y$ son espacios topológicos 2AN y sus medidas son de Borel.
+	Entonces la medida en el producto es también de Borel.
+\end{prop}
+
+\begin{cor}
+	La medida de Lebesgue sobre $\R^{n+m}$ es la compleción del producto de la medida de Lebesgue sobre $\R^n$ con la medida de Lebesgue sobre $\R^m$.
+\end{cor}
+
+\begin{thm}
+	Si $X$ es de medida $\lambda$ y $f \in L^1\big( X;[0,\infty) \big)$.
+	Sea $A := \{(x,y)\in X\times[0,\infty) : y \in [0,f(x)]\}$, entonces
+	$$ \int_X f\,\ud\lambda = (\lambda\times\mu)(A). $$
+\end{thm}
+\begin{proof}
+	Sea $g:X\times\R \to \R^2$ definida por $g(x,y) := (f(x), y)$, luego se cumple que es medible pues si $U,V$ son abiertos en $\R$, entonces
+	$$ g^{-1}[U\times V] = f^{-1}[U]\times V, $$
+	luego
+	$$ A = g^{-1}\big[ \{(u,v)\in\R^2 : v \in [0,u]\} \big] $$
+	donde el conjunto en el paréntesis es cerrado, por lo que $A$ es medible.
+	\\
+	Notemos que para todo $x\in X$ se cumple que $A_x = [0, f(x)]$, luego
+	$$ (\lambda\times\mu)(A) = \int_X \mu(A_x)\,\ud\lambda = \int_X f(x)\,\ud\lambda, $$
+	como se quería probar.
+\end{proof}
+
+\thmdep{AEN}
+\begin{thmi}[Teorema de Fubini]\index{teorema!de Fubini}
+	Sean $X,Y$ espacios de medida $\sigma$-finitas $\mu$ y $\nu$ resp. Y sea $f:X\times Y \to \overline\R$ medible.
+	\begin{enumerate}
+		\item Si $f\ge 0$, entonces las funciones
+			$$ x\mapsto\int_Y f_x\,\ud\nu,\quad y\mapsto\int_X f^y\,\ud\mu $$
+			son medibles y
+			$$ \int_{X\times Y}f\,\ud(\mu\times\nu) = \int_X \left( \int_Y f_x\,\ud\nu \right)\,\ud\mu = \int_Y \left( \int_X f^y\,\ud\mu \right)\,\ud\nu $$
+			(teorema de Tonelli).
+		\item Si $\int_X \left( \int_Y|f_x|\,\ud\nu \right) \,\ud\mu < +\infty$, entonces $f\in L^1(X\times Y)$.
+		\item Si $f \in L^1(X\times Y)$, entonces $\mu$-c.d. $f_x\in L^1(Y)$ y $\nu$-c.d. $f^y\in L^1(X)$ (teorema de Fubini).
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	\begin{enumerate}
+		\item La demostración consistirá en probar primero el enunciado para funciones simples y luego generalizarlo.
+			Es claro que si $E$ es medible en $X\times Y$
+			$$ \int_Y (\chi_E)_x\,\ud\nu = \int_Y \chi_{E_x}\,\ud\nu = \nu(E_x) $$
+			luego la aplicación en función de $x$ es medible y vemos que la integral satisface lo pedido por la definición.
+			\\
+			Por ende, es fácil notar que el enunciado vale para funciones simples.
+			\\
+			Sea $\{s_n\}_{n\in\N}$ una sucesión creciente de funciones simples que converge a $f$, como claramente $\lim_n (s_n)_x = f_x$, entonces por convergencia monótona de Lebesgue se cumple que
+			$$ \lim_n\int_Y (s_n)_x\,\ud\nu = \int_Y f_x\,\ud\nu, $$
+			como las funciones $x\mapsto\int_Y (s_n)_x\,\ud\nu$ son medibles para todo $n$, entonces la función arriba es medible por ser el límite puntual de medibles, además
+			\begin{align*}
+				\int_{X\times Y} \left(\lim_n s_n\right) \,\ud(\mu\times\nu) &= \lim_n \int_{X\times Y} s_n\,\ud(\mu\times\nu)\\
+				&= \int_X \lim_n\left( \int_Y s_n\,\ud\nu \right)\,\ud\mu = \int_X \left( \int_Y f_x\,\ud\nu \right)\,\ud\mu.
+			\end{align*}
+			Y es análogo para la otra igualdad.
+		\item Es corolario de la 1.
+		\item Queda de ejercicio para el lector. \qedhere
+	\end{enumerate}
+\end{proof}
+\thmdep{}
+
+% \textbf{Ejemplo (integral de Gauss).} Queremos integrar la función $\exp(-x^2)$ en todo $\R$, como es positiva con ``integración'' consideramos posible que tenga integral infinita para no complicar más el problema.
+% A tal integral la denotaremos por $I$.
+% Para lograrlo integraremos
+% $$ \int_{\R^2} \exp(-x^2 - y^2)\,\ud\mu^2 = \int_\R \left( \int_\R \exp(-x^2-y^2)\,\ud x \right)\,\ud y = \int_\R \exp(-y^2)\cdot\left( \int_\R \exp(-x^2)\,\ud x \right)\,\ud y = I^2. $$
+
+\subsection{Aplicación: Teorema fundamental del álgebra II}
+En esta subsección demostraremos el teorema fundamental del álgebra mediante el teorema de Fubini contenida en \cite{conrad:fundthmalg-calculus}.
+\addtocategory{other}{conrad:fundthmalg-calculus}
+
+\begin{thmi}[Teorema fundamental del álgebra]\index{teorema!fundamental!del álgebra}
+	Todo polinomio complejo tiene raíces complejas.
+\end{thmi}
+\begin{proof}
+	Sea $f:\C\to\C$ un polinomio complejo de la forma
+	$$ f(z) = c_nz^n + c_{n-1}z^{n-1} + \cdots + c_1z + c_0 $$
+	tal que $c_n=1$, y para cada $i$ se cumpla que $c_i = \lambda_ie^{\imaginary\alpha_i}$ (con el convenio de que $\alpha_i = 0$ si $c_i = 0$).
+	Luego se cumple que
+	\begin{align*}
+		P(r,\theta) := \Re f(re^{\imaginary\theta}) &= r^n\cos(n\theta) + \cdots + r\lambda_1\cos(\alpha_1+\theta) + \lambda_0\cos\alpha_0 \\
+		Q(r,\theta) := \Im f(re^{\imaginary\theta}) &= r^n\sin(n\theta) + \cdots + r\lambda_1\sin(\alpha_1+\theta) + \lambda_0\sin\alpha_0.
+	\end{align*}
+	Supongamos que $f$ es no nula en todo punto, entonces podemos definir
+	$$ U(r, \theta) := \arg(P(r,\theta) + \imaginary Q(r,\theta)), $$
+	Notemos que si $r = 0$, entonces el polinomio se reduce a $f(0)$, por lo que $U$ es constante y
+	$$ \left.\frac{\partial U}{\partial\theta}\right|_{r=0} = 0. $$
+	Como se menciona $U$ es diferenciable c.d., excepto en la franja $(-\infty, 0)\times\{0\}$, para el cual admitimos que la notación representa un límite lateral.
+	Luego se concluye que en todo punto
+	$$ \frac{\partial U}{\partial\theta} = \frac{1}{(1 + Q/P)^2} \frac{PQ_\theta - P_\theta Q}{P^2} = \frac{PQ_\theta - P_\theta Q}{P^2 + Q^2}, $$
+	donde $P_\theta := \frac{\partial P}{\partial\theta}$, análogamente para $Q$ y para $r$ también:
+	$$ \frac{\partial U}{\partial r} = \frac{PQ_r - P_r Q}{P^2 + Q^2}. $$
+	Con nuestro convenio de las derivadas parciales también satisfacen la condición de Schwarz (intercambiar derivadas).
+	Esto, sumado al teorema de Fubini nos permite calcular
+	$$ I(R) := \int_{[0,R]\times[0,2\pi]} \frac{\partial}{\partial r}\frac{\partial U}{\partial \theta} \ud\theta\ud r $$
+	Por un lado
+	\begin{align*}
+		\int_0^R\int_0^{2\pi} \frac{\partial}{\partial r}\frac{\partial U}{\partial \theta} \ud\theta\ud r
+		&= \int_0^R\int_0^{2\pi} \frac{\partial}{\partial \theta}\frac{\partial U}{\partial r} \ud\theta\ud r \\
+		&= \int_0^R {\color{nicered} \left[ \frac{\partial U}{\partial r} \right]_{\theta=0}^{\theta=2\pi} } \ud\theta\ud r \\
+		&= \int_0^R {\color{nicered} 0 } \,\ud\theta\ud r = 0.
+	\end{align*}
+	donde el término en rojo es nulo porque la función es periódica con periodo $2\pi$.
+	\\
+	Por otro lado
+	\begin{align*}
+		\int_0^{2\pi}\int_0^R \frac{\partial}{\partial r}\frac{\partial U}{\partial \theta} \ud r\ud\theta
+		&= \int_0^{2\pi} \left[ \frac{\partial U}{\partial \theta} \right]_{r=0}^{r=R} \ud\theta \\
+		&= 0,
+	\end{align*}
+	para todo $R > 0$, de manera que se concluye que
+	$$ \left[ \frac{\partial U}{\partial \theta} \right]_{r=0}^{r=R} = 0. $$
+	Además ya vimos que el valor de la derivada en $r=0$ era nulo, de modo que nos queda que
+	$$ \left. \frac{\partial U}{\partial \theta} \right|_{r=R} = 0. $$
+	Nótese que
+	$$ P_\theta |_{r=R} = -nR^n\sin(n\theta) + \cdots, \quad Q_\theta|_{r=R} = nR^n\cos(n\theta) + \cdots $$
+	por lo que
+	$$ PQ_\theta - P_\theta Q = nR^{2n}\cos^2(n\theta) + \cdots + nR^{2n}\sin^2(n\theta) + \cdots = nR^{2n} + \cdots $$
+	El denominador de $\partial U/\partial\theta$ es el cuadrado del módulo del polinomio, el cual para $|z|\to\infty$ es asíntota de $|z|^{2n}$, de modo que
+	$$ \lim_{R\to\infty} \left. \frac{\partial U}{\partial \theta} \right|_{r=R} = \lim_{R\to\infty} \frac{ \dfrac{PQ_\theta - P_\theta Q}{R^{2n}} }{ \dfrac{P^2 + Q^2}{R^{2n}} } = n, $$
+	de modo que
+	$$ \lim_{R\to\infty} I(R) = 2\pi n = 0 $$
+	con lo que $n = 0$, i.e., $f$ es constante.
+\end{proof}
+
+% \section{Medida y dimensión de Hausdorff}
+% \begin{prop}
+% 	Sea $B_r^n(\vec x) \subseteq \R^n$, entonces 
+% 	$$ \mu( B_r^n(\vec x) ) = \frac{\pi^{n/2}}{\Pi(n/2)} r^n =: v_n(r). $$
+% \end{prop}
+% \begin{proof}
+% 	Por homotecia se cumple que $\mu( B_r^n(\vec x) ) = r^n \mu( B^n_1(\Vec 0) )$, así que llamamos $V_n := \mu( B_1^n(\Vec 0) )$.
+% 	La segunda observación es que si fijamos $z \in [-1, 1]$ se tiene que $(\vec x, z) \in B^n_1(\Vec 0)$ syss $\vec x \in B^{n-1}(\Vec 0; \sqrt{1 - z^2})$,
+% 	de modo que por teorema de Fubini se cumple que
+% 	$$ V_{n+1} := \int_{-1}^{+1} V_n (1 - t^2)^{n/2} \, \ud t =: V_n \alpha(n) $$
+% 	De modo que
+% 	$$ V_{n+1} = \alpha(0)\alpha(1) \cdot \alpha(n) $$
+% 	así que basta calcular los valores de los $\alpha$'s. Cómo $V_1 = 2 = \alpha(0)$ y cómo
+% 	$$ V_2 = 2 \int_{-1}^1 \sqrt{1 - t^2} \, \ud t = \pi, \qquad \alpha(1) = \frac{\pi}{2}; $$
+% 	ésto se concluye de un ejemplo en la sección de integración de Riemann.
+% 	Más generalmente
+% 	$$ \alpha(n) = \int_{-1}^1 (1 - t^2)(1 - t^2)^{ \frac{n-2}{2} } \, \ud t = \alpha(n - 2) + \int_{-1}^{+1} -t^2(1 - t^2)^{ \frac{n-2}{2} } \, \ud t $$
+% 	la integral de la derecha la resolveremos mediante integración por partes considerando $f(t) = t$ y $g'(t) = -t(1 - t^2)^{ \frac{d}{2} - 1 }$,
+% 	de modo que
+% 	$$ g(t) = \frac{1}{n} (1 - t^2)^{d/2}, \;
+% 	\int_{-1}^{+1} -t^2(1 - t^2)^{ \frac{n-2}{2} } \, \ud t = -\frac{1}{n}\int_{-1}^{+1} (1 - t^2)^{n/2} \, \ud t = - \frac{\alpha(n)}{n}. $$
+% 	Con ésto se concluye que
+% 	$$ \alpha(n) = \frac{n}{n+1}\alpha(n - 2). $$
+% 	Por ende, la fórmula general de los $\alpha$'s es
+% 	\begin{align*}
+% 		\alpha(2n) &= 2\cdot \frac{2}{3} \cdot \frac{4}{5} \cdots \frac{2n}{2n + 1} = n! \frac{2}{1} \cdot \frac{2}{3} \cdots \frac{2}{2n + 1}, \\
+% 		\alpha(2n - 1) &= \frac{\pi}{2} \cdot \frac{3}{4} \cdot \frac{5}{6} \cdots \frac{2n-1}{2n}
+% 		= \frac{\pi}{n!} \frac{1}{2} \cdot \frac{3}{2} \cdots \frac{2n-1}{2}.
+% 	\end{align*}
+% 	Así que, mediante un ejercicio de inducción se concluye finalmente que
+% 	\begin{equation}
+% 		V_n = \frac{\pi^{n/2}}{\Pi(n/2)}. \tqedhere
+% 	\end{equation}
+% \end{proof}
+
+% Ésta fórmula es muy importante para comprender la construcción de la medida de Hausdorff;
+% la gran observación es que todas las funciones involucradas en la fórmula son reales, de modo que podríamos definir el volumen de una $d$-esfera así.
+
+% \begin{mydef}
+% 	Dado un par de reales $d \in [0, n]$ y $0 < \epsilon$ denotamos:
+% 	$$ H_\epsilon^d(A) := \inf\left\{ \sum_{i=0}^\infty v_d\left( \frac{\diam E_i}{2} \right) :
+% 	( \diam E_i > \epsilon \vee E_i = \emptyset ) \wedge A \subseteq \bigcup_{i=0}^\infty E_i \right\} $$
+% \end{mydef}
+
+% \section{Series de Fourier}
+% En ésta sección trataremos de formalizar el concepto de series de Fourier que es famoso en el análisis.
+% Muy temprano, en la sección \S~\ref{sec:function_spaces} vimos el resultado abstracto de Stone-Weierstrass que nos dice que cierta familia de funciones,
+% así que utilizaremos el mismo resultado para verlo en un espacio compacto muy específico: $\Fr\D = \{z\in\C : |z| = 1\}$.
+% Nótese que dicho espacio corresponde a una circunferencia, i.e., al borde de un círculo.
+
+% Comenzaremos con una aplicación directa de Stone-Weierstrass complejo:
+% \begin{thm}[Densidad trigonométrica de Weierstrass]
+% 	El conjunto
+% 	$$ A := \left\{ \sum_{k=-n}^n \alpha_k e^{\imaginary kz} : n\in\N \wedge \forall k\;\alpha_k\in\C \right\}$$
+% 	es denso en $C(\Fr\D, \C)$.
+% \end{thm}
+
+% \begin{prop}
+% 	Una familia ortonormal es una base syss es una familia ortonormal maximal.
+% \end{prop}
+
+% \begin{thm}
+% 	$\{e^{\imaginary k\theta}\}_{k\in\Z}$ es una base ortonormal de $L^2(\Fr\D; \C)$ con medida $ \frac{\ud\theta}{2\pi} $.
+% \end{thm}
+% \begin{proof}
+% 	Es fácil ver que el conjunto dicho es efectivamente ortonormal, veremos que de hecho es maximal, de modo que es base.
+% 	Denotemos $\varphi_k := e^{\imaginary k\theta}$.
+% 	Sea $\varphi \in L^2$ tal que $\varphi \perp \varphi_k$ para todo $k\in\Z$.
+% 	Sea $f \in C(\Fr\D, \C)$, por el teorema anterior existe una sucesión $f_n := \sum_{k=-n}^n \alpha_k\varphi_k$ tal que $f_n$ converge uniformemente a $f$.
+% 	Luego se cumple que $\sangle{f, \varphi} = \lim_n \sangle{f_n, \varphi} = 0$.
+% 	Pero como la familia $C(\Fr\D, \C)$ es densa en $L^2(\Fr\D; \C)$, entonces vemos que podemos admitir un $f$ arbitrariamente cerca de $\varphi$ de modo que
+% 	$$ \|\varphi\| \le \sqrt{ \|f\|^2 + \|\varphi\|^2 } = \|f - \varphi\| < \epsilon, $$
+% 	de modo que $\|\varphi\| = 0$, probando la maximalidad de la familia elegida.
+% \end{proof}
+

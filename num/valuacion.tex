@@ -1,0 +1,1696 @@
+\documentclass[teoria-numeros.tex]{subfiles}
+\begin{document}
+
+\chapter{Teoría de valuación}
+
+\section{Valores absolutos y cuerpos métricos}
+\begin{mydefi}
+	Sea $k$ un cuerpo, una función $| \, |\colon k \to \R$ se dice una aplicación \strong{valor absoluto}\index{valor absoluto} si:
+	\begin{enumerate}[{VA}1.]
+		\item $|x| > 0$ para todo $x \ne 0$ y $|0| = 0$.
+		\item $|xy| = |x| \, |y|$.
+		\item $|x + y| \le |x| + |y|$ (desigualdad triangular)\index{desigualdad!triangular}.
+	\end{enumerate}
+	Si además, satisface que $|x + y| \le \max\{|x|, |y|\}$ (desigualdad ultramétrica)\index{desigualdad!ultramétrica},
+	entonces $|\,|$ se dice un \strong{valor absoluto no arquimediano}\index{valor absoluto!no arquimediano} y
+	de lo contrario se dice \strong{arquimediano}.
+	% En general, denotamos por $|\,|$ a los valores absolutos, y por $v$ a las valuaciones.
+	% Reservamos subíndices de haber ambigüedad.
+
+	Todo valor absoluto induce una métrica $d(x, y) := |x - y|$ sobre $k$, y por ende, una topología.
+	Por ello, se dice que el par $(k, |\,|)$ es un \strong{cuerpo métrico}\index{cuerpo!métrico} si $|\,|$ es un valor absoluto sobre $k$;
+	de no haber ambigüedad sobre los signos obviaremos el valor absoluto.
+	Se dice que $k$ es un \strong{cuerpo métrico arquimediano}\index{cuerpo!métrico!arquimediano} si $|\,|$ es arquimediano
+	y que $k$ es un \strong{cuerpo ultramétrico}\index{cuerpo!ultramétrico} de lo contrario.
+	Se dice que dos valores absolutos son \strong{equivalentes}\index{equivalentes (valores absolutos)} si inducen la misma topología sobre $k$.
+\end{mydefi}
+
+\begin{ex}
+	\begin{itemize}
+		\item Sea $k$ un cuerpo arbitrario. Entonces $|\,| \colon k \to \R $ dado por
+			$$ |x| = \chi_{k^\times}(x) =
+			\begin{cases}
+				0, & x = 0 \\
+				1, & x \ne 0
+			\end{cases} $$
+			es un valor absoluto no aquimediano, llamado el valor absoluto \strong{trivial}.
+			Nótese que el valor absoluto induce la topología discreta.
+			\textit{Ojo}, la expresión <<cuerpo métrico discreto>> la emplearemos con otros fines.
+
+		\item Los valores absoluto estándar sobre $\R$ y $\C$ son efectivamente funciones <<valor absoluto>>
+			e inducen las topologías usuales resp.; les denotaremos $| \, |_\infty$ para diferenciarles de otros valores absoluto.
+			\nomenclature{$|\,|_\infty$}{Valor absoluto usual sobre $\R$ o sobre $\C$}
+	\end{itemize}
+\end{ex}
+% Nótese que para todo valor absoluto se cumple que
+% $$ |1| = |1^2| = |(-1)^2| = |1|^2 \implies |1| = |(-1)| = 1. $$
+% Y además $|-x| = |x|$ y $|x^{-1}| = |x|^{-1}$ para todo $x \ne 0$.
+
+\begin{cor}
+	Sea $k$ un cuerpo métrico. Entonces:
+	\begin{enumerate}
+		\item $|1| = 1$.
+		\item $|a^n| = |a|^n$ para todo $n \in \Z$.
+		\item $|-1| = 1$, por ende, $|-a| = |a|$.
+		\item Para todo $n \in \N$ se cumple que $|n| \le n$.
+		\item Si $k$ es finito, entonces $|\,|$ es trivial.
+	\end{enumerate}
+\end{cor}
+
+Será necesario comprobar lo siguiente:
+\begin{thm}
+	Sea $k$ un cuerpo métrico.
+	Las funciones:
+	$$ +\colon k\times k \to k, \quad \cdot\colon k\times k \to k, \quad ()^{-1} \colon k^\times \to k^\times $$
+	son continuas.
+	Equivalentemente, $k$ es un cuerpo topológico.
+	Además, como es un espacio métrico, la función $|\,|\colon k \to \R$ es continua.
+\end{thm}
+\begin{proof}
+	En el enunciado y la demostración $k\times k$ denota el producto como espacios topológicos.
+	Es sabida que dicha topología es la misma que aquella inducida por la métrica $L^2$ (y cualquier métrica $L^p$ con $p \in [1, \infty]$).
+	En particular fijaremos la métrica $L^\infty$, en donde:
+	$$ d\big( (a_1, b_1), (a_2, b_2) \big) = \max\{ |a_1 - a_2|, |b_1 - b_2| \} < \delta $$
+
+	Sean $a, b \in k$, demostrar que $+$ es continua equivale a ver que para todo $\epsilon > 0$ existe $\delta > 0$ tal que
+	$$ d\big( (a_1, b_1), (a_2, b_2) \big) < \delta \implies |(a_1 + b_1) - (a_2 + b_2)| < \epsilon. $$
+	Así pues, basta elegir $\delta = \epsilon/2$.
+
+	Para el producto, sea $(a_1, b_1) \in k$ un punto arbitrario y sea $M := \max\{ |a_1|, |b_1|, 1 \} > 0$.
+	Luego elegimos $\delta := \min\{ \frac{\epsilon}{2M + 1}, 1 \}$, y vemos que
+	\begin{align*}
+		| a_1 b_1 - a_2 b_2 | &= | a_1b_1 - a_2b_1 + a_2b_1 - a_2b_2 | \le |a_1 - a_2| \, |b_1| + |a_2| \, |b_1 - b_2| \\
+				      &< \delta( |b_1| + |a_2| ) \le \delta( |b_1| + |a_2| + \delta ) \\
+				      &< \frac{\epsilon}{2M + 1}(M + M + 1) = \epsilon.
+	\end{align*}
+	Finalmente, para la inversa, sea $a \in k^\times$, luego $|a| > 0$. Elegimos $\delta := \min \{ \frac{|a|^2}{2}\epsilon, \frac{|a|}{2} \} > 0$ y
+	notamos que si $|a - b| < \delta$, entonces $|b| > |a| - \delta \ge |a|/2$ y
+	\begin{equation}
+		\left| \frac{1}{a} - \frac{1}{b} \right| = \frac{|a - b|}{|a| \, |b|} < \frac{\delta}{|a|\, |a|/2} \le \epsilon.
+		\tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{prop}\label{thm:valuation_equiv}
+	Sean $|\,|_1$, $|\,|_2$ dos valores absolutos no triviales sobre $k$.
+	Entonces las siguientes afirmaciones son equivalentes:
+	\begin{enumerate}
+		\item $|\,|_1$ y $|\,|_2$ son valores absolutos equivalentes.
+		\item $|x|_1 < 1$ implica $|x|_2 < 1$ para todo $x \in k$.
+		\item Existe un $\lambda > 0$ real tal que $|x|_1 = |x|_2^\lambda$ para todo $x \in k$.
+	\end{enumerate}
+\end{prop}
+\begin{proof}
+	$1 \implies 2$.
+	Si $|x|_1 < 1$, entonces $\lim_n |x|_1^n = 0$, por lo que $\lim_n x = 0$.
+	Como las topologías son la misma, la convergencia se da para ambos valores absolutos, luego $\lim_n |x|_2^n = 0$, por lo que $|x|_2 < 1$.
+
+	$2 \implies 3$.
+	Nótese que si $|x|_1 < 1$ implica $|x|_2 < 1$, luego si $|x|_1 > 1$ elijamos $x^{-1}$ luego $|x^{-1}|_1 < 1$ implica $|x^{-1}|_2 < 1$.
+	Como $|\,|_1$ y $|\,|_2$ son no triviales, elijamos $x_0$ tal que $a := |x_0|_1 > 1$ y $b := |x_0|_2 > 1$.
+	Sea
+	$$ \lambda := \frac{\ln b}{\ln a} > 0, $$
+	y claramente se satisface que $|x_0|_1 = |x_0|_2^\lambda$.
+	Sea $x \in k^\times$, entonces sea $\alpha > 0$ tal que $|x|_1 = |x_0|_1^\alpha$.
+	Luego sean $m, n$ enteros tales que $m/n > \alpha$, luego
+	$$ |x|_1 < |x_0|_1^{m/n} \iff |x^n/x_0^m|_1 < 1 \iff |x^n/x_0^m|_2 < 1 \iff |x|_2 < |x_0|_2^{m/n} $$
+	como ello aplica para todo racional, entonces $|x|_2 \le |x_0|_2^\alpha$.
+	De manera análoga se comprueba que $|x|_2 \ge |x_0|_2^\alpha$.
+	Finalmente se estable que $|x|_1 = |x_0|_1^\alpha = |x_0|_2^{\lambda\alpha} = |x|_2^\lambda$.
+	\par
+	$3 \implies 1$. Trivial.
+\end{proof}
+
+\begin{prop}
+	Un cuerpo métrico $k$ es ultramétrico syss para todo $n \in \Z$ se cumple que $|n| \le 1$.
+\end{prop}
+\begin{proof}
+	$\implies$.
+	Basta notar que
+	$$ |n| = |\underbrace{1 + 1 + \cdots + 1}_n| \le \max\{|1|, \dots, |1|\} = 1 $$
+	para $n \ge 0$, y emplear que $|-n| = |n|$ para $n < 0$.
+
+	$\impliedby$.
+	Sean $a, b \in k$ arbitrarios, entonces
+	\begin{align*}
+		|(a + b)^n| &= \left| a^n + \binom{n}{1}a^{n-1}b + \cdots + \binom{n}{n-1}ab^{n-1} + b^n \right| \\
+			    &\le |a|^n + |a|^{n-1} |b| + \cdots + |b|^n \le (n + 1) \max\{ |a|^n, |b|^n \}.
+	\end{align*}
+	Luego aplicando raíces (reales) a los valores absolutos se obtiene que $|a + b| \le \sqrt[n]{n + 1} \max\{|a|, |b|\}$ para todo $n \in \N_{\ne 0}$,
+	pero $\lim_n \sqrt[n]{n+1} = 1$, lo que comprueba que $|a + b| \le \max\{|a|, |b|\}$.
+\end{proof}
+
+\begin{cor}
+	Todo cuerpo métrico de característica no nula es ultramétrico.
+\end{cor}
+
+\begin{cor}
+	El único valor absoluto (salvo equivalencia) sobre $\Fp$ es el trivial.
+\end{cor}
+\begin{proof}
+	Sea $a \in \Fp^\times$, entonces como $\Fp$ es ultramétrico, $|a| \le 1$, pero $a^{-1} \equiv n \pmod p$ para algún $n \in \N$,
+	así que $|a^{-1}| \le 1$ y luego $|a| = 1$.
+\end{proof}
+
+\begin{cor}\label{thm:archimedian_over_subflds}
+	Si un valor absoluto $|\,|$ sobre $k$ es no arquimediano sobre algún subcuerpo (e.g., es trivial), entonces es no arquimediano en todo $k$.
+\end{cor}
+
+\begin{exn}
+	Sea $p \in \Z$ primo.
+	Se define $\nu_p(a)$, la \strong{valuación $p$-ádica}\index{valuación!padica@$p$-ádica} de $a \in \Z$, como el máximo $n \in \N$ tal que $p^n \mid a$;
+	se extiende a que $\nu_p(0) := \infty$.
+	Ésto lo podemos extender a $\Q$ definiendo que $\nu_p(a/b) := \nu_p(a) - \nu_p(b)$ (¿por qué está bien definido?).
+	Finalmente, eligiendo un real $\lambda \in (0, 1)$ podemos definir:
+	$$ \left| \frac{a}{b} \right|_p := \lambda^{\nu_p(a/b)}, $$
+	\nomenclature{$\nu_p(a), |a|_p$}{Valuación y valor absoluto $p$-ádico}
+	y verificamos que efectivamente sea un valor absoluto no arquimediano.
+
+	La condición VA1 es clara.
+	Además, para enteros se verifica que $\nu_p(ab) = \nu_p(a) + \nu_p(b)$ de lo que se concluye VA2.
+	Nótese lo siguiente, $n = \nu_p(a/b)$ syss $\frac{a}{b} = p^n \frac{u}{v}$ donde $p \nmid uv$, de éste modo si $n := \nu_p(a / b) \le \nu_p(c/d) =: m$
+	$$ \frac{a}{b} + \frac{c}{d} = p^n \frac{u}{v} + p^m \frac{w}{z} = p^n \frac{uz + p^{m-n}wv}{vz}, $$
+	donde claramente $p \nmid uz + p^{m-n}wv$ y $p\nmid vz$.
+	Con ésto se comprueba que $\nu_p(a/b + u/v) = \min\{ \nu_p(a/b), \nu_p(c/d) \}$, ésto se traduce en la desigualdad ultramétrica.
+
+	La observación de cierre es que la elección de $\lambda$ para el valor absoluto no afecta en nada, en el sentido de que otorga valores absolutos
+	equivalentes. Por ello, el estándar es escoger $\lambda = 1/p$ de modo que $| a/b |_p = p^{-\nu_p(a/b)}$.
+\end{exn}
+Más generalmente, si $A$ es un DFU y $K := \Frac A$, el ejemplo anterior nos permite construir valores absoluto mediante los elementos irreducibles de $A$.
+
+\begin{mydefi}
+	Un dominio íntegro $A$ se dice un \strong{anillo de valuación}\index{anillo!de valuación} si para todo $a \in \Frac(A)^\times$
+	se cumple que $a \in A$ o $a^{-1} \in A$.
+\end{mydefi}
+\begin{ex}
+	\begin{itemize}
+		\item Todo cuerpo es un anillo de valuación.
+		\item $\Z$ no es de valuación, puesto que $2/3 \in \Q$ satisface que $2/3 \notin \Z$ y $3/2 \notin \Z$.
+		\item Considere la localización $\Z_{(p)}$, proponemos que es un anillo de valuación.
+			En efecto, $\Frac( \Z_{(p)} ) = \Q$ y para toda fracción reducida $a/b \in \Q$ se cumple que o bien $p\nmid b$, en cuyo caso
+			$a/b \in \Z_{(p)}$, o bien $p \mid b$ y $p \nmid a$, en cuyo caso $b/a \in \Z_{(p)}$.
+	\end{itemize}
+\end{ex}
+El nombre <<anillo de valuación>> sugiere que todo anillo de valuación desciende una valor absoluto en $K$, pero ésto podría no ser cierto.
+Para ello, vemos que la complicación está en que las funciones hasta $\R$ son demasiado \textit{concretas} y también demasiado \textit{rígidas},
+mientras que buscamos una definición más \textit{abstracta} que sí nos permita establecer una analogía con los valores absolutos.
+Ésta definición, es la de \textit{valuación}, propuesta por W. Krull que estudiamos en el capítulo 12 de \cite{Alg}.
+
+El último ejemplo es parte de algo más general:
+\begin{prop}
+	Sea $(k, v)$ un cuerpo ultramétrico. Definamos:
+	$$ \mathfrak{o} := \{ a \in k : |a| \le 1 \}, \qquad \mathfrak{m} := \{ a \in k : |a| < 1 \}, $$
+	entonces $(\mathfrak{o}, \mathfrak{m})$ es un anillo local de valuación, y su cuerpo de residuos $\kk(v) := \mathfrak{o}/\mathfrak{m}$ se le dice el
+	\strong{cuerpo de restos (de clases)}\index{cuerpo!de restos de clases} de $(k, v)$.
+\end{prop}
+\begin{proof}
+	El que $\mathfrak{o}$ sea un dominio íntegro deriva de que $1 \in \mathfrak{o}$, no posee divisores de cero por estar contenido en $k$,
+	es cerrado bajo multiplicación por VA2 y es cerrado bajo adición por la desigualdad ultramétrica.
+
+	El hecho de que $\mathfrak{m}$ sea su ideal maximal se deriva de que, las razones anteriores demuestran que $\mathfrak{m}$ es ideal de $\mathfrak{o}$
+	y si $a \in \mathfrak{m}$, entonces $a^{-1} \in k$ tiene valor absoluto $|a|^{-1} > 1$, luego $a^{-1} \notin \mathfrak{o}$.
+\end{proof}
+
+Con ésto podemos dar un primer teorema de clasificación:
+\begin{thmi}[Primer teorema de Ostrowski]\index{teorema!de Ostrowski!I}
+	Todo valor absoluto no trivial sobre $\Q$ es (salvo equivalencia):
+	\begin{enumerate}
+		\item $| \, |_\infty$ si $|\,|$ es arquimediano.
+		\item Un valor $p$-ádico $|\,|_p$ si es no arquimediano.
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	\begin{enumerate}
+		\item Sea $n > 1$ entero. Entonces nótese que todo $m$ posee una única expansión en base $n$:
+			$$ m = m_t n^t + \cdots + m_1n + m_0, \qquad 0\le m_i \le n-1, m_t \ne 0 $$
+			donde $n^t \le m < n^{t+1}$.
+			Luego por desigualdad triangular, empleando que $|m_i| \le n-1$, se concluye que $|m| \le (t + 1)(n - 1)r^t$.
+			% Nótese que como $|\,|$ es arquimediano, entonces $|m| > 1$ para algún $m$, luego $|m|^j > 1$ para todo $j$.
+			Como $m^j < n^{j(t+1)}$, luego
+			$$ |m|^j = |m^j| \le j(t + 1)(n-1)r^{jt} \implies r > \frac{\sqrt[t]{m}}{\sqrt[jt]{ j(t+1)(n-1) }}, $$
+			aplicando límites se concluye que $r \ge \sqrt[t]{|m|}$; como algún $m$ tiene valor absoluto $|m| > 1$ (por ser arquimediano),
+			entonces $r > 1$ y como $t = \lfloor \log_n(m) \rfloor = \log_n(m)$ se concluye que
+			$$ |m| \le r^t \le r^{\log_n(m)}. $$
+			Cambiando $m$ entero a $x$ racional, vemos que la misma cota aplica, luego si $|x|_\infty < 1$, entonces $\log_n(x) < 0$ y
+			$|x| < 1$ lo que prueba que los valores absolutos son equivalentes.
+
+		\item Supongamos que $| \, |$ es un valor absoluto no trivial sobre $\Q$.
+			Por la proposición anterior, sea $(\mathfrak{o}, \mathfrak{m})$ el anillo de valuación asociado a $|\,|$.
+			Nótese que, como $|n| \le 1$ para todo $n \in \Z$, concluimos que $\Z \subseteq \mathfrak{o}$.
+			Luego $\Z \cap \mathfrak{m}$ es un ideal primo de $\Z$, digamos $(p)$; luego $A \supseteq \Z_{(p)}$.
+			Como $| \, |$ es no trivial, entonces $\mathfrak{o} \ne \Q$ y $\Z_{(p)} \ne \Q$ por lo que $p \ne 0$.
+			Si $a \in \Z$ es tal que $p \nmid a$, entonces $a \notin \mathfrak{m}$ y necesariamente $|a| = 1$.
+			Luego si $p \nmid ab$, entonces $| p^n \frac{a}{b} | = |p|^n$ y de ahí se concluye que $| \, |$ es equivalente a $| \, |_p$. \qedhere
+	\end{enumerate}
+\end{proof}
+
+Y hay también otro caso:
+\begin{thmi}
+	Sea $t$ trascendente sobre $\Fp$.
+	Entonces todos los valores absoluto no triviales sobre $\Fp(t)$ son (salvo equivalencia):
+	\begin{enumerate}
+		\item $|\,|_q$ para algún polinomio $q(t)$ irreducible.
+		\item $|\,|_\infty$ dado por $|f(t)/g(t)|_\infty = c^{\deg g - \deg f}$, donde $c \in (0, 1)$ es arbitrario.
+	\end{enumerate}
+\end{thmi}
+\begin{proof}
+	Fijemos un valor absoluto $|\,|$ sobre $\Fp(t) =: K$; nótese que si lo restringimos a $\Fp$ necesariamente dará el valor absoluto trivial.
+
+	Supongamos que $|t| \le 1$, entonces por desigualdad ultramétrica $|f(t)| \le 1$ para todo $f(x) \in \Fp{}[x]$
+	y elijamos $q(t)$ como un polinomio de grado minimal tal que $|p(t)| < 1$.
+	Es fácil probar que $q(t)$ es irreducible (¿por qué?).
+	Sea $g(t)$ otro polinqmio tal que $|g(t)| < 1$, entonces, por algoritmo de la división
+	$$ g(t) = q(t) \cdot h(t) + r(t), $$
+	donde $\deg r < \deg q$ o $r = 0$.
+	Despejando, tenemos que $r(t) = g(t) - q(t)h(t)$ es también tal que $|r(t)| < 1$, de modo que, por definición de $q(t)$,
+	se ha de cumplir que $r(t) = 0$.
+
+	Sea $\phi(t) \in K$, luego $\phi(t) = q(t)^\alpha \cdot \psi(t)$, donde ni el numerador ni el denominador de $\psi(t)$ son divisibles por $q(t)$,
+	de modo que $|\psi(t)| = 1$ y $|\phi(t)| = |q(t)|^\alpha$, y elegir $c := |q(t)| \in (0, 1)$.
+	% Debido a que $\Fp(t)$ es un DFU, podemos libremente definir $\nu_{p}(\phi) = \alpha$ y podemos normalizar el valor absoluto $|\,|_p$
+	% de modo que $\| p(t) \| = c^{-\deg p}$ donde $c > 1$ es una constante fija.
+
+	Por otro lado, supongamos que $|t| > 1$, entonces definamos $y := 1/t$.
+	Nótese que $\Fp(t) = \Fp(y)$ y que $|y| =: c < 1$, de modo que, éste ya es el polinomio de grado minimal tal que $|f(y)| < 1$.
+	% Ésta valuación la denotamos por $p_\infty$ y consideremos la normalización $\|y\|_{p_\infty} = c^{-1}$.
+	Sea $\phi(t) = g(t)/h(t)$ donde $g(t), h(t)$ son polinomios de grados $m, n$ resp., entonces
+	$$ \phi(t) = y^{n-m} \frac{g_1(y)}{h_1(y)}, $$
+	donde $g_1(y), h_1(y)$ son polinomios (respecto a $y$) que no son divisibles por $y$, de modo que $| \phi(t) | = c^{n-m}$.
+\end{proof}
+Al igual que con los valores absoluto $p$-ádicos, existen infinitas elecciones, por ello hablaremos de las normalizaciones así:
+$$ \| q(t) \|_q := \left| \frac{\Fp{}[t]}{(q(t))} \right|^{-1} = p^{-\deg q}, \qquad \|f(t)\|_\infty = p^{\deg f}, $$
+(en la primera igualdad, el $|\,|$ denota cardinalidad).
+A veces al teorema anterior se le llama \textit{teorema de Ostrowski para $k(t)$.} 
+
+Si $k$ es un cuerpo métrico, entonces podemos importar las siguientes definiciones de la topología/análisis:
+\begin{mydef}
+	Sea $k$ un cuerpo métrico.
+	Sea $(a_n)_{n \in \N} \subseteq k$ una sucesión.
+	Se dice que $(a_n)_n$ converge a un límite $L \in k$, denotado $\lim_n a_n = L$, si para todo
+	$$ \forall \epsilon > 0 \exists N \in \N \forall n > N \quad |a_n - L| < \epsilon. $$
+	Se dice que $(a_n)_n$ es una \strong{sucesión fundamental}\index{sucesión!fundamental} si es una sucesión de Cauchy, i.e., si para todo $\epsilon > 0$
+	existe $N \in \N$ tal que
+	$$ \forall n, m > N \quad |a_n - a_m| < \epsilon. $$
+	Un cuerpo con valor absoluto se dice \strong{completo}\index{cuerpo!métrico!completo} si toda sucesión fundamental es convergente.
+
+	Se dice que un cuerpo $K$ con un valor absoluto $\| \, \|$ es una \strong{compleción}\index{compleción} de $k$ si:
+	\begin{enumerate}
+		\item $K$ es completo.
+		\item $K/k$ es una extensión de cuerpos y $\|x\| = |x|$ para todo $x \in k$.
+		\item $k$ es (topológicamente) denso en $K$, i.e., para todo $x \in K$ y todo $\epsilon > 0$ existe $y \in k$ tal que $\|x - y\| < \epsilon$.
+	\end{enumerate}
+\end{mydef}
+Luego veremos otra definición categorial de \textit{compleción} que nos servirá para fines del álgebra conmutativa,
+pero ésta definición es suficiente por el momento.
+
+\begin{thm}\label{thm:metric_fld_completion}
+	Todo cuerpo métrico $k$ posee una compleción.
+	Más aún, sus compleciones son isométricamente isomorfas.%
+	\footnote{Es decir, existe un isomorfismo de cuerpos que además preserva distancias o, en este caso, que respeta el valor absoluto;
+		en particular, es también un homeomorfismo.}
+\end{thm}
+\begin{proof}
+	Como $k$ es un espacio métrico, entonces posee una compleción $K$ (como espacio) y podemos definir $\| \alpha \| := d(\alpha, 0)$ para $\alpha \in K$,
+	donde $d$ es la métrica en $K$ que extiende a la métrica de $k$.
+
+	Los elementos de $K$ son límites de sucesiones fundamentales en $k$, así pues definimos $\alpha := \lim_n a_n$ y $\beta := \lim_n b_n$.
+	Luego $\alpha + \beta := \lim_n (a_n + b_n)$, $\alpha\cdot\beta := \lim_n (a_n\cdot b_n)$ y si $\alpha \ne 0$ y $(a_n)_n$ no se anula,
+	entonces se comprueba que $\alpha^{-1} = \lim_n a_n^{-1}$ (esta última es una igualdad, no una definición).
+	Todo ésto se puede comprobar a partir de que la suma, el producto y la inversa es continua en un cuerpo topológico y, en particular, lo es
+	en un cuerpo métrico.
+
+	Finalmente, si $(K_1, |\,|_1)$ y $(K_2, |\,|_2)$ son compleciones de $k$, con los encajes de cuerpos topológicos $f\colon k \to K_1$ y $g\colon k \to K_2$
+	(que son encajes topológicos y monomorfismos de cuerpos),
+	entonces todos los elementos de $K_1$ son de la forma $\lim_n f(a_n)$ para alguna sucesión fundamental $(a_n)_n \in k$.
+	Luego definimos:
+	\begin{align*}
+		\varphi \colon K_1 &\longrightarrow K_2 \\
+		\lim_n f(a_n) &\longmapsto \lim_n g(a_n),
+	\end{align*}
+	el cual está bien definido y es un homeomorfismo.%
+	\footnote{De hecho, ésta misma función es la que se emplea para probar que la compleción de un espacio métrico es única salvo homeomorfismo.}
+	Para ver que además es un homomorfismo de cuerpos, basta recordar que $f$ y $g$ lo son, y que la suma, producto e inverso son continuas.
+\end{proof}
+
+\begin{cor}
+	Sea $\varphi\colon k \to L$ un encaje de cuerpos topológicos, donde $k$ es métrico y $L$ es métrico completo.
+	Entonces, $\overline{\varphi[k]}$ (la clausura topológica) es una compleción de $k$.
+\end{cor}
+
+\begin{cor}
+	$\R$ sólo posee un valor absoluto arquimediano salvo equivalencia, $| \, |_\infty$.
+\end{cor}
+\begin{proof}
+	Basta notar que $\R$ es la compleción de $(\Q, |\,|_\infty)$ y de que todo valor absoluto en $\R$ se restringe a $\Q$.
+\end{proof}
+
+\begin{lem}
+	Sean $|\,|_1, \dots, |\,|_n$ valores absoluto sobre $k$ tales que ningún par es equivalente.
+	Existe $a \in k$ tal que
+	$$ |a|_1 > 1, \quad \forall i\ne 1 \quad |a|_i < 1. $$
+\end{lem}
+\begin{proof}
+	Lo probaremos por inducción sobre $n$.
+	El caso base $n = 2$ esta dado puesto que, por la proposición~\ref{thm:valuation_equiv}, podemos encontrar $b, c \in k$ tales que
+	$$ |b|_1 < 1, \; |b|_2 \ge 1, \quad |c|_1 \ge 1, \; |c|_2 < 1. $$
+	Luego elegimos $a = bc^{-1}$ y notamos que $|a|_1 < 1$ y $|a|_2 > 1$ como se quería.
+
+	Para el caso $n+1$, por hipótesis inductiva y por lo anterior podemos encontrar $b, c \in k$ tales que
+	\begin{gather*}
+		|b|_1 > 1, \quad |b|_2 < 1, \; \cdots, \; |b|_n < 1 \\
+		|c|_1 > 1, \qquad |c|_{n+1} < 1.
+	\end{gather*}
+	\begin{enumerate}[(a)]
+		\item \underline{Si $|b|_{n+1} \le 1$:}
+			Entonces elegimos $a := b^r c$ donde $r \in \N$ no está fijo.
+			Nótese que $|a|_1 > 1$ y $|a|_i = |b|_i^r \, |c|$ para $1 < i \le n$, luego como $|b|_i^r \to 0$ podemos elegir $r$ suficientemente grande
+			de modo que $|a|_i < 1$ para $1 < i \le n$ y es claro que $|a|_{n+1} < 1$.
+
+		\item \underline{Si $|b|_{n+1} > 1$:}
+			Entonces elegimos
+			$$ a := \frac{b^r}{1 + b^r}c, $$
+			con $r \in \N$ sin fijar.
+			Como $|b|_i^r \to 0$, entonces se comprueba que $|a|_i < 1$ para todo $1 < i \le n$ si $r$ es suficientemente grande.
+			Para $j = 1$ o $j = n+1$, nótese que $|b|_j > 1$ luego nótese que
+			$$ |b|_j^r - 1 \le |1 + b^r|_j \le 1 + |b|_j^r $$
+			por desigualdad triangular, luego
+			$$ 1 = \lim_r \frac{|b|_j^r}{|b|_j^r - 1} \ge \lim_r \frac{|b|_j^r}{|1 + b^r|_j} \ge \lim_r \frac{|b|_j^r}{|b|_j^r + 1} = 1, $$
+			con lo cual, por teorema del sandwich, el límite de al medio converge a 1, luego para un $r$ suficientemente grande se cumple
+			que $|a|_j$ está <<cerca>> de $|c|_j$ y luego $|a|_1 > 1$ y $|a|_n < 1$ como se quería probar. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}[de aproximación]\index{teorema!de aproximación}
+	Sean $|\,|_1, \dots, |\,|_n$ valores absoluto sobre $k$ tales que ningún par es equivalente.
+	Sean $a_1, \dots, a_n \in k$ y sea $\epsilon > 0$, entonces existe $a \in k$ tal que
+	$$ \forall 1\le i \le n \quad |a - a_i|_i < \epsilon. $$
+\end{thm}
+\begin{proof}
+	Empleando el lema, podemos obtener $b_i \in k$ tal que $|b_i|_i > 1$ y $|b_i|_j < 1$ para $j \ne i$.
+	Luego nótese que
+	$$ \lim_r \left| \frac{b_i^r}{1 + b_i^r} \right|_i = 1, \qquad \lim_r \left| \frac{b_i^r}{1 + b_i^r} \right|_j = 0, \; j \ne i. $$
+	Luego $a_ib_i^r/(1 + b_i^r)$ tendrá valor absoluto en $|\,|_i$ cercano a $|a_i|_i$ y valor absoluto en $|\,|_j$ cercano a 0.
+	Definimos
+	$$ a := \sum_{i=1}^{n} \frac{a_i b_i^r}{1 + b_i^r}, $$
+	el cual, con $r$ suficientemente grande, satisface las hipótesis requeridas.
+\end{proof}
+Nótese que hay un paralelo entre el teorema chino del resto y el teorema de aproximación:
+En efecto, podemos considerar a los valores absolutos como los $p$-ádicos y los $a_i$'s como residuos mód $p_i$, luego el $a \in \Q$ dado
+satisface que $|a - a_i|_i < p^{-n_i}$, o equivalentemente, satisface que $\nu_{p_i}(a - a_i) \ge n_i$
+
+\begin{cor}\label{thm:finite_places_not_prod_form}
+	Sean $|\,|_1, \dots, |\,|_n$ valores absoluto no triviales sobre $k$ tales que ningún par es equivalente, y sean $\eta_j \in \R$.
+	Una relación del estilo
+	$$ \prod_{j=1}^{n} |a|_j^{\eta_j} = 1, $$
+	para todo $a \in k^\times$ se da syss cada $\eta_j = 0$.
+\end{cor}
+\begin{proof}
+	Sin perdida de generalidad supongamos que $\eta_1 \ne 0$.
+	Sea $a_1$ tal que $|a_1|_1^{\eta_1}$ es suficientemente grande,
+	luego podemos elegir $a_j = 1$ para $j\ne 1$ y, por el teorema de aproximación con un $\epsilon$ suficientemente pequeño podemos obtener un $\beta \in k$
+	tal que $|\beta|_1^{\eta_1}$ es suficientemente grande y $|\beta|_j^{\eta_j} \approx 1$ para $j \ne 1$, de modo que la relación falle.
+\end{proof}
+
+Ahora, a por una sorpresa:
+\begin{prop}[fórmula del producto]
+	Para todo $x \in \Q^\times$ se satisface que
+	$$ |x|_\infty \cdot |x|_2 \cdot |x|_3 \cdots = |x|_\infty \cdot \prod_{p} |x|_p = 1, $$
+	donde $p$ recorre todos los primos de $\Z$.
+	(Nótese que el producto converge pues $|x|_p = 1$ para todos salvo finitos $p$'s.)
+\end{prop}
+Demostrar ésta proposición no es más que un ejercicio, pero lo interesante es que por el teorema de Ostrowski estamos tomando un producto sobre todos
+los valores absoluto de $\Q$ salvo equivalencia, y que por el corolario anterior, ésto sería imposible de sólo consistir de finitos factores.
+
+En particular, (y ésto nunca lo he visto mencionado en otra parte) tenemos otra demostración de la infinitud de los primos.
+
+También hicimos el caso de $\Fp(t)$ porque obtenemos el mismo resultado:
+\begin{prop}[fórmula del producto]
+	Para todo $f(t) \in \Fp(t)^\times$ se satisface que
+	$$ \|f\|_\infty \cdot \prod_{q(t)} \|f\|_q = 1, $$
+	donde $q(t)$ recorre todos los irreducibles de $\Fp{}[t]$ salvo asociados.
+	% (Nótese que el producto converge pues $|x|_p = 1$ para todos salvo finitos $p$'s.)
+\end{prop}
+
+\subsection{Segundo teorema de Ostrowski}
+El primer teorema de Ostrowski nos clasifica los valores absolutos sobre $\Q$, pero hay una segunda versión, también atribuida a Ostrowski,
+% \cite[Teo.~1.1, pág.~33]{cassels:local_fields}
+que nos clasifica los valores absolutos arquimedianos, simplificando enormemente su estudio.
+En cierta manera, éste teorema nos dará otro indicio de unicidad para $\R$.
+
+\begin{lem}
+	El único valor absoluto arquimediano $|\,|$ sobre $\C$ es (salvo equivalencia) $|\,|_\infty$.
+\end{lem}
+\begin{proof}
+	Sea $\zeta = a + b\ui$ con $a, b \in \R$.
+	Como $\ui^4 = 1$, entonces $|\ui| = 1$.
+	Además, sabemos que $|\,|$ en $\R$ es equivalente a $|\,|_\infty$, luego $|a| = |a|_\infty^\lambda$ para algún $\lambda > 0$ real.
+	Luego:
+	$$ |\zeta| = |a + b\ui| \le |a| + |b| = |a|_\infty^\lambda + |b|_\infty^\lambda \le 2|\zeta|_\infty^\lambda. $$
+	Luego elijamos $\alpha, \beta$ y por el teorema de aproximación existe $\gamma$ tal que $|\alpha - \gamma|, |\beta - \gamma|_\infty < \epsilon$,
+	pero nótese que
+	$$ |\alpha - \gamma|_\infty \ge \left( \frac{|\alpha - \gamma|}{2} \right)^{1/\lambda}
+	\ge \left( \frac{|\alpha - \beta| - \epsilon}{2} \right)^{1/\lambda}, $$
+	lo cual, eligiendo $|\alpha - \beta|$ y $\epsilon$ apropiadamente, conlleva a una contradicción.
+\end{proof}
+
+\begin{lem}
+	Sea $k$ un cuerpo métrico completo.
+	Supongamos que $t^2 + 1$ es irreducible en $k[t]$, entonces existe $\Delta > 0$ real tal que
+	$$ \forall a,b\in k \quad |a^2 + b^2| \ge \Delta \max\{ |a|^2, |b|^2 \}. $$
+\end{lem}
+\begin{proof}
+	Definamos
+	$$ \Delta := \frac{|4|}{1 + |4|}. $$
+	Probaremos la contrarrecíproca: supongamos que existe $c_1 \in k$ tal que
+	$$ \delta_1 := |c_1^2 + 1| < \Delta < 1, $$
+	entonces construiremos una sucesión fundamental que converja a una solución del polinomio.
+	Para ello definamos $c_2 := c_1 + h_1$, luego
+	$$ c_2^2 + 1 = c_1^2 + 1 + 2c_1h_1 + h_1^2, $$
+	por lo que elegimos
+	$$ h_1 := -\frac{(c_1^2 + 1)}{2c_1}, $$
+	con lo que se comprueba que
+	$$ \delta_2 := |c_2^2 + 1| = |h_1|^2 = \frac{|c_1^2 + 1|^2}{|4|\,|c_1|^2} \le \delta_1 \theta, $$
+	donde
+	$$ \theta := \frac{\delta_1}{|4|(1 - \delta_1)} < 1, $$
+	donde empleamos que $|c_1| \ge 1 - \delta_1 > 0$ por desigualdad triangular; nótese que $\delta_2 < \delta_1$.
+	Definiendo por recursión $c_n$ y $h_n$ del mismo modo, vemos que, por inducción sobre $n$ se cumple
+	$$ \delta_{n+1} = |c_{n+1}^2 + 1| = |h_n|^2 \le \delta_n \theta \le \delta_1 \theta^n. $$
+	Finalmente, basta notar que $(c_n)_n$ es una sucesión fundamental:
+	$$ |c_{n+1} - c_n|^2 = |h_n|^2 \le \delta_1 \theta^n. $$
+	Y así, $c^* := \lim_n c_n$ existe y satisface que $|{c^*}^2 + 1| = \lim_n |c_n^2 + 1| = 0$.
+\end{proof}
+
+\begin{lem}
+	Sea $k$ un cuerpo y $|\,|\colon k \to [0, \infty)$ una función tal que:
+	\begin{enumerate}
+		\item $|a| = 0$ syss $a = 0$.
+		\item $|ab| = |a| \, |b|$.
+		\item Si $|a| \le 1$, entonces existe $C > 0$ tal que $|1 + a| \le C$.
+	\end{enumerate}
+	Entonces existe un $\lambda > 0$ tal que $|\,|^\lambda$ es un valor absoluto.
+\end{lem}
+\begin{proof}
+	Es claro que $|\,|^\lambda$ satisface VA1 y VA2, sólo falta probar la desigualdad triangular.
+	Sin perdida de generalidad, podemos suponer que $C > 1$ y así, elegimos $\lambda$ de modo que $C = 2$.
+
+	Ahora, hay que probar la desigualdad triangular.
+	En primer lugar, se comprueba que $|a + b| \le 2\max\{ |a|, |b| \}$.
+	De modo que, por inducción, se comprueba que
+	$$ \left| \sum_{i=1}^{2^r} a_i \right| \le 2^r \max_i\{ |a_i| \}, $$
+	así que eligiendo $r$ de modo que $n \le 2^r < 2n$ vemos que
+	$$ \left| \sum_{i=1}^{n} a_i \right| \le 2^r \max_i\{ |a_i| \} \le 2n\max_i \{ |a_i| \}. $$
+	Empleando la desigualdad anterior con cada $a_i = 1$, tenemos $|n| \le 2n$.
+
+	Finalmente, sean $a, b \in k$ arbitrarios y sea $n > 0$ natural, por el teorema del binomio:
+	\begin{align*}
+		|a + b|^n &= \left| \sum_{i=0}^{n} \binom{n}{i} a^i b^{n-i} \right|
+		\le 2(n+1) \max_i \left\{ {\textstyle \left| \binom{n}{i} \right| } \, |a|^i \, |b|^{n-i} \right\} \\
+			  &< 4(n+1) \max_i \left\{ {\textstyle \binom{n}{i}} \, |a|^i \, |b|^{n-i} \right\} \le 4(n+1) (|a| + |b|)^n,
+	\end{align*}
+	tomando raíces $n$-ésimas a ambos lados y considerando el límite cuando $n \to \infty$ se comprueba la desigualdad triangular.
+\end{proof}
+
+\begin{lem}
+	Sea $k$ un cuerpo métrico completo.
+	Supongamos que $t^2 + 1$ es irreducible en $k[t]$, entonces $|\,|$ posee una extensión a un valor absoluto en $k(\sqrt{-1})$.
+\end{lem}
+\begin{proof}
+	Sea $\ui := \sqrt{-1}$ y definamos en $k(\ui)$:
+	$$ \| a + \ui b \| := \sqrt{|a^2 + b^2|}. $$
+	Es fácil notar que $\|\,\|$ extiende a $k$.
+	Y es fácil también comprobar que satisface VA1 y VA2.
+	Vamos a comprobar la desigualdad triangular: sean $\alpha, \beta \in k(\ui)$, la desigualdad es trivial si alguno fuese nulo, así que en caso contrario,
+	elijamos $0 \ne \|\alpha\| \ge \|\beta\|$, entonces vemos que
+	$$ \|\alpha + \beta\| \le \|\alpha\| + \|\beta\| \iff \left\| 1 + \frac{\beta}{\alpha} \right\| \le 1 + \left\| \frac{\beta}{\alpha} \right\|, $$
+	donde $\gamma := \beta / \alpha$ satisface que $\|\gamma\| \le 1$.
+	Así, supongamos que $\|a + \ui b\|^2 \le 1$, entonces, por el lema anterior, se cumple que $|a|, |b| \le \Delta^{-1/2}$.
+	Luego vemos que
+	\begin{align*}
+		\|1 + (a + \ui b)\|^2 &= |(1 + a)^2 + b^2| \le 1 + |2|\,|a| + |a|^2 + |b|^2 \\
+				      &\le 1 + |2| \Delta^{-1/2} + 2\Delta^{-1} =: C^2.
+	\end{align*}
+	Con lo que se cumple lo pedido.
+	% \todo{Revisar conclusión, \cite[pág.~37]{cassels:local_fields}.}
+\end{proof}
+
+\begin{thmi}[Segundo teorema de Ostrowski]\index{teorema!de Ostrowski!II}
+	Sea $k$ un cuerpo métrico arquimediano.
+	Entonces existe un monomorfismo de cuerpos $\sigma\colon k \to \C$ y una constante real $\lambda > 0$ tales que
+	$$ |x| = |\sigma(x)|_\infty^\lambda. $$
+	Más aún, si $k$ es completo, entonces $k$ es isométricamente isomorfo a $\R$ o a $\C$.
+\end{thmi}
+\begin{proof}
+	En particular, probaremos lo siguiente:
+	\begin{displayquote}
+		Si $k$ es un cuerpo métrico arquimediano completo e $\ui = \sqrt{-1} \in k$, entonces $k$ es isométricamente isomorfo a $\C$.
+	\end{displayquote}
+	Como $k$ es arquimediano, entonces $\car k = 0$ y contiene a $\Q$.
+	Como es completo, entonces contiene a $\R$ y como contiene a $\ui$, entonces contiene a $\C$.
+	Es claro que la restricción de $|\,|$ en $\C$ es equivalente al valor absoluto usual $|\,|_\infty$.
+
+	Sea $\alpha \in k$ arbitrario.
+	Luego $z \mapsto |\alpha - z|$ es una función continua de dominio $\C$ y codominio $\R$ que, veremos, alcanza un mínimo.
+	Nótese que $|\alpha - z| \ge |z|_\infty^\lambda - |\alpha|$, de modo que para un radio $R > 0$ suficientemente grande
+	se cumple que si $|z| > R$ entonces $|\alpha - z| \ge |\alpha|$, luego, por compacidad de la bola de radio $R$, el mínimo se alcanza en su interior,
+	digamos en el complejo $b \in \C$ y definimos $\beta := \alpha - b$.
+	Si $\alpha \notin \C$, entonces $\beta \ne 0$ y $|\beta| > 0$.
+	Nótese que
+	$$ 0 < |\beta| = \inf_{z \in \C} |\alpha - z|. $$
+	Sea $c \in \C$ tal que $0 < |c| < |\beta|$. Por la propiedad superior se cumple que $|\beta - c| \ge |\beta|$.
+	Notemos que
+	$$ \frac{\beta^n - c^n}{\beta - c} = \prod_{\substack{\zeta^n = 1 \\ \zeta\ne 1}} (\beta - \zeta c), $$
+	como $\C$ contiene a todas las raíces de la unidad, entonces $\zeta c \in \C$ y $|\beta - \zeta c| \ge |\beta|$.
+	Aplicando $|\,|$ a ambos lados se obtiene que:
+	$$ \frac{|\beta - c|}{|\beta|} \le \frac{|\beta^n - c^n|}{|\beta|^n} = | 1 - (c/\beta)^n | = 1 + |c/\beta|^n, $$
+	el cual converge a 1 para $n$ suficientemente grande.
+	Luego $|\beta - c| \le |\beta|$ y por antisimetría de $\le$ se concluye igualdad, es decir, en el complejo $b - c$ también se alcanza el mínimo.
+
+	Sustituyendo $\beta$ por $\beta - c$ y repitiendo el proceso notamos que el mínimo siempre se alcanza en $b - nc$ para todo $n \in \N$, pero
+	$$ |n| \, |c| \le |\beta| + |\beta - nc| = 2|\beta|. $$
+	Luego, como $|n| > 1$ para algún $n$ y claramente también para sus potencias, se concluye que $|c| = 0$ lo cual es absurdo por elección de $|c|$.
+	En conclusión, necesariamente $\alpha \in \C$.
+\end{proof}
+
+% Todo valor absoluto no arquimediano sobre un cuerpo induce una $\R$-valuación:
+% En efecto, sea $0 < r < 1$ un real arbitrario, entonces $v(x) := \log_r|x|$ es una valuación.
+% La propiedad V1 puede considerarse como por definición, la propiedad V2 se reduce a que el logaritmo convierte productos en sumas y la propiedad V3 es una
+% traducción de la desigualdad ultramétrica.
+
+% En el caso de los valores absolutos no arquimedianos habíamos construido los objetos
+% $$ \mathfrak{o} = \{ x \in k : |x| \le 1 \}, \qquad \mathfrak{m} = \{ x \in k : |x| < 1 \}, $$
+% cuyos análogos en el mundo de las valuaciones son
+% $$ \mathfrak{o} = \{ x \in k : v(x) \ge 0 \}, \qquad \mathfrak{m} = \{ x \in k : v(x) > 0 \}. $$
+
+\subsection{Valuaciones y dominios de valuación discreta}
+Como señalamos anteriormente, no estudiaremos en detalle las valuaciones en éste libro, pero aún así veremos instancias de ellas:
+\begin{mydef}
+	Una ($\R$-)\strong{valuación}\index{valuación} sobre un anillo $A$ es una función $v\colon A \to \R\cup\{ \infty \}$ tal que:
+	\begin{enumerate}[{V}1.]
+		\item $v(a) = \infty$ syss $a = 0$.
+		\item $v(ab) = v(a) + v(b)$ para todo $a, b\in A$.
+		\item $v(a + b) = \min\{ v(a), v(b) \}$ para todo $a, b\in A$.
+	\end{enumerate}
+\end{mydef}
+
+Hay una gran familia de ejemplos de valuaciones que será de nuestro interés, para lo cual requerimos el siguiente resultado de álgebra conmutativa
+(cfr. \cite{Alg}, cor.~11.30):
+\begin{thm}[de las intersecciones de Krull]
+	Sea $A$ un dominio íntegro noetheriano y sea $\mathfrak{a} \nsl A$. Entonces:
+	$$ \bigcap_{n\in\N} \mathfrak{a}^n = 0. $$
+\end{thm}
+
+\begin{prop}
+	Sea $A$ un dominio íntegro noetheriano y sea $\mathfrak{p} \nsl A$ un ideal primo.
+	Definamos $\nu_{\mathfrak{p}}(a) := n$ como el natural tal que $a \in \mathfrak{p}^n$ pero $a \notin \mathfrak{p}^{n+1}$.
+	Entonces $\nu_{\mathfrak{p}}\colon A \to \Z\cup\{ \infty \}$ es una $\R$-valuación,
+	llamada la \strong{valuación $\mathfrak{p}$-ádica}\index{valuación!padica@$\mathfrak{p}$-ádica}.
+\end{prop}
+Así, las valuaciones $p$-ádicas que habíamos introducido en el texto son un caso particular de la construcción anterior.
+
+\begin{thm}
+	Sea $k$ un cuerpo.
+	\begin{enumerate}
+		\item Si $|\,|$ es un valor absoluto no arquimediano sobre $k$, entonces para todo $r \in (0, 1)$ real se cumple que
+			$v(a) := \log_r|a|$ es una $\R$-valuación.
+		\item Recíprocamente, si $v$ es una $\R$-valuación sobre $k$, entonces para todo $r \in (0, 1)$ real se cumple que $|a| := r^{\phi(v(a))}$
+			es un valor absoluto no arquimediano.
+	\end{enumerate}
+	En ambos casos, el anillo de valuación del valor absoluto $|\,|$ y de la valuación $v$ coinciden.
+\end{thm}
+
+% \begin{thm}
+% 	Sea $A$ un subanillo de un cuerpo $k$. Son equivalentes:
+% 	\begin{enumerate}
+% 		\item Existe una valuación $v$ sobre $k$ tal que $A = \{a \in k : v(a) \ge 0\}$.
+% 		\item Si $a\in k$ entonces $a \in A$ o $a^{-1} \in A$.
+% 		\item $A$ es local, $k = \Frac(A)$ y todo ideal finitamente generado de $A$ es principal.
+% 		\item $A$ es local y todo subanillo $A \subset B \subseteq k$ contiene algún $b \in A$ que es inversible en $B$ pero no en $A$.
+% 		\item Para todo subanillo $A \subseteq B \subseteq k$ existe $\mathfrak{p} \nsl A$ primo tal que $B = A_{\mathfrak{p}}$.
+% 	\end{enumerate}
+% \end{thm}
+% \begin{proof}
+% 	$1 \implies 2$. Es claro.
+
+% 	$2 \implies 1$. Sean $a, b \in K$.
+% 	Si $aA \not\subseteq bA$, entonces $b^{-1}a \notin A$, luego $ba^{-1} \in A$ y $bA \subseteq aA$.
+% 	Así, definamos $G := \{ aA : a \in k^\times \}$ y notemos que $G$ es un grupo abeliano mediante cuya operación es $(aA)(bA) := (ab)A$;
+% 	para distinguir la notación aditiva emplearemos corchetes en los elementos, de modo que:
+% 	$$ [aA] + [bB] := [(ab)A], \quad 0 := [1A], \quad -[aA] = [a^{-1}A]. $$
+% 	Así $(G, +, \subseteq)$ es un grupo abeliano ordenado.
+% 	Finalmente es claro que $v(a) := [aA]$ es una $G$-valuación en $k$ que satisface lo exigido.
+
+% 	$3 \implies 2$. Sean $a, b \in A$ no nulos y sea $c \in A$ tal que $aA + bA = cA$ (como suma de ideales).
+% 	Sean $r := a/c$ y $s := b/c$ elementos de $k$ tal que $rA + sA = A$, es decir, $rA, sA \subseteq A$ y por ende son ideales de $A$;
+% 	y como $A$ es local, debe cumplirse que alguno de los elementos sea inversible (de lo contrario $rA + sA \subseteq \mathfrak{m}$),
+% 	digamos que $r$ lo es, vale decir, $r^{-1} = c/a \in A$ y $sr^{-1} = b/a \in A$ (el otro caso implica que $rs^{-1} = a/b \in A$).
+
+% 	$2 \implies 3$. Es claro.
+% 	% \todo{Revisar que en un anillo de valuación todo ideal finitamente generado sea principal.}
+
+% 	$2 \implies 5$. Sabemos que $B$ es también un anillo de valuación con $\Frac(B) = k$, y por ende tiene un único ideal maximal $\mathfrak{q}$.
+% 	Sea $B' := A_{\mathfrak{q} \cap A}$ de modo que $A \subseteq B' \subseteq B$ y $B'$ es de valuación.
+% 	Sea $b \in B \setminus B'$, luego $b^{-1} \in B' \subseteq B$ así que $b$ es inversible en $B$, pero $b^{-1}$ no lo es en $B'$.
+% 	Luego $b^{-1}$ pertenece al ideal maximal de $B'$ que es $(\mathfrak{q} \cap A)B' = \mathfrak{q} \cap B'$ y $b^{-1} \in \mathfrak{q}$,
+% 	pero los elementos de $\mathfrak{q}$ no son inversibles en $B$ lo cual es absurdo.
+
+% 	$5 \implies 4$. Trivial.
+
+% 	$4 \implies 2$. Sea $B$ la clausura íntegra de $A$ en $k$.
+% 	Nótese que $B = A$, de lo contrario existe $b \in A$ que es inversible en $B$ y no en $A$;
+% 	así que tomamos $\mathfrak{p} \nsl A$ primo que contenga a $b$ y, por el teorema del ascenso, lo levantamos a un primo $\mathfrak{q} \nsl B$ tal
+% 	que $\mathfrak{p} = \mathfrak{q} \cap A$, pero $b \in \mathfrak{q}$ y $(1) = (b) = \mathfrak{q} \ne B$ lo que sería absurdo.
+% 	Luego $A$ es íntegramente cerrado. 
+
+% 	Sean $a, b\in A$ tales que $b$ es no nulo y $a/b \notin A$.
+% 	Luego $C := A[a/b]$ contiene a un elemento $d \in A$ inversible en $C$ que no lo es en $A$.
+% 	Por definición:
+% 	$$ d^{-1} = c_0(a/b)^m + c_1(a/b)^{m-1} + \cdots + c_0, \qquad c_i \in A, $$
+% 	luego $b^m = dc_0a^m + dc_1a^{m-1} b + \cdots + dc_mb^m$. Como $d \notin A^\times$, entonces está en el maximal y $1 - dc_m \in A^\times$.
+% 	Definiendo $d' := d(1 - dc_m)$ y dividiendo por $a^m$ se obtiene que
+% 	$$ (b/a)^m = d'c_0 + d'c_1(b/a) + \cdots + d'c_{m-1}(b/a)^{m-1}, $$
+% 	donde $d'c_i \in A$, de modo que $b/a$ es entero en $A$ y $b/a \in A$.
+% \end{proof}
+
+\begin{mydef}
+	Sea $k$ un cuerpo métrico.
+	Decimos que un valor absoluto es \strong{discreto}\index{cuerpo!métrico!discreto},
+	cuando el grupo multiplicativo $\{ |a| : a \in k^\times \} \subseteq \R^\times$ es discreto como subespacio (con la topología usual).
+\end{mydef}
+Como el grupo multiplicativo de un cuerpo métrico es claramente un grupo topológico, entonces basta notar que el neutro 1 está aislado, vale decir,
+que existe un $\delta > 0$ tal que
+$$ 1 - \delta < |a| < 1 + \delta \implies |a| = 1. $$
+
+\begin{prop}
+	El valor absoluto de un cuerpo es discreto syss en su anillo de valuación $(\mathfrak{o}, \mathfrak{m})$ se cumple que $\mathfrak{m}$ es principal.
+\end{prop}
+\begin{proof}
+	$\impliedby$. Si $\mathfrak{m} = (\pi)$ es principal, entonces
+	$$ |a| < 1 \implies a \in \mathfrak{m} \implies \exists b \in \mathfrak{o} : a = \pi b \implies |a| \le |\pi|. $$
+	Por otro lado, si $|a| > 1$, entonces $|a^{-1}| < 1$ y $|a| \ge |\pi|^{-1}$. Concluimos pues $|\pi| < 1$ (por estar en $\mathfrak{m}$).
+	\par
+	$\implies$. Si $|\,|$ es discreto, entonces el conjunto
+	$$ \{|a| : |a| < 1\} $$
+	alcanza su máximo, digamos en $\pi \in \mathfrak{m}$. Luego si $|a| < 1$, entonces $|\pi^{-1}a| \le 1$ así que $b = \pi^{-1}a \in \mathfrak{o}$
+	y luego $a = b\pi$ con lo que comprobamos que $\mathfrak{m} = (\pi)$.
+\end{proof}
+% Como $(\mathfrak{o}, \mathfrak{m})$ es un DIP, entonces $\kdim A = 1$;
+% así pues, podemos hablar equivalentemente de o valores absolutos discretos o valuaciones discretas.
+% Más aún, si $(\mathfrak{o}, \mathfrak{m})$ es un anillo local que es DIP, entonces 
+
+\begin{mydefi}
+	Se dice que un anillo $A$ es un \strong{dominio de valuación discreta}\index{dominio!de valuación discreta} si existe un valor absoluto discreto
+	$|\,|$ sobre $\Frac A$ tal que $A$ es el anillo de valuación de $|\,|$.
+	% Se dice que un anillo de valuación $(A, \mathfrak{m})$ es un \strong{dominio de valuación discreta}\index{dominio!de valuación discreta}
+	% si existe una valuación discreta $v$ sobre $K := \Frac A$ tal que $A = \{ a \in K : v(a) \ge 0 \}$.
+\end{mydefi}
+El nombre proviene de que un anillo es de valuación discreta si existe una valuación $v$ con valores en $\Z$ que es positiva y
+tal que los elementos del maximal son aquellos de valuación no nula.
+% En una valuación discreta $v$ se cumple que $v(1) = 0$, y en su anillo de valuación, $v(x) = 0$ syss $x$ es inversible.
+% Con ésto se puede concluir lo siguiente:
+\begin{cor}
+	Sea $A$ un dominio de valuación discreta $v$.
+	Entonces:
+	\begin{enumerate}
+		\item Todos los ideales impropios de $A$ son de la forma:
+			$$ \mathfrak{a}_n = \{ x \in A : v(x) \ge n \}. $$
+		\item $A$ es noetheriano.
+		\item $A$ es local y su único ideal maximal es $\mathfrak{a}_1$.
+	\end{enumerate}
+\end{cor}
+\begin{proof}
+	Es claro que de la primera se sigue el resto.
+	Supongamos que $v(x) = v(y)$, entonces supongamos que $xy^{-1} \in A$ (por ser anillo de valuación), luego $v(xy^{-1}) = 0$,
+	por lo que es inversible y luego $(x) = (y)$.
+	Si $\mathfrak{b} \nsl A$ es un ideal impropio, entonces $v[ \mathfrak{b} ] \subseteq \N$, por lo que posee un mínimo $n$
+	y un $x \in \mathfrak{b}$ con $v(x) = n$, luego es fácil concluir que $\mathfrak{b} = (x) = \mathfrak{a}_n$.
+\end{proof}
+
+\begin{mydefi}
+	Si $(A, \mathfrak{m})$ es un dominio de valuación discreta y $\mathfrak{m} = (\pi)$, entonces decimos que $\pi$ es
+	un \strong{uniformizador}\index{uniformizador} de $A$.
+\end{mydefi}
+\begin{figure}[!hbt]
+	\centering
+	\includegraphics[scale=1]{alg/metric_fld.pdf}
+	\caption{Cuerpo métrico discreto.}%
+	\label{fig:alg/metric_fld}
+\end{figure}
+
+\section{Análisis ultramétrico}
+La siguiente proposición es fundamental y la emplearemos a lo largo de casi toda la teoría:
+\begin{prop}\label{thm:bigger_wins}
+	Sea $k$ un cuerpo ultramétrico.
+	Si $a, b\in k$ son tales que $|a| < |b|$, entonces $|a + b| = |b|$.
+\end{prop}
+\begin{proof}
+	Claramente $|a + b| \le |b|$ y nótese que
+	\begin{equation}
+		|b| = |(a + b) + (-a)| \le \max\{ |a|, |a + b| \}.
+		\tqedhere
+	\end{equation}
+\end{proof}
+
+\begin{mydef}
+	Sea $k$ un cuerpo métrico y sea $(a_n)_{n\in\N} \subseteq k$ una sucesión. Decimos que la suma formal $\sum_{n\in\N} a_n$ converge a un valor $S$,
+	si la sucesión de las sumas parciales:
+	$$ S_n := \sum_{i=0}^{n} a_n $$
+	converge a $S$; en cuyo caso anotaremos que $S = \sum_{n=0}^{\infty} a_n$.
+\end{mydef}
+
+\begin{prop}\label{thm:series_convergence_ultrametric}
+	Sea $k$ un cuerpo ultramétrico completo. La serie $\sum_{n\in\N} a_n$ converge syss $\lim_n a_n = 0$.
+\end{prop}
+\begin{proof}
+	$\implies$. Basta notar que
+	$$ \lim_n a_n = \lim_n (s_n - s_{n-1}) = {\textstyle (\lim_n S_n) - (\lim_n S_{n-1}) } = S - S = 0. $$
+	$\impliedby$. Basta notar que, por desigualdad ultramétrica, se cumple que para $m > n$
+	$$ |S_m - S_n| = |a_{n+1} + a_{n+2} + \cdots + a_m| \le \max\{|a_j| : n < j \le m\}, $$
+	el cual, eligiendo $n$ suficientemente grande, podemos acotar por un $\epsilon > 0$ arbitrario, y así, la sucesión $(S_n)_n$ es fundamental y converge.
+\end{proof}
+Ésto genera un símil con las series de $\C$, pero demuestra por qué la propiedad de ser \textit{no arquimediano} es mucho más potente (¡y útil!) en éstos casos.
+Otro ejemplo es que casi siempre podemos intercambiar sumas:
+
+\begin{prop}
+	Sea $k$ un cuerpo ultramétrico completo, $(a_{ij})_{i,j} \in k$ una sucesión (doble).
+	Si para todo $\epsilon > 0$ existe un $N$ tal que $|a_{ij}| < \epsilon$ si $\max\{ i, j \} \ge N$,
+	entonces las series inducidas
+	$$ \sum_{i=0}^{\infty} \sum_{j=0}^{\infty} a_{ij}, \qquad \sum_{j=0}^{\infty} \sum_{i=0}^{\infty} a_{ij}, $$
+	convergen y coinciden.
+\end{prop}
+\begin{proof}
+	Sea $\epsilon > 0$ arbitrario y $N$ como en la hipótesis.
+	Luego, nótese que $|a_{ij}| < \epsilon$ para todo $i \ge N$, de modo que la serie $\left| \sum_{j=0}^{\infty} a_{ij} \right| < \epsilon$
+	converge para todo $i \ge N$ y en el resto de índices también, luego es claro que la serie doble también.
+
+	Finalmente, nótese que
+	$$ \left| \sum_{i=0}^{N} \sum_{j=0}^{N} a_{ij} - \sum_{i=0}^{\infty} \sum_{j=0}^{\infty} a_{ij} \right| < \epsilon, $$
+	y como el término de la izquierda es una suma finita, así que podemos reordenarla y así es fácil concluir que ambas sumas coinciden.
+\end{proof}
+
+\begin{mydef}
+	Sea $k$ un cuerpo métrico, dada una serie formal
+	$$ f(x) := f_0 + f_1 x + f_2 x^2 + \cdots \in k[[x]], $$
+	se define su \strong{radio de convergencia}\index{radio!de convergencia} como:
+	$$ R := \frac{1}{\limsup_n |f_n|^{1/n}} \in [0, \infty] $$
+	(con el convenio usual de que si $\limsup_n |f_n|^{1/n} = 0$, entonces $R = \infty$).
+	Definimos su \strong{dominio de convergencia}\index{dominio!de convergencia} como el conjunto $\mathcal{D} \subseteq k$ en donde la serie
+	determinada por $f(x)$ converge.
+\end{mydef}
+\begin{prop}
+	Sea $k$ un cuerpo ultramétrico completo, y sea $f(x) \in k[[x]]$ una serie formal con radio de convergencia $R$
+	y dominio de convergencia $\mathcal{D}$.
+	Entonces:
+	\begin{enumerate}[(a)]
+		\item Si $R = 0$, entonces $\mathcal{D} = \{ 0 \}$.
+		\item Si $R = \infty$, entonces $\mathcal{D} = k$.
+		\item Si $0 < R < \infty$ y $|f_n|R^n \to 0$, entonces
+			$$ \mathcal{D} = \overline{B}_R(0) = \{ a \in k : |a| \le R \}. $$
+		\item Si $0 < R < \infty$ y $|f_n|R^n \not\to 0$, entonces
+			$$ \mathcal{D} = B_R(0) = \{ a \in k : |a| < R \}. $$
+	\end{enumerate}
+\end{prop}
+
+\begin{lem}
+	Sea $k$ un cuerpo ultramétrico completo.
+	Sea $f(x) \in k[[x]]$ una serie formal con dominio de convergencia $\mathcal{D}$ y sea $c \in \mathcal{D}$.
+	Para $m \in \N$ definamos
+	\begin{equation}
+		g_m := \sum_{n\ge m} \binom{n}{m} f_n c^{n-m},
+		\label{eq:formal_ser_shift}
+	\end{equation}
+	entonces la serie formal $g(x) := g_0 + g_1x + g_2x^2 + \cdots \in k[[x]]$ tiene el mismo dominio de convergencia $\mathcal{D}$
+	y para todo $b \in \mathcal{D}$ se cumple que $f(b + c) = g(b)$.
+\end{lem}
+\begin{proof}
+	Nótese que $|g_m| \le \sup_{n\ge m}\{ |f_n c^{n-m}| \}$ y, por hipótesis, $f_n c^{n-m} \to 0$ para $m$ fijo;
+	de modo que aplicando la proposición anterior es fácil verificar que los dominios de convergencia coinciden.
+	Para $b \in \mathcal{D}$, vemos que
+	$$ f(b + c) = \sum_{n=0}^{\infty} f_n(b + c)^n = \sum_{n=0}^{\infty} \sum_{m=0}^{n} \binom{n}{m} f_n c^{n-m} b^m, $$
+	y aplicando intercambio de series dobles se concluye el enunciado.
+\end{proof}
+\begin{cor}
+	Sea $k$ un cuerpo ultramétrico completo, y sea $f(x) \in k[[x]]$ una serie formal con dominio de convergencia $\mathcal{D}$.
+	Entonces $f\colon \mathcal{D} \to k$ (como función) es continua.
+\end{cor}
+\begin{proof}
+	Es fácil comprobar que toda serie formal (como función) es continua en el 0, y el lema anterior permite ver que en otro punto de $\mathcal{D}$
+	es también una serie formal centrada en 0 y, por ende, continua.
+\end{proof}
+
+\begin{mydef}
+	Sea $k$ un cuerpo ultramétrico.
+	Un subconjunto $S \subseteq k$ se dice un \strong{conjunto de representantes de restos}\index{conjunto!de representantes de restos} si para toda
+	clase de equivalencia $C$ de su cuerpo de restos de clases $\mathfrak{o}/\mathfrak{m}$ se cumple que existe exactamente un elemento de $C$ en $S$.
+\end{mydef}
+
+\begin{prop}\label{thm:power_series_exp}
+	Sea $k$ un cuerpo ultramétrico discreto.
+	Sea $(\mathfrak{o}, \mathfrak{m})$ su anillo de valuación y sea $(\pi) = \mathfrak{m}$.
+	Si $S$ es un conjunto de representantes de restos y $(\pi_j)_{j\in\N}$ es una sucesión tal que cada $|\pi_j| = |\pi|^j$,
+	entonces todo elemento $a \in \mathfrak{o}$ se escribe de forma única como
+	$$ a = \sum_{n=0}^{\infty} a_n\pi_n, \qquad a_i \in S. $$
+\end{prop}
+\begin{proof}
+	Como acotación, nótese que si $k$ es completo entonces las series de esa forma siempre convergen
+	por la proposición~\ref{thm:series_convergence_ultrametric}, de modo que hay una correspondencia biunívoca.
+
+	Sea $a \in \mathfrak{o}$, entonces considere la clase de equivalencia $[a] \in \mathfrak{o}/(\pi)$, nótese que, por definición de $S$, existe un
+	único $a_0 \in S$ tal que $a_0 \equiv a/\pi_0 \pmod\pi$, vale decir, tal que $a - a_0\pi_0 = b_0\pi_1$ para un único $b_0 \in \mathfrak{o}$.
+	Análogamente existe un único $a_1 \in S$ tal que $a_1 \equiv b_0 \pmod\pi$, vale decir, tal que $(b_0 - a_1)\pi_1 = b_1 \pi_2$ para un único
+	$b_1 \in \mathfrak{o}$; luego notamos que $a = a_0\pi_0 + a_1\pi_1 + b_1\pi_2$.
+	Así procedemos definiendo por recursión $(a_n)_n \subseteq S$ y $(b_n)_n \in \mathfrak{o}$.
+	Luego, comprobamos que
+	$$ \left| a - \sum_{n=0}^{N} a_n\pi_n \right| = |b_N\pi_N| \le |\pi|^N, $$
+	donde como $|\pi| < 1$, vemos que para $N \to \infty$ el valor absoluto converge a 0, o equivalentemente, $a = \sum_{n=0}^{\infty} a_n\pi_n$.
+
+	Para comprobar unicidad empleamos un método similar.
+	Si $\sum_{n=0}^{\infty} c_n\pi^n = \sum_{n=0}^{\infty} a_n\pi^n$, entonces vemos que $c_0 \equiv a_0 \pmod \pi$ con lo que $c_0 = a_0$ por definición
+	de conjunto de representantes de restos, y así vamos inductivamente comprobando.
+\end{proof}
+Tradicionalmente se emplea la sucesión $\pi_j := \pi^j$, pero ésta ligera generalización será útil más adelante.
+Nótese que en un cuerpo ultramétrico discreto $k$ tenemos que $k = \Frac \mathfrak{o} = \mathfrak{o}[\pi^{-1}]$, de modo que todo $a \in k$
+es tal que $\pi^j a \in \mathfrak{o}$ para algún $j \ge 0$, luego todo $a \in k$ admite una expansión
+$$ a = \sum_{n=-j}^{\infty} a_j \pi^j = a_{-j}\pi^{-j} + \cdots + a_{-1}\pi^{-1} + a_0 + a_1\pi + \cdots $$
+Series de éste estilo se dicen \textit{series de Laurent}, surgen naturalmente en el análisis complejo y fueron parte de la motivación para estudiar $\Q_p$.
+
+\begin{thm}
+	Sea $k$ un cuerpo ultramétrico discreto, completo y que su cuerpo de restos de clases es finito.
+	Entonces $\mathfrak{o}$ es (topológicamente) compacto.
+\end{thm}
+\begin{proof}
+	Para espacios métricos, ser compacto equivale a ser secuencialmente compacto (cf. \cite[Teo.~3.55]{Top}).
+	Así pues, debemos comprobar que dada una sucesión $(a_j)_{j\in\N} \subseteq \mathfrak{o}$, entonces posee una subsucesión convergente.
+	Sea $S$ un conjunto de representantes de restos, el cual es finito por hipótesis; por la proposición anterior se cumple que
+	$$ a_j = \sum_{n=0}^{\infty} a_{jn} \pi^n, \qquad a_{j,n} \in S. $$
+	Nótese que para cada $n$ hay una sucesión $(a_{j,n})_j$ de puntos en $S$, luego necesariamente hay un valor que se repite infinitamente,
+	para $j = 0$ escogemos una subsucesión $\sigma(j, 0)$ tal que $a_{\sigma(j, 0), 0}$ es constante.
+	Similarmente, para $j = 1$ podemos extraer una subsucesión $\sigma(j, 1)$ de $\sigma(j, 0)$ tal que $a_{\sigma(j, 0), 0}$ y $a_{\sigma(j, 1), 1}$ son
+	ambas constantes.
+	Y esto lo podemos hacer para todo $j$, y finalmente definimos $\eta(j) := \sigma(j, j)$, la cual fija a la coordenada $n$-ésima para todo $j \ge n$,
+	luego notamos que claramente converge.
+\end{proof}
+
+\begin{cor}
+	Sea $k$ un cuerpo ultramétrico. Son equivalentes:
+	\begin{enumerate}
+		\item $k$ es localmente compacto.
+		\item $k$ es completo, discreto y su cuerpo de restos de clases es finito.
+	\end{enumerate}
+\end{cor}
+Note que si uno quiere extender el corolario a cuerpos métricos arquimedianos, entoces ser localmente compacto equivale a ser completo por el teorema de Ostrowski.
+
+\begin{thm}
+	Todo cuerpo ultramétrico es hereditariamente disconexo.
+\end{thm}
+\begin{proof}
+	Sea $(k, |\,|)$ un cuerpo ultramétrico.
+	Si $|\,|$ es trivial, entonces $k$ es un espacio discreto así que se satisface.
+	Si $|\,|$ no es trivial, basta probar que posee una base de la topología formada por conjuntos abiertos y cerrados;
+	en particular, probaremos que las bolas abiertas son siempre cerradas.
+
+	Sea $\epsilon > 0$ y $a \in k$.
+	Sea $b \in B_\epsilon(a)^c$, entonces $B_\epsilon(b) \cap B_\epsilon(a) = \emptyset$ pues si $c \in B_\epsilon(b)$ entonces
+	$$ |c - b| < \epsilon \le |b - a| \implies |c - a| = |b - a| \ge \epsilon. $$
+	Así pues, $B_\epsilon(b) \subseteq B_\epsilon(a)^c$, por lo que $B_\epsilon(a)^c$ es abierto y $B_\epsilon(a)$ es cerrado.
+\end{proof}
+
+\subsection{El teorema de Strassmann y aplicaciones}
+\begin{thmi}[Teorema de Strassmann]\index{teorema!de Strassmann}
+	Sea $k$ un cuerpo ultramétrico completo, y sea $f(x) \in k[[x]]$ una serie formal no nula.
+	Supongamos que $f_n \to 0$ (o equivalentemente, tal que $f$ converge en $\mathfrak{o}$), entonces $f(a) = 0$ para finitos $a \in \mathfrak{o}$'s.
+	Más aún, hay a lo más $N$ raíces $a \in \mathfrak{o}$, donde $N$ es el natural tal que $|f_N| > |f_n|$ para todo $n > N$.
+\end{thmi}
+\begin{proof}
+	Lo haremos por inducción sobre $N$.
+
+	Si $N = 0$, entonces no puede darse que $f(a) = 0$ para algún $a \in \mathfrak{o}$, pues
+	$$ f_0 = - \sum_{n=1}^{\infty} f_na^n, $$
+	pero
+	$$ \left| \sum_{n=1}^{\infty} f_na^n \right| \le \max_{n\ge 1} |f_n a^n| \le \max_{n\ge 1} |f_n| < |f_0|. $$
+	Si $N > 0$, entonces sea $a \in \mathfrak{o}$ tal que $f(a) = 0$ y sea $b \in \mathfrak{o}$, entonces
+	$$ f(b) = f(b) - f(a) = \sum_{n=1}^{\infty} f_n(b^n - a^n) = (b - a) \sum_{n=1}^{\infty} \sum_{j < n} f_n b^j a^{n-j-1}, $$
+	luego, intercambiando sumatorias y definiendo:
+	$$ g(x) := \sum_{j=0}^{\infty} g_j x^j, \qquad g_j := \sum_{r=0}^{\infty} f_{j+1+r} a^r; $$
+	se tiene que $f(b) = (b - a) g(b)$.
+	En particular se puede verificar que:
+	\begin{itemize}
+		\item $|g_{N-1}| = |f_N|$.
+		\item $|g_j| \le |f_N|$ para todo $j$ y $|g_j| < |f_N|$ para $j > N - 1$.
+	\end{itemize}
+	Luego, por hipótesis inductiva, $g$ posee a lo más $N - 1$ ceros en $\mathfrak{o}$ y así, $f$ posee a lo más $N$ ceros en $\mathfrak{o}$.
+\end{proof}
+
+\begin{cor}
+	Sea $k$ un cuerpo ultramétrico completo.
+	Dos series formales $f(x), g(x) \in k[[x]]$ que convergen en $\mathfrak{o}$ son iguales syss $f(a) = g(a)$ para infinitos $a \in \mathfrak{o}$.
+\end{cor}
+\begin{cor}
+	Sea $k$ un cuerpo ultramétrico completo de $\car k = 0$.
+	Sea $f(x) \in k[[x]]$ una serie formal que converge en $\mathfrak{o}$ tal que $f(x + d) = f(x)$ para algún $d \in \mathfrak{o}_{\ne 0}$,
+	entonces $f$ es constante.
+\end{cor}
+\begin{proof}
+	Basta notar que $f(x) - f(0)$ tiene infinitos ceros en $x = nd \in \mathfrak{o}$ para todo $n \in \Z$.
+\end{proof}
+
+Un ejemplo del cómo emplear el teorema de Strassmann radica en las sucesiones por recursión lineal.
+
+Un ejemplo es la siguiente aplicación detallada en \citeauthor{alter75diophantine}~\cite{alter75diophantine}:
+\begin{prob}
+	Este problema tiene por objetivo resolver $x^2 + 11z^2 = 3^n$.
+	\begin{enumerate}
+		\item Considere la sucesión
+			$$ a_0 := 0, \qquad a_1 := 1, \qquad a_{n+2} := a_{n+1} - 3a_n, $$
+			demuestre que
+			$$ a_n = \frac{1}{\sqrt{-11}}(r^n - r'^n). $$
+		\item Demuestre que $a_{n+m} = a_{n+1}a_m - 3a_na_{m-1}$.
+		\item Demuestre que $(a_n; a_m) = \pm a_{(n; m)}$.
+		\item Concluya que la ecuación diofántica $a_n = t$ con $t \in \Z$ tiene a lo más una solución para un $t$ fijo,
+			salvo si $t = 1$, en cuyo caso, admite tres soluciones ($n \in \{ 1, 2, 5 \}$).
+		\item Emplee lo anterior para concluir que $x^2 + 11z^2 = 3^n$ tiene a lo más una solución con $x \ge 0$.
+	\end{enumerate}
+\end{prob}
+
+\addtocategory{article}{alter75diophantine}
+
+\subsection{Lema de Hensel y anillos henselianos}
+El llamado lema de Hensel es una de las herramientas más importantes en teoría de cuerpos de clases y ha probado ser de extrema utilidad.
+En primer lugar introducimos un glosario de las distintas versiones en las que se puede encontrar el lema de Hensel:
+\begin{thm}
+	Sea $(A, \mathfrak{m}, k)$ un anillo local y fijemos $|\,| := |\,|_{\mathfrak{m}}$ el valor absoluto $\mathfrak{m}$-ádico.
+	Son equivalentes:
+	\begin{enumerate}
+		\item Sea $f(x) \in A[x]$ mónico.
+			Si existe $a_0$ tal que $f(a_0) \equiv 0 \pmod{\mathfrak{m}}$,
+			entonces existe $a \equiv a_0 \pmod{\mathfrak{m}}$ tal que $f(a) = 0$.
+		\item Sea $f(x) \in A[x]$ mónico.
+			Si existe $a_0$ tal que $|f(a_0)| < 1$ y $|f'(a_0)| = 1$,
+			entonces existe $a \equiv a_0 \pmod{\mathfrak{m}}$ tal que $f(a) = 0$.
+		\item Sea $f(x) \in A[x]$ mónico.
+			Si existe $a_0$ tal que $|f(b)| < |f'(b)|^2$,
+			entonces existe un único $a \in A$ tal que $f(a) = 0$ y $|a - b| < |f'(b)|$.
+		\item Sea $f(x) \in A[x]$ mónico.
+			Si $f \equiv g_0h_0 \pmod{\mathfrak{m}}$ con $g_0$ mónico y $g_0, h_0 \in k[x]$ coprimos (en $k[x]$),
+			entonces existen $g, h \in A[x]$ tales que $f = gh$, $g \equiv g_0$ y $h \equiv h_0 \pmod{\mathfrak{m}}$.
+	\end{enumerate}
+\end{thm}
+% \begin{proof}
+% 	...
+% \end{proof}
+
+\begin{mydef}
+	Un anillo local $(A, \mathfrak{m}, k)$ que satisface lo anterior, se dice un \strong{anillo henseliano}\index{anillo!henseliano}.
+	Un cuerpo métrico $(K, |\,|)$ se dice \strong{henseliano}\index{cuerpo!henseliano} si o bien es arquimediano y completo, o bien es ultramétrico
+	y su anillo de valuación es henseliano.
+\end{mydef}
+
+\begin{thmi}[Lema de Hensel]\index{lema!de Hensel}
+	Todo cuerpo métrico completo $k$ es henseliano.
+	% Sea $k$ un cuerpo ultramétrico completo, con anillo de valuación $\mathfrak{o}$ y sea $f(x) \in \mathfrak{o}[x]$.
+	% Suponga que existe un $a_0 \in \mathfrak{o}$ tal que $|f(a_0)| < |f'(a_0)|^2$, donde $f'(x)$ es el polinomio derivado de $f(x)$.
+	% Entonces $f$ posee una raíz en $\mathfrak{o}$.
+	% Más aún, existe un único $a \in \mathfrak{o}$ tal que:
+	% $$ f(a) = 0, \qquad |a - a_0| < \frac{|f(a_0)|}{|f'(a_0)|}. $$
+\end{thmi}
+\begin{proof}
+	Sean $f_j(x) \in \mathfrak{o}[x]$ polinomios tales que
+	$$ f(x + y) = f(x) + f_1(x)y + f_2(x)y^2 + \cdots \in \mathfrak{o}[x, y], $$
+	donde los $f_i$'s vendrán dados por expandir un binomio de Newton en cada monomio original.
+	Se puede comprobar que $f_1(x) = f'(x)$.
+	Luego, por el enunciado, existe $b_0 \in \mathfrak{o}$ tal que
+	$$ f(a_0) + b_0 f_1(a_0) = 0, $$
+	luego, definamos $a_1 := a_0 + b_0$ y notemos que por desigualdad ultramétrica
+	$$ |f(a_1)| = |f(a_0 + b_0)| \le \max_{j\ge 2} |f_j(a_0) b_0^j|, $$
+	como $f_j(a_0) \in \mathfrak{o}$ entonces $|f_j(a_0)| \le 1$, luego
+	$$ |f(a_1)| \le |b_0|^2 = \frac{|f(a_0)|^2}{|f'(a_0)|^2} < |f(a_0)|, $$
+	además de que $|b_0| < |f'(a_0)|$.
+	Del mismo modo se nota que
+	$$ |f'(a_1) - f'(a_0)| \le |b_0| < |f'(a_0)|. $$
+	Luego se cumple que $|f'(a_1)| = |f'(a_0)|$.
+	Ahora podemos volver a elegir un $b_1$ con las mismas propiedades, en particular, notando que $|f(a_1)| < |f(a_0)| \le |f'(a_0)|^2 = |f'(a_1)|^2$,
+	y así recursivamente comprobamos que
+	$$ |f(a_{n+1})| \le |b_n|^2 = \frac{|f(a_n)|^2}{|f'(a_n)|^2} = \frac{|f(a_n)|^2}{|f'(a_0)|^2}, $$
+	como $|f'(a_0)|^2$ es solo una constante, entonces vemos que $|f(a_n)| \to 0$ y luego, por la igualdad superior, $b_n \to 0$, de modo que $(a_n)_n$
+	es una sucesión fundamental que converge a una raíz de $f$ (¿por qué está en $\mathfrak{o}$?).
+\end{proof}
+
+Veamos algunas aplicaciones del lema de Hensel:
+\begin{thm}
+	Sea $p \in \Z$ primo:
+	\begin{itemize}
+		\item Si $p \ne 2$:
+			Sea $b \in \Z_p$ tal que $|b| = 1$ (i.e., $p \nmid b$).
+			Supongamos que $b$ es un residuo cuadrático módulo $p$, entonces $b$ es un cuadrado en $\Z_p$.
+			% existe $a_0 \in \Z_p$ tal que
+			% $|a_0^2 - b| < 1$ (i.e., $b$ es residuo cuadrático módulo $p$).
+			% Entonces existe algún $a \in \Z_p$ tal que $b = a^2$.
+		\item Si $p = 2$:
+			Sea $b \in \Z_2$ tal que $b \equiv 1 \pmod 8$, entonces existe algún $a \in \Z_p$ tal que $b = a^2$.
+	\end{itemize}
+\end{thm}
+\begin{proof}
+	En ambos casos se emplea el lema con $f(x) := x^2 - b$. Nótese que $f'(x) = 2x$.
+	El ser residuo cuadrático equivale a que existe $a_0$ con $a_0^2 \equiv b \pmod p$, de modo que $|f(a_0)| < 1 = |2a_0|^2 = |f'(a_0)|^2$ (pues $|2| = 1$).
+	Para el segundo caso evaluamos en $a_0 = 1$ y se tiene que $|f(1)| \le 2^{-3} < 2^{-2} = |2|^2$.
+\end{proof}
+Nótese que la condición de que $b \equiv 1 \pmod 8$ nos dice que $b$ es un residuo cuadrático módulo $2^n$ para todo $n > 0$.
+
+\begin{cor}
+	Sea $p \in \Z$ primo:
+	\begin{itemize}
+		\item Si $p \ne 2$:
+			El grupo $\Q_p^\times / (\Q_p^\times)^2 \cong \Z/2\Z \times \Z/2\Z$,
+			y representantes de las clases laterales son $1, p, c, cp$ con $c$ un residuo no cuadrático módulo $p$.
+			En consecuencia, $\Q_p$ tiene exactamente 3 extensiones cuadráticas.
+		\item Si $p = 2$:
+			El grupo $\Q_2^\times / (\Q_2^\times)^2 \cong (\Z/2\Z)^3$,
+			y representantes de las clases laterales son los generados por $-1, 5, 2$.
+			En consecuencia, $\Q_2$ tiene exactamente 7 extensiones cuadráticas.
+	\end{itemize}
+\end{cor}
+\begin{proof}
+	Sea $x$ un número no nulo libre de cuadrados en $\Z_p$ con $p \ne 2$.
+	Aplicamos reducción módulo $p$: si $x \not\equiv 0 \pmod p$, entonces $x$ es una unidad y existe $y \in \Z_p$ tal que
+	$xy = c$, luego $y = c/x$ es un residuo cuadrático no nulo módulo $p$ (pues es división de dos residuos no cuadradáticos) y por lo tanto
+	$[c] = [x] \in \Q_p^\times / (\Q_p^\times)^2$.
+	Si $x \equiv 0 \pmod p$, entonces como $p^2 \nmid x$ se tiene que $x/p \not\equiv 0 \pmod p$ luego, o bien $x/p$ es un cuadrado
+	o no, i.e., o bien $[x] = [p]$ o bien $[x] = [cp] \in \Q_p^\times / (\Q_p^\times)^2$.
+
+	Para $p = 2$ siga un procedimiento similar.
+	Otra manera de verlo es que $\Q_2^\times / (\Q_2^\times)^2$ es un grupo abeliano de ocho elementos y tal que $[x^2] = 1$ para todo elemento del grupo.
+\end{proof}
+
+\begin{prop}
+	Sea $p \in \Z$ primo:
+	\begin{itemize}
+		\item Si $p \ne 3$:
+			Sea $b \in \Z_p$ con $|b| = 1$.
+			Supongamos que $b$ un residuo cúbico módulo $p$, entonces $b$ es un cubo en $\Z_p$.
+		\item Si $p = 3$:
+			Sea $b \in \Z_3$ con $|b| = 1$.
+			Se cumple que $b \equiv \pm 1 \pmod 9$ syss $b$ es un cubo en $\Z_3$.
+	\end{itemize}
+\end{prop}
+\begin{proof}
+	En éste caso empleamos el lema de Hensel con $f(x) := x^3 - b$.
+	Veamos el caso de $p = 3$. La condición de que $b \equiv \pm 1 \pod 9$ se traduce en que existe $e \in \{ 0, \pm 1 \}$
+	tal que $b \equiv \pm (1 + 3e)^3 \pmod{27}$.
+	Luego con $a_0 := \pm(1 + 3e)^3$ vemos que $|f(a_0)| \le 3^{-3}$ y que $|f'(a_0)| = |3| \, |a_0^2| = 3^{-1}$.
+\end{proof}
+
+Aquí vemos un ejemplo del <<comportamiento local>> de los $p$-ádicos.
+Para hablar de ecuaciones diofantinas conviene admitir la siguiente terminología:
+\begin{mydef}
+	Se dice que $\Q$ es un \strong{cuerpo global} y que sus compleciones $\R, \Q_p$ son \strong{cuerpos locales}\index{cuerpo!local}.
+\end{mydef}
+Como los cuerpos locales contienen al cuerpo global, vemos la siguiente observación a modo de eslógan:
+\begin{displayquote}
+	\itshape
+	La existencia de soluciones globales implica la existencia de soluciones locales.
+\end{displayquote}
+Una pregunta interesante sería tener una especie de recíproco, vale decir, ¿existen soluciones globales si existen soluciones locales en todas partes?
+La respuesta en general es que no:
+
+\begin{prob}
+	La ecuación diofántica:
+	$$ (x^2 - 2)(x^2 - 17)(x^2 - 34) = 0 $$
+	tiene soluciones locales en todas partes, pero no soluciones globales.
+\end{prob}
+\begin{proof}
+	Es claro que la ecuación no posee soluciones globales.
+	Por otro lado, sabemos que $2$ es un cuadrado en $\Q_{17}$ y que $17$ es un cuadrado en $\Q_2$ pues $17 \equiv 1 \pmod 8$.
+	Finalmente, nótese que en $\Z_p$ con $p \notin \{ 2, 17 \}$ siempre se cumple que $2, 17, 34$ son inversibles (tienen $|\,| = 1$)
+	y siempre alguno es un cuadrado módulo $p$ (basta expresarlos como potencias de una raíz primitiva).
+\end{proof}
+
+\section{Extensiones del valor absoluto}
+En ésta sección veremos como dada una extensión de cuerpos $L/k$ con $k$ (ultra)métrico, podemos asignarle un valor absoluto a $L$
+que extienda al de $k$.
+Para ello, contemplaremos dos posibilidades.
+
+\subsection{Extensiones trascendentes}%
+\label{sec:val_trasc_ext}
+
+\begin{thm}\label{thm:abs_val_over_kx}
+	Sea $(k, |\,|)$ un cuerpo ultramétrico y sea $c > 0$ arbitrario.
+	Para $f(x) = f_0 + f_1x + \cdots + f_nx^n \in k[x]$ defínase
+	$$ \|f\| = \|f\|_c := \max_j\{ |f_j| c^j \}. $$
+	Para $h(x) = f(x)/g(x) \in k(x)$ extendamos $\|h\| := \|f\| / \|g\|$.
+	Entonces $\|\,\|$ es un valor absoluto sobre $k(x)$ que extiende a $|\,|$.
+	\nomenclature{$\|\,\|_c$}{Valor absoluto sobre $k(x)$ dado por $\| \sum_{j=0}^{n} a_jx^j \| := \max_j\{ |a_j|c^j \} $}
+\end{thm}
+\begin{proof}
+	Primero veamos algunos axiomas para polinomios $f(x) \in k[x]$.
+	Evidentemente $\|f\| = 0$ syss $f = 0$, y la desigualdad ultramétrica se comprueba,
+	pues si $f(x) := \sum_{j\ge 0} f_jx^j, g(x) := \sum_{j\ge 0} g_jx^j$, entonces
+	$$ \|f+g\| = \max_j\{ |f_j + g_j|c^j \} \le \max_j\{ \max\{ |f_j|, |g_j| \}c^j \} = \max\{ \|f\|, \|g\| \}. $$
+	Claramente, $\|fg\| \le \|f\| \, \|g\|$, veamos que se alcanza igualdad:
+	Sean $I, J \ge 0$ los naturales tales que
+	\begin{align*}
+		\|f_I x^I\| &= \|f\|, & \forall i \le I \quad \|f_ix^i\| &< \|f\|, \\
+		\|g_J x^J\| &= \|g\|, & \forall j \le J \quad \|g_jx^j\| &< \|g\|,
+	\end{align*}
+	El coeficiente de $x^{I+J}$ en $f\cdot g$ es $ \sum_{i+j=I+J} f_ig_j $.
+	Separamos por casos:
+	\begin{enumerate}[(a)]
+		\item \underline{Si $i < I$:} Entonces $\|f_ix^i\| < \|f\|$, o equivalentemente, $|f_i| < c^{-i} \|f\|$ y
+			$\|g_jx^j\| \le \|g\| \iff |g_j| \le c^{-j}\|g\|$. Luego:
+			\begin{equation}
+				|f_i g_j| < c^{-i-j}\|f\| \, \|g\| \iff \|f_ig_j x^{I+J}\| < \|f\| \, \|g\|.
+				\label{eq:trascendence_av_ineq}
+			\end{equation}
+
+		\item \underline{Si $j < J$:} Se concluye \eqref{eq:trascendence_av_ineq} análogamente.
+		\item \underline{Si $(i, j) = (I, J)$:} Entonces $|f_I| = c^{-I}\|f\|$ y $|g_J| = c^{-J}\|g\|$, por lo que
+			$$ | f_I g_J | = c^{-I-J} \|f\|\,\|g\| \iff \|f_Ig_J x^{I+J}\| = \|f\| \, \|g\|. $$
+	\end{enumerate}
+	En conclusión:
+	$$ \left\| \sum_{i+j = I+J} f_ig_j x^{I+J} \right\| = \|f\| \, \|g\|, $$
+	de modo que $\|f\cdot g\| \ge \|f\| \, \|g\|$, y luego $\|fg\| = \|f\|\,\|g\|$ (VA2).
+
+	Por VA2 se puede comprobar que la extensión a $k(x)$ está bien definida y es fácil ver que es un valor absoluto que extiende a $|\,|$.
+\end{proof}
+
+\begin{cor}
+	Sea $(k, |\,|)$ un cuerpo ultramétrico.
+	Sea $\vec x := (x_1, \dots, x_n)$ una tupla de indeterminadas, y sea $\vec c := (c_1, \dots, c_n)$ una tupla de reales $>0$.
+	Para $f(\vec x) = \sum_{\alpha} f_\alpha \vec x^\alpha \in k[\vec x]$, en notación multiíndice, defínase
+	$$ \|f\|_{\vec c} := \max_\alpha \{ |f_\alpha| \vec c^\alpha \}. $$
+	Y para $h := f/g \in k(\vec x)$ extendamos $\|h\|_{\vec c} := \|f\|/\|g\|$.
+	Entonces $\|\,\|_{\vec c}$ es un valor absoluto sobre $k(\vec x)$ que extiende a $|\,|$.
+\end{cor}
+
+\begin{prop}\label{thm:metric_division_alg}
+	Sea $k$ un cuerpo ultramétrico, $c > 0$ arbitrario y sea $\|\,\| := \|\,\|_c$.
+	Sean $R(x) \in k[x]$, y $G(x) = \sum_{j=0}^{m} G_jx^j \in k[x]$ no nulo tal que $\|G\| = \|G_mx^m\|$.
+	Sean $L(x), M(x) \in k[x]$ tales que
+	$$ R(x) = L(x)G(x) + M(x), \qquad M = 0 \vee \deg M < m. $$
+	Entonces $\|L\|\,\|G\| \le \|R\|$ y $\|M\| \le \|R\|$.
+\end{prop}
+\begin{proof}
+	Sea $R(x) = R_0 + R_1x + \cdots + R_nx^n$ con $R_n \ne 0$ y sea $L(x) = L_0 + \cdots + L_{n-m}x^{n-m}$.
+	Los coeficientes de $L(x)$ son tales que satisfacen el sistema de ecuaciones lineales
+	$$ G_m L_{n-m-j} + G_{m-1} L_{n-m-j+1} + \cdots + G_{m-j}L_{n-m} = R_{n-j}, $$
+	donde $j \le \min\{ m, n-m \}$.
+	Empleando el hecho de que $\|G\| = \|G_mx^m\|$ se prueba, por inducción, que
+	$$ \| L_{n-m-j}x^{n-m-j} \| \, \|G\| \le \|R\|, $$
+	de lo que se comprueba que $\|L\| \, \|G\| \le \|R\|$.
+	Finalmente, $M = R - LG$ implica que $\|M\| \le \|R\|$ (por desigualdad ultramétrica).
+\end{proof}
+
+\begin{thm}[lema de Gauss]
+	Sea $k$ un cuerpo ultramétrico y sea $\vec x := (x_1, \dots, x_n)$ una tupla de indeterminadas.
+	Si $f(\vec x) \in \mathfrak{o}[\vec x]$ es un producto de polinomios no constantes en $k[\vec x]$,
+	entonces también es un producto de polinomios no constantes en $\mathfrak{o}[\vec x]$.
+\end{thm}
+\begin{proof}
+	Considere la extensión $\|\,\| := \|\,\|_{(1, \dots, 1)}$ en $k(\vec x)$.
+	Nótese que el grupo de valores de $\|\,\|$ coincide con el de $|\,|$ y también:
+	$$ \mathfrak{o}[\vec x] = \{ f \in k[\vec x] : \|f\| \le 1 \}. $$
+	Si $f = gh$ para algunos $g, h\in k[\vec x]$ no constantes, entonces existe $a \in k$ tal que $|a| = \|g\|$,
+	luego sustituyendo $g$ por $a^{-1}g$ podemos suponer que $\|g\| = 1$ y así:
+	$$ 1 \ge \|f\| = \|g\| \, \|h\| = \|h\|, $$
+	luego, $g, h \in \mathfrak{o}[\vec x]$ como se quería probar.
+\end{proof}
+\begin{cor}
+	Sea $k$ un cuerpo ultramétrico.
+	Si $f \in \mathfrak{o}[\vec x]$ es irreducible en $\mathfrak{o}[\vec x]$, entonces también lo es en $k[\vec x]$.
+\end{cor}
+Éste teorema lo probamos en más generalidad con el nombre de \textit{criterio de irreducibilidad de Gauss} en \cite[Teo.~2.86]{Alg}.
+Gauss originalmente formuló su criterio en el siguiente contexto:
+
+\begin{prop}[lema de Gauss]
+	Sea $f(\vec x) \in \Z[\vec x]$.
+	Si $f$ es un producto de polinomios no constantes en $\Q[\vec x]$, entonces lo es en $\Z[\vec x]$.
+\end{prop}
+\begin{proof}
+	Sea $f = gh$ para algunos $g, h \in \Q[\vec x]$ no constantes.
+	Luego, $g, h \in \Z_p[\vec x]$ para todo primo $p \notin S$, donde $S$ es un conjunto finito (¿cuál conjunto?).
+	Nótese que $\bigcap_{p} \Z_p = \Z$, por lo que si $S = \emptyset$, entonces está probado.
+
+	Si $S \ne \emptyset$, entonces para todo $p \in S$ la demostración del lema de Gauss nos da que existe $m(p) \in \Z$
+	tal que $p^{m(p)}g \in \Z_p[\vec x]$ y $p^{-m(p)}h \in \Z_p[\vec x]$.
+	Así, definiendo
+	$$ r := \prod_{p\in S} p^{m(p)}, $$
+	se obtiene que $rg, r^{-1}h \in \Z_p[\vec x]$ para todo $p$ primo; por lo que $rg, r^{-1}h \in \Z[\vec x]$.
+\end{proof}
+
+\begin{mydef}
+	Sea $(\mathfrak{o}, \mathfrak{m})$ un anillo de valuación.
+	Un polinomio $f(x) := a_0 + a_1x + \cdots + a_nx^n \in \mathfrak{o}[x]$ se dice \strong{de Eisenstein}\index{polinomio!de Eisenstein} si
+	$$ a_n \in \mathfrak{o}^\times = \mathfrak{o \setminus m}, \qquad \forall j < n \quad a_j \in \mathfrak{m}, \qquad a_0 \notin \mathfrak{m}^2. $$
+\end{mydef}
+
+\begin{thm}[criterio de irreducibilidad de Eisenstein]
+	Sea $k$ un cuerpo ultramétrico discreto de anillo de valuación $\mathfrak{o}$.
+	Todo polinomio de Eisenstein en $\mathfrak{o}[x]$ es irreducible en $k[x]$.
+	% Sea $k$ un cuerpo ultramétrico discreto y sea $\pi$ un uniformizador de $\mathfrak{o}$.
+	% Sea $f(x) = \sum_{j=0}^{n} a_jx^j \in \mathfrak{o}[x]$ tal que
+	% $$ |a_0| = |\pi|, \qquad \forall j < n \quad |a_j| < 1, \qquad |a_n| = 1. $$
+	% Entonces $f$ es irreducible en $k[x]$.
+\end{thm}
+
+\subsection*{Polígonos de Newton}
+Sea $k$ un cuerpo ultramétrico y sea $f(x) = a_0 + a_1x + \dots + a_nx^n \in k[x]$ con $a_0 \ne 0 \ne a_n$.
+Para obtener su polinomio de Newton, graficaremos los puntos:
+$$ P(j) := (j, -\log|a_j|) \in \R^2. $$
+y consideraremos su clausura convexa $\Pi(f)$ a la que llamamos el \strong{polígono de Newton}\index{polígono!de Newton}.
+Dicho polígono está compuesto por varios segmentos $\lambda_1, \dots, \lambda_s$ de pendientes crecientes,
+donde $\lambda_i$ une los puntos $P(m_{i-1}), P(m_i)$ y su pendiente es:
+$$ \gamma_i := \frac{-\log|a_{m_i}| + \log|a_{m_{i-1}}|}{m_i - m_{i-1}}. $$
+donde $0 = m_0 < m_1 < \cdots < m_s = n$ y $\gamma_1 < \cdots < \gamma_s$.
+En éste sentido, diremos que $f$ es de \strong{tipo}\index{tipo}:
+\begin{equation}
+	(m_1, \gamma_1; m_2 - m_1, \gamma_2; \dots; m_s - m_{s-1}, \gamma_s)
+	\label{eq:newton_type_pol}
+\end{equation}
+Un polinomio del tipo $(n, \gamma)$ se dice un \strong{polinomio Newton-puro}\index{polinomio!Newton-puro}.%
+\footnote{La terminología \textit{polinomio de tipo ...} o \textit{Newton-puro} son originales
+de \citeauthor{cassels:local_fields}~\cite[100]{cassels:local_fields}, quien señala que son expresiones no estándar.}
+
+\begin{figure}[!hbtp]
+	\centering
+	\includegraphics{num-th/newton_polygon.pdf}
+	\caption{Polígono de Newton de $f(x) = 4x^5 - \frac 14 x^4 + 7x^3 + 5x^2 - 6x - 2$.}%
+	\label{fig:newton-polygon}
+\end{figure}
+
+\begin{lem}\label{lem:newton_norms}
+	Sea $k$ un cuerpo ultramétrico.
+	Sea $f(x) = a_0 + a_1x + \cdots + a_nx^n \in k[x]$ con $a_0 \ne 0 \ne a_n$ un polinomio de tipo \eqref{eq:newton_type_pol}.
+	Definiendo $c = \exp(\gamma_s)$ y $\|\,\| := \|\,\|_c$.
+	Entonces $\|f\| = \|a_jx^j\|$ para $j \in \{ m_{s-1}, m_s \}$ y
+	$$ \left\| f - \sum_{m_{s-1} \le j \le m_s} a_jx^j \right\| < \|f\|. $$
+\end{lem}
+\begin{proof}
+	Basta notar que si $\ell < j \le n$, entonces la condición de que $\|a_jx^j\| \ge \|a_\ell x^\ell\|$ equivale a que
+	$$ \frac{-\log|a_j| + \log|a_\ell|}{j - \ell} \le \gamma_s, $$
+	donde el lado izquierdo representa la pendiente del segmento que une los puntos $P(\ell)$ y $P(j)$ del polígono de Newton de $f$.
+	Finalmente aplicamos la elección de $\gamma_s$ para concluir.
+\end{proof}
+% \todo{Revisar éste lema.}
+Ejercicio para el lector: ¿por qué requerimos que $k$ sea ultramétrico?
+
+\begin{lem}
+	Sea $k$ un cuerpo ultramétrico.
+	Sean $f, g \in k[x]$ dos polinomios Newton-puros de pendiente común $\gamma$, entonces $f\cdot g$ es Newton-puro de pendiente $\gamma$.
+\end{lem}
+\begin{proof}
+	Fijemos $c := e^\gamma$ y $\|\,\| := \|\,\|_c$.
+	Si $f(x) = a_0 + \cdots + a_nx^n$ y $g(x) = b_0 + \cdots + b_mx^m$ con $a_n \ne 0 \ne b_m$, entonces por el lema anterior, vemos que
+	$$ \|f\| = |a_0| = \|a_nx^n\|, \qquad \|g\| = |b_0| = \|b_mx^m\|, $$
+	luego $\|fg\| = |a_0b_0| = \|a_nb_m x^{n+m}\|$ y concluimos por el lema anterior que $fg$ es Newton-puro, y es fácil verificar que la pendiente
+	es también la misma.
+\end{proof}
+
+\begin{lem}\label{lem:adding_newton_types}
+	Sea $k$ un cuerpo ultramétrico.
+	Sea $f \in k[x]$ un polinomio de tipo \eqref{eq:newton_type_pol} y $g \in k(x)$ un polinomio Newton-puro de tipo $(N, \gamma)$.
+	Si $\gamma_s < \gamma$, entonces $f\cdot g$ es de tipo
+	$$ (m_1, \gamma_1; m_2 - m_1, \gamma_2; \dots; m_s - m_{s-1}, \gamma_s; N, \gamma). $$
+\end{lem}
+\begin{proof}
+	Sea $c := e^{\gamma_s}$ y $d := e^{\gamma}$, aquí trabajaremos con ambos valores absolutos por separado.
+	Como $\gamma > \gamma_s$ vemos que $\|g(x) - b_0\|_c < \|g(x)\|_c$. Luego, por el lema~\ref{lem:newton_norms},
+	$$ \left\| f\cdot g - b_0 \sum_{m_{s-1} \le j \le m_s} a_jx^j \right\|_c < \|f\cdot g\|_c. $$
+	Similarmente, $\|f(x) - a_nx^n\|_d < \|f(x)\|_d$, luego
+	$$ \left\| f\cdot g - a_nx^n g(x) \right\|_d < \|f\cdot g\|_d. $$
+	Se puede verificar que las condiciones del lema~\ref{lem:newton_norms} implican que $fg$ es del tipo descrito.
+	\todo{Verificar conclusión.}
+\end{proof}
+
+\begin{lem}
+	Sea $k$ un cuerpo ultramétrico henseliano (e.g., completo) y $\|\,\| = \|\,\|_c$.
+	Sea $f(x) = \sum_{j=0}^{n} a_jx^j \in k[x]$ con $a_n \ne 0$.
+	Si existe $m$ con $0 < m < n$ tal que
+	$$ \|f\| = \|a_nx^n\|, \qquad \forall j > m\quad \|a_jx^j\| < \|f\|. $$
+	Entonces $f = gh$ donde $g, h \in k[x]$ tienen grados $m, n-m$ resp.
+\end{lem}
+\begin{proof}
+	...
+	\todo{Completar demostración, vid. \cite[103-104]{cassels:local_fields}.}
+\end{proof}
+
+\begin{cor}\label{thm:irred_implies_pure}
+	Sea $k$ un cuerpo ultramétrico henseliano.
+	Si $f(x) \in k[x]$ es irreducible, entonces es Newton-puro.
+\end{cor}
+\begin{proof}
+	Basta notar que si $f$ no es Newton-puro, entonces podemos encontrar un $m$ como en el lema anterior y así ver que es reducible.
+\end{proof}
+
+\begin{thm}[del polígono de Newton]\label{thm:newton_polygon}
+	Sea $k$ un cuerpo ultramétrico henseliano.
+	Sea $f(x) \in k[x]$ un polinomio de tipo \eqref{eq:newton_type_pol}, entonces se puede escribir como
+	$$ f(x) = g_1(x) \cdots g_s(x), $$
+	donde cada $g_j \in k[x]$ es Newton-puro de tipo $(m_j - m_{j-1}, \gamma_j)$.
+\end{thm}
+\begin{proof}
+	Nótese que $f = \prod_{j=1}^{n} h_j$, donde cada $h_j$ es irreducible y, por lo tanto, Newton-puro.
+	Podemos definir los $g_\ell$'s como los productos de $h_j$'s que tienen la misma pendiente $\delta_\ell$, de modo que $g_\ell$
+	es de tipo $(q_\ell, \delta_\ell)$; lo que dará que $f$ se escribe como producto de polinomios Newton-puros de distintas pendientes.
+	Empleando repetidas veces el lema~\ref{lem:adding_newton_types} se obtiene que el producto de $g_\ell$, quizá tras reordenar, es
+	$$ (q_1, \delta_1; q_2, \delta_2; \dots; q_r, \delta_r), $$
+	y por ello, vemos que $r = s$, $q_j = m_j - m_{j-1}$ y $\delta_j = \gamma_j$.
+\end{proof}
+
+\subsection{Extensiones algebraicas}
+\begin{mydef}
+	Sea $k$ un cuerpo métrico y sea $V$ un $k$-espacio vectorial.
+	Una función $\|\,\|\colon V \to [0, \infty)$ se dice una \strong{norma}\index{norma} si para todo $\vec u, \vec v\in V$ y todo $c \in k$ se cumple que:
+	\begin{enumerate}[{EN}1., ref=EN\arabic*, leftmargin=*]
+		\item $\|\vec v\| = 0$ syss $\vec v = \Vec 0$.
+		\item $\|c \vec v\| = |c| \, \|\vec v\|$.
+		\item\label{ax:norm_triangle} $\|\vec u + \vec v\| \le \|\vec u\| + \|\vec v\|$.
+	\end{enumerate}
+	Además, se dice que la norma $\|\,\|$ es \strong{ultramétrica} si, en lugar de \ref{ax:norm_triangle}, satisface:
+	\begin{enumerate}[resume*]
+		\item $\|\vec u + \vec v\| \le \max\{ \|\vec u\|, \|\vec v\| \}$.
+	\end{enumerate}
+	Un par $(V, \|\,\|)$ se dice un \strong{$k$-espacio normado}\index{espacio!normado}, obviaremos los índices de no haber ambigüedad sobre los signos.
+	Nótese que $d(\vec u, \vec v) := \|\vec u - \vec v\|$ determina una métrica sobre $V$, luego una topología.
+	Dos normas $\|\,\|_1, \|\,\|_2$ sobre $V$ se dicen \strong{equivalentes}\index{equivalentes!(normas)} si inducen la misma topología sobre $V$.
+\end{mydef}
+
+Comenzamos con unos resultados clásico de análisis:
+\begin{lem}
+	Sea $k$ un cuerpo métrico no trivial y $V$ un $k$-espacio vectorial.
+	Dos normas $\|\,\|_1, \|\,\|_2$ sobre $V$ son equivalentes syss existen constantes $c_1, c_2 > 0$ tales que para todo $\vec a \in V$ se cumpla
+	$$ c_1\|\vec a\|_1 \le \|\vec a\|_2 \le c_2\|\vec a\|_1. $$
+\end{lem}
+\begin{proof}
+	Supondremos que $V \ne 0$.
+
+	$\impliedby$. Sea $U$ un abierto relativo a $\|\,\|_2$, probaremos que es abierto relativo a $\|\,\|_1$ y por simetría veremos que los abiertos coinciden.
+	Sea $\vec u \in U$, luego existe un $\epsilon > 0$ tal que
+	$$ \{ \vec v : \| \vec v - \vec u \|_2 < \epsilon \} \subseteq U, $$
+	Luego, claramente
+	$$ \vec u \in \left\{ \vec v : \|\vec v - \vec u\|_1 < \frac{\epsilon}{c_1} \right\} \subseteq U, $$
+	por lo que $U$ es abierto respecto a $\|\,\|_1$.
+
+	$\implies$. Como las normas son equivalentes, entonces existe $r > 0$ tal que
+	$$ \{ \vec v \in V : \|\vec v\|_1 < r \} \subseteq \{ \vec v \in V : \|\vec v\|_2 < 1 \}, $$
+	como $k$ no es trivial, existe $\alpha \in k$ tal que $|\alpha| > 1$ de modo que $\lim_n |\alpha|^{-n} = 0$ y $\lim_n |\alpha|^n = \infty$.
+	Luego, para todo $\vec v \in V$ existe un $n \in \Z$ tal que
+	$$ |\alpha|^n \le \frac{1}{r}\|\vec v\|_1 < |\alpha|^{n+1} \implies \left\| \frac{1}{\alpha^{n+1}} \vec v \right\|_1 < r, $$
+	de modo que $\| \vec v / \alpha^{n+1} \|_2 < 1$, ergo
+	$$ \| \vec v \|_2 < |\alpha|^{n+1} = |\alpha| \, |\alpha|^n \le \frac{|\alpha|}{r} \|\vec v\|_1, $$
+	de modo que $c_1 := |\alpha|/r$ funciona.
+	Análogamente se construye $c_2$.
+\end{proof}
+
+\addtocounter{thmi}{1}
+\begin{slem}
+	Sea $k$ un cuerpo métrico y $V$ un $k$-espacio vectorial con base $\{ \vec e_1, \dots, \vec e_n \}$.
+	Entonces, la función
+	$$ \| a_1\vec e_1 + \cdots + a_n\vec e_n \|_\infty := \max_i\{ |a_i| \}, $$
+	es una norma y $(V, \|\,\|_\infty)$ es completo si $k$ lo es.
+\end{slem}
+\addtocounter{thmi}{-1}
+
+\begin{thm}\label{thm:normed_space_over_compl}
+	Sea $k$ un cuerpo métrico no trivial completo y sea $V$ un $k$-espacio vectorial de dimensión finita.
+	Todas las normas sobre $V$ son equivalentes y bajo todas $V$ resulta ser (un espacio métrico) completo.
+\end{thm}
+\begin{proof}
+	Fijemos una base $\{ \vec e_1, \dots, \vec e_n \}$, y sea $\|\,\|_\infty$ la norma descrita en el lema anterior.
+	Sea $\|\,\|$ otra norma de $V$, y definamos $c_2 := n\max_i \{ \|\vec e_i\| \}$; por desigualdad triangular se comprueba que
+	$$ \|a_1\vec e_1 + \cdots + a_n\vec e_n\| \le |a_1| \, \|\vec e_1\| + \cdots + |a_n| \, \|\vec e_n\|
+	\le c_2 \|a_1\vec e_1 + \cdots + a_n\vec e_n\|_\infty. $$
+	Probaremos el teorema por inducción sobre $n$, el caso $n = 1$ es claro.
+
+	Para el caso inductivo, supondremos que no existe $c_1 > 0$ tal que $c_1 \|\vec v\|_\infty \le \|\vec v\|$ para todo $\vec v \in V$,
+	de modo que escogiendo $c_1 = 1/m$ existe $\vec v_m \in V$ tal que $\|\vec v_m\| < \frac{1}{m} \|\vec v_m\|_\infty$.
+	Ahora bien, tenemos infinitos $\vec v_m$'s y como solo consta de finitas coordenadas hay, por palomar, al menos una que es la que tiene máximo
+	valor absoluto infinitas veces, digamos que $\vec e_n$.
+	Además podemos normalizar la sucesión de modo que obtenemos una sucesión $\{ \vec v_{\sigma m} \}_m$ tal que:
+	\begin{itemize}
+		\item $\|\vec v_{\sigma m}\|_\infty = 1$.
+		\item $\vec v_{\sigma m} = a_1\vec e_1 + \cdots + a_n\vec e_n$ donde $a_n = 1$.
+		\item $\|\vec v_{\sigma m}\| < 1/\sigma(m)$.
+	\end{itemize}
+	Así $\lim_m \|\vec v_{\sigma m}\| = 0$.
+	Definamos $W := \Span_k\{ \vec e_1, \dots, \vec e_{n-1} \}$ el cual tiene dimensión menor y sean $\vec w_m := \vec v_{\sigma m} - \vec e_n \in W$.
+	Luego $\lim_m \|\vec w + \vec e_n\| = 0$ y
+	$$ \| \vec w_m - \vec w_M \| = \| (\vec w_m + \vec e_n) - (\vec w_M + \vec e_n) \| \le \| \vec w_m + \vec e_n \| + \| \vec w_M + \vec e_n \| \to 0, $$
+	de modo que $( \vec w_m )_{m\in\N}$ es una sucesión de Cauchy respecto a la norma $\|\,\|$ contenida en $W$.
+
+	En $W$, por hipótesis inductiva, todas las normas coinciden y son completas, de modo que $\vec w_m$ converge a un valor $\vec w \in W$ y así:
+	$$ \|\vec w + \vec e_n\| = \|(\vec w - \vec w_m) + (\vec w_m + \vec e_n)\| \le \|\vec w - \vec w_m\| + \|\vec w_m + \vec e_n\| \to 0, $$
+	por lo que $\vec w = -\vec e_n$, pero $-\vec e_n \notin W$ lo que es absurdo.
+\end{proof}
+
+\begin{cor}
+	Sea $(k, |\,|)$ un cuerpo métrico completo y sea $L/k$ una extensión finita de cuerpos.
+	Existe a lo más un valor absoluto $\|\,\|$ sobre $L$ (salvo equivalencia) que extiende a $|\,|$.
+	Más aún, $L$ también es un completo respecto a ésta métrica.
+\end{cor}
+\begin{proof}
+	Basta notar que un valor absoluto sobre $L$ es una norma de $L$ como $k$-espacio vectorial.
+\end{proof}
+
+\begin{thmi}\label{thm:complete_metric_fld_algcl_metric}
+	Sea $(k, |\,|)$ un cuerpo métrico completo no trivial y sea $L/k$ una extensión finita de cuerpos.
+	Existe exactamente un valor absolutos $\|\,\|$ sobre $L$ (salvo equivalencia) que extiende a $|\,|$.
+	En consecuencia, existe exactamente un valor absoluto sobre $\algcl k$ que extiende a $|\,|$.
+\end{thmi}
+\begin{proof}
+	Si $k = \R$ o $\C$, entonces es claro así que nos enfocaremos en el caso ultramétrico.
+
+	Considere la norma $\galnorm_{L/k}\colon L \to k$, y defínase $\|\alpha\| := |\galnorm_{L/k}(\alpha)|^{1/n}$ donde $n := [L : k]$.
+	Si $a \in k$, entonces $\galnorm_{L/k}(a) = a^n$, así que vemos que $\|\,\|$ extiende a $|\,|$.
+	Si $\alpha \in L$ es no nulo, entonces $\galnorm_{L/k}(\alpha) = \prod_{\sigma} \sigma(\alpha)$, donde $\sigma$ recorre todos los $k$-monomorfismos
+	de $L$ en su clasura normal, luego $\galnorm_{L/k}(\alpha) \ne 0$ y, por ello, $\|\alpha\| \ne 0$ (VA1).
+	Como $\galnorm_{L/k}$ es multiplicativa, entonces $\|\,\|$ también (VA2).
+
+	Falta ver la desigualdad ultramétrica:
+	Sea $\|\alpha\| \le 1$, sea $f(t) = a_0 + \cdots + a_{n-1}t^{n-1} + t^n \in k[t]$ el polinomio minimal de $\alpha$ y sea $F(t) :=
+	\psi_{\alpha, L/k}(t) = c_0 + \cdots + c_{m-1}t^{m-1} + t^m \in k[t]$ el polinomio característico de $\alpha$.
+	Sabemos que $\galnorm_{L/k}(\alpha) = \pm c_0$ (cfr. \cite[def.~4.63]{Alg} y \cite[prop.~3.67]{Alg}) y también sabemos que el polinomio característico
+	es alguna potencia natural de $f(t)$, de modo que $c_0 = a_0^r$ para algún $r\ge 1$.
+	Si:
+	$$ |a_0|^{r/n} = |c_0|^{1/n} = |\galnorm_{K/k}(\alpha)|^{1/n} = \|\alpha\| \le 1, $$
+	entonces $|a_0| \le 1$.
+	Como $f(t)$ es irreducible, entonces es Newton-puro (corolario~\ref{thm:irred_implies_pure}) y como $\|f(t)\|_c = |a_0|$ (lema~\ref{lem:newton_norms}),
+	entonces vemos que $\|f(t)\| \le 1$, por lo que $f(t) \in \mathfrak{o}[t]$ y luego $F(t) \in \mathfrak{o}[t]$.
+	Ahora bien, nótese que
+	$$ \|1 + \alpha\| = |\galnorm_{L/k}(1 + \alpha)|^{1/n} = |(-1)^n F(-1)|^{1/n} \le \|F(t)\|_1 \le 1. $$
+	Aquí empleamos el hecho de que $\galnorm_{L/k}(x - \alpha) = F(x)$ para todo $x \in k$, ¿por qué ésto es cierto?
+
+	Finalmente, la última desigualdad comprueba la desigualdad ultramétrica y, por tanto, completa la demostración.
+\end{proof}
+Por la unicidad, denotaremos a éste valor absoluto $|\,|$.
+Nótese que $|\alpha| := |\galnorm_{L/K}(\alpha)|^{1/n}$ siempre determina un valor absoluto sobre $L$, independiente de si $K$ es completo o no;
+no obstante la completitud de $K$ se exige si se desea unicidad.
+
+\begin{exn}
+	\addexample{Una extensión finita $L/K$ de cuerpos con $K$ métrico, donde $L$ admite más de una extensión del valor absoluto}
+	Considere $(\Q, |\,|_\infty)$ el cual no es completo y considere la extensión finita $L := \Q(\sqrt{2})/\Q$.
+	Considere al elemento $\alpha$ que es raíz de $(x - 1)^2 - 2$.
+	Éste elemento, tradicionalmente lo elegimos como $\sqrt{2} + 1 > 0$, donde $|\sqrt{2} + 1| \approx 2.41$;
+	pero también podríamos elegirlo como $-\sqrt{2} + 1 < 0$, donde $\lvert-\sqrt{2} + 1\rvert \approx 0.41$.
+
+	Otra manera de entender éste ejemplo es que $2 \in \R$ posee dos raíces, una positiva y otra negativa, y ambas son \textit{algebraicamente indistinguibles};
+	el ordenamiento de $\R$ induce un valor absoluto sobre $L \subseteq \R$, así pues ambas elecciones (de que $\sqrt{2}$ sea positivo o no) inducen dos
+	valores absolutos no equivalentes.
+\end{exn}
+
+De la construcción se sigue:
+\begin{cor}\label{thm:conjs_share_norm}
+	Sea $k$ un cuerpo ultramétrico completo.
+	Todo $k$-conjugado de un elemento $k$-algebraico comparte su valor absoluto.
+\end{cor}
+
+\begin{cor}[lema de Krasner]\label{thm:krasner_lemma}
+	Sea $k$ un cuerpo ultramétrico completo.
+	Sea $\alpha \in \algcl k$ y sea $\beta$ un $k$-conjugado distinto de $\alpha$.
+	Entonces, para todo $a \in k$ se cumple que $|a - \alpha| \ge |\alpha - \beta|$.
+	
+	% En consecuencia, si $\alpha$ es $k$-separable y existen $\beta \in \algcl k$ y un $\alpha'$ un $k$-conjugado de $\alpha$
+	% tales que $|\alpha - \beta| < |\alpha - \alpha'|$, entonces $\alpha \in k(\beta)$.
+\end{cor}
+\begin{proof}
+	De lo contrario, existiría algún $a \in k$ tal que
+	$$ |a - \alpha| < |\alpha - \beta| = |a - \beta|, $$
+	pero $a - \alpha, a - \beta$ son $k$-conjugados por lo que la desigualdad es absurda.
+\end{proof}
+
+Nótese que la prueba de la unicidad es universal al caso arquimediano y ultramétrico, pero la prueba de existencia es exclusiva del caso ultramétrico,
+aunque mediante la clasificación de cuerpos métricos arquimedianos por el teorema de Ostrowski también podemos contemplar ese caso.
+
+\subsection{Compleción de un cuerpo algebraicamente cerrado}
+Recuento sobre lo que hemos hecho: dado un cuerpo métrico, podemos completarlo, y dado un cuerpo métrico completo podemos tomar su clausura algebraica que
+también será métrica. Ahora, bien podría darse (y se dá) que dicha clausura algebraica no sea completa, lo que veremos en ésta sección.
+
+\begin{thm}
+	Sea $k$ un cuerpo ultramétrico completo y sea $\alpha \in \sepcl k$. Defínase
+	$$ r := \min_{\beta\ne\alpha} |\beta - \alpha|, $$
+	donde $\beta$ recorre los $k$-conjugados de $\alpha$.
+	Sea $\gamma \in B_r(\alpha) \subseteq \algcl k$, entonces $k(\alpha) \subseteq k(\gamma)$.
+\end{thm}
+\begin{proof}
+	Sean $f(x) \in k[x]$ y $\phi(x) \in k(\gamma)[x]$ el polinomio minimal de $\alpha$ sobre $k$ y sobre $k(\gamma)$ resp.
+	Luego $\phi(x) \mid f(x)$. Sea $\sigma \in \Gal( k(\alpha, \gamma) / k(\gamma) )$, de modo que $\sigma(\gamma - \alpha) = \gamma - \sigma(\alpha)$.
+	Como los conjugados comparten norma por el corolario~\ref{thm:conjs_share_norm}, vemos que
+	$$ |\gamma - \sigma(\alpha)| = |\gamma - \alpha| < r, $$
+	luego, por desigualdad ultramétrica, $|\alpha - \sigma(\alpha)| \le |\gamma - \alpha| < r$,
+	de modo que por definición de $r$ se sigue que $\sigma(\alpha) = \alpha$.
+	Así pues, como $\alpha$ es separable, vemos que $k(\alpha, \gamma) = k(\gamma)$ como se quería probar.
+\end{proof}
+
+% \begin{mydef}
+% 	Sea $k$ un cuerpo ultramétrico completo.
+% 	Sean $f(x), g(x) \in k[x]$ polinomios con raíces $\alpha_1, \dots, \alpha_n$ y $\beta_1, \dots, \beta_m$ en $\algcl k$ resp.
+% 	Defínase $\epsilon := \min_{i,j} \{ |\alpha_i - \beta_j| \}$.
+% 	Si $\|f(x) - g(x)\|_1 < \epsilon$, entonces se dice que $f, g$ están \strong{suficientemente cerca}\index{suficientemente cerca (polinomios)}.
+% \end{mydef}
+
+En el siguiente teorema, la expresión <<suficientemente cerca>> significa que existe algún $\epsilon > 0$ tal que si $\|f(x) - g(x)\| < \epsilon$,
+entonces se cumple lo enunciado.
+\begin{thm}
+	Sea $k$ un cuerpo ultramétrico completo.
+	Sean $f(x), g(x) \in k[x]$ mónicos de grado común $n$ y fijemos la norma $\|\,\| := \|\,\|_1$ sobre $k[x]$.
+	Para $f, g$ suficientemente cerca se cumplen las siguientes:
+	\begin{enumerate}
+		\item Si $f(x)$ es irreducible en $k$ y separable en $\algcl k$, entonces $g(x)$ también y genera el mismo cuerpo de escisión.%
+			\footnote{El cuerpo de escisión de un polinomio $h(x) \in k[x]$ es la mínima extensión $L/k$ en la cual $h$ se escinde,
+			es decir, contiene a todas sus raíces (cfr. \cite[def.~4.19]{Alg}).}
+		\item Si una raíz $\alpha \in \algcl k$ en $f(x)$ tiene multiplicidad $m$, entonces la cantidad de raíces $\beta_i$ de $g(x)$
+			tales que $k(\beta_i) \subseteq k(\alpha)$ es (contando multiplicidad) $m$.
+		\item Si $f(x)$ es irreducible en $k$, entonces $g(x)$ también.
+	\end{enumerate}
+\end{thm}
+\begin{proof}
+	Digamos que $\|f(x) - g(x)\| < \epsilon$ para un $\epsilon$ que determinaremos en cada inciso,
+	y denotemos $\alpha_1, \dots, \alpha_n$ y $\beta_1, \dots, \beta_n$ las raíces (contando multiplicidad) de $f(x), g(x)$ en $\algcl k$ resp.
+	\begin{enumerate}
+		\item Supongamos que $\|f(x)\| \le C$ (sin fijar) y sea $|\gamma| > C$,
+			si $f(x) = \sum_{j=0}^{n} c_j x^j$ entonces $|\gamma|^n > |c_j\gamma^j|$ para $j < n$, de modo que $\gamma$ no puede ser raíz de $f(x)$.
+			Es decir, cada $|\alpha_j| \le C$.
+
+			Si elegimos $C := \max\{ \|f\|, \|g\|, 1 \}$, vemos que cada $|\beta_j| \le C$ y, por ende,
+			para cualquier $\beta_j$ vemos también que
+			$$ |f(\beta_j)| = |f(\beta_j) - g(\beta_j)| \le \epsilon C^n. $$
+			Y por desigualdad ultramétrica vemos que
+			$$ |\beta_j - \alpha_1| \cdots |\beta_j - \alpha_n| \le \epsilon C^n, $$
+			luego, al menos un $\alpha_i$, digamos $\alpha_1$, satisface que
+			$$ |\beta_j - \alpha_1| \le C \sqrt[n]{\epsilon}. $$
+			Ahora fijemos
+			$$ \epsilon := \left( \min_{i\ne j} \{ |\alpha_i - \alpha_j| \} \right)^n > 0, $$
+			de modo que, como $f$ es irreducible, vemos que los $\alpha_j$'s son $k$-conjugados,
+			luego por el teorema anterior comprobamos que $k(\beta_j) \supseteq k(\alpha_1)$.
+
+			Como $f, g$ son del mismo grado, entonces concluimos que $g$ es irreducible (pues genera una extensión de cuerpos de su mismo grado)
+			y es separable (pues los cuerpos coinciden).
+
+		\item De lo contrario, para cualquier $n > 0$ podríamos encontrar otro polinomio $g_n$ tal que $\|f - g_n\| < 1/n$
+			y donde $g_n$ posee raíces $\beta_{n, j}$ de multiplicidad $\mu_j$ tal que $\lim_n \beta_{n, j} = \alpha_j$.
+			Así, por completitud de $k$, vemos que $\lim_n g_n = f$ y así tenemos que
+			$$ (x - \alpha_1)^{\eta_1} \cdots (x - \alpha_n)^{\eta_n} = f(x) = \lim_n g_n(x) = (x - \alpha_1)^{\mu_1} \cdots (x - \alpha_n)^{\mu_n}, $$
+			donde $\eta_j \ne \mu_j$ para algún $j$ lo que contradice la factorización única de $\algcl{k}[x]$.
+
+		\item Al igual que en el inciso anterior construimos una sucesión de Cauchy que converja a $f$ donde cada término se factoriza en dos polinomios
+			cuyas raíces convergen a algunas raíces de $f$ y llegamos a una contradicción pues sus límites prueban que $f$ es reducible. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}\label{thm:compl_algcl_is_complete}
+	Sea $K$ un cuerpo ultramétrico algebraicamente cerrado, entonces $\hat K$ también es algebraicamente cerrado.
+\end{thm}
+\begin{proof}
+	La demostración prosigue dos pasos:
+	\begin{enumerate}[(i)]
+		\item \underline{$\hat K$ es perfecto:}
+			Es claro si $\car K = 0$ (cfr. \cite[teo.~4.34]{Alg}), así que supondremos que $p := \car K > 0$.
+			Basta probar que el endomorfismo de Frobenius es suprayectivo (también, cfr. \cite[teo.~4.34]{Alg}):
+			sea $\alpha \in \hat K$, luego $\alpha = \lim_n \beta_n$ para $(\beta_n)_n \subseteq K$;
+			como $K$ es algebraicamente cerrado, entonces vemos que $\lim_n \beta_n^{1/p} = \alpha^{1/p} \in \hat K$.
+
+		\item Como $\hat K$ es perfecto, entonces basta probar que todo polinomio irreducible, mónico, separable $f(x) \in \hat K[x]$ es lineal.
+			Como $K[x]$ es denso en $\hat K[x]$, podemos encontrar $g(x) \in K[x]$ suficientemente cerca de $f(x)$ de modo que $g$
+			sea separable, irreducible y genere el mismo cuerpo de escisión.
+			Como $K$ es algebraicamente cerrado, entonces $g$ es lineal y así $f$ también debe serlo. \qedhere
+	\end{enumerate}
+\end{proof}
+
+\section{Principio local-global}
+Ya hablamos en determinado momento del principio local-global,
+en ésta sección procedemos a probar que es válido para cierto tipo de ecuaciones diofánticas.
+Recuérdese que una \strong{forma cuadrática} es un polinomio homogéneo de grado 2.
+
+\begin{thm}
+	Sea $f(x_1, x_2, x_3) \in \Q[\vec x]$ una forma cuadrática y supongamos que en todo $\Q_p$ existe una solución no trivial de $F(\vec x) = 0$.
+	Entonces existe una solución no trivial en $\Q$.
+\end{thm}
+\begin{proof}
+	Tras una transformación lineal podemos suponer, sin perdida de generalidad, que
+	\[
+		f(\vec x) = a_1x_1^2 + a_2x_2^2 + a_3x_3^2.
+	\]
+	Si algún $a_j \in \Q$ fuese nulo, entonces es claro que hay una solución no trivial en $\Q$, así que supondremos que $a_1a_2a_3 \ne 0$.
+	Así mismo, limpiando denominadores, podemos suponer que cada $a_j \in \Z$.
+\end{proof}
+
+\section*{Notas históricas}
+La genesis de la teoría de valuaciones está en el llamado \textit{análisis $p$-ádico}, lo cual fue una invención de \textbf{Kurt Hensel}
+en \cite{hensel:begrundung} (\citeyear{hensel:begrundung}).
+\citet{hensel:arithmetik} demostró que $\Q_p$, definido formalmente como series formales sobre $x = p$, es un cuerpo.
+
+La definición de \textit{cuerpo con valor absoluto} (o \textit{cuerpo métrico}, como lo empleamos aquí) fue formulada por vez primera por
+el hungaro \textbf{Josef Kürschák}, presentado en el Congreso Internacional de Matemáticos de Cambridge y publicado en \cite{kurschak:korpertheorie}
+(\citeyear{kurschak:korpertheorie}).
+El resultado de Kürschák era que todo cuerpo métrico se extiende (con su valor absoluto) a un cuerpo métrico completo y algebraicamente cerrado.
+El método de Kürschák es equivalente al nuestro:
+\begin{enumerate}[i)]
+	\item Todo cuerpo métrico admite una compleción a un cuerpo métrico (cfr. teorema~\ref{thm:metric_fld_completion}).
+	\item Un cuerpo métrico completo admite una extensión a un cuerpo métrico algebraicamente cerrado
+		(cfr. teorema~\ref{thm:complete_metric_fld_algcl_metric}).
+	\item La compleción de un cuerpo métrico algebraicamente cerrado es también algebraicamente cerrada
+		(cfr. teorema~\ref{thm:compl_algcl_is_complete}).
+\end{enumerate}
+El paso \textsc{i)} lo sigue de los argumentos clásicos de análisis, en particular citando a Cantor; el paso \textsc{ii)} emplea la construcción de la clausura
+algebraica de Steinitz y el paso \textsc{iii)} sigue la demostración del teorema fundamental del álgebra dada por Weierstrass.
+Además, Kürschák afirma (sin demostración) que los cuerpos ultramétricos satisfacen el lema de Hensel.
+
+Los dos teoremas de Ostrowski fueron descubiertos por el ruso \textbf{Alexander Ostrowski} en \cite{ostrowski:funktionalgleichung}
+(abril 1916, publ. \citeyear{ostrowski:funktionalgleichung}); los nombres \textit{primero} y \textit{segundo} son añadido propio.
+Si cambiamos cuerpo métrico arquimediano por $\R$-álgebra normada%
+\footnote{Una $k$-álgebra normada es una $k$-álgebra $(A, \|\,\|)$ que es un $k$-espacio normado
+y en donde $\|\alpha\beta\| = \|\alpha\|\,\|\beta\|$ para todo $\alpha, \beta\in A$.}
+completa entonces la lista se amplía a $\R, \C$ y $\HH$, donde los últimos son los cuaterniones y forman una $\R$-álgebra de división no conmutativa.
+% Nótese que los octoniones no entran en la lista.
+
+En otro artículo \cite{ostrowski:fragen} (\citeyear{ostrowski:fragen}) y en una simplificación tardía \cite{ostrowski:perfekte} (\citeyear{ostrowski:perfekte}),
+Ostrowski reanuda un estudio sobre los trabajos de Kürschák que incluye una demostración de que una extensión finita de un cuerpo métrico completo
+es también completa (cfr. teorema~\ref{thm:complete_metric_fld_algcl_metric}) siguiendo la estrategia de espacios normados y, mediante su demostración,
+probando que hay una \textit{única} extensión del valor absoluto a la clausura algebraica (algo que Kürschák no probó).
+En el mismo trabajo vemos que Ostrowski emplea el llamado \textit{lema de Krasner} (cfr. corolario~\ref{thm:krasner_lemma}).
+Finalmente, respondió a la duda de Kürschák respecto a cuando es la clausura algebraica de un cuerpo métrico completa.
+
+Los resultados desarrollados por Hensel, Kürschák y Ostrowski fueron recopilados y reordenados en simplicidad por el checo Karel Rychlík,
+primero publicados en checo en \cite{rychlik:beitrag} (\citeyear{rychlik:beitrag}) con poca repercusión, y más tarde en alemán en
+\cite{rychlik:bewertungstheorie} (\citeyear{rychlik:bewertungstheorie});
+de ahí que algunas versiones del lema de Hensel sean llamadas <<lema de Rychlík>>.
+Como las demostraciones de éste lema siguen el llamado \textit{método de Newton} para encontrar ceros de funciones continuas, también hay versiones
+del lema de Hensel llamados <<lema de Newton>>.
+
+El teorema de aproximación fue demostrado en toda su generalidad por \citet{artin:prod_form}.
+El teorema, restringido a valores absolutos no arquimedianos, también fue empleado en un manuscrito de Ostrowski \cite{ostrowski:arthmetischen}
+escrito cerca de 1916, pero publicado en 1935.
+
+Los polígonos de Newton fueron introducidos por Newton en su correspondencia con Oldenburg (13 de junio de 1676,
+vid. \cite[20-47]{newton:correspondence_ii}, y 24 de octubre de 1676, vid. \cite[162-164]{newton:correspondence_ii});
+una buena exposición moderna se encuentra en la sección \S8.3 de \citeauthor{brieskorn:curves}~\cite[370-454]{brieskorn:curves}.
+La aplicación del polígono de Newton a la teoría de valuación, particularmente el teorema~\ref{thm:newton_polygon},
+es originaria por \citet{ostrowski:dirichletschen}, aunque fue inicialmente estudiado por \citet{rella:polynombereichen}.
+\addtocategory{historical}{
+	hensel:begrundung, hensel:arithmetik, kurschak:korpertheorie,
+	ostrowski:funktionalgleichung, rychlik:beitrag, rychlik:bewertungstheorie, ostrowski:arthmetischen,
+	ostrowski:dirichletschen, rella:polynombereichen, ostrowski:fragen, ostrowski:perfekte,
+}
+\addtocategory{history}{brieskorn:curves, newton:correspondence_ii}
+
+\printbibliography[segment=\therefsegment, check=onlynew, notcategory=history, notcategory=historical, notcategory=other]
+\bibbycategory[segment=\therefsegment, check=onlynew]
+
+\end{document}
