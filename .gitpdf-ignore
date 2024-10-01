@@ -1,0 +1,10 @@
+**/*
+
+!**/
+!**/*.pdf
+**/*_vimtex_selected.pdf
+.gitpdf/
+
+!README.md
+!.gitpdf-ignore
+!latex/
