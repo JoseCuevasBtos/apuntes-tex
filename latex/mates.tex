@@ -1,12 +1,20 @@
+\documentclass[intro-breve-latex.tex]{subfiles}
+\begin{document}
+
 \chapter{Escribir matemáticas}
 \label{sec:maths}
 \section{Básico}
-\LaTeX{} admite dos formas de denotar matemáticas, en modo \textit{entre líneas} y modo \textit{display}. El primero se escribe así \lstinline|$1+1=2$| $1+1=2$, mientras que el segundo se escribe así:
+\LaTeX{} admite dos formas de denotar matemáticas, en modo \textit{entre líneas} y modo \textit{display}. El primero se
+escribe así \lstinline|$1+1=2$| $1+1=2$, mientras que el segundo se escribe así:
 \begin{lstlisting}
-$$1+1=2$$
+$$ 1 + 1 = 2 $$
 \end{lstlisting}
+o también así \lstinline|\[ 1+1=2 \]|.
 $$1+1=2$$
-Esta distinción es importante, pues \LaTeX{} tomará ciertas decisiones para no interferir con el resto del texto, lo que hará que el modo entre líneas tenga ciertas peculiaridades. Notemos que por defecto \LaTeX{} entiende que ha de añadir espacios entre las operaciones, además los números no se inclinan mientras que las letras sí, e.g. \lstinline|$a\cdot a=a^2$| $a\cdot a=a^2$.
+Esta distinción es importante, pues \LaTeX{} tomará ciertas decisiones para no interferir con el resto del texto, lo que
+hará que el modo entre líneas tenga ciertas peculiaridades. Notemos que por defecto \LaTeX{} entiende que ha de añadir
+espacios entre las operaciones, además los números no se inclinan mientras que las letras sí, e.g.\ 
+\lstinline|$a\cdot a=a^2$| $a\cdot a=a^2$.
 
 \LaTeX{} también admite subíndeces con \texttt{\_}, e.g., \lstinline|$x_1 \leq x_2$| $x_1 \leq x_2$, pero hemos de tener cuidado con los índices y las potencias pues \lstinline|$a^-1$| da $a^-1$, esto se debe a que \LaTeX{} sólo interpreta el primer símbolo arriba, algo similar ocurre con los índices; para usar más de uno juntos se pueden agrupar con \texttt{\{\}}, e.g. \lstinline|$\pi^{-1}$| $\pi^{-1}$.
 
@@ -16,8 +24,8 @@ Igual que con $\pi$, \LaTeX{} incluye comandos para varios otros símbolos usual
 	\hline
 	\lstinline|$\alpha A$|                & $\alpha A$                & \lstinline|$\nu N$|                & $\nu N$ \\
 	\lstinline|$\beta B$|                 & $\beta B$                 & \lstinline|$\xi\Xi$|               & $\xi\Xi$ \\
-	\lstinline|$\gamma \Gamma$|           & $\gamma \Gamma$           & \lstinline|$o O$|                  & $o O$ \\
-	\lstinline|$\delta \Delta$|           & $\delta \Delta$           & \lstinline|$\pi \Pi$|              & $\pi \Pi$ \\
+	\lstinline|$\gamma \digamma \Gamma$|  & $\gamma \digamma \Gamma$  & \lstinline|$o O$|                  & $o O$ \\
+	\lstinline|$\delta \Delta$|           & $\delta \Delta$           & \lstinline|$\pi\varpi\Pi$|         & $\pi\varpi\Pi$ \\
 	\lstinline|$\epsilon \varepsilon E$|  & $\epsilon \varepsilon E$  & \lstinline|$\rho\varrho P$|        & $\rho\varrho P$ \\
 	\lstinline|$\zeta Z$|                 & $\zeta Z$                 & \lstinline|$\sigma \Sigma$|        & $\sigma \Sigma$ \\
 	\lstinline|$\eta H$|                  & $\eta H$                  & \lstinline|$\tau T$|               & $\tau T$ \\
@@ -36,23 +44,34 @@ Igual que con $\pi$, \LaTeX{} incluye comandos para varios otros símbolos usual
 	\hline
 	\lstinline|$\cdot$|     & $\cdot$     & \lstinline|$\times$|    & $\times$ \\
 	\lstinline|$\pm$|       & $\pm$       & \lstinline|$\mp$|       & $\mp$ \\
-	\lstinline|$\div$|      & $\div$      & \lstinline|$\cap$|      & $\cap$ \\
-	\lstinline|$\cup$|      & $\cup$      & \lstinline|$\neq$|      & $\neq$ \\
+	\lstinline|$\div$|      & $\div$      & \lstinline|$\star$|     & $\star$ \\
+	\lstinline|$\cap$|      & $\cap$      & \lstinline|$\cup$|      & $\cup$ \\
+	\lstinline|$\sqcap$|    & $\sqcap$    & \lstinline|$\sqcup$|    & $\sqcup$ \\
+	\lstinline|$\neq$|      & $\neq$      & \lstinline|$\setminus$| & $\setminus$ \\
 	\lstinline|$\leq$|      & $\leq$      & \lstinline|$\geq$|      & $\geq$ \\
+	\lstinline|$\ll$|       & $\ll$       & \lstinline|$\gg$|       & $\gg$ \\
+	\lstinline|$\lhd$|      & $\lhd$      & \lstinline|$\rhd$|      & $\rhd$ \\
+	\lstinline|$\unlhd$|    & $\unlhd$    & \lstinline|$\unrhd$|    & $\unrhd$ \\
 	\lstinline|$\in$|       & $\in$       & \lstinline|$\perp$|     & $\perp$ \\
 	\lstinline|$\mid$|      & $\mid$      & \lstinline|$\parallel$| & $\parallel$ \\
 	\lstinline|$\notin$|    & $\notin$    & \lstinline|$\subset$|   & $\subset$ \\
 	\lstinline|$\subseteq$| & $\subseteq$ & \lstinline|$\supseteq$| & $\supseteq$ \\
+	\lstinline|$\prec$|     & $\prec$     & \lstinline|$\succ$|     & $\succ$ \\
+	\lstinline|$\preceq$|   & $\preceq$   & \lstinline|$\succeq$|   & $\succeq$ \\
 	\lstinline|$\simeq$|    & $\simeq$    & \lstinline|$\approx$|   & $\approx$ \\
+	\lstinline|$\asymp$|    & $\asymp$    & \lstinline|$\propto$|   & $\propto$ \\
 	\lstinline|$\wedge$|    & $\wedge$    & \lstinline|$\vee$|      & $\vee$ \\
 	\lstinline|$\oplus$|    & $\oplus$    & \lstinline|$\otimes$|   & $\otimes$ \\
+	\lstinline|$\odot$|     & $\odot$     & \lstinline|$\ominus$|   & $\ominus$ \\
 	\lstinline|$\circ$|     & $\circ$     & \lstinline|$\sim$|      & $\sim$ \\
 	\lstinline|$\equiv$|    & $\equiv$    & \lstinline|$\cong$|     & $\cong$ \\
+	\lstinline|$\smile$|    & $\smile$    & \lstinline|$\frown$|    & $\frown$ \\
 	\lstinline|$\to$|       & $\to$       & \lstinline|$\implies$|  & $\implies$ \\
 	\hline
 	Delimitadores \\
 	\hline
 	\lstinline!$|$!                   & $|$                   & \lstinline!$\|$!                  & $\|$ \\
+	\lstinline!$\lvert a\rvert$!      & $\lvert a\rvert$      & \lstinline!$\lVert a\rVert$!      & $\lVert a\rVert$ \\
 	\lstinline|$\{\}$|                & $\{\}$                & \lstinline|$\lfloor \rfloor$|     & $\lfloor \rfloor$ \\
 	\lstinline|$\lceil \rceil$|       & $\lceil \rceil$       & \lstinline|$\langle \rangle$|     & $\langle \rangle$ \\
 	\lstinline|$\ulcorner \urcorner$| & $\ulcorner \urcorner$ & \lstinline|$\llcorner \lrcorner$| & $\llcorner \lrcorner$ \\
@@ -75,9 +94,9 @@ Igual que con $\pi$, \LaTeX{} incluye comandos para varios otros símbolos usual
 	\lstinline|$\emptyset$|    & $\emptyset$    & \lstinline|$\varnothing$| & $\varnothing$ \\
 	\lstinline|$\wp$|          & $\wp$          & \lstinline|$\complement$| & $\complement$ \\
 	\lstinline|$\neg$|         & $\neg$         & \lstinline|$\aleph$|      & $\aleph$ \\
-	\lstinline|$\beth$|        & $\beth$        & \lstinline|$\gimel$|      & $\gimel$ \\
 	\lstinline|$\square$|      & $\square$      & \lstinline|$\surd$|       & $\surd$ \\
 	\lstinline|$\blacksquare$| & $\blacksquare$ & \lstinline|$\triangle$|   & $\triangle$ \\
+	\lstinline|$\diamond$|     & $\diamond$     & \lstinline|$\bullet$|     & $\bullet$ \\
 \end{ltabular}
 
 Para los marcados con violeta, se requieren dos nuevos paquetes:
@@ -86,16 +105,31 @@ Para los marcados con violeta, se requieren dos nuevos paquetes:
 \end{lstlisting}
 Nótese que al estar separados por coma, \LaTeX{} entiende que son dos paquetes independientes. Si no le interesan dichos símbolos aun se recomienda importar el primero.
 
-\textbf{Encontrar símbolos.} En general es una tarea practicamente imposible la de aprenderse de memoria todos los símbolos en \LaTeX{}, sin considerar el hecho de que ciertos paquetes importan cada vez más de ellos, por lo que se recomienda con creces usar este sitio web \url{http://detexify.kirelabs.org/classify.html} donde puedes encontrar símbolos mediante dibujos. Bajo el comando donde aparecen se especifica si el comando funciona en modo texto o modo matemático (o ambos), y arriba especificará si requiere algún paquete.
+\textbf{Encontrar símbolos.}
+En general es una tarea practicamente imposible la de aprenderse de memoria todos los símbolos en \LaTeX{}, sin
+considerar el hecho de que ciertos paquetes importan cada vez más de ellos, por lo que se recomienda con creces usar
+este sitio web \url{http://detexify.kirelabs.org/classify.html} donde puedes encontrar símbolos mediante dibujos. Bajo
+el comando donde aparecen se especifica si el comando funciona en modo texto o modo matemático (o ambos), y arriba
+especificará si requiere algún paquete.
 
-Otra observación es que si bien \lstinline!|! sirve y genera el mismo efecto en modo matemático que \lstinline|\mid|, el primero se recomienda como \textit{envoltura} (similar a los paréntesis), mientras que el segundo genera espacios como para el ``divide a'', e.g., \lstinline!$|x|; 2\mid 4$! $|x|; 2\mid 4$.
+Otra observación es que si bien \lstinline!|! sirve y genera el mismo efecto en modo matemático que \lstinline|\mid|, el
+primero se recomienda como \textit{envoltura} (similar a los paréntesis), mientras que el segundo genera espacios como
+para el <<divide a>>, e.g., \lstinline!$|x|; 2\mid 4$! $|x|; 2\mid 4$.
 Esta distinción aplica para el resto de delimitadores.
 
-\textbf{Puntos.} Pese a que no sea obvio, en \LaTeX{} uno posee varios tipos de puntos: centrados, bajos, verticales y diagonales (del tipo \smash{$\ddots$}). Para ello se escribe el punto centrado solo como \lstinline|$\cdot$| como hemos visto, pero los tres juntos se escriben \lstinline|$\cdots, \dots, \vdots, \ddots$| \smash{$\cdots, \dots, \vdots, \ddots$} respectivamente.
+\textbf{Puntos.}
+En \LaTeX{} hay distintos tipos de puntos: centrados, bajos, verticales y diagonales (del tipo \smash{$\ddots$}).
+Para ello se escribe el punto centrado solo como \lstinline|$\cdot$| como hemos visto, pero los tres juntos se escriben
+\lstinline|$\cdots, \dots, \vdots, \ddots$| \smash{$\cdots, \dots, \vdots, \ddots$} respectivamente.
 
-Como recomendación se usa los puntos centrados para operaciones, e.g., \lstinline|$1+2+\cdots+99+100$| $1+2+\cdots+99+100$, y los bajos para listas \lstinline|$\{1,2,\dots,100\}$| $\{1,2,\dots,100\}$.
+Como recomendación se usa los puntos centrados para operaciones, e.g., \lstinline|$1+2+\cdots+99+100$|
+$1+2+\cdots+99+100$, y los bajos para listas \lstinline|$\{ 1, 2, \dots, 100 \}$| $\{1,2,\dots,100\}$.
 
-\textbf{Fracciones.} Para hacer fracciones existe el comando \lstinline|\frac| que funciona como:
+También están incorporados los lógicos \lstinline|$\because$| $\because$ y \lstinline|$\therefore$| $\therefore$ (con
+\AmS{}). Y el comando \lstinline|$\colon$| especialmente hecho para funciones\break \lstinline|$f\colon A \to B$| $f\colon A \to B$.
+
+\textbf{Fracciones.}
+Para hacer fracciones existe el comando \lstinline|\frac| que funciona como:
 \begin{lstlisting}
 $$ \frac{1}{2} + \frac{1}{3} = \frac{5}{6}. $$
 \end{lstlisting}
@@ -118,20 +152,28 @@ Un comando similar es \lstinline|\binom| que genera coeficientes binomiales, e.g
 \lstinline|$\binom{3}{2}$| $\binom{3}{2}$.
 Al igual que \lstinline|\frac| admite las variaciones \lstinline|\dbinom| y \lstinline|\tbinom|.
 
-\textbf{Congruencias modulares.} Para módulos hay una serie de comandos distintos:
-\begin{lstlisting}
-$$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
-\quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
-\end{lstlisting}
-$$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
-\quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
-Nótese que \lstinline|\bmod| no genera espacios anteriores, en cambio \lstinline|\mod| sí.
+% \textbf{Congruencias modulares.}
+% Para módulos hay una serie de comandos distintos:
+% \begin{lstlisting}
+% $$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
+% \quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
+% \end{lstlisting}
+% $$ (-1)^{ 5\bmod 2 }, \quad 5\equiv 2 \pmod 3,
+% \quad 7\equiv 3 \mod 4, \quad 5\equiv 1 \pod 4. $$
+% Nótese que \lstinline|\bmod| no genera espacios anteriores, en cambio \lstinline|\mod| sí.
 
-\textbf{Raíces.} Este es muy sencillo, así se describe una raíz cuadrada \lstinline|$\sqrt{17}$| $\sqrt{17}$, y así una raíz $n$-ésima \lstinline|$\sqrt[3]{8} = 2$| $\sqrt[3]{8} = 2$.
+\textbf{Raíces.}
+Este es muy sencillo, así se describe una raíz cuadrada \lstinline|$\sqrt{17}$| $\sqrt{17}$, y así una raíz $n$-ésima
+\lstinline|$\sqrt[3]{8} = 2$| $\sqrt[3]{8} = 2$.
 
-\textbf{Operadores.} En general a los símbolos destinados a ir entre dos caracteres como + se les dice ``operación binaria'', por separado, un operador es una palabra o frase que se utiliza expicitamente y, por lo general, en letras romanas derechas; e.g., \lstinline|$\sin x$| $\sin x$.
+\textbf{Operadores.}
+En general a los símbolos destinados a ir entre dos caracteres como + se les dice <<operación binaria>>, por separado,
+un operador es una palabra o frase que se utiliza expicitamente y, por lo general, en letras romanas derechas; e.g.,
+\lstinline|$\sin x$| $\sin x$.
 
-Los operadores se clasifican en dos: grandes o pequeños, donde ambos ocupan el mismo tamaño para su nombre, pero los grandes tienen la gracia de que sus subíndices y superíndices van directamente abajo y arriba respectivamente del nombre, por ejemplo:
+Los operadores se clasifican en dos: grandes o pequeños, donde ambos ocupan el mismo tamaño para su nombre, pero los
+grandes tienen la gracia de que sus subíndices y superíndices van directamente abajo y arriba respectivamente del
+nombre, por ejemplo:
 \begin{lstlisting}
 $$ \lim_{x \to \infty} \sin^2 x + \cos^2 x = 1. $$
 \end{lstlisting}
@@ -143,7 +185,8 @@ Los operadores no siempre tienen que tener texto, pueden poseer otros símbolos 
 $$ \sum_{i=0}^n i = \frac{n(n+1)}{2}, \int_a^b f(x) dx. $$
 \end{lstlisting}
 $$ \sum_{i=0}^n i = \frac{n(n+1)}{2}, \int_a^b f(x) dx. $$
-Cabe notar que dicha característica de los operadores grande se pierde en el modo entre líneas, e.g., \lstinline|$\prod_{k=1}^n i = n!$| $\prod_{k=1}^n i = n!$
+Cabe notar que dicha característica de los operadores grande se pierde en el modo entre líneas, e.g.,
+\lstinline|$\prod_{k=1}^n i = n!$| $\prod_{k=1}^n i = n!$
 \begin{longtable}{llll}
 	\hline \hline
 	\endhead
@@ -168,19 +211,23 @@ Cabe notar que dicha característica de los operadores grande se pierde en el mo
 	\lstinline|$\injlim$|    & $\injlim$    & \lstinline|$\projlim$|    & $\projlim$ \\
 	\lstinline|$\varinjlim$| & $\varinjlim$ & \lstinline|$\varprojlim$| & $\varprojlim$ \\
 
-	\lstinline|$\inf$|       & $\inf$       & \lstinline|$\sup$|        & $\sup$ \\
-	\lstinline|$\min$|       & $\min$       & \lstinline|$\max$|        & $\max$ \\
-	\lstinline|$\lim$|       & $\lim$       & \lstinline|$\gcd$|        & $\gcd$ \\
-	\lstinline|$\Pr$|        & $\Pr$        & \lstinline|$\det$|        & $\det$ \\
-	\lstinline|$\int$|       & $\int$       & \lstinline|$\iint$|       & $\iint$ \\
-	\lstinline|$\iiint$|     & $\iiint$     & \lstinline|$\idotsint$|   & $\idotsint$ \\
-	\lstinline|$\oint$|      & $\oint$      & \lstinline|$\coprod$|     & $\coprod$ \\
-	\lstinline|$\sum$|       & $\sum$       & \lstinline|$\prod$|       & $\prod$ \\
-	\lstinline|$\bigcup$|    & $\bigcup$    & \lstinline|$\bigcap$|     & $\bigcap$ \\
-	\lstinline|$\bigvee$|    & $\bigvee$    & \lstinline|$\bigwedge$|   & $\bigwedge$ \\
+	\lstinline|$\inf$|      & $\inf$      & \lstinline|$\sup$|       & $\sup$ \\
+	\lstinline|$\min$|      & $\min$      & \lstinline|$\max$|       & $\max$ \\
+	\lstinline|$\lim$|      & $\lim$      & \lstinline|$\gcd$|       & $\gcd$ \\
+	\lstinline|$\Pr$|       & $\Pr$       & \lstinline|$\det$|       & $\det$ \\
+	\lstinline|$\int$|      & $\int$      & \lstinline|$\iint$|      & $\iint$ \\
+	\lstinline|$\iiint$|    & $\iiint$    & \lstinline|$\idotsint$|  & $\idotsint$ \\
+	\lstinline|$\oint$|     & $\oint$     & \lstinline|$\coprod$|    & $\coprod$ \\
+	\lstinline|$\sum$|      & $\sum$      & \lstinline|$\prod$|      & $\prod$ \\
+	\lstinline|$\bigcup$|   & $\bigcup$   & \lstinline|$\bigcap$|    & $\bigcap$ \\
+	\lstinline|$\bigsqcup$| & $\bigsqcup$ & \lstinline|$\biguplus$|  & $\biguplus$ \\
+	\lstinline|$\bigvee$|   & $\bigvee$   & \lstinline|$\bigwedge$|  & $\bigwedge$ \\
+	\lstinline|$\bigoplus$| & $\bigoplus$ & \lstinline|$\bigotimes$| & $\bigotimes$ \\
+	\lstinline|$\bigodot$|  & $\bigodot$  \\
 \end{longtable}
 
 En la lista los primeros son los pequeños y los segundos los grandes.
+Los violetas requieren de paquetes tipo \AmS{}.
 
 \textbf{Operadores modulares.} Para \LaTeX{} existen cuatro tipos de operadores modulares:
 \begin{lstlisting}
@@ -214,7 +261,10 @@ También podemos utilizar el anterior para redefinir comandos, por ejemplo si no
 \end{lstlisting}
 Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 
-\textbf{Espacios.} El ejemplo anterior también sirve para ilustrar una característica del modo matemático, la cual es que no lee los espacios singulares del código, e.g., \lstinline|$a     b$| genera $a     b$. Para añadir espacios también hay comandos singulares:
+\textbf{Espacios.}
+El ejemplo anterior también sirve para ilustrar una característica del modo matemático, la cual es que no lee los
+espacios singulares del código, e.g., \lstinline|$a     b$| genera $a     b$. Para añadir espacios también hay comandos
+singulares:
 \begin{figure}[!h]
 	\centering
 	\begin{longtable}{ll}
@@ -244,13 +294,17 @@ Para que se vean así $\operatorname{Re}, \operatorname{Im}$.
 		\lstinline|\mathrm|   & $\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathrm{abcdefghijklmnopqrstuvwxyz}$ $\mathrm{1234567890}$ \\
 		\lstinline|\mathbf|   & $\mathbf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathbf{abcdefghijklmnopqrstuvwxyz}$ $\mathbf{1234567890}$ \\
 		\lstinline|\mathsf|   & $\mathsf{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathsf{abcdefghijklmnopqrstuvwxyz}$ $\mathsf{1234567890}$ \\
-		\lstinline|\mathbb|   & $\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
 		\lstinline|\mathcal|  & $\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
+		\lstinline|\mathbb|   & $\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ \\
 		\lstinline|\mathfrak| & $\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$ $\mathfrak{abcdefghijklmnopqrstuvwxyz}$ $\mathfrak{1234567890}$ \\
-		% \lstinline|\mathscr|  & $\mathscr{ABCDEFGHIJKLM}$ $\mathscr{NOPQRSTUVWXYZ}$ \\
+		\lstinline|\mathscr|  & $\mathscr{ABCDEFGHIJKLM}$ $\mathscr{NOPQRSTUVWXYZ}$ \\
 	\end{longtable}
 \end{center}
-Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstinline|$\mathbb{N}$| $\mathbb{N}$. A veces, éstos suelen ser tan comúnes y conocidos, que suele ser útil definir un comando para ellos:
+La fuente \lstinline|\mathbb| viene con \AmS{}, \lstinline|\mathfrak| con el paquete \texttt{eufrak} y\break
+\lstinline|\mathscr| con \texttt{mathrsfs}.
+
+Es común usar la tipografía \lstinline|\mathbb| para conjuntos numéricos famosos como \lstinline|$\mathbb{N}$| $\mathbb{N}$. A veces,
+éstos suelen ser tan comúnes y conocidos, que suele ser útil definir un comando para ellos:
 \begin{lstlisting}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -258,7 +312,12 @@ Es común usar \lstinline|\mathbb| para conjuntos numéricos famosos como \lstin
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \end{lstlisting}
-\textbf{Texto en ecuaciones.} Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$| generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g. \lstinline|$x=2,\text{ mientras que }y=3$| $x=2,\text{ mientras que }y=3$. Esto es más útil en ecuaciones en modo \textit{display}.
+\textbf{Texto en ecuaciones.}
+Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los
+espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$|
+generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g.
+\lstinline|$x=2,\text{ mientras que }y=3$| $x=2,\text{ mientras que }y=3$. Esto es más útil en ecuaciones en modo
+\textit{display}.
 
 \section{Ecuaciones numeradas, alineadas, matrices y más}
 \textbf{Ecuaciones numeradas.} Hasta ahora nuestras ecuaciones no están numeradas, ni poseen un número para añadirlas, para hacerlo debes usar el entorno \texttt{equation}. Dentro de él se permiten el uso de referencias cruzadas, respecto a esto se recomienda usar \lstinline|\eqref| en lugar de \lstinline|\ref| por estética, aunque sus usos son iguales, e.g:
@@ -288,7 +347,11 @@ Y \eqref{eq:einstein} es la famosa fórmula de Einstein...
 
 Además se puede quitar los tags con \lstinline|\notag|, que tal vez no es útil aún, pero lo será pronto.
 
-\textbf{Ecuaciones alineadas.} Es común ver documentos donde una ecuación está alineada por signos ``$=$'' y no saber como, además notará que entre \lstinline|$$ ... $$| no funcionan los cortes de línea. Para ello existe el entorno \texttt{align} y \texttt{align*}. Donde las partes son como celdas de una tabla y se separan por \texttt{\&}. El primero enumera cada línea, mientras que el segundo no enumera ninguna, e.g:
+\textbf{Ecuaciones alineadas.}
+Es común ver documentos donde una ecuación está alineada por signos ``$=$'' y no saber como, además notará que entre
+\lstinline|$$ ... $$| no funcionan los cortes de línea. Para ello existe el entorno \texttt{align} y \texttt{align*}.
+Donde las partes son como celdas de una tabla y se separan por \texttt{\&}. El primero enumera cada línea, mientras que
+el segundo no enumera ninguna, e.g:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, tabsize=4]
 \begin{align}
 	\sum_{i=1}^n i &= 1 + 2 + 3 + \cdots + (n-1) + n \notag \\
@@ -303,12 +366,24 @@ Además se puede quitar los tags con \lstinline|\notag|, que tal vez no es útil
 	&= (n+1) + (n+1) + (n+1) + \cdots \notag \\
 	&= (n+1)\cdot\frac{n}{2} = \frac{n(n+1)}{2}.
 \end{align}
-Un detalle importante es que por defecto \LaTeX{} no rompe una ecuación alineada entre páginas, sin importar cuan larga sea, si usted quiere permitir esto debe agregar este comando a la cabecera:
+Un detalle importante es que por defecto \LaTeX{} no rompe una ecuación alineada entre páginas, sin importar cuan larga
+sea, si usted quiere permitir esto debe agregar este comando a la cabecera:
 \begin{lstlisting}
 \allowdisplaybreaks
 \end{lstlisting}
+Otra necesidad puede ser la de poner texto entre igualdades, para lo cual se emplea \lstinline|\intertext{}|:
+% \begin{lstlisting}
+% \allowdisplaybreaks
+% \end{lstlisting}
+% \begin{align*}
+% 	\intertext{empleando que la serie converge absolutamente, podemos intercambiar sumatorias}
+% 	&= 
+% \end{align*}
 
-\textbf{Ecuación multi-linea.} Ésta es diferente de la anterior, en esta se usan varias líneas, pero todos bajo un mismo número, o varias ecuaciones, pero sin alinear. Para una ecuación muy larga se puede usar el entorno \texttt{multline} y para varias ecuaciones no-alineadas el entorno \texttt{gather}. El asterisco indica si van enumeradas o no:
+\textbf{Ecuaciones multilíneas.}
+Ésta es diferente de la anterior, en esta se usan varias líneas, pero todos bajo un mismo número, o varias ecuaciones,
+pero sin alinear. Para una ecuación muy larga se puede usar el entorno \texttt{multline} y para varias ecuaciones
+no-alineadas el entorno \texttt{gather}. El asterisco indica si van enumeradas o no:
 \begin{lstlisting}
 \begin{multline*}
 	f(x) = 59x^{11} + 86x^{10} + 22x^9 + 83x^8 + 74x^7 + 49x^6 + 12x^5 + 83x^4\\
@@ -431,6 +506,7 @@ Y otros errores comúnes:
 
 	\lstinline|$sin x$| & $sin x$ & \lstinline|$\sin x$| & $\sin x$ \\
 	\lstinline?$||\vec v||$? & $||\vec v||$ & \lstinline?$\|\vec v\|$? & $\|\vec v\|$ \\
+	\lstinline?$|-1|$? & $|-1|$ & \lstinline|$\lvert-1\rvert$| & $\lvert-1\rvert$ \\
 	\lstinline?$<x, y>$? & $<x, y>$ & \lstinline?$\langle x, y\rangle$? & $\langle x, y\rangle$ \\
 	\lstinline?$(\frac{1}{2})$? & $\displaystyle (\frac{1}{2}) $ & \lstinline|$\left(\frac{1}{2}\right)$| & $\displaystyle \left(\frac{1}{2}\right) $ \\
 	\lstinline?$2 | 6$? & $2 | 6$ & \lstinline|$2 \mid 6$| & $2 \mid 6$ \\
@@ -562,9 +638,23 @@ Los colores del mapa anterior vienen de \url{https://www.color-hex.com/color-pal
 En gráficos 3d también puedes usar \lstinline|view={¬theta¬}{¬phi¬}| donde \textit{theta} y \textit{phi} representan ángulos para la perspectiva del gráfico. Puede encontrar más ejemplos con más opciones aquí: \url{http://pgfplots.net/tikz/examples/all/}.
 
 \section{Consideraciones finales}
-Se recomienda chequear los manuales de \href{http://mirrors.ctan.org/graphics/pgf/base/doc/pgfmanual.pdf}{Ti$k$Z} y \href{https://ctan.dcc.uchile.cl/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\textsc{pgfplots}} para buscar más información sobre como usarlos de manera avanzada, estoy consciente de que son manuales muy largos, pero la verdad es que entenderás bien la dinámica básica en el primer o el segundo capítulo donde todo está bien ilustrado y documentado. El resto de páginas es para ver cosas más avanzadas. Además existe un papel introductorio a Ti$k$Z muy completo: \url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
+Se recomienda chequear los manuales de \href{http://mirrors.ctan.org/graphics/pgf/base/doc/pgfmanual.pdf}{Ti$k$Z} y
+\href{https://ctan.dcc.uchile.cl/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\textsc{pgfplots}} para buscar más
+información sobre como usarlos de manera avanzada, estoy consciente de que son manuales muy largos, pero la verdad es
+que entenderás bien la dinámica básica en el primer o el segundo capítulo donde todo está bien ilustrado y documentado.
+El resto de páginas es para ver cosas más avanzadas. Además existe un papel introductorio a Ti$k$Z muy completo:
+\url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
 
-Además, como puede presumir, hay un montón de paquetes y contenido que no se trató en este trabajo, y lo más probable es que si quiere una herramienta específica para su área de investigación, entonces existe un paquete que simplifica su implementación, por ejemplo sé que hay librerías para facilitar el diseño de circuitos eléctricos y diagramas de Feynman.
+Además, como puede presumir, hay un montón de paquetes y contenido que no se trató en este trabajo, y lo más probable es
+que si quiere una herramienta específica para su área de investigación, entonces existe un paquete que simplifica su
+implementación, por ejemplo sé que hay librerías para facilitar el diseño de circuitos eléctricos y diagramas de
+Feynman.
 
-Las partes que poseen código en el documento fueron hechas con el paquete de \href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{\ttfamily listings}, el resto ocupa puras cosas que este documento ya enseña, revisa \href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{\textcolor{newblue}{aquí} el código fuente} para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin lugar a dudas una de las mejores herramientas para los matemáticos y físicos hoy en día.
+Las partes que poseen código en el documento fueron hechas con el paquete de
+\href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{\ttfamily listings}, el resto ocupa puras cosas que
+este documento ya enseña, revisa
+\href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{\textcolor{newblue}{aquí} el
+código fuente} para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin
+lugar a dudas una de las mejores herramientas para los matemáticos y físicos hoy en día.
 
+\end{document}

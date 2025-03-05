@@ -1,10 +1,14 @@
 \documentclass[11pt, oneside]{book}
 
+% ============= Paquetes ====================
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
-\usepackage{xcolor, multicol, multirow, longtable, graphicx, enumerate}
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage{xcolor, multicol, multirow, longtable, graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsmath, amssymb, amsthm, mathrsfs}
+\usepackage{subfiles}
 
 \usepackage{tikz}
 \usetikzlibrary{babel, calc, cd}
@@ -32,7 +36,7 @@
 \definecolor{newgreen}{HTML}{69be28}
 \definecolor{newred}{HTML}{ce1a1a}
 
-% Comandos definidos en los ejemplos
+% ============= Comandos para ejemplos ======
 \definecolor{sample}{HTML}{00c89c}
 \DeclareMathOperator{\mcd}{mcd}
 \DeclareMathOperator*{\dom}{dom}
@@ -81,12 +85,18 @@
 	showspaces      = false,
 	tabsize         = 4,
 	classoffset     = 1,
-	morekeywords    = {\nexists, \varnothing, \complement, \beth, \gimel, \square, \blacksquare, \dfrac, \tfrac, \binom, \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref, \operatorname, \text, \addplot, \addlegendentry},
+	morekeywords    = {\DH, \dh, \DJ, \dj, \NG, \ng, \TH, \th, \k,
+		\nexists, \varnothing, \complement, \varkappa, \digamma, \beth, \gimel, \daleth, \square, \blacksquare, \lvert, \lVert, \rvert, \rVert,
+		\varliminf, \varlimsup, \injlim, \projlim, \varinjlim, \varprojlim, \iint, \iiint, \idotsint,
+		\dfrac, \tfrac, \binom, \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref, \operatorname, \text, \addplot, \addlegendentry
+	},
 	keywordstyle    = \color{violet},
 	classoffset     = 0,
 	literate        = {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
 	                  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ñ}{{\~N}}1,
 }
+
+\usepackage{fonttable}
 
 \title{Introducción breve a \LaTeX}
 \author{
@@ -100,15 +110,15 @@
 \maketitle
 \tableofcontents
 
-\input{intro.tex}
+\subfile{intro.tex}
 
-\input{basic-writing.tex}
+\subfile{basic-writing.tex}
 
-\input{mates.tex}
+\subfile{mates.tex}
 
-\input{diagrams.tex}
+\subfile{diagrams.tex}
 
 \appendix
-\input{error.tex}
+\subfile{error.tex}
 
 \end{document}

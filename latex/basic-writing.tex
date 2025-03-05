@@ -1,3 +1,6 @@
+\documentclass[intro-breve-latex.tex]{subfiles}
+\begin{document}
+
 \chapter{Haciendo un documento básico desde cero}
 En primera vamos a ver la estructura y características generales de \LaTeX{}.
 A diferencia de MS Word, \LaTeX{} no es un generador WYSIWYG,%
@@ -5,12 +8,15 @@ A diferencia de MS Word, \LaTeX{} no es un generador WYSIWYG,%
 sino que se escribe mediante texto en un archivo de texto y un lenguaje de marcado.
 No se confundan, \LaTeX{} \textbf{no} es un lenguaje de programación, y no se parece a uno, sino que es como escribir texto común con comandos entre medio.
 
-\section{``Hola mundo''}
-Los comandos suelen tener esta estructura \lstinline|\comando{¬opciones¬}| donde la información obligatoria para el comando suele ir entre llaves \texttt{\{\}} a los que llamaremos \textit{campos obligatorios}, mientras que la información opcional suele ir entre corchetes \texttt{[]}. Todo documento comienza así:
+\section{<<Hola mundo>>}
+Los comandos suelen tener esta estructura \lstinline|\comando{¬opciones¬}| donde la información obligatoria para el
+comando suele ir entre llaves \texttt{\{\}} a los que llamaremos \textit{campos obligatorios}, mientras que la
+información opcional suele ir entre corchetes \texttt{[]}. Todo documento comienza así:
 \begin{lstlisting}
 \documentclass[¬opciones¬]{¬tipo de documento¬}
 \end{lstlisting}
-Por el momento en las opciones incluiremos el tamaño normal de letra que es 10, 11 o 12pt y el tipo de documento será \texttt{article} o \texttt{book} según lo que se desee escribir.
+Por el momento en las opciones incluiremos el tamaño normal de letra que es 10, 11 o 12pt y el tipo de documento será
+\texttt{article} o \texttt{book} según lo que se desee escribir.
 
 Luego viene un comando de la forma:
 \begin{lstlisting}
@@ -18,27 +24,43 @@ Luego viene un comando de la forma:
 Hola mundo.
 \end{document}
 \end{lstlisting}
-Varios comandos tendran la misma estructura, a estos les llamaremos \textit{entornos} y a la parte de \texttt{document} su ``tag''. El entorno \texttt{document} señala todo lo perteciente al contenido del archivo. Todo lo que esté fuera de este entorno (en particular antes de él) le diremos la \textit{cabecera} del documento. Debería compilar este archivo básico para corroborar que su instalación de \LaTeX{} ha sido exitosa. Varios programas (como TeXMaker) tienen compiladores incluidos, pero si se interesa en hacerlo por la terminal puede ver el apéndice.
+Varios comandos tendran la misma estructura, a estos les llamaremos \textit{entornos} y a la parte de \texttt{document}
+su <<tag>>.
+El entorno \texttt{document} señala todo lo perteciente al contenido del archivo. Todo lo que esté fuera de este entorno
+(en particular antes de él) le diremos la \textit{cabecera} del documento. Debería compilar este archivo básico para
+corroborar que su instalación de \LaTeX{} ha sido exitosa. Varios programas (como \TeX{}Maker) tienen compiladores
+incluidos, pero si se interesa en hacerlo por la terminal puede ver el apéndice.
 
-\textbf{Paquetes.} Igual que los lenguajes de programación permiten añadir módulos para añadir funciones (como \texttt{<stdio.h>} en \texttt{C}, o \texttt{numpy} en \texttt{Python}), \LaTeX{} ocupa paquetes que se incluyen en la cabecera, de momento añadiremos dos:
+\textbf{Paquetes.}
+Igual que los lenguajes de programación permiten añadir módulos para añadir funciones (como \texttt{<stdio.h>} en
+\texttt{C}, o \texttt{numpy} en \texttt{Python}), \LaTeX{} ocupa paquetes que se incluyen en la cabecera, de momento
+añadiremos dos:
 \begin{lstlisting}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \end{lstlisting}
-El primero le indica a \LaTeX{} que estamos escribiendo en español, para traducir texto del documento como escribir ``Capítulo'' en lugar de ``Chapter''. El segundo le dice a \LaTeX{} que lea las tildes y otros caracteres especiales (e.g. á, ñ, ç, etc.) sin problema.
+El primero le indica a \LaTeX{} que estamos escribiendo en español, para traducir texto del documento como escribir
+<<Capítulo>> en lugar de <<Chapter>>. El segundo le dice a \LaTeX{} que lea las tildes y otros caracteres especiales
+(e.g. á, ñ, ç, etc.) sin problema.
 
-\textbf{Título.} (Casi) todo documento tiene cosas como título, autor y fecha, para incluirlos en \LaTeX{} debe ocupar correspondientemente los siguientes comandos en la cabecera:
+\textbf{Título.}
+(Casi) todo documento tiene cosas como título, autor y fecha, para incluirlos en \LaTeX{} debe ocupar
+correspondientemente los siguientes comandos en la cabecera:
 \begin{lstlisting}
 \title{Mí título interesante}
 \author{Yo}
 \date{\today}
 \end{lstlisting}
-Nótese que en la fecha utilice el comando \lstinline|\today|, este lee la fecha del día en el computador y el paquete de \texttt{babel} lo traduce al español, pero puede ocupar cualquier otra que se le antoje. Dentro del documento y antes del resto del texto escriba este comando para generar el título estándar de \LaTeX{}:
+Nótese que en la fecha utilice el comando \lstinline|\today|, este lee la fecha del día en el computador y el paquete de
+\texttt{babel} lo traduce al español, pero puede ocupar cualquier otra que se le antoje. Dentro del documento y antes
+del resto del texto escriba este comando para generar el título estándar de \LaTeX{}:
 \begin{lstlisting}
 \maketitle
 \end{lstlisting}
 
-\textbf{Secciones.} Todo texto suele dividirse en secciones. \LaTeX{} también, y además las enumera automáticamente. En un artículo la mayor división es una sección, luego una subsección y luego una sub-subsección:
+\textbf{Secciones.}
+Todo texto suele dividirse en secciones. \LaTeX{} también, y además las enumera automáticamente. En un artículo la mayor
+división es una sección, luego una subsección y luego una sub-subsección:
 \begin{lstlisting}
 \section{Esta es mi sección}
 \subsection{Esta mi subsección}
@@ -49,15 +71,16 @@ y se pueden agrupar los capítulos en partes \lstinline|\part{...}|,
 donde las últimas se enumeran con números romanos, pero a diferencia de los capítulos no son obligatorios.
 
 \textbf{Cortes de línea.}
-Cuando hay un salto entre punto aparte y el otro párrafo eso se dice un \textit{corte de línea},
-lo que uno está acostumbrado a hacer con la tecla \texttt{Enter} de vuestros teclados.
-No obstante, en el código de \LaTeX{} puede notar que no genera efecto alguno,
-esto se debe a que en los lenguajes de marcado se da esta precaución para evitar líneas excesivamente largas en el código.
-Para hacer este corte hay varias formas:
-\lstinline|\\| suele ser el más común, y no genera sangría en la línea contigua;
-para hacer un corte con sangría puede usar dos veces \texttt{Enter} en el código o usar el comando \lstinline|\par|.
-La sangría se puede añadir con \lstinline|\indent| y quitar con \lstinline|\noindent| de ser necesario.
-Por último, si necesita forzar un corte de línea, para evitar la sobrecarga de caractéres por ejemplo, puede usar \lstinline|\break|.
+Cuando hay un salto entre punto aparte y el otro párrafo eso se dice un \textit{corte de línea}, lo que uno está
+acostumbrado a hacer con la tecla \texttt{Enter} de vuestros teclados.
+No obstante, en el código de \LaTeX{} puede notar que no genera efecto alguno, esto se debe a que en los lenguajes de
+marcado se da esta precaución para evitar líneas excesivamente largas en el código.  Para hacer este corte hay varias
+formas:
+\lstinline|\\| suele ser el más común, y no genera sangría en la línea contigua; para hacer un corte con sangría puede
+usar dos veces \texttt{Enter} en el código o usar el comando \lstinline|\par|.  La sangría se puede añadir con
+\lstinline|\indent| y quitar con \lstinline|\noindent| de ser necesario.
+Por último, si necesita forzar un corte de línea, para evitar la sobrecarga de caractéres por ejemplo, puede usar
+\lstinline|\break|.
 \begin{multicols}{2}
 \begin{lstlisting}
 Texto de ejemplo.\break
@@ -72,18 +95,20 @@ Texto de ejemplo.
 \end{multicols}
 
 \textbf{Comentarios.}
-Los comentarios son partes del código que no se deben interpretar como tal, pero pueden ser útiles para el lector/escritor del código.
+Los comentarios son partes del código que no se deben interpretar como tal, pero pueden ser útiles para el
+lector/escritor del código.
 Éstos comenzan con el carácter \% en cualquier parte:
-\begin{multicols}{2}
+% \begin{multicols}{2}
 \begin{lstlisting}
 {\scshape Texto de ejemplo.} % Ésto estará en "mayúsculas pequeñas"
 \end{lstlisting}
 {\scshape Texto de ejemplo.} % Ésto estará en "mayúsculas pequeñas"
-\end{multicols}
+% \end{multicols}
 
 \textbf{Caracteres especiales.}
-Sabemos que los comandos se inician con \lstinline|\|, por ende, ¿cómo se escribe dicho caracter de ser necesario en \LaTeX{}?
-Esta clase de caracteres se dicen \textit{especiales} pues cumplen una función por si solos y se pueden escribir así:
+Sabemos que los comandos se inician con \lstinline|\|, por ende, ¿cómo se escribe dicho caracter de ser necesario en
+\LaTeX{}?  Esta clase de caracteres se dicen \textit{especiales} pues cumplen una función por si solos y se pueden
+escribir así:
 \begin{figure}[!h]
 	\centering
 	\begin{tabular}{ll|ll}
@@ -96,23 +121,26 @@ Esta clase de caracteres se dicen \textit{especiales} pues cumplen una función 
 	\end{tabular}
 \end{figure}
 
-Además debe tener en consideración que las comillas en \LaTeX{} son también distintas para escribir algo ``así'' se requiere \lstinline|``así''|. Donde las dos primeras son tildes graves y las últimas son apostrofes.
+Además debe tener en consideración que las comillas en \LaTeX{} son también distintas para escribir algo ``así'' se
+requiere \lstinline|``así''|.
+Donde las dos primeras son tildes graves y las últimas son apostrofes.
+O también para algo <<así>> se requiere \lstinline|<<así>>|.
 
 \section{Formato de texto}
 \textbf{Estilos.}
 Uno suele cambiar el formato, e.g. a \textbf{negritas}, o \textit{cursivas}, para ello \LaTeX{} ocupa:
 \begin{ltabular}{lll}
-	\lstinline|\textup{Derecho}|     & \lstinline|\upshape|  & \textup{Derecho}\\
-	\lstinline|\textit{Cursivas}|    & \lstinline|\itshape|  & \textit{Cursivas}\\
-	\lstinline|\textsl{Inclinado}|   & \lstinline|\slshape|  & \textsl{Inclinado}\\
-	\lstinline|\textsc{Versallitas}| & \lstinline|\scshape|  & \textsc{Versallitas}\\
+	\lstinline|\textup{Derecho}|    & \lstinline|\upshape|  & \textup{Derecho}\\
+	\lstinline|\textit{Cursivas}|   & \lstinline|\itshape|  & \textit{Cursivas}\\
+	\lstinline|\textsl{Inclinado}|  & \lstinline|\slshape|  & \textsl{Inclinado}\\
+	\lstinline|\textsc{Versalitas}| & \lstinline|\scshape|  & \textsc{Versalitas}\\
 	\hline
-	\lstinline|\textmd{Mediano}|     & \lstinline|\mdseries| & \textmd{Mediano}\\
-	\lstinline|\textbf{Negritas}|    & \lstinline|\bfseries| & \textbf{Negritas}\\
+	\lstinline|\textmd{Mediano}|    & \lstinline|\mdseries| & \textmd{Mediano}\\
+	\lstinline|\textbf{Negritas}|   & \lstinline|\bfseries| & \textbf{Negritas}\\
 	\hline
-	\lstinline|\textrm{Romano}|      & \lstinline|\rmfamily| & \textrm{Romano}\\
-	\lstinline|\textsf{Sans-serif}|  & \lstinline|\sffamily| & \textsf{Sans-serif}\\
-	\lstinline|\texttt{Máquina}|     & \lstinline|\ttfamily| & \texttt{Máquina}\\
+	\lstinline|\textrm{Romano}|     & \lstinline|\rmfamily| & \textrm{Romano}\\
+	\lstinline|\textsf{Sans-serif}| & \lstinline|\sffamily| & \textsf{Sans-serif}\\
+	\lstinline|\texttt{Máquina}|    & \lstinline|\ttfamily| & \texttt{Máquina}\\
 \end{ltabular}
 
 El segundo tipo de comando es lo que se dice un \textit{modificador}, al usarlo modifica todo el entorno,%
@@ -176,15 +204,77 @@ Para usarlo puedes escribir: \lstinline|{\color{red} texto en rojo}| {\color{red
 	\colorbox{white}{white}\\
 	\colorbox{yellow}{yellow}
 \end{multicols}
-Para poner colores en el fondo se utiliza \lstinline|\colorbox{cyan}{Así}| \colorbox{cyan}{Así}. Además puedes utilizar un porcentaje de un color, por ejemplo, si sólo queremos usar el 50\% de negro podemos escribir \lstinline|\colorbox{black!50}{esto}| \colorbox{black!50}{esto}, y si queremos usar 50\% azúl y el resto rojo \lstinline|\colorbox{blue!50!red}{haga esto}| \colorbox{blue!50!red}{haga esto}.
+Para poner colores en el fondo se utiliza \lstinline|\colorbox{cyan}{Así}| \colorbox{cyan}{Así}.
+Además puedes utilizar un porcentaje de un color, por ejemplo, si sólo queremos usar el 50\% de negro podemos escribir
+\lstinline|\colorbox{black!50}{esto}| \colorbox{black!50}{esto}, y si queremos usar 50\% azúl y el resto rojo
+\lstinline|\colorbox{blue!50!red}{haga esto}| \colorbox{blue!50!red}{haga esto}.
 
 Por sobre eso, usted puede definir nuevos colores en la cabecera:
 \begin{lstlisting}
 \definecolor{ejemplo}{HTML}{00c89c}
 \end{lstlisting}
-Donde lo de \texttt{HTML} indica que la forma de definir colores es mediante el llamado código hexadecimal o \texttt{hex} para acortar. Este suele ser el método más común de definir colores, en línea lo reconocerá pues ocupan el prefijo `\texttt{\#}', e.g., \texttt{\color{sample}\#00c89c}.
+Donde lo de \texttt{HTML} indica que la forma de definir colores es mediante el llamado código hexadecimal o
+\texttt{hex} para acortar.
+Este suele ser el método más común de definir colores, en línea lo reconocerá pues ocupan el prefijo `\texttt{\#}',
+e.g., \texttt{\color{sample}\#00c89c}.
 
-\textbf{Varias columnas.} Si usted quisiera, de forma global, tener un documento escrito en dos columnas, sólo basta agregar la opción \texttt{twocolumn} en \lstinline|\documentclass|. No obstante, si desea hacerlo localmente, esto es, en una sola parte del documento, debe importar el paquete:
+\textbf{Acentos y caracteres especiales.}
+Como indicamos al principio, el paquete \texttt{inputenc} con opción \texttt{utf8} permite incluir caracteres especiales
+de otros idiomas indoeuropeos; no obstante, puede seguir siendo útil saber cómo incluirlos de manera indirecta.
+% acentos; no obstante, puede seguir siendo útil saber cómo incluir acentos y otros caracteres de manera indirecta.
+He aquí una lista de comandos:
+\begin{center}
+	\begin{tabular}{|ll|ll|ll|ll|}
+		\hline
+		\lstinline|\AA| & \AA & \lstinline|\aa| & \aa &
+		\lstinline|\AE| & \AE & \lstinline|\ae| & \ae \\
+		\lstinline|\DH| & \DH & \lstinline|\dh| & \dh &
+		\lstinline|\DJ| & \DJ & \lstinline|\dj| & \dj \\
+		\lstinline|\L|  & \L  & \lstinline|\l|  & \l &
+		\lstinline|\NG| & \NG & \lstinline|\ng| & \ng \\
+		\lstinline|\O|  & \O  & \lstinline|\o|  & \o &
+		\lstinline|\OE| & \OE & \lstinline|\oe| & \oe \\
+		\lstinline|\TH| & \TH & \lstinline|\th| & \th &
+		\lstinline|\ss| & \ss & {} & {} \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Y para los acentos:
+\begin{center}\begin{tabular}{*{4}{|ll}|}
+	\hline
+	\lstinline|\"{A}\"{a}| & \"{A}\"{a} &
+	\lstinline|\'{A}\'{a}| & \'{A}\'{a} &
+	\lstinline|\.{A}\.{a}| & \.{A}\.{a} &
+	\lstinline|\={A}\={a}| & \={A}\={a} \\
+	\lstinline|\^{A}\^{a}| & \^{A}\^{a} &
+	\lstinline|\`{A}\`{a}| & \`{A}\`{a} &
+	\lstinline|\~{A}\~{a}| & \~{A}\~{a} &
+	\lstinline|\b{A}\b{a}| & \b{A}\b{a} \\
+	\lstinline|\c{A}\c{a}| & \c{A}\c{a} &
+	\lstinline|\d{A}\d{a}| & \d{A}\d{a} &
+	% \lstinline|\G{A}\G{a}| & \G{A}\G{a}
+	% \lstinline|\h{A}\h{a}| & \h{A}\h{a}
+	\lstinline|\H{A}\H{a}| & \H{A}\H{a} &
+	\lstinline|\k{A}\k{a}| & \k{A}\k{a} \\
+	\lstinline|\r{A}\r{a}| & \r{A}\r{a} &
+	\lstinline|\t{A}\t{a}| & \t{A}\t{a} &
+	\lstinline|\u{A}\u{a}| & \u{A}\u{a} &
+	\lstinline|\v{A}\v{a}| & \v{A}\v{a} \\
+	\hline
+\end{tabular}\end{center}
+Para los marcados con violeta, se requiere el uso de una fuente distinta de la estándar.
+El siguiente código sirve:
+\begin{lstlisting}
+\usepackage[T1]{fontenc}
+\end{lstlisting}
+También cabe destacar la existencia de los comandos \lstinline|\i| y \lstinline|\j| que producen <<\i>> y <<\j>> resp.,
+lo que es útil para acentos como \lstinline|\u\i| (\u\i).
+
+\textbf{Varias columnas.}
+Si usted quisiera, de forma global, tener un documento escrito en dos columnas, sólo basta agregar la opción
+\texttt{twocolumn} en \lstinline|\documentclass|. No obstante, si desea hacerlo localmente, esto es, en una sola parte
+del documento, debe importar el paquete:
 \begin{lstlisting}
 \usepackage{multicol}
 \end{lstlisting}
@@ -195,19 +285,29 @@ y luego usar el entorno \texttt{multicols} seguido del número de columnas:
 \end{multicols}
 \end{lstlisting}
 \begin{multicols}{2}
-	Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella tarde remota en que su padre lo llevó a conocer el hielo. Macondo era entonces una aldea de veinte casas de barro y cañabrava construidas a la orilla de un río de aguas diáfanas que se precipitaban por un lecho de piedras pulidas, blancas y enormes como huevos prehistóricos.
+	Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella
+	tarde remota en que su padre lo llevó a conocer el hielo. Macondo era entonces una aldea de veinte\break casas de barro y cañabrava construidas a la orilla de un río de aguas diáfanas que se precipitaban
+	por un lecho de piedras pulidas, blancas y enormes como huevos prehistóricos.
 \end{multicols}
+% Dicho sea de paso, para forzar un rompimiento no de página sino ahora \emph{de columna} empleamos el comando
+% \lstinline|\columnbreak|.
 
 \section{Notas, listas, figuras y tablas}
-\textbf{Notas.} \LaTeX{} admite dos tipos comúnes de notas: al pie de la página y al margen de ella. La primera se especifica con el comando \lstinline|\footnote{Esta es una nota al pie de página.}|\footnote{Esta es una nota al pie de página.} mientras que las notas de margen se hacen con \lstinline|\marginpar{Y ésta, una nota al margen.}|\marginpar{Y ésta, una nota al margen.}. Para revertir el lugar se puede usar \lstinline|\reversemarginpar{...}|.
+\textbf{Notas.}
+\LaTeX{} admite dos tipos comúnes de notas: al pie de la página y al margen de ella. La primera se especifica con el
+comando \lstinline|\footnote{Esta es una nota al pie de página.}|\footnote{Esta es una nota al pie de página.} mientras
+que las notas de margen se hacen con \lstinline|\marginpar{Y ésta, una nota al margen.}|\marginpar{Y ésta, una nota al
+margen.}. Para revertir el lugar se puede usar \lstinline|\reversemarginpar{...}|.
 
 Para más información y mejor manejo de las notas al margen se recomienda revisar el paquete \texttt{marginnote}.
 
 \subsection{Listas}
 Se dividen en tres: numeradas, no numeradas y descripciones (similar a un glosario o diccionario).
 Todas se definen por un entorno y sus elementos se diferencian por el comando \lstinline|\item|.
-Para una lista enumerada el entorno utiliza el tag \texttt{enumerate}, las no numeradas el tag \texttt{itemize} y las descripciones \texttt{description}.
-En las descripciones, la palabra (o frase) de título se denota en el campo opcional de \lstinline|\item[¬Aquí...¬]|. Por ejemplo:
+Para una lista enumerada el entorno utiliza el tag \texttt{enumerate}, las no numeradas el tag \texttt{itemize} y las
+descripciones \texttt{description}.
+En las descripciones, la palabra (o frase) de título se denota en el campo opcional de \lstinline|\item[¬Aquí...¬]|.
+Por ejemplo:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 \begin{enumerate}
 	\item Naranjas.
@@ -239,7 +339,13 @@ En las descripciones, la palabra (o frase) de título se denota en el campo opci
 	\item[Verdura] Hortaliza, especialmente la de hojas verdes.
 \end{description}
 
-Una recomendación personal es usar el paquete \texttt{enumerate} que permite modificar de manera sencilla las listas:
+Una recomendación personal es usar el siguiente paquete:%
+\footnote{En la versión anterior (26-06-21) se recomendaba \texttt{enumerate}, sin embargo, el mismo autor del paquete
+recomienda en cambio usar \texttt{enumitem}. Vea \url{https://tex.stackexchange.com/a/519982}.}
+\begin{lstlisting}
+\usepackage[shortlabels]{enumitem}
+\end{lstlisting}
+que permite modificar de manera más sencilla las listas:
 \begin{multicols}{2}
 	\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 \begin{enumerate}[i)]
@@ -295,7 +401,8 @@ Una recomendación personal es usar el paquete \texttt{enumerate} que permite mo
 	\end{enumerate}
 \end{multicols}
 
-\textbf{Figuras y tablas.} Por defecto, \LaTeX{} no permite importar imágenes al documento por lo que se requiere importar el paquete:
+\textbf{Figuras y tablas.}
+Por defecto, \LaTeX{} no permite importar imágenes al documento por lo que se requiere importar el paquete:
 \begin{lstlisting}
 \usepackage{graphicx}
 \end{lstlisting}
@@ -303,11 +410,19 @@ Luego para importar la figura (asumiendo que la imágen está en la misma carpet
 \begin{lstlisting}
 \includegraphics[¬opciones¬]{imagen.jpg}
 \end{lstlisting}
-En las opciones usualmente van especificaciones sobre el tamaño, verá que sin ella la figura se importa al máximo tamaño para el cual no pierde detalle, para importarlo digamos a la mitad de su tamaño real puede usar \texttt{scale=.5}, pero usualmente es mejor especificar directamente ya sea el largo (\texttt{width}) o el alto (\texttt{height}) del archivo que debe hacerse en \texttt{cm}, \texttt{mm} o \texttt{in} (pulgadas). También podemos decirle que sea tan larga como el tamaño del texto usando \lstinline|width=\textwidth|.
+En las opciones usualmente van especificaciones sobre el tamaño, verá que sin ella la figura se importa al máximo tamaño
+para el cual no pierde detalle, para importarlo digamos a la mitad de su tamaño real puede usar \texttt{scale=.5}, pero
+usualmente es mejor especificar directamente ya sea el largo (\texttt{width}) o el alto (\texttt{height}) del archivo
+que debe hacerse en \texttt{cm}, \texttt{mm} o \texttt{in} (pulgadas). También podemos decirle que sea tan larga como el
+tamaño del texto usando \lstinline|width=\textwidth|.
 
-Para que la imagen este apartada del texto se incluye todo dentro de un entorno \texttt{figure} cuyo único propósito es ese de decirle a \LaTeX{} que trate la imagen individualmente. Dentro de él se recomienda centrar el texto (o en este caso el contenido) y al final del entorno se recomienda añadir alguna forma de corte de línea para mejorar el formato.
+Para que la imagen este apartada del texto se incluye todo dentro de un entorno \texttt{figure} cuyo único propósito es
+ese de decirle a \LaTeX{} que trate la imagen individualmente.
+Dentro de él se recomienda centrar el texto (o en este caso el contenido) y al final del entorno se recomienda añadir
+alguna forma de corte de línea para mejorar el formato.
 
-\textbf{Posicionamiento.} Para saber donde ubicar la imagen, \LaTeX{} utiliza los siguientes símbolos para abreviar:
+\textbf{Posicionamiento.}
+Para saber donde ubicar la imagen, \LaTeX{} utiliza los siguientes símbolos para abreviar:
 \begin{ltabular}{lp{8cm}}
 	\texttt{h} & Aproximadamente en el lugar donde se ubica en el código. \\
 	\texttt{t} & En el tope de la página siguiente. \\
@@ -316,17 +431,19 @@ Para que la imagen este apartada del texto se incluye todo dentro de un entorno 
 	\texttt{!} & Fuerza la posición indicada. \\
 \end{ltabular}
 
-\textbf{Descripciones.} Además las imágenes poseen descripciones cortas, estas pueden agregarse en \LaTeX{} dentro de un entorno \texttt{figure} con el comando \lstinline|\caption{Mi descripción.}|, veamos un ejemplo donde se utiliza todo lo anterior:
+\textbf{Descripciones.}
+Además las imágenes poseen descripciones cortas, estas pueden agregarse en \LaTeX{} dentro de un entorno \texttt{figure}
+con el comando \lstinline|\caption{Mi descripción.}|, veamos un ejemplo donde se utiliza todo lo anterior:
 \begin{lstlisting}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=10cm]{fractal.png}
+	\includegraphics[width=6.5cm]{fractal.png}
 	\caption{Un fractal}
 \end{figure}
 \end{lstlisting}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=10cm]{fractal.png}
+	\includegraphics[width=6.5cm]{fractal.png}
 	\caption{Un fractal}
 \end{figure}
 
@@ -551,7 +668,11 @@ Además también puedes pasar argumentos opcionales, que toman el lugar del prim
 
 Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo, para poder hacerlo debes usar \lstinline|\renewcommand|, que funciona exactamente igual. Éste último también tira error si se trata de redefinir un comando que no ha sido definido antes.
 
-\textbf{Definir entornos.} Si se quiere definir entornos, se ocupa \lstinline|\newenvironment| y \lstinline|\renewenvironment| que funcionan exactamente igual, sólo que en lugar de poner un comando pones el tag del entorno y al final se ocupan dos campos obligatorios que determinan el código a ejecutar ántes y después del contenido del entorno. Pero todo uso de argumentos extra van en la primera parte y no pueden ir al final, e.g:
+\textbf{Definir entornos.}
+Para definir entornos, se ocupan \lstinline|\newenvironment| y \lstinline|\renewenvironment| que funcionan exactamente
+igual, sólo que en lugar de poner un comando pones el tag del entorno y al final se ocupan dos campos obligatorios que
+determinan el código a ejecutar ántes y después del contenido del entorno. Pero todo uso de argumentos extra van en la
+primera parte y no pueden ir al final, e.g:
 \begin{lstlisting}
 \newenvironment{demo}[1][$\bullet$]{#1 {\scshape Demostración:} }{\par\noindent}
 ---------------------------------------------------
@@ -577,3 +698,4 @@ Si un comando ya existe, \LaTeX{} tirará un error al tratar de sobreescribirlo,
 
 Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \href{https://www.ctan.org/tex-archive/info/lshort/spanish}{La introducción no-tan-corta a \LaTeXe{}} y \href{https://www.academia.edu/35478409/Edici%C3%B3n_de_Textos_Cient%C3%ADficos_con_LaTeX_Composici%C3%B3n_Gr%C3%A1ficos_Inkscape_y_Presentaciones_Beamer}{el libro de Alexánder Borbón y Walter Mora} que es muy completo y recomendado.
 
+\end{document}
