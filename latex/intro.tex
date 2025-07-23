@@ -2,7 +2,8 @@
 \begin{document}
 
 \chapter{Introducción}
-Este texto pretende ser introductorio y en general sólo abarca cosas que creo que un lector cualquiera podría necesitar a la hora de usar \LaTeX{}. Por su naturaleza, sólo se roza la superficie de lo que es posible en este lenguaje, si lo que busca es una documentación más detallada revise el párrafo de \textbf{Más allá...} al final de la sección~\S\ref{sec:setup}.
+Este texto pretende ser introductorio y en general sólo abarca cosas que creo que un lector cualquiera podría necesitar a la hora de usar \LaTeX{}.
+Por su naturaleza, sólo se roza la superficie de lo que es posible en este lenguaje, si lo que busca es una documentación más detallada revise el párrafo de \textbf{Más allá...} al final de la sección~\ref{sec:setup}.
 
 \section*{Instalación y compilación}
 Instalar \LaTeX{} puede ser complicado en Windows y en Mac OS, para ello se recombienda optar por el sitio en línea
@@ -13,15 +14,18 @@ Mik\TeX{} en Windows, Mac\TeX{} en Mac OS y \TeX{}Live en Linux.
 
 Hay varios editores de \LaTeX{} que pueden ser útiles, los más populares, en orden desde más sencillo a más difícil son:
 overleaf (en línea), \TeX{}Maker, VSCode, Vim, Emacs.
-Naturalmente, los últimos son los más recomendados ya que son los más extensibles, pero son más complicados a menos que ya se empleen con anterioridad,
-hay una serie de extensiones en cada caso para VSCode, Vim e Emacs para facilitar su uso en \LaTeX{}.
+Naturalmente, los últimos son los más recomendados ya que son los más extensibles, pero son más complicados a menos que ya se empleen con anterioridad.
+En cada caso hay una serie de extensiones para VSCode, Vim e Emacs que facilitan el uso de \LaTeX{}.
 
 Sin lugar a dudas el mejor método es trabajar en Linux, no solo la instalación es mejor sino que hay varias cosas recomendables para usuarios
 experimentados:
 se pueden hacer archivos del tipo \texttt{MakeFile} con todas las instrucciones detalladas,
 se puede escribir un ejecutable archivo en \texttt{shell},
-o también existe un paquete de nombre \texttt{rubber} que permite compilaciones automáticas e inteligentes de \LaTeX{} escrito en \texttt{Python};
-personalmente utilizo \texttt{rubber}, pero aún así dejo algunos ejemplos aquí.
+y el paquete \texttt{texlive-binextra} provee el comando \texttt{latexmk} que suele inferir bastante bien qué comandos ejecutar y en qué orden (mi opción por defecto).
+También existe un paquete de nombre \texttt{rubber} que permite compilaciones automáticas e inteligentes de \LaTeX{} escrito en \texttt{Python}.
+% personalmente utilizo \texttt{rubber}, pero aún así dejo algunos ejemplos aquí.
+
+% En la mayoría de distribuciones de Linux, la totalidad de \TeX{}Live viene segmentada en varios paquetes e incluiré el comentario 
 
 \section*{Historial de versiones}
 Fechas en formato \textsc{dd-mm-aa}. 
@@ -31,6 +35,8 @@ Fechas en formato \textsc{dd-mm-aa}.
 	\item[26-06-21] Actualización a formato libro.
 	\item[05-03-25] Añadidos: sección sobre acentos y caracteres fuera de UTF8.
 		Además de añadir símbolos a las tablas de comandos matemáticos.
+	\item[23-06-25] Añadido: explicación sobre categorías bibliográficas.
+		Además, se añadieron referencias por capítulo y se arreglaron enlaces rotos.
 \end{description}
 
 \end{document}

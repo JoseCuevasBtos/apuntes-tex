@@ -6,9 +6,10 @@ usualmente un error indica también la línea que causa el error.
 \begin{enumerate}
 	\item \verb|Overfull \hbox (...pt too wide):| \\
 		Significa que tienes una línea más larga de lo que debería.
-		Como \LaTeX{} ocupa la alineación ``justificada'' trata de que todas las líneas midan lo mismo, pero
+		Como \LaTeX{} ocupa la alineación <<justificada>> trata de que todas las líneas midan lo mismo, pero
 		basta poner una ecuación al final de la línea para excederse.
-		Ésto no es un error sino más bien una advertencia: mi recomendación es arreglarlo con \lstinline|\break|.
+		Ésto no es un error sino más bien una advertencia: mi recomendación es arreglarlo con \lstinline|\break|
+		o \lstinline|\-|.
 
 	\item \verb|Missing \begin{document}:| \\
 		Significa que no ocupaste el commando \verb|\begin{document}|.
@@ -48,3 +49,10 @@ usualmente un error indica también la línea que causa el error.
 	\item \texttt{File `\textit{foto.jpg}' not found: using draft setting:} \\
 		Significa que intentaste incluir un archivo de una foto que no existe.
 \end{enumerate}
+
+También al malemplear comandos exclusivos de un determinado paquete te pueden saltar errores del tipo \texttt{Package
+\textit{paquete} Error}
+% I do not know the key `\textit{opción}' and I am going to ignore it. Perhaps you misspelled it:}
+seguido de una breve explicación.
+Un ejemplo es una opción inexistente, obsoleta o mal escrita, en cuyo caso el mensaje suele ser \texttt{I do not know
+the key `\textit{opción}' and I am going to ignore it. Perhaps you misspelled it.}

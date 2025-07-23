@@ -60,24 +60,27 @@ Y los tipos de flechas son:
 		\hline \hline
 	\end{tabular}
 \end{center}
-Un programa muy útil para hacer diagramas conmutativos y que genera el código para copiar y pegar es \url{https://tikzcd.yichuanshen.de/}.
+Un programa muy útil para hacer diagramas conmutativos y que genera el código para copiar y pegar es
+% \url{https://tikzcd.yichuanshen.de/} y
+\href{https://q.uiver.app/}{\sffamily quiver}.
 
 \pagebreak
 \subsection{Primer teorema de isomorfismos}
 \begin{lstlisting}
 \begin{tikzcd}[row sep=large, column sep=tiny]
 	G \ar[rr, "\varphi", two heads] \drar["\pi"', two heads] &  & H \\
-	& G/\ker\varphi \urar["\exists!\bar\varphi"', dashed]
+	& G/\ker\varphi \urar[draw=none, "\sim", sloped]     \urar["\exists!\bar\varphi"', dashed]
 \end{tikzcd}
 \end{lstlisting}
 \begin{center}
 	\begin{tikzcd}[row sep=large, column sep=tiny]
 		G \ar[rr, "\varphi", two heads] \drar["\pi"', two heads] &  & H \\
-		& G/\ker\varphi \urar["\exists!\bar\varphi"', squiggly]
+		& G/\ker\varphi \urar[draw=none, "\sim", sloped] \urar["\exists!\bar\varphi"', dashed]
 	\end{tikzcd}
 \end{center}
+Aquí, la novedad está en usar una flecha <<fantasma>> (con )
 
-\subsection{Kernels (según teoría de categorías)}
+\subsection{Núcleos o \emph{kernels} (según teoría de categorías)}
 \begin{lstlisting}
 \begin{tikzcd}[row sep=large]
 	& X \drar["f"] \\
@@ -93,7 +96,7 @@ Un programa muy útil para hacer diagramas conmutativos y que genera el código 
 	\end{tikzcd}
 \end{center}
 
-[Fuente: \Href{https://en.wikipedia.org/wiki/Kernel_(category_theory)}{Wikipedia}]
+[Fuente: \href{https://en.wikipedia.org/wiki/Kernel_(category_theory)}{Wikipedia}]
 
 \subsection{Lema de la serpiente}
 Éste ejemplo emplea la librería de Ti$k$Z \texttt{calc} para calcular la posición de la flecha roja,
@@ -116,7 +119,7 @@ También el código asume que se ha definido el operador \lstinline|\coker| que 
 	\end{tikzcd}
 \end{center}
 
-[Fuente: \Href{https://mathworld.wolfram.com/SnakeLemma.html}{MathWorld}]
+[Fuente: \href{https://mathworld.wolfram.com/SnakeLemma.html}{MathWorld}]
 
 \section{Gráficos}
 Para hacer gráficos ya sea de funciones o de datos, mi principal recomendación es el paquete:

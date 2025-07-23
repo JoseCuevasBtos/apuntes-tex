@@ -4,18 +4,36 @@
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[bookmarks=true, bookmarksnumbered=true, bookmarksopen=true, urlcolor=blue]{hyperref}
+\usepackage[
+	bookmarks=true,
+	bookmarksnumbered=true,
+	bookmarksopen=true,
+	colorlinks=true,
+	% allcolors=black,
+	% urlcolor=magenta
+]{hyperref}
 \usepackage{xcolor, multicol, multirow, longtable, graphicx}
 \usepackage[shortlabels]{enumitem}
 \usepackage{amsmath, amssymb, amsthm, mathrsfs}
 \usepackage{subfiles}
+\usepackage{microtype}
+
+% ============= Bibliografía ================
+\usepackage[
+	backend=biber,
+	sorting=nyt,
+	defernumbers=true,
+	citestyle=numeric
+]{biblatex}
+\addbibresource{referencias.bib}
+\renewcommand*{\bibfont}{\small} % Bibliografías más pequeñas
+\DeclarePrintbibliographyDefaults{heading=subbibliography}
+\DeclareBibliographyCategory{basic}
+\DeclareBibliographyCategory{math}
 
 \usepackage{tikz}
 \usetikzlibrary{babel, calc, cd}
 \usepackage{pgfplots}
-\pgfplotsset{
-	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
-}
 \pgfplotsset{
 	width = 10cm,
 	compat = 1.15, % compatibilidad para compilación
@@ -73,14 +91,14 @@
 \usepackage{listings}
 \lstset{
 	language        = {[LaTeX]TeX},
-	backgroundcolor = \color{black!17},
+	backgroundcolor = \color{black!10},
 	basicstyle      = \small\ttfamily,
 	breaklines      = true,
 	commentstyle    = \itshape\color{gray},
 	frame           = tb,
 	moredelim       = **[is][\itshape]{¬}{¬},
 	morekeywords    = {@book, \maketitle, \chapter, \part, \subsection, \subsubsection, \color, \definecolor,
-	                  \textcolor, \colorbox},
+	                  \textcolor, \colorbox, \tableofcontents, \listoftables, \listoffigures, \mathbb, \tag},
 	keywordstyle    = \color{newblue},
 	showspaces      = false,
 	tabsize         = 4,
@@ -88,7 +106,8 @@
 	morekeywords    = {\DH, \dh, \DJ, \dj, \NG, \ng, \TH, \th, \k,
 		\nexists, \varnothing, \complement, \varkappa, \digamma, \beth, \gimel, \daleth, \square, \blacksquare, \lvert, \lVert, \rvert, \rVert,
 		\varliminf, \varlimsup, \injlim, \projlim, \varinjlim, \varprojlim, \iint, \iiint, \idotsint,
-		\dfrac, \tfrac, \binom, \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref, \operatorname, \text, \addplot, \addlegendentry
+		\dfrac, \tfrac, \binom, \includegraphics, \DeclareMathOperator, \addbibresource, \printbibliography, \multirow, \eqref, \operatorname, \text, \addplot, \addlegendentry,
+		\DeclareBibliographyCategory, \defbibheading, \addtocategory, \url, \href, \hyperref, \mathcal, \mathfrak, \mathscr, \notag, \usetikzlibrary, \pgfplotsset
 	},
 	keywordstyle    = \color{violet},
 	classoffset     = 0,

@@ -3,7 +3,10 @@
 
 \chapter{Escribir matemáticas}
 \label{sec:maths}
+
 \section{Básico}
+\nocite{short-math, ams}
+\addtocategory{math}{short-math, ams}
 \LaTeX{} admite dos formas de denotar matemáticas, en modo \textit{entre líneas} y modo \textit{display}. El primero se
 escribe así \lstinline|$1+1=2$| $1+1=2$, mientras que el segundo se escribe así:
 \begin{lstlisting}
@@ -108,9 +111,11 @@ Nótese que al estar separados por coma, \LaTeX{} entiende que son dos paquetes 
 \textbf{Encontrar símbolos.}
 En general es una tarea practicamente imposible la de aprenderse de memoria todos los símbolos en \LaTeX{}, sin
 considerar el hecho de que ciertos paquetes importan cada vez más de ellos, por lo que se recomienda con creces usar
-este sitio web \url{http://detexify.kirelabs.org/classify.html} donde puedes encontrar símbolos mediante dibujos. Bajo
-el comando donde aparecen se especifica si el comando funciona en modo texto o modo matemático (o ambos), y arriba
+el sitio \url{http://detexify.kirelabs.org/classify.html} para encontrar símbolos mediante dibujos.
+Otra buena referencia es el manual \cite{symbol}.
+Bajo el comando donde aparecen se especifica si el comando funciona en modo texto o modo matemático (o ambos), y arriba
 especificará si requiere algún paquete.
+\addtocategory{math}{symbol}
 
 Otra observación es que si bien \lstinline!|! sirve y genera el mismo efecto en modo matemático que \lstinline|\mid|, el
 primero se recomienda como \textit{envoltura} (similar a los paréntesis), mientras que el segundo genera espacios como
@@ -315,9 +320,9 @@ Es común usar la tipografía \lstinline|\mathbb| para conjuntos numéricos famo
 \textbf{Texto en ecuaciones.}
 Si bien la fuente \lstinline|\mathrm| es la misma del texto del documento, todavía tendríamos que lidiar con los
 espacios del modo matemático sin hablar de que no admiten caracteres \texttt{utf-8} (i.e., cosas como \lstinline|$á$|
-generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar \lstinline|\text|, e.g.
-\lstinline|$x=2,\text{ mientras que }y=3$| $x=2,\text{ mientras que }y=3$. Esto es más útil en ecuaciones en modo
-\textit{display}.
+generan errores), pero \LaTeX{} admite texto en ecuaciones, sólo basa usar\break \lstinline|\text|, e.g.
+\lstinline|$x=2, \text{ mientras que } y=3$| $x=2,\text{ mientras que }y=3$.
+Esto es más útil en ecuaciones en modo \textit{display}.
 
 \section{Ecuaciones numeradas, alineadas, matrices y más}
 \textbf{Ecuaciones numeradas.} Hasta ahora nuestras ecuaciones no están numeradas, ni poseen un número para añadirlas, para hacerlo debes usar el entorno \texttt{equation}. Dentro de él se permiten el uso de referencias cruzadas, respecto a esto se recomienda usar \lstinline|\eqref| en lugar de \lstinline|\ref| por estética, aunque sus usos son iguales, e.g:
@@ -348,10 +353,11 @@ Y \eqref{eq:einstein} es la famosa fórmula de Einstein...
 Además se puede quitar los tags con \lstinline|\notag|, que tal vez no es útil aún, pero lo será pronto.
 
 \textbf{Ecuaciones alineadas.}
-Es común ver documentos donde una ecuación está alineada por signos ``$=$'' y no saber como, además notará que entre
-\lstinline|$$ ... $$| no funcionan los cortes de línea. Para ello existe el entorno \texttt{align} y \texttt{align*}.
-Donde las partes son como celdas de una tabla y se separan por \texttt{\&}. El primero enumera cada línea, mientras que
-el segundo no enumera ninguna, e.g:
+Es común ver documentos donde una ecuación está alineada por signos <<$=$>>,
+lo cual resultará chocante ya que entre \lstinline|$$ ... $$| no funcionan los cortes de línea. 
+Para ello existe el entorno \texttt{align} y \texttt{align*}, donde las partes son como celdas de una tabla y se separan por \texttt{\&}.
+El primero enumera cada línea, mientras que el segundo no enumera ninguna;
+no obstante, si quiere solo etiquetar una línea, puede <<desactivar>> las etiquetas en el resto con \lstinline|\notag|, e.g:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily, tabsize=4]
 \begin{align}
 	\sum_{i=1}^n i &= 1 + 2 + 3 + \cdots + (n-1) + n \notag \\
@@ -366,6 +372,23 @@ el segundo no enumera ninguna, e.g:
 	&= (n+1) + (n+1) + (n+1) + \cdots \notag \\
 	&= (n+1)\cdot\frac{n}{2} = \frac{n(n+1)}{2}.
 \end{align}
+Si quiere alinear varias líneas con una sola etiqueta también puede emplear el subentorno \texttt{aligned} dentro de
+\texttt{equation}, así:
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily, tabsize=4]
+\begin{equation}
+	\begin{aligned}
+		\exp \colon \mathbb{R} &\longrightarrow (0, \infty) \\
+		t &\longmapsto \sum_{n=0}^\infty \frac{t^n}{n!}
+	\end{aligned}
+\end{equation}
+\end{lstlisting}
+\begin{equation}
+	\begin{aligned}
+		\exp \colon \mathbb{R} &\longrightarrow (0, \infty) \\
+		t &\longmapsto \sum_{n=0}^\infty \frac{t^n}{n!}
+	\end{aligned}
+\end{equation}
+
 Un detalle importante es que por defecto \LaTeX{} no rompe una ecuación alineada entre páginas, sin importar cuan larga
 sea, si usted quiere permitir esto debe agregar este comando a la cabecera:
 \begin{lstlisting}
@@ -405,7 +428,11 @@ y
 	h(x) = 18x^5 + 21x^3 + 61x - 9
 \end{gather*}
 
-\textbf{Modo entre-línea, display y \textit{smash}.} A mucha gente le molesta el hecho de que \LaTeX{} achica ciertos símbolos para mantener constancia en sus líneas, en cosas como $\sum_{k=1}^n k$ y otros operadores grandes. Ya vimos el problema con \lstinline|\dfrac|, pero no vimos el caso general para \lstinline|\lim| y el resto de operadores grandes. Para esto \LaTeX{} posee los \underline{modificadores} \lstinline|\displaystyle| y \lstinline|\textstyle| que fuerzan el modo display y entre-líneas respectivamente en cualquier entorno. Personalmente no recomiendo esto por mal uso de líneas, e.g. \lstinline|$\displaystyle \sum_{k=1}^n k$| $\displaystyle \sum_{k=1}^n k$ provoca malos espacios; no obstante hay casos donde se podría hacer sin afectar el espacio, para ello está el comando \lstinline|\smash|:
+\textbf{Modo entre-línea, display y \textit{smash}.}
+A mucha gente le molesta el hecho de que \LaTeX{} achica ciertos símbolos para mantener constancia en sus líneas, en cosas como $\sum_{k=1}^n k$ y otros operadores grandes.
+Ya vimos el problema con \lstinline|\dfrac|, pero no vimos el caso general para \lstinline|\lim| y el resto de operadores grandes.
+Para esto \LaTeX{} posee los \underline{modificadores} \lstinline|\displaystyle| y \lstinline|\textstyle| que fuerzan el modo display y entre-líneas respectivamente en cualquier entorno.
+Personalmente no recomiendo esto por mal uso de líneas, e.g. \lstinline|$\displaystyle \sum_{k=1}^n k$| $\displaystyle \sum_{k=1}^n k$ provoca malos espacios; no obstante hay casos donde se podría hacer sin afectar el espacio, para ello está el comando \lstinline|\smash|:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 Línea corta. \\
 Así que ahora podemos usar \smash{$\displaystyle\sum_{k=1}^n k$}. \\
@@ -516,8 +543,10 @@ Y otros errores comúnes:
 \end{longtable}
 
 \section{Diagramas (básico)}
-\textbf{¿Por qué?} Habiendo programas como GeoGebra, Photoshop y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código? La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
-Las imágenes en \LaTeX{} comparten esa misma cualidad y en ciertos casos, su facilidad de uso es comparable a la de un editor gráfico, y si no, hay editores que permiten exportar sus diagramas a \LaTeX{} (GeoGebra exporta a Ti$k$Z). Sin contar el que reduce el espacio utilizado en el archivo final y que puede resultar satisfactorio poder hacer figuras sin salir de \LaTeX{}.
+\textbf{¿Por qué?} Habiendo programas como GeoGebra, Inkscape y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código?
+La razón es que \LaTeX{} fue hecho para la publicación de textos y para ello ocupa figuras vectoriales, esto genera el efecto de acercarse a los caracteres y no tener perdida de calidad.
+Las imágenes en \LaTeX{} comparten esa misma cualidad y en ciertos casos, su facilidad de uso es comparable a la de un editor gráfico, y si no, hay editores que permiten exportar sus diagramas a \LaTeX{} (GeoGebra exporta a Ti$k$Z).
+Sin contar el que reduce el espacio utilizado en el archivo final y que puede resultar satisfactorio poder hacer figuras sin salir de \LaTeX{}.
 
 Aquí, \texttt{width} determina el tamaño del gráfico (sin contar aquel espacio extra que ocupen los números, las etiquetas de los ejes y el título del gráfico). \texttt{samples} determina cuantos puntos de ejemplo tomar (más es mejor, pero puede retrasar la compilación, 100 es recomendable). El comando \lstinline|\addplot| añade un gráfico y en las opciones vimos que el dominio se determina por \lstinline|domain=¬i:f¬|. Además añadimos entradas por \lstinline|\addlegendentry|.
 
@@ -608,7 +637,9 @@ Otra razón para usar \textsc{pgfplots} es que admite gráficos en 3d y funciona
 	\end{tikzpicture}
 \end{figure}
 
-Aquí, \texttt{surf} es un tipo de gráfico, otro tipo es \texttt{mesh} que sólo dibuja las líneas. \texttt{colormap/viridis} determina el mapa de colores del gráfico (también hay \texttt{hot}, \texttt{cool}, \texttt{violet}, \texttt{jet} y otros). Puedes definir tu propio mapa de colores con ésta línea en la cabecera:
+Aquí, \texttt{surf} es un tipo de gráfico, otro tipo es \texttt{mesh} que sólo dibuja las líneas.
+\texttt{colormap/viridis} determina el mapa de colores del gráfico (también hay \texttt{hot}, \texttt{cool}, \texttt{violet}, \texttt{jet} y otros).
+Puedes definir tu propio mapa de colores con ésta línea en la cabecera:\pagebreak
 \begin{lstlisting}
 \pgfplotsset{
 	colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)}
@@ -625,8 +656,9 @@ Aquí, \texttt{surf} es un tipo de gráfico, otro tipo es \texttt{mesh} que sól
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
+				colormap={ice}{HTML(0)=(3447d4); HTML(1)=(4188ea); HTML(2)=(80dcff); HTML(3)=(a4f8ff); HTML(4)=(d2feff)},
 				width = 6cm, hide axis,
-				colormap/ice, samples = 50
+				samples = 50
 			]
 			\addplot[mesh, very thick, domain=-3.14:3.14]{sin(deg(x))};
 		\end{axis}
@@ -635,26 +667,30 @@ Aquí, \texttt{surf} es un tipo de gráfico, otro tipo es \texttt{mesh} que sól
 
 Los colores del mapa anterior vienen de \url{https://www.color-hex.com/color-palette/96010}, así que corrobora que concuerdan.
 
-En gráficos 3d también puedes usar \lstinline|view={¬theta¬}{¬phi¬}| donde \textit{theta} y \textit{phi} representan ángulos para la perspectiva del gráfico. Puede encontrar más ejemplos con más opciones aquí: \url{http://pgfplots.net/tikz/examples/all/}.
+En gráficos 3d también puedes usar \lstinline|view={¬theta¬}{¬phi¬}|, donde \textit{theta} y \textit{phi} representan
+ángulos para la perspectiva del gráfico.
+Puede encontrar más ejemplos con más opciones aquí: \url{https://pgfplots.sourceforge.net/gallery.html}.
 
 \section{Consideraciones finales}
-Se recomienda chequear los manuales de \href{http://mirrors.ctan.org/graphics/pgf/base/doc/pgfmanual.pdf}{Ti$k$Z} y
-\href{https://ctan.dcc.uchile.cl/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\textsc{pgfplots}} para buscar más
+Se recomienda chequear los manuales de Ti$k$Z \cite{tikz} y \textsc{pgfplots} \cite{pgfplots} para buscar más
 información sobre como usarlos de manera avanzada, estoy consciente de que son manuales muy largos, pero la verdad es
 que entenderás bien la dinámica básica en el primer o el segundo capítulo donde todo está bien ilustrado y documentado.
-El resto de páginas es para ver cosas más avanzadas. Además existe un papel introductorio a Ti$k$Z muy completo:
-\url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
+El resto de páginas es para ver cosas más avanzadas.
+Además, recomiendo el archivo introductorio \cite{cremer:tikz}.
+% Además existe un papel introductorio a Ti$k$Z muy completo: \url{http://cremeronline.com/LaTeX/minimaltikz.pdf}.
+\addtocategory{math}{tikz, pgfplots, cremer:tikz, listings}
 
 Además, como puede presumir, hay un montón de paquetes y contenido que no se trató en este trabajo, y lo más probable es
 que si quiere una herramienta específica para su área de investigación, entonces existe un paquete que simplifica su
 implementación, por ejemplo sé que hay librerías para facilitar el diseño de circuitos eléctricos y diagramas de
 Feynman.
 
-Las partes que poseen código en el documento fueron hechas con el paquete de
-\href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{\ttfamily listings}, el resto ocupa puras cosas que
-este documento ya enseña, revisa
-\href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{\textcolor{newblue}{aquí} el
-código fuente} para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin
-lugar a dudas una de las mejores herramientas para los matemáticos y físicos hoy en día.
+Las partes que poseen código en el documento fueron hechas con el paquete de \texttt{Listings} \cite{listings}, el resto
+ocupa puras cosas que este documento ya enseña.
+Revisa \href{https://github.com/JoseCuevasBtos/apuntes-tex/blob/master/intro-breve-latex.tex}{aquí el código fuente}
+para practicar y también haz el intento de reescribir páginas de libros técnicos en \LaTeX{}, pues es sin lugar a dudas
+una de las mejores herramientas para los matemáticos y físicos hoy en día.
+
+\printbibliography[category=math]
 
 \end{document}

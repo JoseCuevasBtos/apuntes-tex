@@ -79,7 +79,8 @@ formas:
 \lstinline|\\| suele ser el más común, y no genera sangría en la línea contigua; para hacer un corte con sangría puede
 usar dos veces \texttt{Enter} en el código o usar el comando \lstinline|\par|.  La sangría se puede añadir con
 \lstinline|\indent| y quitar con \lstinline|\noindent| de ser necesario.
-Por último, si necesita forzar un corte de línea, para evitar la sobrecarga de caractéres por ejemplo, puede usar
+
+Por último, si necesita forzar un corte de línea, para evitar la sobrecarga de caractéres puede usar, por ejemplo,
 \lstinline|\break|.
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -93,6 +94,23 @@ Texto de ejemplo.\\
 Texto de ejemplo.\par
 Texto de ejemplo.
 \end{multicols}
+El paquete \texttt{babel} debería reconocer las sílabas del texto para hacer cortes más o menos apropiados, pero en
+ocasiones uno puede querer arreglar el corte manualmente (e.g., cuando uno cita un nombre extranjero y las reglas de
+división silábica de su idioma natural no aplican).
+Para ello, especifique la división en la cabecera así:
+\begin{lstlisting}
+\hyphenation{rie-ma-nnia-no}
+\end{lstlisting}
+Y luego activa el corte en la sílaba deseada con \lstinline|\-|.
+
+% \highlight
+Cabe destacar que el paquete \texttt{microtype} suele mejorar bastante la división silábica por defecto de \LaTeX{} y se
+recomienda darle una prueba antes de recurrir al método ya descrito.
+
+\textbf{Cortes de página.}
+Similarmente, hay dos maneras usuales de romper una página de ser necesario, \lstinline|\pagebreak| y
+\lstinline|\newpage|, los cuales asemejan a \lstinline|\break| y \lstinline|\\| respecto al efecto que tienen, y en qué
+se diferencian.
 
 \textbf{Comentarios.}
 Los comentarios son partes del código que no se deben interpretar como tal, pero pueden ser útiles para el
@@ -209,7 +227,7 @@ Además puedes utilizar un porcentaje de un color, por ejemplo, si sólo queremo
 \lstinline|\colorbox{black!50}{esto}| \colorbox{black!50}{esto}, y si queremos usar 50\% azúl y el resto rojo
 \lstinline|\colorbox{blue!50!red}{haga esto}| \colorbox{blue!50!red}{haga esto}.
 
-Por sobre eso, usted puede definir nuevos colores en la cabecera:
+Por sobre lo anterior, usted puede definir nuevos colores en la cabecera:
 \begin{lstlisting}
 \definecolor{ejemplo}{HTML}{00c89c}
 \end{lstlisting}
@@ -447,6 +465,7 @@ con el comando \lstinline|\caption{Mi descripción.}|, veamos un ejemplo donde s
 	\caption{Un fractal}
 \end{figure}
 
+\pagebreak
 \textbf{Tablas.} Las tablas se definen así:
 \begin{lstlisting}
 \begin{tabular}{¬formato¬}
@@ -566,6 +585,7 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 
 \section{Bibliografías, referencias cruzadas e índices}
 \label{sec:crossref}
+\nocite{biblatex}
 \LaTeX{} es bastante popular por su forma de tratar bibliografías, por lo cual vamos a enseñar como: En primer lugar, todas las referencias bibliográficas se guardan en otro archivo externo de extensión \texttt{.bib}. Para incluir una bibliografía debemos añadir el siguiente comando:
 \begin{lstlisting}
 \usepackage[backend=biber]{biblatex}
@@ -573,7 +593,10 @@ Con el paquete \texttt{multirow} puedes combinar filas también mediante el coma
 \end{lstlisting}
 Y para compilarlo hay que compilar el documento una primera vez, luego compilar la bibliografía con \textit{biber} y luego una segunda vez. Esto se debe a que la primera vez le dice a \LaTeX{} que referencias crear, luego el compilador las crea con su respectivo formato y la última las incluye.
 
-Las referencias se pueden buscar facilmente en páginas como \url{https://scholar.google.com/} y luego seleccionando obtener el formato en Bib\TeX{} o similar. En general toda referencia suele verse así:
+Las referencias se pueden buscar facilmente ya hechas en páginas como \href{https://scholar.google.com/}{Google Scholar},
+\href{https://mathscinet.ams.org/}{MathSciNet} e inclusive en \href{https://arxiv.org/}{arXiv} (en un artículo de su
+interés, haga click en <<Export BibTeX citation>>) buscando cómo exportar a Bib\TeX{}.
+Se suelen ver así:
 \begin{lstlisting}
 @book{gauss1966disquisitiones,
 	title={Disquisitiones arithmeticae},
@@ -583,7 +606,12 @@ Las referencias se pueden buscar facilmente en páginas como \url{https://schola
 	publisher={Yale University Press}
 }
 \end{lstlisting}
-Donde es bastante claro como funciona, la palabra \texttt{book} indica que la referencia es un libro, \texttt{gauss1966disquisitiones} es lo que le decimos una \textit{etiqueta}, i.e., una cadena de signos sin espacios que se utiliza para citar dentro del documento, luego el resto es claro. Lo único importante a saber es que en el campo del autor se recomienda anotar apellido, luego coma, luego nombre; y si hay más de uno separarlos por la palabra \texttt{and}, si hay muchos y se quiere utilizar algo para decir ``y otros'' (et al. en latín) se utiliza un \texttt{others} (Albert Einstein et al. sería \texttt{Einstein, Albert and others} para \LaTeX{}).
+Donde es bastante claro como funciona, la palabra \texttt{book} indica que la referencia es un libro, \texttt{gauss1966disquisitiones} es lo que le decimos una \textit{etiqueta}, i.e., una cadena de signos sin espacios que se utiliza para citar dentro del documento, luego el resto es claro.
+Lo único importante a saber es que en el campo del autor se recomienda anotar apellido, luego coma, luego nombre; y si
+hay más de uno separarlos por la palabra \texttt{and}, si hay muchos y se quiere utilizar algo para decir ``y otros''
+(et al.\ en latín) se utiliza un \texttt{others} (Albert Einstein et al.\ sería \texttt{Einstein, Albert and others} para \LaTeX{}).
+
+Para ver más ejemplos y los distintos campos admisibles en 
 
 Usualmente se utiliza un solo archivo general para tener todas las referencias allí, luego, utilizando el ejemplo anterior, uno citaría un documento así:
 \begin{lstlisting}
@@ -596,15 +624,46 @@ Para imprimir las bibliografías se ocupa este comando:
 \printbibliography
 \end{lstlisting}
 
-\textbf{Sub-bibliografías y palabras clave.} No obstante, un problema que puede surgir al tratar bibliografías es que toman un capítulo (o sección si de un artículo se trata) entero cuando se imprimen, y un formato interesante es el de ciertos libros que usan bibliografía para cada capítulo, lo que por el momento parece una tarea imposible. Un problema similar es si queremos incluir muchos artículos a la vez, pero no todos y sólo queremos incluir los de un cierto tema. Para ambos la solución implica introducir el mismo concepto: palabras clave.
+\textbf{Sub-bibliografías y palabras clave.}
+No obstante, un problema que puede surgir al tratar bibliografías es que toman un capítulo (o sección si de un artículo
+se trata) entero cuando se imprimen, y un formato interesante es el de ciertos libros que usan bibliografía para cada
+capítulo, lo que por el momento parece una tarea imposible.
+Un problema similar es si queremos incluir muchos artículos a la vez, pero no todos y sólo queremos incluir los de un
+cierto tema. Para ambos la solución implica introducir el mismo concepto: palabras clave.
 
-Dentro de la definición de libros en Bib\TeX{} se añade la categoría \texttt{keywords} (sí, plural) donde especifica las palabras clave separadas por comas. Tomemos el ejemplo del libro de Gauss y supongamos que le añadimos \lstinline|keywords={arithmetic}| donde tenemos varias referencias marcadas sobre el tema de \texttt{arithmetic} luego este comando:
+Dentro de la definición de libros en Bib\TeX{} se añade la categoría \texttt{keywords} (sí, plural) donde especifica las palabras clave separadas por comas.
+Tomemos el ejemplo del libro de Gauss y supongamos que le añadimos \lstinline|keywords={arithmetic}| donde tenemos varias referencias marcadas sobre el tema de \texttt{arithmetic} luego este comando:
 \begin{lstlisting}
 \printbibliography[keyword={arithmetic}]
 \end{lstlisting}
 Imprimirá sólo dichos artículos. Para el problema de las sub-bibliografías añada la opción de \texttt{subbibintoc}. Y para cambiarle el nombre puede usar la opción, \lstinline|heading={¬mi título¬}|.
 
-\textbf{Referencias cruzadas.} Una de las ventajas de \LaTeX{} es que como genera automáticamente la numeración para las secciones, figuras y ecuaciones, se pueden referenciar de forma bastante sencilla, junto a uno de esos entornos se agrega el comando \lstinline|\label{¬etiqueta¬}| y luego se llama con \lstinline|\ref{¬etiqueta¬}| (puede requerir una compilación doble para funcionar adecuadamente), e.g:
+\textbf{Categorías bibliográficas.}
+Las <<palabras clave>> tienen un problema esencial y es que, si ústed ocupa un archivo central de bibliografía como yo,
+puede querer distintas clasificaciones según el archivo que escriba, por lo que es más conveniente un formato que sea
+interno al archivo en cuestión.
+La solución son las categorías, se declaran en el encabezado:
+% \DeclarePrintbibliographyDefaults{heading=subbibliography}
+\begin{lstlisting}
+\DeclareBibliographyCategory{arithmetic}
+\defbibheading{arithmetic}{\section*{Aritmética}}
+\end{lstlisting}
+La segunda línea puede establecer qué tipo de título ocupará la sub-bibliografía dedicada.
+Luego, a mitad del documento puede añadir ciertas entradas con
+\lstinline|\addtocategory{¬categoría¬}{¬entrada¬}| (el comando puede usarse múltiples veces en el archivo).
+Finalmente, se imprime una determinada categoría con la opción \lstinline|category=¬categoría¬| (o se evita con
+\texttt{notcategory}) en \lstinline|\printbibliography|.
+
+Si quiere imprimir toda las categorías de bibliografía por separado, puede emplear el siguiente sustituto de
+\lstinline|\printbibliography|:
+\begin{lstlisting}
+\bibbycategory
+\end{lstlisting}
+
+\textbf{Referencias cruzadas.} Una de las ventajas de \LaTeX{} es que como genera automáticamente la numeración para las
+secciones, figuras y ecuaciones, se pueden referenciar de forma bastante sencilla, junto a uno de esos entornos se
+agrega el comando \lstinline|\label{¬etiqueta¬}| y luego se referencian mediante \lstinline|\ref{¬etiqueta¬}| (puede
+requerir una compilación doble para funcionar adecuadamente), e.g:
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
 \section{Bibliografías, referencias cruzadas e índices}
 \label{sec:crossref}
@@ -612,6 +671,9 @@ Imprimirá sólo dichos artículos. Para el problema de las sub-bibliografías a
 ...similar a lo dicho en la sección \ref{sec:crossref}.
 \end{lstlisting}
 ...similar a lo dicho en la sección \ref{sec:crossref}.
+
+Si se combina con el paquete \texttt{hyperref}, entonces el comando \lstinline|\ref| genera un hipervínculo que se puede
+desactivar con el comando \lstinline|\ref*|.
 
 La parte de \texttt{sec:} es una costumbre decorativa, así como se suele usar \texttt{eq:} como prefijo para las ecuaciones, \texttt{fig:} para las figuras, etc. No es necesaria pero puede servir para ordenarse en el código fuente.
 
@@ -625,7 +687,29 @@ Además se pueden usar \lstinline|\listoftables| y \lstinline|\listoffigures| pa
 \begin{lstlisting}
 \usepackage{hyperref}
 \end{lstlisting}
-Para añadir las entradas de las secciones al índice del pdf, agrega las opciones \texttt{bookmarks=true} y \texttt{bookmarksnumbered=true}. Aquí puedes añadir urls con el comando \lstinline|\url{¬url¬}| y \lstinline|\href{¬url¬}{¬texto¬}|; y referencias cruzadas extra con \lstinline|\hyperref{¬etiqueta¬}{¬texto¬}|.
+Aquí puedes añadir urls con el comando \lstinline|\url{¬url¬}| y \lstinline|\href{¬url¬}{¬texto¬}|; y referencias cruzadas extra con \lstinline|\hyperref{¬etiqueta¬}{¬texto¬}|.
+
+\nocite{hyperref}
+He aquí una serie de opciones interesantes para \texttt{hyperref}.
+Para añadir las entradas de las secciones al índice del pdf (obligatoriamente compilado con \texttt{pdftex} o similar),
+agrega las opciones \texttt{bookmarks=true} y \texttt{bookmarksnumbered=\break true}.
+Para tener enlaces con colores agregue \texttt{colorlinks=true} lo cual por defecto asigna una serie de colores a
+distintos hipervínculos, si quiere dejar los enlaces en negro por defecto agregue \texttt{allcolors=black}.
+Luego, puede especificar colores individuales a los siguientes:
+\begin{center}
+\begin{tabular}{lll}
+	\hline
+	Opción de color & Valor por defecto & Objetivo \\
+	\hline
+	\texttt{linkcolor} & \textsf{\color{red}red}         & Enlaces internos. \\
+	\texttt{citecolor} & \textsf{\color{green}green}     & Citas bibliográficas. \\
+	\texttt{filecolor} & \textsf{\color{cyan}cyan}       & Enlaces a archivos locales. \\
+	\texttt{menucolor} & \textsf{\color{red}red}         & Ítems del menú de Acrobat \textsc{pdf}. \\
+	\texttt{runcolor}  & \textsf{\color{cyan}filecolor}  & Anotaciones. \\
+	\texttt{urlcolor}  & \textsf{\color{magenta}magenta} & Direcciones \textsc{url}. \\
+	\hline
+\end{tabular}
+\end{center}
 
 \section{Configurar mi documento}
 \label{sec:setup}
@@ -694,8 +778,16 @@ primera parte y no pueden ir al final, e.g:
 \input{template.tex}
 \end{lstlisting}
 
-\textbf{Más allá...} Si quiere saber más información acerca de \LaTeX{} le recomiendo, con absoluta seriedad, \textbf{leer los manuales} de los paquetes aquí mencionados, en ellos se suele documentar de buena manera como usarlos y configurarlos de maneras más avanzadas que he omitido para acotar un texto que ya es bastante largo. Además varia de la información la saqué de \href{https://www.overleaf.com/learn/latex/Main_Page}{\ttfamily\color{newgreen}overleaf}, \href{https://en.wikibooks.org/wiki/LaTeX}{\ttfamily\color{newblue}wikibooks} y de preguntas en el foro de \href{https://tex.stackexchange.com/}{\ttfamily\color{newred}stack exchange}.
+\textbf{Más allá...} Si quiere saber más información acerca de \LaTeX{} le recomiendo, con absoluta seriedad,
+\textbf{leer los manuales} de los paquetes aquí mencionados, en ellos se suele documentar de buena manera como usarlos y
+configurarlos de maneras más avanzadas que he omitido para acotar un texto que ya es bastante largo.
+Además varia de la información la saqué de
+\href{https://www.overleaf.com/learn/latex/Main_Page}{\ttfamily\color{newgreen}overleaf},
+\href{https://en.wikibooks.org/wiki/LaTeX}{\ttfamily\color{newblue}wikibooks} y de preguntas en el foro de
+\href{https://tex.stackexchange.com/}{\ttfamily\color{newred}stack exchange}.
 
-Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \href{https://www.ctan.org/tex-archive/info/lshort/spanish}{La introducción no-tan-corta a \LaTeXe{}} y \href{https://www.academia.edu/35478409/Edici%C3%B3n_de_Textos_Cient%C3%ADficos_con_LaTeX_Composici%C3%B3n_Gr%C3%A1ficos_Inkscape_y_Presentaciones_Beamer}{el libro de Alexánder Borbón y Walter Mora} que es muy completo y recomendado.
+Además, en su momento, aprendí \LaTeX{} con bastante facilidad y complitud desde \cite{not-so-short} y \cite{borbon:latex} que es muy completo y recomendado.
+\addtocategory{basic}{not-so-short, borbon:latex, hyperref, biblatex}
+\printbibliography[category=basic]
 
 \end{document}
