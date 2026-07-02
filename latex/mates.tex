@@ -481,46 +481,6 @@ Por defecto, el entorno no posee delimitadores, pero existen variaciones de él 
 	\end{tabular}
 \end{center}
 
-\textbf{Teoremas.} Los teoremas en \LaTeX{} se importan con el paquete \texttt{amsthm}, funcionan como entornos que se numeran automáticamente y poseen otras cualidades, se definen en la cabecera así:
-\begin{lstlisting}
-\newtheorem{thm}{Teorema}
----------------------------------------------------
-\begin{thm}
-	La suma en $\mathbb{R}$ conmuta.
-\end{thm}
-\end{lstlisting}
-\begin{thm}
-	La suma en $\mathbb{R}$ conmuta.
-\end{thm}
-En este caso el teorema se enumeró sólo, podemos desactivar la numeración con \lstinline|\newtheorem*|. También el teorema partió desde el 1, pero podría haber iniciado ``\ref{sec:maths}.1'' donde el \ref{sec:maths} es el número de sección, o podría usar el número del capítulo en un libro, para ello le agregamos al final un campo opcional diciendo \texttt{section} o \texttt{chapter} lo que indica que la numeración se da en dicho formato. Algo interesante es que varios teoremas pueden compartir la misma numeración:
-\begin{lstlisting}
-\newtheorem{mydef}{Definición}[section]
-\newtheorem{cor}[mydef]{Corolario}
-\newtheorem*{note}{Observación}
----------------------------------------------------
-\begin{mydef}[Hipotenusa y catetos]
-	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
-\end{mydef}
-\begin{note}
-	Creo que recuerdo un teorema acerca de eso...
-\end{note}
-\begin{cor}
-	La hipotenusa es mayor que los catetos.
-\end{cor}
-\end{lstlisting}
-\begin{mydef}[Hipotenusa y catetos]
-	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
-\end{mydef}
-\begin{note}
-	Creo que recuerdo un teorema acerca de eso...
-\end{note}
-\begin{cor}
-	La hipotenusa es mayor que los catetos.
-\end{cor}
-\textbf{¡Precaución!} El paquete ya introduce un entorno para definiciones, así que no puede definir otro teorema también de tag \texttt{def}, por eso se usa \texttt{mydef}.
-
-Por último cabe mencionar que los teoremas también permiten el uso de referencias cruzadas.
-
 Y otros errores comúnes:
 \begin{longtable}{|ll|ll|}
 	\hline
@@ -541,6 +501,97 @@ Y otros errores comúnes:
 	\lstinline|$\int x dx$| & $\int x dx$ & \lstinline|$\int x\, dx$| & $\int x\, dx$ \\
 	\lstinline|$f: A\to B$| & $f: A\to B$ & \lstinline|$f\colon A\to B$| & $f\colon A\to B$ \\
 \end{longtable}
+
+\section{Teoremas}
+Los teoremas en \LaTeX{} se importan con el paquete \texttt{amsthm}, funcionan como entornos que se numeran automáticamente y poseen otras cualidades, se definen en la cabecera así:
+\begin{lstlisting}
+\newtheorem{thm}{Teorema}
+---------------------------------------------------
+\begin{thm}
+	La suma en $\mathbb{R}$ conmuta.
+\end{thm}
+\end{lstlisting}
+\begin{thm}\label{thm:sum}
+	La suma en $\mathbb{R}$ conmuta.
+\end{thm}
+En este caso el teorema se enumeró sólo, podemos desactivar la numeración con \lstinline|\newtheorem*|. También el teorema partió desde el 1, pero podría haber iniciado ``\ref*{sec:maths}.1'' donde el \ref*{sec:maths} es el número de sección, o podría usar el número del capítulo en un libro, para ello le agregamos al final un campo opcional diciendo \texttt{section} o \texttt{chapter} lo que indica que la numeración se da en dicho formato. Algo interesante es que varios teoremas pueden compartir la misma numeración:
+\begin{lstlisting}
+\newtheorem{mydef}{Definición}[section]
+\newtheorem{cor}[mydef]{Corolario}
+\newtheorem*{note}{Observación}
+---------------------------------------------------
+\begin{mydef}[Hipotenusa y catetos]
+	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
+\end{mydef}
+\begin{note}
+	Creo que recuerdo un teorema acerca de eso...
+\end{note}
+\begin{cor}
+	La hipotenusa es mayor que los catetos.
+\end{cor}
+\end{lstlisting}
+\begin{mydef}[Hipotenusa y catetos]\label{def:hyp}
+	En un triángulo rectángulo, el lado opuesto al ángulo recto se dice \textit{hipotenusa} y el resto catetos.
+\end{mydef}
+\begin{note}
+	Creo que recuerdo un teorema acerca de eso...
+\end{note}
+\begin{cor}\label{cor:hyp}
+	La hipotenusa es mayor que los catetos.
+\end{cor}
+\textbf{¡Precaución!} El paquete ya introduce un entorno para definiciones, así que no puede definir otro teorema también de tag \texttt{def}, por eso usé \texttt{mydef}.
+
+Por último cabe mencionar que los teoremas también permiten el uso de referencias cruzadas.
+
+\subsection*{Paquetes \texttt{thmtools} y \texttt{cleveref}, y estilos}
+Podemos cambiar ligeramente la sintaxis para definir teoremas con el paquete \texttt{thmtools} para poder citar inteligentemente:
+\begin{lstlisting}
+% Antes:
+% \newtheorem{mydef}{Definición}[section]
+% \newtheorem{cor}[mydef]{Corolario}
+% \newtheorem*{note}{Observación}
+
+% Nuevo:
+\declaretheorem[name=Definición, numberwithin=section]{mydef}
+\declaretheorem[name=Corolario, sibling=mydef]{cor}
+\declaretheorem[name=Observación, numbered=no]{note}
+\end{lstlisting}
+
+Nativamente, \texttt{amsthm} viene con los estilos: \texttt{plain} (por defecto), \texttt{definition} y \texttt{remark}.
+Además, uno puede definir sus estilos propios con la siguiente sintaxis:
+\begin{lstlisting}
+\newtheoremstyle{main} % nombre del estilo
+	{0cm} % espacio sobre el teorema
+	{0cm} % espacio bajo el teorema
+	{\normalfont} % fuente para el cuerpo
+	{0.5cm} % sangría
+	{\bfseries\itshape} % fuente título
+	{. ---} % puntuación entre título y cuerpo
+	{4pt} % espacio entre título y cuerpo
+	{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % configuracion del teorema (#1 es el tipo, ej: "Definición"; #2 es el número, ej: "1.2"; #3 es el nombre, ej: "chino del resto")
+\end{lstlisting}
+Y luego definir un teorema con estilo <<\texttt{main}>> como prosigue:
+\begin{lstlisting}
+\declaretheorem[name=Proposición, sibling=mydef, style=main]{prop}
+\end{lstlisting}
+\begin{center}
+	\begin{tabular}{l|p{10cm}}
+		\textbf{Estilo} & \textbf{Resultado} \\
+		\hline
+		\texttt{plain} & \begin{propp}[Bézout] $au + bv = \mcd(a, b).$ \end{propp} \\
+		\texttt{definition} & \begin{propd}[Bézout] $au + bv = \mcd(a, b).$ \end{propd} \\
+		\texttt{remark} & \begin{propr}[Bézout] $au + bv = \mcd(a, b).$ \end{propr} \\
+		\texttt{main} & \begin{prop}[Bézout] $au + bv = \mcd(a, b).$ \end{prop} \\
+	\end{tabular}
+\end{center}
+
+El paquete \texttt{cleveref} importa una serie de comandos que inteligentemente deciden agregar el sustantivo correcto (e.g., <<ec.>>, <<teorema>>, etc.).
+Su uso es el siguiente:
+\begin{lstlisting}
+En virtud del \cref{thm:sum,eq:pitagoras} en \cpageref{eq:pitagoras} podemos deducir facilmente el \cref{cor:hyp}. \Cref{def:hyp} es clave.
+\end{lstlisting}
+En virtud del \cref{thm:sum,eq:pitagoras} en \cpageref{eq:pitagoras} podemos deducir facilmente el \cref{cor:hyp}.
+\Cref{def:hyp} es clave.
 
 \section{Diagramas (básico)}
 \textbf{¿Por qué?} Habiendo programas como GeoGebra, Inkscape y muchos más para hacer diagramas de forma fácil y gráfica, ¿por qué hacer diagramas en \LaTeX{} si es código?

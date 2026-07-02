@@ -1,7 +1,7 @@
-\documentclass[11pt, oneside]{book}
+\documentclass[11pt, oneside, spanish]{book}
 
 % ============= Paquetes ====================
-\usepackage[spanish]{babel}
+\usepackage{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[
@@ -17,6 +17,9 @@
 \usepackage{amsmath, amssymb, amsthm, mathrsfs}
 \usepackage{subfiles}
 \usepackage{microtype}
+
+\usepackage{thmtools}
+\usepackage{cleveref}
 
 % ============= Bibliografía ================
 \usepackage[
@@ -58,10 +61,24 @@
 \definecolor{sample}{HTML}{00c89c}
 \DeclareMathOperator{\mcd}{mcd}
 \DeclareMathOperator*{\dom}{dom}
-\newtheorem{thm}{Teorema}
-\newtheorem{mydef}{Definición}[section]
-\newtheorem{cor}[mydef]{Corolario}
-\newtheorem*{note}{Observación}
+\declaretheorem[name=Teorema]{thm}
+\declaretheorem[name=Definición, numberwithin=section]{mydef}
+\declaretheorem[name=Corolario, sibling=mydef]{cor}
+\declaretheorem[name=Observación, numbered=no]{note}
+
+\newtheoremstyle{main} % nombre del estilo
+	{0cm} % espacio sobre el teorema
+	{0cm} % espacio bajo el teorema
+	{\normalfont} % fuente para el cuerpo
+	{0.5cm} % sangría
+	{\bfseries\itshape} % fuente título
+	{. ---} % puntuación entre título y cuerpo
+	{4pt} % espacio entre título y cuerpo
+	{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % configuracion del teorema (#1 es el tipo, ej: "Definición"; #2 es el número, ej: "1.2"; #3 es el nombre, ej: "chino del resto")
+\declaretheorem[name=Proposición, style=plain]{propp}
+\declaretheorem[name=Proposición, style=definition]{propd}
+\declaretheorem[name=Proposición, style=remark]{propr}
+\declaretheorem[name=Proposición, sibling=mydef, style=main]{prop}
 
 \usepackage{textcomp}
 \newenvironment{demo}[1][$\bullet$]{#1 {\scshape Demostración:} }{\par\noindent}
